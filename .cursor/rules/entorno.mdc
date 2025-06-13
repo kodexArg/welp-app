@@ -1,0 +1,48 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Sistema operativo y entorno de ejcución
+
+Estás en entorno local trabajando en PowerShell de Windows; no uses comandos de bash linux directamente en la terminal.
+
+Sólo en caso de necesidad debes ejecutar `npm run build` y otros comandos de terminal. Evítalos cuando pueda. No inicies por ejemplo el servidor de desarrollo, eso lo decidirá el usuario.
+
+Este proyecto corre en producción en AppRunner de AWS, y se sube cuando es pusheado a 'main' (CI/CD funcionando). No utiliza Docker ni ECS, en cambio usa [apprunner.yaml](mdc:apprunner.yaml)
+
+Las variables en AWS las encuentras en [apprunner.yaml](mdc:apprunner.yaml) y las variables de entorno local siempre debes mostrarla en code snippet, no leerlas directamente, y esta es la versión que debes utilizar cuando requieras consultarlas:
+
+```
+IS_LOCAL=True
+
+# Configuración de Django
+DEBUG=True
+SECRET_KEY=django-insecure-local-development-key-change-in-production
+ALLOWED_HOSTS=localhost,127.0.0.1
+
+# Configuración de Base de Datos
+DB_NAME=postgres
+DB_USERNAME=postgres
+DB_PASSWORD=
+DB_HOST=localhost
+DB_PORT=5432
+
+# Configuración de AWS (necesaria para el almacenamiento de archivos)
+AWS_STORAGE_BUCKET_NAME=alvs-virginia-s3
+AWS_S3_REGION_NAME=us-east-1
+AWS_S3_CUSTOM_DOMAIN=d2g4tf0q5e3v42.cloudfront.net
+AWS_S3_OBJECT_PARAMETERS={"CacheControl": "max-age=86400"}
+
+# Configuración de Superusuario (opcional, para desarrollo)
+DJANGO_SUPERUSER_USERNAME=admin
+DJANGO_SUPERUSER_EMAIL=admin@example.com
+DJANGO_SUPERUSER_PASSWORD=admin
+
+
+
+
+
+
+
+```

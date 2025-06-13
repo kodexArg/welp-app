@@ -1,0 +1,343 @@
+{% extends 'base.html' %}
+{% load component_tags %}
+
+{% block title %}dj-apprunner-template - Panel de Control{% endblock %}
+
+{% block content %}
+{# {% component "core_test_component" message="Componente de test Django OK" status="success" / %} #}
+<div class="max-w-5xl mx-auto p-4 space-y-6 font-sans text-sm">
+    <!-- Header minimalista -->
+    <div class="text-center mb-8">
+        <h1 class="text-2xl font-light text-gray-700 mb-2">dj-apprunner-template</h1>
+        <p class="text-gray-500 text-xs">
+            Template para proyectos Django en AWS App Runner
+        </p>
+    </div>
+
+    <!-- Grid de Verificación Tecnológica -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-3 mb-6">
+        <!-- Vite -->
+        <div class="bg-white border border-gray-200 p-3 w-full max-w-xs mx-auto">
+            <div class="flex items-center justify-between mb-2">
+                <h3 class="text-sm font-medium text-gray-700">Vite</h3>
+                <span class="flex items-center justify-center text-xs rounded-full bg-green-50 text-green-700 h-6 w-6">✅</span>
+            </div>
+            <div class="space-y-1">
+                <div class="flex justify-between text-xs text-gray-500">
+                    <span>HMR:</span>
+                    <span id="hmr-status">{{ environment|yesno:"✅,🔄" }}</span>
+                </div>
+                <div class="flex justify-between text-xs text-gray-500">
+                    <span>Build:</span>
+                    <span id="build-status">Verificando...</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tailwind -->
+        <div class="bg-white border border-gray-200 p-3 w-full max-w-xs mx-auto">
+            <div class="flex items-center justify-between mb-2">
+                <h3 class="text-sm font-medium text-gray-700">Tailwind</h3>
+                <span class="flex items-center justify-center text-xs rounded-full bg-green-50 text-green-700 h-6 w-6">✅</span>
+            </div>
+            <div class="space-y-1">
+                <div class="flex justify-between text-xs text-gray-500">
+                    <span>Versión:</span>
+                    <span>v4</span>
+                </div>
+                <div class="flex justify-between text-xs text-gray-500">
+                    <span>Estado:</span>
+                    <span>Activo</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- HTMX -->
+        <div class="bg-white border border-gray-200 p-3 w-full max-w-xs mx-auto">
+            <div class="flex items-center justify-between mb-2">
+                <h3 class="text-sm font-medium text-gray-700">HTMX</h3>
+                <span class="flex items-center justify-center text-xs rounded-full bg-green-50 text-green-700 h-6 w-6" id="htmx-status">✅</span>
+            </div>
+            <div class="space-y-1">
+                <div class="flex justify-between text-xs text-gray-500">
+                    <span>Versión:</span>
+                    <span id="htmx-version">v2.0.4</span>
+                </div>
+                <div class="flex justify-between text-xs text-gray-500">
+                    <span>Test:</span>
+                    <span><a href="#" hx-get="{% url 'htmx_demo' %}" hx-target="#htmx-demo-result" hx-swap="outerHTML" class="text-xs text-blue-600 hover:text-blue-800">Probar →</a></span>
+                </div>
+            </div>
+            <div id="htmx-demo-result" class="text-gray-400"></div>
+        </div>
+
+        <!-- Django Components -->
+        <div class="bg-white border border-gray-200 p-3 w-full max-w-xs mx-auto">
+            <div class="flex items-center justify-between mb-2">
+                <h3 class="text-sm font-medium text-gray-700">Components</h3>
+                <span class="flex items-center justify-center text-xs rounded-full bg-green-50 text-green-700 h-6 w-6">✅</span>
+            </div>
+            <div class="space-y-1">
+                <div class="flex justify-between text-xs text-gray-500">
+                    <span>Ping:</span>
+                    <span>{% component "ping" ping="test_ping" / %}</span>
+                </div>
+                <div class="flex justify-between text-xs text-gray-500">
+                    <span>Estado:</span>
+                    <span>Activo</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Links de Prueba -->
+    <div class="bg-white border border-gray-200 p-3 mb-6">
+        <h2 class="text-sm font-medium text-gray-700 mb-3">Pruebas Disponibles</h2>
+        <div class="flex flex-wrap gap-2">
+            <a href="#" hx-get="{% url 'health' %}" hx-target="#test-health-result" hx-swap="outerHTML" class="text-xs text-blue-600 hover:text-blue-800">Health Check</a>
+            <span class="text-gray-300">|</span>
+            <a href="#" hx-get="{% url 'db_health_check' %}" hx-target="#test-db-result" hx-swap="outerHTML" class="text-xs text-blue-600 hover:text-blue-800">DB Health</a>
+            <span class="text-gray-300">|</span>
+            <a href="#" hx-get="{% url 'hello_world' %}" hx-target="#test-hello-result" hx-swap="outerHTML" class="text-xs text-blue-600 hover:text-blue-800">Hello World</a>
+        </div>
+        <div id="test-health-result" class="mt-2"></div>
+        <div id="test-db-result" class="mt-2"></div>
+        <div id="test-hello-result" class="mt-2"></div>
+    </div>
+
+    <!-- Tests -->
+    <div class="bg-white border border-gray-200 p-3 mb-6">
+        <h2 class="text-sm font-medium text-gray-700 mb-3">Tests</h2>
+        <details class="text-xs">
+            <summary class="cursor-pointer text-blue-600 hover:text-blue-800">Ver Tests</summary>
+            <pre class="mt-2 p-2 bg-gray-50 rounded text-gray-600 overflow-x-auto">
+1. Configuración (tests/test_config.py)
+   ├── test_secret_key
+   ├── test_database_config
+   ├── test_aws_config
+   ├── test_security_settings
+   ├── test_installed_apps
+   └── test_middleware
+
+2. Modelos (core/tests/test_models.py)
+   ├── test_create_user
+   ├── test_create_superuser
+   └── test_user_str_representation
+
+3. Vistas (core/tests/test_views.py)
+   ├── test_hello_world
+   ├── test_health_check
+   ├── test_db_health_check_success
+   └── test_db_health_check_failure
+
+4. Integración (tests/test_startup.py)
+   ├── test_environment_configuration
+   ├── test_database_integration
+   ├── test_aws_integration
+   └── test_security_integration</pre>
+        </details>
+    </div>
+
+    <!-- README -->
+    <div class="bg-white border border-gray-200 p-3">
+        <h2 class="text-sm font-medium text-gray-700 mb-3">Documentación</h2>
+        <div class="prose prose-sm max-w-none text-gray-600">
+            <h3 class="text-xs font-medium text-gray-700 mb-2">Stack Tecnológico</h3>
+            <table class="w-full text-xs">
+                <tr>
+                    <td class="w-1/4 py-1">Backend:</td>
+                    <td class="py-1">Python {{ python_version }}, Django {{ django_version }}, Gunicorn</td>
+                </tr>
+                <tr>
+                    <td class="py-1">Database:</td>
+                    <td class="py-1">PostgreSQL (RDS)</td>
+                </tr>
+                <tr>
+                    <td class="py-1">Storage:</td>
+                    <td class="py-1">S3 + CloudFront</td>
+                </tr>
+                <tr>
+                    <td class="py-1">Deploy:</td>
+                    <td class="py-1">AWS App Runner</td>
+                </tr>
+                <tr>
+                    <td class="py-1">Frontend:</td>
+                    <td class="py-1">Vite, Tailwind v4, HTMX, django-components</td>
+                </tr>
+            </table>
+
+            <details class="mt-4">
+                <summary class="cursor-pointer text-blue-600 hover:text-blue-800">Ver README Completo</summary>
+                <div class="mt-2 prose prose-sm max-w-none text-gray-600">
+                    <h3 class="text-xs font-medium text-gray-700 mb-2">Estado del Proyecto</h3>
+                    <h4 class="text-xs font-medium text-gray-700 mb-1">Infraestructura Core ✅</h4>
+                    <ul class="text-xs list-disc list-inside mb-2">
+                        <li>App Runner configurado con Python 3.11</li>
+                        <li>Variables de entorno y secretos</li>
+                        <li>Gunicorn como servidor WSGI</li>
+                        <li>Gestión de dependencias con uv</li>
+                        <li>Configuración de IAM roles y políticas</li>
+                        <li>Secrets Manager configurado</li>
+                        <li>Build de frontend optimizado en AppRunner ✅</li>
+                        <li>Desarrollo local con Vite ✅</li>
+                    </ul>
+
+                    <h4 class="text-xs font-medium text-gray-700 mb-1">Servicios AWS ✅</h4>
+                    <ul class="text-xs list-disc list-inside mb-2">
+                        <li>Secrets Manager con secretos configurados</li>
+                        <li>RDS (PostgreSQL) con acceso configurado</li>
+                        <li>S3 + CloudFront con políticas de acceso</li>
+                        <li>IAM roles y políticas necesarias</li>
+                    </ul>
+
+                    <h4 class="text-xs font-medium text-gray-700 mb-1">Frontend ✅</h4>
+                    <ul class="text-xs list-disc list-inside mb-2">
+                        <li>Instalación de django-vite</li>
+                        <li>Integración de favicon con Vite</li>
+                        <li>Build de frontend integrado en AppRunner pre_build</li>
+                        <li>Desarrollo local con Vite (npm run dev)</li>
+                        <li>Configuración de Tailwind CSS v4</li>
+                        <li>Integración de HTMX</li>
+                        <li><strong>Implementación de django-components</strong> ✅
+                            <ul class="text-xs list-disc list-inside ml-4 mt-1">
+                                <li>Configuración completa en settings.py</li>
+                                <li>Componente de prueba "ping" funcional</li>
+                                <li>Estructura de archivos optimizada</li>
+                                <li>CSS/JS específicos por componente</li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <h4 class="text-xs font-medium text-gray-700 mb-1">Próximos Pasos 🚧</h4>
+                    <ol class="text-xs list-decimal list-inside mb-2">
+                        <li>Sistema de Autenticación
+                            <ul class="list-disc list-inside ml-4">
+                                <li>Implementación de autenticación Django</li>
+                                <li>Integración con OAuth2</li>
+                            </ul>
+                        </li>
+                        <li>API REST
+                            <ul class="list-disc list-inside ml-4">
+                                <li>Desarrollo de endpoints</li>
+                                <li>Implementación de seguridad JWT</li>
+                                <li>Documentación con Swagger/OpenAPI</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+            </details>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript para verificaciones -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Verificar Vite
+    const originalLog = console.log;
+    let viteMessageDetected = false;
+    
+    console.log = function(...args) {
+        if (args.some(arg => typeof arg === 'string' && arg.includes('Vite'))) {
+            viteMessageDetected = true;
+            updateViteStatus(true);
+        }
+        originalLog.apply(console, args);
+    };
+    
+    checkManifest();
+    
+    setTimeout(() => {
+        if (!viteMessageDetected) {
+            checkViteAssets();
+        }
+    }, 3000);
+});
+
+function updateViteStatus(isWorking) {
+    const statusEl = document.getElementById('vite-status');
+    const buildEl = document.getElementById('build-status');
+    
+    if (isWorking) {
+        statusEl.textContent = '✅';
+        statusEl.className = 'text-xs px-2 py-0.5 rounded-full bg-green-50 text-green-700';
+        buildEl.textContent = 'HMR Activo';
+    } else {
+        statusEl.textContent = '⚠️';
+        statusEl.className = 'text-xs px-2 py-0.5 rounded-full bg-yellow-50 text-yellow-700';
+        buildEl.textContent = 'Modo Producción';
+    }
+}
+
+function checkManifest() {
+    // Solo verificar manifest en producción
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        document.getElementById('build-status').textContent = 'HMR Activo';
+        return;
+    }
+
+    fetch('/static/dist/manifest.json')
+        .then(response => {
+            if (response.ok) {
+                document.getElementById('build-status').textContent = 'OK';
+                return response.json();
+            }
+            throw new Error('Not found');
+        })
+        .catch(() => {
+            document.getElementById('build-status').textContent = 'Error';
+        });
+}
+
+function checkViteAssets() {
+    const viteElements = document.querySelectorAll('[data-vite-dev-id], script[src*="vite"], link[href*="vite"]');
+    if (viteElements.length > 0) {
+        // Si encontramos elementos de Vite, verificamos si es HMR
+        const hasHMR = Array.from(viteElements).some(el => 
+            el.src?.includes('vite') || 
+            el.href?.includes('vite') || 
+            el.getAttribute('data-vite-dev-id')
+        );
+        updateViteStatus(hasHMR);
+    } else {
+        updateViteStatus(false);
+    }
+}
+
+// Verificación de HTMX
+document.addEventListener('htmx:loaded', function(event) {
+    const statusEl = document.getElementById('htmx-status');
+    const versionEl = document.getElementById('htmx-version');
+    
+    statusEl.textContent = '✅';
+    statusEl.className = 'text-xs px-2 py-0.5 rounded-full bg-green-50 text-green-700';
+    
+    if (event.detail && event.detail.version) {
+        versionEl.textContent = 'v' + event.detail.version;
+    } else if (window.htmx && window.htmx.version) {
+        versionEl.textContent = 'v' + window.htmx.version;
+    } else {
+        versionEl.textContent = 'v2.0.4';
+    }
+});
+
+// Fallback HTMX con reintentos
+let htmxCheckAttempts = 0;
+const maxHtmxCheckAttempts = 3;
+
+function checkHtmx() {
+    const statusEl = document.getElementById('htmx-status');
+    if (statusEl.textContent === '🔄' && htmxCheckAttempts < maxHtmxCheckAttempts) {
+        htmxCheckAttempts++;
+        setTimeout(checkHtmx, 2000); // Reintentar cada 2 segundos
+    } else if (statusEl.textContent === '🔄') {
+        statusEl.textContent = '❌';
+        statusEl.className = 'text-xs px-2 py-0.5 rounded-full bg-red-50 text-red-700';
+        document.getElementById('htmx-version').textContent = 'No detectado';
+    }
+}
+
+// Iniciar verificación de HTMX
+setTimeout(checkHtmx, 2000);
+</script>
+{% endblock %} 

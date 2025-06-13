@@ -1,0 +1,10 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Idioma
+
+- Usa lenguaje Español para Docstring, siempre.
+- Usa Lenguaje Español también para comentarios en python (*.py) y HTML, pero evita comentarios si no son específicamente solicitados.
+- Usa Inglés para nombres de variables, funciones, clases y usa Inglés también para todo lo relacionado al código.

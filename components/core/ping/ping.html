@@ -1,0 +1,9 @@
+<div class="ping-component">
+    <h4>🏓 Componente django-components</h4>
+    <p>Estado: <span class="status">{{ has_ping|yesno:"Activo,Inactivo" }}</span></p>
+    <div class="response">{{ response }}</div>
+    <button onclick="pingClick()" class="ping-btn">Click me!</button>
+    {% if ping_value %}
+        <p class="ping-details">Recibido: <code>{{ ping_value }}</code></p>
+    {% endif %}
+</div> 
