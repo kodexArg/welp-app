@@ -3,9 +3,13 @@ import os
 import sys
 import django
 from django.db import connection
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.conf import settings
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.urls import reverse
 
 def home(request):
     """
@@ -107,3 +111,41 @@ def htmx_demo(request):
                 <span class="text-yellow-700">⚠️ Request no HTMX detectada</span>
             </div>
         """)
+
+def login_view(request):
+    """Vista de login"""
+    if request.user.is_authenticated:
+        return redirect('dashboard')
+    
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        
+        if username and password:
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                messages.success(request, f'¡Bienvenido, {user.get_full_name() or user.username}!')
+                return redirect('dashboard')
+            else:
+                messages.error(request, 'Usuario o contraseña incorrectos.')
+        else:
+            messages.error(request, 'Por favor, completa todos los campos.')
+    
+    return render(request, 'core/login.html')
+
+@login_required
+def logout_view(request):
+    """Vista de logout"""
+    user_name = request.user.get_full_name() or request.user.username
+    logout(request)
+    messages.info(request, f'¡Hasta luego, {user_name}!')
+    return redirect('home')
+
+@login_required
+def dashboard_view(request):
+    """Dashboard principal para usuarios autenticados"""
+    context = {
+        'user': request.user,
+    }
+    return render(request, 'core/dashboard.html', context)

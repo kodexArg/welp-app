@@ -1,9 +1,2 @@
-// JavaScript para el componente core_ping
-
-function pingClick() {
-    alert('¡PONG desde JavaScript!');
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('✅ Componente ping JS cargado correctamente');
-}); 
+// JavaScript mínimo para el componente ping
+console.log('✅ Componente ping cargado'); 

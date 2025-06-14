@@ -1,0 +1,21 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Formato de respuestas del chat
+
+**SIEMPRE**
+
+- Consulta antes de ejecutar código en terminal.
+
+- Consulta antes de instalar dependencias.
+
+- Prioriza la documentación oficial.
+
+
+**NUNCA**
+
+- Nunca comentes código si no es requerido.
+
+
