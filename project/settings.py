@@ -108,13 +108,15 @@ TEMPLATES = [
             'builtins': [
                 'django_components.templatetags.component_tags',
             ],
-            'loaders': [(
+            # Configuración condicional del loader - SIN caché en desarrollo
+            'loaders': [
+                'django.template.loaders.filesystem.Loader',
+                'django.template.loaders.app_directories.Loader',
+                'django_components.template_loader.Loader',
+            ] if IS_LOCAL else [(
                 'django.template.loaders.cached.Loader', [
-                    # Loader por defecto de Django
                     'django.template.loaders.filesystem.Loader',
-                    # Incluir esto es equivalente a APP_DIRS=True
                     'django.template.loaders.app_directories.Loader',
-                    # Loader de componentes
                     'django_components.template_loader.Loader',
                 ]
             )],
@@ -191,8 +193,12 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 DJANGO_VITE = {
     "default": {
-        "dev_mode": IS_LOCAL,  # Solo modo desarrollo cuando está ejecutándose localmente
+        "dev_mode": IS_LOCAL,
+        "dev_server_host": "localhost",
+        "dev_server_port": 5173,
+        "dev_server_protocol": "http",
         "manifest_path": VITE_ASSETS_PATH / "manifest.json",
+        "static_url_prefix": "",
     }
 }
 

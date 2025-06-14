@@ -5,18 +5,18 @@
 {% block content %}
 <div class="min-h-screen bg-gray-50">
     <!-- Header -->
-    <div class="bg-white shadow">
+    <div class="bg-slate-700 shadow-lg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center py-6">
                 <div>
-                    <h1 class="text-2xl font-light text-gray-900">Dashboard</h1>
-                    <p class="text-sm text-gray-600">Panel de control personal</p>
+                    <h1 class="text-2xl font-light text-white">Panel de Control</h1>
+                    <p class="text-sm text-slate-300">WelpDesk • WelpPay</p>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <a href="{% url 'home' %}" class="text-sm text-gray-600 hover:text-gray-900">
+                    <a href="{% url 'home' %}" class="text-sm text-slate-300 hover:text-white transition-colors">
                         ← Inicio
                     </a>
-                    <a href="{% url 'logout' %}" class="bg-gray-500 hover:bg-gray-600 text-white text-sm px-3 py-2 rounded transition-colors">
+                    <a href="{% url 'logout' %}" class="bg-slate-600 hover:bg-slate-500 text-white text-sm px-3 py-2 rounded transition-colors">
                         Salir
                     </a>
                 </div>

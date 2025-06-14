@@ -4,6 +4,12 @@ import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
   base: '/static/',
+  server: {
+    host: 'localhost',
+    port: 5173,
+    cors: true,
+    origin: 'http://localhost:5173'
+  },
   build: {
     manifest: 'manifest.json',
     outDir: 'static/dist',
