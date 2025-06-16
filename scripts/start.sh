@@ -11,7 +11,7 @@ banner() {
 }
 
 banner "INSTALACIÓN DE UV"
-pip install uv
+pip3 install uv
 
 banner "MIGRACIONES DE DJANGO"
 uv run manage.py makemigrations
