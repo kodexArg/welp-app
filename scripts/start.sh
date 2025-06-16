@@ -14,28 +14,12 @@ banner "INSTALACIÓN DE UV"
 pip3 install uv
 
 banner "MIGRACIONES DE DJANGO"
-uv run manage.py makemigrations
+# Generar migraciones para el modelo User personalizado
+uv run manage.py makemigrations core
 
-# Intentar migración normal primero
-if uv run manage.py migrate 2>/dev/null; then
-    echo "Migraciones aplicadas exitosamente."
-else
-    echo "Error en migraciones detectado. Verificando si es conflicto de dependencias..."
-    
-    # Verificar si es el error específico de historial inconsistente
-    if uv run manage.py migrate 2>&1 | grep -q "InconsistentMigrationHistory.*admin.0001_initial.*core.0001_initial"; then
-        echo "Detectado conflicto de dependencias. Aplicando corrección..."
-        
-        # Marcar core.0001_initial como aplicada sin ejecutarla
-        uv run manage.py migrate core 0001 --fake
-        
-        # Aplicar todas las migraciones restantes
-        uv run manage.py migrate
-    else
-        echo "Error diferente detectado. Abortando..."
-        exit 1
-    fi
-fi
+# Aplicar todas las migraciones (BD limpia, sin conflictos)
+echo "Aplicando migraciones en base de datos limpia..."
+uv run manage.py migrate
 
 banner "ARCHIVOS ESTÁTICOS"
 uv run manage.py collectstatic --noinput
