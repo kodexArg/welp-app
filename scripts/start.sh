@@ -12,7 +12,8 @@ banner() {
 
 banner "MIGRACIONES DE DJANGO"
 .venv/bin/python manage.py makemigrations
-.venv/bin/python manage.py migrate
+# Aplicar migración inicial con --fake-initial para evitar conflictos de dependencias)
+.venv/bin/python manage.py migrate --fake-initial
 
 banner "ARCHIVOS ESTÁTICOS"
 .venv/bin/python manage.py collectstatic --noinput
