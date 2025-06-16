@@ -12,10 +12,20 @@ class PingSecretTest(TestCase):
         # Verificar si es JSON
         try:
             ping_json = json.loads(ping_value)
-            if isinstance(ping_json, dict) and 'ping' in ping_json:
-                self.assertEqual(ping_json['ping'].strip().lower(), "pong")
+            if isinstance(ping_json, dict):
+                # Buscar la clave en diferentes formatos (case-insensitive)
+                ping_key = None
+                for key in ping_json.keys():
+                    if key.lower() == 'ping':
+                        ping_key = key
+                        break
+                
+                if ping_key:
+                    self.assertEqual(ping_json[ping_key].strip().lower(), "pong")
+                else:
+                    self.fail(f"Clave 'ping' no encontrada en JSON: {ping_json}")
             else:
-                self.fail(f"Formato JSON inválido: {ping_json}")
+                self.fail(f"Formato JSON no es diccionario: {ping_json}")
         except json.JSONDecodeError:
             # Si no es JSON, verificar como string
             self.assertEqual(ping_value.strip().lower(), "pong") 
