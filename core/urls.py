@@ -1,5 +1,7 @@
 from django.urls import path
-from .views import health, db_health_check, home, hello_world, htmx_demo, login_view, logout_view, dashboard_view
+from .views import health, db_health_check, home, hello_world, htmx_demo, login_view, logout_view, dashboard_view, landing
+
+app_name = 'core'
 
 urlpatterns = [
     path('', home, name='home'),

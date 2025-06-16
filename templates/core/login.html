@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'core/base.html' %}
 
 {% block title %}Acceso - dj-apprunner-template{% endblock %}
 
@@ -68,7 +68,7 @@
             </div>
             
             <div class="text-center">
-                <a href="{% url 'home' %}" class="text-sm text-gray-600 hover:text-gray-900">
+                <a href="{% url 'core:home' %}" class="text-sm text-gray-600 hover:text-gray-900">
                     ← Volver al inicio
                 </a>
             </div>

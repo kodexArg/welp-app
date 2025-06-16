@@ -11,6 +11,18 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.urls import reverse
 
+def landing(request):
+    """
+    Landing page principal del proyecto - Entry point desde la raíz.
+    
+    Args:
+        request: Objeto HttpRequest de Django
+        
+    Returns:
+        HttpResponse: Renderiza la plantilla landing.html con enlaces principales
+    """
+    return render(request, 'core/landing.html')
+
 def home(request):
     """
     Vista principal de la aplicación con información detallada del sistema.
@@ -115,7 +127,7 @@ def htmx_demo(request):
 def login_view(request):
     """Vista de login"""
     if request.user.is_authenticated:
-        return redirect('dashboard')
+        return redirect('core:dashboard')
     
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -126,7 +138,7 @@ def login_view(request):
             if user is not None:
                 login(request, user)
                 messages.success(request, f'¡Bienvenido, {user.get_full_name() or user.username}!')
-                return redirect('dashboard')
+                return redirect('core:dashboard')
             else:
                 messages.error(request, 'Usuario o contraseña incorrectos.')
         else:
@@ -140,7 +152,7 @@ def logout_view(request):
     user_name = request.user.get_full_name() or request.user.username
     logout(request)
     messages.info(request, f'¡Hasta luego, {user_name}!')
-    return redirect('home')
+    return redirect('landing')
 
 @login_required
 def dashboard_view(request):

@@ -2,9 +2,13 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from core.views import landing
 
 urlpatterns = [
+    path('', landing, name='landing'),
     path('core/', include('core.urls')),
+    path('welp-desk/', include('welp_desk.urls')),
+    path('welp-pay/', include('welp_pay.urls')),
     path('admin/', admin.site.urls),
     # Django components URLs
     path("", include("django_components.urls")),

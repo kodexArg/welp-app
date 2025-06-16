@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'core/base.html' %}
 {% load component_tags %}
 
 {% block title %}dj-apprunner-template - Panel de Control{% endblock %}
@@ -17,7 +17,7 @@
             {% if user.is_authenticated %}
                 <div class="flex items-center justify-center gap-4">
                     <span class="text-sm text-gray-600">¡Hola, {{ user.get_full_name|default:user.username }}!</span>
-                    <a href="{% url 'dashboard' %}" class="bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-2 rounded transition-colors">
+                    <a href="{% url 'core:dashboard' %}" class="bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-2 rounded transition-colors">
                         Dashboard
                     </a>
                     {% if user.is_staff %}
@@ -25,13 +25,13 @@
                             Admin
                         </a>
                     {% endif %}
-                    <a href="{% url 'logout' %}" class="bg-gray-500 hover:bg-gray-600 text-white text-sm px-3 py-2 rounded transition-colors">
+                    <a href="{% url 'core:logout' %}" class="bg-gray-500 hover:bg-gray-600 text-white text-sm px-3 py-2 rounded transition-colors">
                         Salir
                     </a>
                 </div>
             {% else %}
                 <div class="flex items-center justify-center gap-4">
-                    <a href="{% url 'login' %}" class="bg-blue-600 hover:bg-blue-700 text-white text-sm px-6 py-2 rounded transition-colors">
+                    <a href="{% url 'core:login' %}" class="bg-blue-600 hover:bg-blue-700 text-white text-sm px-6 py-2 rounded transition-colors">
                         Acceso
                     </a>
                     <a href="{% url 'admin:index' %}" class="bg-green-600 hover:bg-green-700 text-white text-sm px-4 py-2 rounded transition-colors">
@@ -39,6 +39,31 @@
                     </a>
                 </div>
             {% endif %}
+        </div>
+    </div>
+
+    <!-- Aplicaciones Disponibles -->
+    <div class="bg-white border border-gray-200 p-4 mb-6">
+        <h2 class="text-sm font-medium text-gray-700 mb-3">Aplicaciones Disponibles</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <a href="{% url 'welp_desk:home' %}" class="block p-4 border border-blue-200 rounded-lg hover:border-blue-300 hover:bg-blue-50 transition-colors">
+                <div class="flex items-center">
+                    <div class="w-3 h-3 bg-blue-500 rounded-full mr-3"></div>
+                    <div>
+                        <h3 class="text-sm font-medium text-blue-600">Welp Desk</h3>
+                        <p class="text-xs text-gray-500">Mesa de Ayuda y Soporte Técnico</p>
+                    </div>
+                </div>
+            </a>
+            <a href="{% url 'welp_pay:home' %}" class="block p-4 border border-green-200 rounded-lg hover:border-green-300 hover:bg-green-50 transition-colors">
+                <div class="flex items-center">
+                    <div class="w-3 h-3 bg-green-500 rounded-full mr-3"></div>
+                    <div>
+                        <h3 class="text-sm font-medium text-green-600">Welp Pay</h3>
+                        <p class="text-xs text-gray-500">Sistema de Pagos y Facturación</p>
+                    </div>
+                </div>
+            </a>
         </div>
     </div>
 
@@ -93,7 +118,7 @@
                 </div>
                 <div class="flex justify-between text-xs text-gray-500">
                     <span>Test:</span>
-                    <span><a href="#" hx-get="{% url 'htmx_demo' %}" hx-target="#htmx-demo-result" hx-swap="outerHTML" class="text-xs text-blue-600 hover:text-blue-800">Probar →</a></span>
+                    <span><a href="#" hx-get="{% url 'core:htmx_demo' %}" hx-target="#htmx-demo-result" hx-swap="outerHTML" class="text-xs text-blue-600 hover:text-blue-800">Probar →</a></span>
                 </div>
             </div>
             <div id="htmx-demo-result" class="text-gray-400"></div>
@@ -122,11 +147,11 @@
     <div class="bg-white border border-gray-200 p-3 mb-6">
         <h2 class="text-sm font-medium text-gray-700 mb-3">Pruebas Disponibles</h2>
         <div class="flex flex-wrap gap-2">
-            <a href="#" hx-get="{% url 'health' %}" hx-target="#test-health-result" hx-swap="outerHTML" class="text-xs text-blue-600 hover:text-blue-800">Health Check</a>
+            <a href="#" hx-get="{% url 'core:health' %}" hx-target="#test-health-result" hx-swap="outerHTML" class="text-xs text-blue-600 hover:text-blue-800">Health Check</a>
             <span class="text-gray-300">|</span>
-            <a href="#" hx-get="{% url 'db_health_check' %}" hx-target="#test-db-result" hx-swap="outerHTML" class="text-xs text-blue-600 hover:text-blue-800">DB Health</a>
+            <a href="#" hx-get="{% url 'core:db_health_check' %}" hx-target="#test-db-result" hx-swap="outerHTML" class="text-xs text-blue-600 hover:text-blue-800">DB Health</a>
             <span class="text-gray-300">|</span>
-            <a href="#" hx-get="{% url 'hello_world' %}" hx-target="#test-hello-result" hx-swap="outerHTML" class="text-xs text-blue-600 hover:text-blue-800">Hello World</a>
+            <a href="#" hx-get="{% url 'core:hello_world' %}" hx-target="#test-hello-result" hx-swap="outerHTML" class="text-xs text-blue-600 hover:text-blue-800">Hello World</a>
         </div>
         <div id="test-health-result" class="mt-2"></div>
         <div id="test-db-result" class="mt-2"></div>

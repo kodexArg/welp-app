@@ -1,0 +1,11 @@
+<nav class="navbar">
+    <div class="navbar-brand">
+        <a href="{% url 'landing' %}">Welp App</a>
+    </div>
+    <ul class="navbar-menu">
+        <!-- Agregar elementos del menú aquí -->
+        <li><a href="{% url 'landing' %}">Inicio</a></li>
+        <li><a href="{% url 'welp_desk:home' %}">Welp Desk</a></li>
+        <li><a href="{% url 'welp_pay:home' %}">Welp Pay</a></li>
+    </ul>
+</nav> 

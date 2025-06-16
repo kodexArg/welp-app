@@ -68,6 +68,8 @@ INSTALLED_APPS = [
     'django_htmx',
     'storages',
     'core',
+    'welp_desk',
+    'welp_pay',
 ]
 
 MIDDLEWARE = [
