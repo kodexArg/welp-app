@@ -10,6 +10,9 @@ banner() {
   echo ""
 }
 
+banner "INSTALACIÓN DE UV"
+pip install uv
+
 banner "MIGRACIONES DE DJANGO"
 uv run manage.py makemigrations
 
