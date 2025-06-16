@@ -41,20 +41,10 @@ SECRET_KEY = os.environ['SECRET_KEY']
 DEBUG = os.environ['DEBUG'] == 'True'
 IS_LOCAL = os.environ.get('IS_LOCAL') == 'True'
 
-ALLOWED_HOSTS = [
-    '*.amazonaws.com',
-    '*.apprunner.aws',
-    '*.awsapprunner.com',
-    f'*.{os.environ["AWS_S3_REGION_NAME"]}.awsapprunner.com',
-    'csjqtfjiu7.us-east-1.awsapprunner.com',  # Dominio específico como respaldo
-    'localhost',
-    '127.0.0.1'
-]
+ALLOWED_HOSTS = ['*']  # Acepta cualquier host
 
-CSRF_TRUSTED_ORIGINS = [  # Dominios permitidos para peticiones POST con token CSRF
-    'https://*.amazonaws.com',
-    'https://*.apprunner.aws',
-    'https://*.awsapprunner.com',
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.awsapprunner.com',  # Cubre todos los dominios App Runner
     'http://localhost:8080',
     'http://127.0.0.1:8080'
 ]
