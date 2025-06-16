@@ -1,13 +1,10 @@
-import boto3
+import os
 from django.test import TestCase
-from django.conf import settings
 
 class PingSecretTest(TestCase):
     """Prueba de lectura del secret PING."""
 
     def test_ping_secret(self):
-        client = boto3.client('secretsmanager', region_name=settings.AWS_S3_REGION_NAME)
-        secret_name = "pingping/secret-VcQsw5"
-        response = client.get_secret_value(SecretId=secret_name)
-        value = response['SecretString']
-        self.assertEqual(value.strip().lower(), "pong") 
+        ping_value = os.environ.get('PING')
+        self.assertIsNotNone(ping_value, "Variable de entorno PING no encontrada")
+        self.assertEqual(ping_value.strip().lower(), "pong") 
