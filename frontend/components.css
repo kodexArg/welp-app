@@ -128,16 +128,20 @@
 
     /* Navbar */
     .navbar {
-        @apply w-full h-full flex items-center justify-between px-6;
+        @apply w-full h-full flex items-center justify-between;
         background-color: var(--color-menu-bg);
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         border-bottom: 1px solid var(--color-sky-200);
         position: relative;
         z-index: 1000;
+        height: 100%;
+        min-height: var(--header-height);
+        padding: 0 1.5rem;
     }
 
     .navbar-brand {
         @apply flex items-center gap-3;
+        flex-shrink: 0;
     }
 
     .navbar-brand a {
@@ -162,10 +166,14 @@
         color: white;
         font-weight: bold;
         font-size: 0.875rem;
+        flex-shrink: 0;
     }
 
+    /* Desktop Menu */
     .navbar-menu {
         @apply hidden md:flex items-center gap-2 list-none m-0 p-0;
+        flex: 1;
+        justify-content: center;
     }
 
     .navbar-menu li {
@@ -179,6 +187,7 @@
         font-family: var(--font-ui);
         position: relative;
         overflow: hidden;
+        white-space: nowrap;
     }
 
     .navbar-menu a::before {
@@ -208,10 +217,11 @@
         font-weight: 600;
     }
 
-    /* Navbar Mobile */
+    /* Mobile Menu Toggle */
     .navbar-mobile-toggle {
         @apply md:hidden flex flex-col justify-center items-center w-8 h-8 cursor-pointer;
         position: relative;
+        flex-shrink: 0;
     }
 
     .navbar-mobile-toggle span {
@@ -233,6 +243,7 @@
         transform: rotate(-45deg) translate(7px, -6px);
     }
 
+    /* Mobile Menu */
     .navbar-mobile-menu {
         @apply absolute top-full left-0 w-full;
         background-color: var(--color-menu-bg);
@@ -241,10 +252,11 @@
         max-height: 0;
         overflow: hidden;
         transition: max-height 0.3s ease;
+        z-index: 999;
     }
 
     .navbar-mobile-menu.active {
-        max-height: 300px;
+        max-height: 400px;
     }
 
     .navbar-mobile-menu ul {
@@ -280,6 +292,8 @@
     /* Navbar User Menu */
     .navbar-user {
         @apply flex items-center gap-3;
+        flex-shrink: 0;
+        position: relative;
     }
 
     .navbar-user-avatar {
