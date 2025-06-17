@@ -10,7 +10,6 @@ User = get_user_model()
 class WelpDeskModelsTest(TestCase):
     """
     Suite de pruebas para los modelos críticos de welp_desk.
-    Cubre los 5 aspectos más importantes del sistema.
     """
 
     def setUp(self):
@@ -39,7 +38,7 @@ class WelpDeskModelsTest(TestCase):
 
     def test_ticket_manager_filters_by_user_roles(self):
         """
-        TEST #1 - CRÍTICO: Verificar que TicketManager filtra tickets según roles del usuario.
+        TEST #1 -Verificar que TicketManager filtra tickets según roles del usuario.
         Este test es el más importante porque controla la seguridad y acceso a datos.
         """
         # Crear tickets en diferentes UDNs
@@ -66,7 +65,7 @@ class WelpDeskModelsTest(TestCase):
 
     def test_roles_unique_together_constraint(self):
         """
-        TEST #2 - CRÍTICO: Verificar que el constraint unique_together de Roles funciona.
+        TEST #2 - Verificar que el constraint unique_together de Roles funciona.
         Previene duplicación de permisos que podría corromper el sistema.
         """
         # Crear un rol
@@ -80,7 +79,7 @@ class WelpDeskModelsTest(TestCase):
 
     def test_ticket_properties_calculation(self):
         """
-        TEST #3 - IMPORTANTE: Verificar que las properties created_by y status se calculan correctamente.
+        TEST #3 - Verificar que las properties created_by y status se calculan correctamente.
         Estas properties son fundamentales para la UX y lógica de negocio.
         """
         # Crear ticket
@@ -109,7 +108,7 @@ class WelpDeskModelsTest(TestCase):
 
     def test_message_save_auto_fill_reported_on(self):
         """
-        TEST #4 - IMPORTANTE: Verificar que Message.save() auto-llena reported_on cuando es None.
+        TEST #4 - Verificar que Message.save() auto-llena reported_on cuando es None.
         Este override personalizado es crucial para mantener consistencia temporal.
         """
         ticket = Ticket.objects.create(udn=self.udn1, sector=self.sector1,
@@ -127,7 +126,7 @@ class WelpDeskModelsTest(TestCase):
 
     def test_manytomany_relationships_integrity(self):
         """
-        TEST #5 - IMPORTANTE: Verificar que las relaciones ManyToMany funcionan correctamente.
+        TEST #5 - Verificar que las relaciones ManyToMany funcionan correctamente.
         Cubre la integridad de las relaciones complejas del sistema.
         """
         # Sector puede estar en múltiples UDNs

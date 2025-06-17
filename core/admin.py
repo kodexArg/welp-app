@@ -42,6 +42,9 @@ class UserAdmin(BaseUserAdmin):
     search_fields = ('username', 'first_name', 'last_name', 'email', 'phone')
     ordering = ('username',)
     
+    # Para autocomplete en otros admin
+    autocomplete_fields = []
+    
     # Configuración de fieldsets para el formulario de edición
     fieldsets = (
         (None, {
