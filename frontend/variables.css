@@ -1,0 +1,59 @@
+/* Variables CSS globales */
+
+/* Importación de tipografías desde Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Grandstander:ital,wght@0,100..900;1,100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap");
+
+:root {
+    /* Tipografía */
+    --font-brand: 'Grandstander', cursive;
+    --font-sans: 'Noto Sans', ui-sans-serif, system-ui, sans-serif; 
+    --font-ui: 'Roboto Condensed', 'Noto Sans', ui-sans-serif, system-ui, sans-serif;
+    --font-title: 'Roboto Slab', ui-sans-serif, system-ui, sans-serif;
+    --font-p: 'Lato', ui-sans-serif, system-ui, sans-serif;
+    --font-mono: 'Roboto', 'Consolas', 'Monaco', 'Courier New', monospace;
+
+    /* Layout */
+    --header-height: 4rem;
+    --aside-width: 16rem;
+    --breakpoint-sm: 640px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 1024px;
+
+    /* Paleta earth - Tonos más cálidos y vibrantes */
+    --color-earth-50: #fdf6ee;
+    --color-earth-100: #fae8d6;
+    --color-earth-200: #f5d0ad;
+    --color-earth-300: #f0b17d;
+    --color-earth-400: #eb9651;
+    --color-earth-500: #e27b2c;
+    --color-earth-600: #c45e1d;
+    --color-earth-700: #954616;
+    --color-earth-800: #68310f;
+    --color-earth-900: #3b1c08;
+    --color-earth-950: #1a0c03;
+
+    /* Paleta sky - Tonos más profundos */
+    --color-sky-50: #f4fafd;
+    --color-sky-100: #e6f1f9;
+    --color-sky-200: #cce3f3;
+    --color-sky-300: #a9d1ea;
+    --color-sky-400: #83bddf;
+    --color-sky-500: #5ca8d6;
+    --color-sky-600: #3d88be;
+    --color-sky-700: #2e6996;
+    --color-sky-800: #1f4764;
+    --color-sky-900: #0f2332;
+    --color-sky-950: #071219;
+
+    /* Colores semánticos */
+    --color-page-bg: var(--color-sky-50);
+    --color-menu-bg: var(--color-sky-100);
+    --color-interactive-neutral: var(--color-sky-600);
+    --color-interactive-hover: var(--color-earth-600);
+    --color-interactive-active: var(--color-earth-700);
+} 
