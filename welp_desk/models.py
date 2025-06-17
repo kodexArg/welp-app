@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models import Q
 from django.urls import reverse
+from django.utils import timezone
 
 
 class UDN(models.Model):
@@ -121,6 +122,10 @@ class TicketManager(models.Manager):
             # Filtrar tickets basado en los roles del usuario
             user_roles = user.welp_roles.filter(can_read=True)
             
+            if not user_roles.exists():
+                # Si el usuario no tiene roles con can_read=True, no ve ningún ticket
+                return queryset.none()
+            
             # Construir filtros dinámicos basados en los roles
             ticket_filters = Q()
             for role in user_roles:
@@ -196,7 +201,10 @@ class Message(models.Model):
 
     def save(self, *args, **kwargs):
         if self.reported_on is None:
-            self.reported_on = self.created_on
+            from django.conf import settings
+            import zoneinfo
+            tz = zoneinfo.ZoneInfo(settings.TIME_ZONE)
+            self.reported_on = timezone.now().astimezone(tz)
         super().save(*args, **kwargs)
 
 

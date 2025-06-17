@@ -1,28 +1,54 @@
+{% load static %}
 {% load django_vite %}
 {% load django_htmx %}
 {% load component_tags %}
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Welp App{% endblock %}</title>
-    <link rel="icon" type="image/x-icon" href="{% load static %}{% static 'dist/favicon.ico' %}">
+    <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
     
     {# Dependencias CSS de componentes #}
     {% component_css_dependencies %}
     
     {% vite_hmr_client %}
     {% vite_asset 'frontend/main.js' %}
-    {% htmx_script %}
-</head>
-<body hx-headers='{"x-csrftoken": "{{ csrf_token }}"}'>
-    <div id="app">
-        {% block content %}{% endblock %}
-    </div>
     
+    <meta name="htmx-config" content='{"headers": {"X-CSRFToken": "{{ csrf_token }}"}}'>
+    {% htmx_script %}
+    
+    {% block styles %}{% endblock %}
+</head>
+
+<body>
+    <header>
+        {% block header %}
+            {% include "core/navbar.html" %}
+        {% endblock %}
+    </header>
+
+    <aside>
+        {% block aside %}{% endblock %}
+    </aside>
+    
+    <main>
+        <div id="app">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <footer>
+        {% block footer %}{% endblock %}
+    </footer>
+
     {# Dependencias JS de componentes #}
     {% component_js_dependencies %}
+    
+    {% block scripts %}{% endblock %}
 </body>
+
 </html> 
