@@ -1,0 +1,366 @@
+/* Navbar y componentes de navegación */
+
+@layer components {
+    /* Navbar Principal */
+    .navbar {
+        @apply w-full h-full flex items-center justify-between;
+        background-color: var(--color-menu-bg);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        border-bottom: 1px solid var(--color-sky-200);
+        position: relative;
+        z-index: 1000;
+        height: 100%;
+        min-height: var(--header-height);
+        padding: 0 1.5rem;
+    }
+
+    /* Brand/Logo */
+    .navbar-brand {
+        @apply flex items-center gap-3;
+        flex-shrink: 0;
+    }
+
+    .navbar-brand a {
+        @apply text-xl font-bold;
+        color: var(--color-sky-800);
+        text-decoration: none;
+        font-family: var(--font-brand);
+        letter-spacing: -0.5px;
+        transition: color 0.2s ease;
+    }
+
+    .navbar-brand a:hover,
+    .navbar-brand a:focus {
+        color: var(--color-earth-600);
+        text-decoration: none;
+        outline: none;
+    }
+
+    .navbar-brand a:focus-visible {
+        outline: 2px solid var(--color-sky-500);
+        outline-offset: 2px;
+        border-radius: 4px;
+    }
+
+    .navbar-logo {
+        @apply w-8 h-8 rounded-full;
+        background: linear-gradient(135deg, var(--color-sky-600), var(--color-earth-500));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        font-size: 0.875rem;
+        flex-shrink: 0;
+    }
+
+    /* Desktop Menu */
+    .navbar-menu {
+        @apply hidden md:flex items-center gap-2 list-none m-0 p-0;
+        flex: 1;
+        justify-content: center;
+    }
+
+    .navbar-menu li {
+        @apply m-0;
+    }
+
+    .navbar-link {
+        @apply px-4 py-2 rounded-lg font-medium relative;
+        color: var(--color-sky-600);
+        text-decoration: none;
+        font-family: var(--font-ui);
+        position: relative;
+        overflow: hidden;
+        white-space: nowrap;
+        transition: all 0.2s ease;
+    }
+
+    .navbar-link::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+        transition: left 0.5s;
+    }
+
+    .navbar-link:hover::before {
+        left: 100%;
+    }
+
+    .navbar-link:hover,
+    .navbar-link:focus {
+        background-color: var(--color-sky-100);
+        color: var(--color-sky-800);
+        transform: translateY(-1px);
+        outline: none;
+    }
+
+    .navbar-link:focus-visible {
+        outline: 2px solid var(--color-sky-500);
+        outline-offset: 2px;
+    }
+
+    .navbar-link.active {
+        background-color: var(--color-earth-100);
+        color: var(--color-earth-700);
+        font-weight: 600;
+    }
+
+    .navbar-link.active:hover {
+        background-color: var(--color-earth-200);
+        color: var(--color-earth-800);
+    }
+
+    /* Mobile Menu Toggle */
+    .navbar-mobile-toggle {
+        @apply md:hidden flex flex-col justify-center items-center w-8 h-8 cursor-pointer;
+        position: relative;
+        flex-shrink: 0;
+        background: none;
+        border: none;
+        padding: 0;
+        transition: transform 0.2s ease;
+    }
+
+    .navbar-mobile-toggle:hover {
+        transform: scale(1.1);
+    }
+
+    .navbar-mobile-toggle:focus {
+        outline: none;
+    }
+
+    .navbar-mobile-toggle:focus-visible {
+        outline: 2px solid var(--color-sky-500);
+        outline-offset: 2px;
+        border-radius: 4px;
+    }
+
+    .navbar-mobile-toggle span {
+        @apply block w-6 h-0.5 mb-1 last:mb-0;
+        background-color: var(--color-sky-600);
+        transition: all 0.3s ease;
+        transform-origin: center;
+    }
+
+    .navbar-mobile-toggle.active span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+    }
+
+    .navbar-mobile-toggle.active span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .navbar-mobile-toggle.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(7px, -6px);
+    }
+
+    /* Mobile Menu */
+    .navbar-mobile-menu {
+        @apply absolute top-full left-0 w-full;
+        background-color: var(--color-menu-bg);
+        border-top: 1px solid var(--color-sky-200);
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+        z-index: 999;
+    }
+
+    .navbar-mobile-menu.active {
+        max-height: 500px;
+    }
+
+    .navbar-mobile-menu ul {
+        @apply flex flex-col list-none m-0 p-4 gap-2;
+    }
+
+    .navbar-mobile-link {
+        @apply block px-4 py-3 rounded-lg font-medium;
+        color: var(--color-sky-600);
+        text-decoration: none;
+        font-family: var(--font-ui);
+        border: 1px solid transparent;
+        transition: all 0.2s ease;
+    }
+
+    .navbar-mobile-link:hover,
+    .navbar-mobile-link:focus {
+        background-color: var(--color-sky-100);
+        color: var(--color-sky-800);
+        border-color: var(--color-sky-200);
+        outline: none;
+    }
+
+    .navbar-mobile-link:focus-visible {
+        outline: 2px solid var(--color-sky-500);
+        outline-offset: 2px;
+    }
+
+    .navbar-mobile-link.active {
+        background-color: var(--color-earth-100);
+        color: var(--color-earth-700);
+        border-color: var(--color-earth-300);
+        font-weight: 600;
+    }
+
+    .navbar-mobile-link.active:hover {
+        background-color: var(--color-earth-200);
+        color: var(--color-earth-800);
+        border-color: var(--color-earth-400);
+    }
+
+    .navbar-mobile-link.button-primary-mobile {
+        background-color: var(--color-sky-600);
+        color: white;
+        border-color: var(--color-sky-600);
+        font-weight: 600;
+        text-align: center;
+    }
+
+    .navbar-mobile-link.button-primary-mobile:hover,
+    .navbar-mobile-link.button-primary-mobile:focus {
+        background-color: var(--color-sky-700);
+        color: white;
+        border-color: var(--color-sky-700);
+        transform: translateY(-1px);
+    }
+
+    .navbar-mobile-divider {
+        @apply h-px my-2;
+        background-color: var(--color-sky-200);
+    }
+
+    /* User Menu */
+    .navbar-user {
+        @apply flex items-center gap-3;
+        flex-shrink: 0;
+        position: relative;
+    }
+
+    .navbar-user-avatar {
+        @apply w-8 h-8 rounded-full;
+        background: linear-gradient(135deg, var(--color-earth-500), var(--color-sky-500));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 600;
+        font-size: 0.75rem;
+        cursor: pointer;
+        border: none;
+        padding: 0;
+        transition: all 0.2s ease;
+    }
+
+    .navbar-user-avatar:hover {
+        transform: scale(1.1);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+
+    .navbar-user-avatar:focus {
+        outline: none;
+        transform: scale(1.1);
+    }
+
+    .navbar-user-avatar:focus-visible {
+        outline: 2px solid var(--color-sky-500);
+        outline-offset: 2px;
+    }
+
+    .navbar-user-menu {
+        @apply absolute top-full right-0 w-48;
+        background-color: var(--color-menu-bg);
+        border: 1px solid var(--color-sky-200);
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.08);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: all 0.2s ease;
+        z-index: 1001;
+        margin-top: 8px;
+    }
+
+    .navbar-user-menu.active {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    .navbar-user-menu ul {
+        @apply flex flex-col list-none m-0 p-2 gap-1;
+    }
+
+    .navbar-dropdown-link {
+        @apply flex items-center px-3 py-2 rounded-md font-medium;
+        color: var(--color-sky-700);
+        text-decoration: none;
+        font-family: var(--font-ui);
+        font-size: 0.875rem;
+        transition: all 0.2s ease;
+        gap: 0.5rem;
+    }
+
+    .navbar-dropdown-link:hover,
+    .navbar-dropdown-link:focus {
+        background-color: var(--color-sky-100);
+        color: var(--color-sky-800);
+        outline: none;
+    }
+
+    .navbar-dropdown-link:focus-visible {
+        outline: 2px solid var(--color-sky-500);
+        outline-offset: 2px;
+    }
+
+    .navbar-dropdown-link.navbar-logout:hover,
+    .navbar-dropdown-link.navbar-logout:focus {
+        background-color: var(--color-red-100);
+        color: var(--color-red-700);
+    }
+
+    .navbar-icon {
+        @apply w-4 h-4 flex-shrink-0;
+    }
+
+    .navbar-divider {
+        @apply h-px my-1;
+        background-color: var(--color-sky-200);
+    }
+
+    /* Navbar Animations */
+    .navbar.animate-slide-in-top {
+        animation: slideInFromTop 600ms ease forwards;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .navbar {
+            padding: 0 1rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .navbar {
+            padding: 0 0.75rem;
+        }
+        
+        .navbar-brand a {
+            font-size: 1.125rem;
+        }
+    }
+
+    /* Future: Header Components */
+    /* Aquí se podrán agregar otros componentes de la barra superior:
+     * - Breadcrumbs
+     * - Search bar
+     * - Notifications
+     * - User preferences toggle
+     * - Theme switcher
+     */
+} 
