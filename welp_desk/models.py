@@ -10,8 +10,8 @@ class UDN(models.Model):
     name = models.CharField(max_length=255, verbose_name="Nombre")
 
     class Meta:
-        verbose_name = "UDN"
-        verbose_name_plural = "UDNs"
+        verbose_name = "🏢 UDN (Unidad de Negocio)"
+        verbose_name_plural = "🏢 ESTRUCTURA - UDNs"
 
     def __str__(self):
         return self.name
@@ -26,8 +26,8 @@ class Sector(models.Model):
     name = models.CharField(max_length=255, verbose_name="Nombre")
 
     class Meta:
-        verbose_name = "Sector"
-        verbose_name_plural = "Sectores"
+        verbose_name = "🏢 Sector"
+        verbose_name_plural = "🏢 ESTRUCTURA - Sectores"
 
     def __str__(self):
         return self.name
@@ -41,8 +41,8 @@ class IssueCategory(models.Model):
     sector = models.ManyToManyField("Sector", related_name="issue_categories", verbose_name="Sectores")
 
     class Meta:
-        verbose_name = "Categoría"
-        verbose_name_plural = "Categorías"
+        verbose_name = "🏢 Categoría de Incidencia"
+        verbose_name_plural = "🏢 ESTRUCTURA - Categorías"
 
     def __str__(self):
         return self.name
@@ -58,8 +58,8 @@ class Issue(models.Model):
     description = models.TextField(blank=True, null=True, verbose_name="Descripción")
 
     class Meta:
-        verbose_name = "Incidencia"
-        verbose_name_plural = "Incidencias"
+        verbose_name = "🏢 Incidencia"
+        verbose_name_plural = "🏢 ESTRUCTURA - Incidencias"
 
     def __str__(self):
         return self.name
@@ -84,8 +84,8 @@ class Roles(models.Model):
     can_close = models.BooleanField(default=False, verbose_name="Puede Cerrar")
     
     class Meta:
-        verbose_name = "Rol"
-        verbose_name_plural = "Roles"
+        verbose_name = "🔐 Rol y Permiso"
+        verbose_name_plural = "🔐 ROLES Y PERMISOS"
         unique_together = ['user', 'udn', 'sector', 'issue_category']
     
     def __str__(self):
@@ -144,8 +144,8 @@ class Ticket(models.Model):
     objects = TicketManager()
 
     class Meta:
-        verbose_name = "Ticket"
-        verbose_name_plural = "Tickets"
+        verbose_name = "🎫 Ticket"
+        verbose_name_plural = "🎫 TICKETS - Gestión"
 
     def __str__(self):
         return f"{self.issue.name} - {self.udn.name}"
@@ -186,8 +186,8 @@ class Message(models.Model):
     body = models.TextField(verbose_name="Cuerpo del Mensaje", blank=True, null=True)
 
     class Meta:
-        verbose_name = "Mensaje"
-        verbose_name_plural = "Mensajes"
+        verbose_name = "🎫 Mensaje"
+        verbose_name_plural = "🎫 TICKETS - Mensajes"
         ordering = ['created_on']
 
     def __str__(self):
@@ -206,8 +206,8 @@ class Attachment(models.Model):
     message = models.ForeignKey(Message, on_delete=models.CASCADE, related_name="attachments", verbose_name="Mensaje", blank=True, null=True)
 
     class Meta:
-        verbose_name = "Adjunto"
-        verbose_name_plural = "Adjuntos"
+        verbose_name = "🎫 Archivo Adjunto"
+        verbose_name_plural = "🎫 TICKETS - Adjuntos"
 
     def __str__(self):
         return self.filename 

@@ -3,6 +3,67 @@ from django.utils.html import format_html
 from .models import UDN, Sector, IssueCategory, Issue, Roles, Ticket, Message, Attachment
 
 
+# ========================================
+# 🔐 ROLES Y PERMISOS (PRIORIDAD)
+# ========================================
+
+@admin.register(Roles)
+class RolesAdmin(admin.ModelAdmin):
+    """
+    Administración de Roles y Permisos.
+    Permite configurar fácilmente los permisos granulares de los usuarios.
+    """
+    list_display = ['user', 'udn', 'sector', 'issue_category', 'permissions_summary']
+    list_filter = ['udn', 'sector', 'issue_category', 'can_read', 'can_comment', 'can_solve', 'can_authorize', 'can_open', 'can_close']
+    search_fields = ['user__username', 'user__first_name', 'user__last_name', 'udn__name', 'sector__name', 'issue_category__name']
+    ordering = ['user__username', 'udn__name']
+    autocomplete_fields = ['user']
+    
+    # Agrupar los permisos para mejor UX
+    fieldsets = (
+        ('Usuario y Contexto', {
+            'fields': ('user', 'udn', 'sector', 'issue_category'),
+            'description': 'Define el usuario y el alcance de sus permisos (UDN, Sector, Categoría)'
+        }),
+        ('Permisos de Lectura', {
+            'fields': ('can_read',),
+            'description': 'Permiso básico para ver tickets'
+        }),
+        ('Permisos de Interacción', {
+            'fields': ('can_comment', 'can_solve'),
+            'description': 'Permisos para interactuar con tickets'
+        }),
+        ('Permisos de Gestión', {
+            'fields': ('can_authorize', 'can_open', 'can_close'),
+            'description': 'Permisos avanzados de gestión de tickets'
+        }),
+    )
+    
+    def permissions_summary(self, obj):
+        """Muestra un resumen visual de los permisos activos."""
+        perms = []
+        if obj.can_read: perms.append('<span style="color: green;">✓ Leer</span>')
+        if obj.can_comment: perms.append('<span style="color: blue;">✓ Comentar</span>')
+        if obj.can_solve: perms.append('<span style="color: orange;">✓ Solucionar</span>')
+        if obj.can_authorize: perms.append('<span style="color: purple;">✓ Autorizar</span>')
+        if obj.can_open: perms.append('<span style="color: teal;">✓ Abrir</span>')
+        if obj.can_close: perms.append('<span style="color: red;">✓ Cerrar</span>')
+        
+        if not perms:
+            return '<span style="color: gray;">Sin permisos</span>'
+        
+        return format_html(' | '.join(perms))
+    permissions_summary.short_description = 'Permisos Activos'
+    
+    def get_queryset(self, request):
+        """Optimiza las consultas con select_related."""
+        return super().get_queryset(request).select_related('user', 'udn', 'sector', 'issue_category')
+
+
+# ========================================
+# 🏢 ESTRUCTURA ORGANIZACIONAL
+# ========================================
+
 @admin.register(UDN)
 class UDNAdmin(admin.ModelAdmin):
     """Administración de Unidades de Negocio."""
@@ -70,58 +131,9 @@ class IssueAdmin(admin.ModelAdmin):
     tickets_count.short_description = 'Tickets'
 
 
-@admin.register(Roles)
-class RolesAdmin(admin.ModelAdmin):
-    """
-    Administración de Roles y Permisos.
-    Permite configurar fácilmente los permisos granulares de los usuarios.
-    """
-    list_display = ['user', 'udn', 'sector', 'issue_category', 'permissions_summary']
-    list_filter = ['udn', 'sector', 'issue_category', 'can_read', 'can_comment', 'can_solve', 'can_authorize', 'can_open', 'can_close']
-    search_fields = ['user__username', 'user__first_name', 'user__last_name', 'udn__name', 'sector__name', 'issue_category__name']
-    ordering = ['user__username', 'udn__name']
-    autocomplete_fields = ['user']
-    
-    # Agrupar los permisos para mejor UX
-    fieldsets = (
-        ('Usuario y Contexto', {
-            'fields': ('user', 'udn', 'sector', 'issue_category'),
-            'description': 'Define el usuario y el alcance de sus permisos (UDN, Sector, Categoría)'
-        }),
-        ('Permisos de Lectura', {
-            'fields': ('can_read',),
-            'description': 'Permiso básico para ver tickets'
-        }),
-        ('Permisos de Interacción', {
-            'fields': ('can_comment', 'can_solve'),
-            'description': 'Permisos para interactuar con tickets'
-        }),
-        ('Permisos de Gestión', {
-            'fields': ('can_authorize', 'can_open', 'can_close'),
-            'description': 'Permisos avanzados de gestión de tickets'
-        }),
-    )
-    
-    def permissions_summary(self, obj):
-        """Muestra un resumen visual de los permisos activos."""
-        perms = []
-        if obj.can_read: perms.append('<span style="color: green;">✓ Leer</span>')
-        if obj.can_comment: perms.append('<span style="color: blue;">✓ Comentar</span>')
-        if obj.can_solve: perms.append('<span style="color: orange;">✓ Solucionar</span>')
-        if obj.can_authorize: perms.append('<span style="color: purple;">✓ Autorizar</span>')
-        if obj.can_open: perms.append('<span style="color: teal;">✓ Abrir</span>')
-        if obj.can_close: perms.append('<span style="color: red;">✓ Cerrar</span>')
-        
-        if not perms:
-            return '<span style="color: gray;">Sin permisos</span>'
-        
-        return format_html(' | '.join(perms))
-    permissions_summary.short_description = 'Permisos Activos'
-    
-    def get_queryset(self, request):
-        """Optimiza las consultas con select_related."""
-        return super().get_queryset(request).select_related('user', 'udn', 'sector', 'issue_category')
-
+# ========================================
+# 🎫 GESTIÓN DE TICKETS
+# ========================================
 
 class MessageInline(admin.TabularInline):
     """Inline para gestionar mensajes dentro de tickets."""
