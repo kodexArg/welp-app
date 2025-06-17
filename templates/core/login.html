@@ -1,74 +1,75 @@
 {% extends 'core/base.html' %}
 
-{% block title %}Acceso - dj-apprunner-template{% endblock %}
+{% block title %}Acceso - Welp App{% endblock %}
 
 {% block content %}
-<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-md w-full space-y-8">
-        <div>
-            <h2 class="mt-6 text-center text-3xl font-light text-gray-900">
+<div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background-color: var(--color-page-bg); padding: 3rem 1rem;" class="animate-fade-in">
+    <div style="max-width: 28rem; width: 100%;" class="animate-slide-in-bottom animate-delay-200">
+        <div class="animate-slide-in-top animate-delay-100">
+            <h2 style="margin-top: 1.5rem; text-align: center; font-size: 1.875rem; font-weight: 300; color: var(--color-sky-900);">
                 Acceso al Sistema
             </h2>
-            <p class="mt-2 text-center text-sm text-gray-600">
+            <p style="margin-top: 0.5rem; text-align: center; font-size: 0.875rem; color: var(--color-sky-600);">
                 Ingresa tus credenciales para continuar
             </p>
         </div>
         
         <!-- Mensajes -->
         {% if messages %}
-            <div class="space-y-2">
+            <div style="margin: 1rem 0;" class="animate-fade-in animate-delay-300">
                 {% for message in messages %}
-                    <div class="{% if message.tags == 'error' %}bg-red-50 border border-red-200 text-red-700{% elif message.tags == 'success' %}bg-green-50 border border-green-200 text-green-700{% else %}bg-blue-50 border border-blue-200 text-blue-700{% endif %} px-4 py-3 rounded text-sm">
+                    <div style="{% if message.tags == 'error' %}background-color: #fef2f2; border: 1px solid #fecaca; color: #dc2626;{% elif message.tags == 'success' %}background-color: #f0fdf4; border: 1px solid #bbf7d0; color: #16a34a;{% else %}background-color: #eff6ff; border: 1px solid #bfdbfe; color: #2563eb;{% endif %} padding: 0.75rem 1rem; border-radius: 0.375rem; font-size: 0.875rem; margin-bottom: 0.5rem;">
                         {{ message }}
                     </div>
                 {% endfor %}
             </div>
         {% endif %}
         
-        <form class="mt-8 space-y-6" method="post">
+        <form method="post" style="margin-top: 2rem;" class="animate-fade-in-slow animate-delay-500">
             {% csrf_token %}
-            <div class="space-y-4">
-                <div>
-                    <label for="username" class="block text-sm font-medium text-gray-700">
-                        Usuario
-                    </label>
-                    <input 
-                        id="username" 
-                        name="username" 
-                        type="text" 
-                        required 
-                        class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" 
-                        placeholder="Ingresa tu usuario"
-                        autocomplete="username"
-                    >
-                </div>
-                <div>
-                    <label for="password" class="block text-sm font-medium text-gray-700">
-                        Contraseña
-                    </label>
-                    <input 
-                        id="password" 
-                        name="password" 
-                        type="password" 
-                        required 
-                        class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm" 
-                        placeholder="Ingresa tu contraseña"
-                        autocomplete="current-password"
-                    >
-                </div>
+            <div style="margin-bottom: 1rem;">
+                <label for="username" style="display: block; font-size: 0.875rem; font-weight: 500; color: var(--color-sky-700); margin-bottom: 0.25rem;">
+                    Usuario
+                </label>
+                <input 
+                    id="username" 
+                    name="username" 
+                    type="text" 
+                    required 
+                    style="width: 100%; padding: 0.75rem; border: 2px solid var(--color-sky-300); border-radius: 0.375rem; background-color: white; color: var(--color-sky-900); font-size: 0.875rem;"
+                    class="transition-colors animate-on-scroll"
+                    placeholder="Ingresa tu usuario"
+                    autocomplete="username"
+                >
+            </div>
+            <div style="margin-bottom: 1.5rem;">
+                <label for="password" style="display: block; font-size: 0.875rem; font-weight: 500; color: var(--color-sky-700); margin-bottom: 0.25rem;">
+                    Contraseña
+                </label>
+                <input 
+                    id="password" 
+                    name="password" 
+                    type="password" 
+                    required 
+                    style="width: 100%; padding: 0.75rem; border: 2px solid var(--color-sky-300); border-radius: 0.375rem; background-color: white; color: var(--color-sky-900); font-size: 0.875rem;"
+                    class="transition-colors animate-on-scroll"
+                    placeholder="Ingresa tu contraseña"
+                    autocomplete="current-password"
+                >
             </div>
 
-            <div>
+            <div style="margin-bottom: 1rem;" class="animate-slide-in-bottom animate-delay-1000">
                 <button 
                     type="submit" 
-                    class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+                    class="button-primary transition-all hover-lift"
+                    style="width: 100%; display: flex; justify-content: center; padding: 0.75rem 1rem; border: none; font-size: 0.875rem; font-weight: 500; border-radius: 0.375rem; background-color: var(--color-sky-600); color: white; cursor: pointer;"
                 >
                     Ingresar
                 </button>
             </div>
             
-            <div class="text-center">
-                <a href="{% url 'core:home' %}" class="text-sm text-gray-600 hover:text-gray-900">
+            <div style="text-align: center;" class="animate-fade-in animate-delay-1000">
+                <a href="{% url 'core:home' %}" class="transition-colors hover-scale-sm" style="font-size: 0.875rem; color: var(--color-sky-600);">
                     ← Volver al inicio
                 </a>
             </div>

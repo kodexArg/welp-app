@@ -3,31 +3,33 @@
 {% block title %}Welp Pay - Sistema de Pagos{% endblock %}
 
 {% block content %}
-<div class="min-h-screen bg-green-50 flex items-center justify-center">
-    <div class="max-w-2xl mx-auto text-center p-8">
-        <div class="bg-white rounded-lg shadow-lg p-8">
-            <div class="mb-6">
-                <h1 class="text-4xl font-bold text-green-600 mb-2">Welp Pay</h1>
-                <p class="text-xl text-gray-600">Sistema de Pagos y Facturación</p>
+<div class="animate-fade-in">
+    <section class="animate-slide-in-bottom">
+        <article class="animate-fade-in-slow animate-delay-300">
+            <div class="animate-slide-in-top animate-delay-100">
+                <h1 style="color: var(--color-earth-600);">Welp Pay</h1>
+                <p style="text-align: center; font-size: 1.25rem; color: var(--color-sky-600);">
+                    Sistema de Pagos y Facturación
+                </p>
             </div>
             
-            <div class="bg-green-50 rounded-lg p-6 mb-6">
-                <h2 class="text-lg font-semibold text-green-800 mb-2">¡Bienvenido!</h2>
-                <p class="text-green-700">
+            <div style="background-color: var(--color-earth-100); padding: 1.5rem; border-radius: 0.5rem; margin-bottom: 1.5rem; border: 2px solid var(--color-earth-300);" class="animate-fade-in animate-delay-500">
+                <h2 style="color: var(--color-earth-800); margin-bottom: 0.5rem;">¡Bienvenido!</h2>
+                <p style="color: var(--color-earth-700);">
                     Esta es la aplicación Welp Pay, diseñada para gestionar pagos, 
                     facturación y transacciones financieras.
                 </p>
             </div>
             
-            <div class="flex justify-center space-x-4">
-                <a href="{% url 'welp_desk:home' %}" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded transition-colors">
+            <div style="display: flex; justify-content: center; gap: 1rem;" class="animate-slide-in-bottom animate-delay-1000">
+                <a href="{% url 'welp_desk:home' %}" class="button-primary transition-all hover-lift">
                     ← Ir a Welp Desk
                 </a>
-                <a href="{% url 'landing' %}" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded transition-colors">
+                <a href="{% url 'landing' %}" class="button-secondary transition-all hover-lift">
                     Inicio →
                 </a>
             </div>
-        </div>
-    </div>
+        </article>
+    </section>
 </div>
 {% endblock %} 

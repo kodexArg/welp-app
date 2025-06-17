@@ -1,11 +1,10 @@
-<nav class="navbar">
+<nav class="navbar animate-slide-in-top">
     <div class="navbar-brand">
-        <a href="{% url 'landing' %}">Welp App</a>
+        <a href="{% url 'landing' %}" class="transition-colors hover-scale-sm">Welp App</a>
     </div>
-    <ul class="navbar-menu">
-        <!-- Agregar elementos del menú aquí -->
-        <li><a href="{% url 'landing' %}">Inicio</a></li>
-        <li><a href="{% url 'welp_desk:home' %}">Welp Desk</a></li>
-        <li><a href="{% url 'welp_pay:home' %}">Welp Pay</a></li>
+    <ul class="navbar-menu animate-fade-in animate-delay-200">
+        <li><a href="{% url 'landing' %}" class="transition-colors hover-lift">Inicio</a></li>
+        <li><a href="{% url 'welp_desk:home' %}" class="transition-colors hover-lift">Welp Desk</a></li>
+        <li><a href="{% url 'welp_pay:home' %}" class="transition-colors hover-lift">Welp Pay</a></li>
     </ul>
 </nav> 

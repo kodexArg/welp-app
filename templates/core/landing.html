@@ -3,23 +3,23 @@
 {% block title %}Welp App - Plataforma Integral{% endblock %}
 
 {% block content %}
-<div class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+<div style="min-height: 100vh; background: linear-gradient(135deg, var(--color-sky-50) 0%, var(--color-sky-100) 100%);" class="animate-fade-in">
     <!-- Header -->
-    <div class="bg-white shadow-sm border-b">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center py-6">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0">
-                        <h1 class="text-2xl font-bold text-gray-900">Welp App</h1>
-                        <p class="text-sm text-gray-500">Plataforma Integral de Gestión</p>
+    <div style="background-color: white; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border-bottom: 1px solid var(--color-sky-200);" class="animate-slide-in-top">
+        <div style="max-width: 1280px; margin: 0 auto; padding: 0 1rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 0;">
+                <div style="display: flex; align-items: center;" class="animate-fade-in animate-delay-200">
+                    <div>
+                        <h1 style="font-size: 1.5rem; font-weight: bold; color: var(--color-sky-900); margin: 0;">Welp App</h1>
+                        <p style="font-size: 0.875rem; color: var(--color-sky-500); margin: 0;">Plataforma Integral de Gestión</p>
                     </div>
                 </div>
-                <div class="flex items-center space-x-4">
+                <div style="display: flex; align-items: center; gap: 1rem;" class="animate-fade-in animate-delay-300">
                     {% if user.is_authenticated %}
-                        <span class="text-sm text-gray-600">¡Hola, {{ user.get_full_name|default:user.username }}!</span>
-                        <a href="{% url 'core:logout' %}" class="text-sm text-gray-500 hover:text-gray-700">Salir</a>
+                        <span style="font-size: 0.875rem; color: var(--color-sky-600);">¡Hola, {{ user.get_full_name|default:user.username }}!</span>
+                        <a href="{% url 'core:logout' %}" class="transition-colors hover-scale-sm" style="font-size: 0.875rem; color: var(--color-sky-500);">Salir</a>
                     {% else %}
-                        <a href="{% url 'core:login' %}" class="text-sm text-blue-600 hover:text-blue-800">Iniciar Sesión</a>
+                        <a href="{% url 'core:login' %}" class="transition-colors hover-scale-sm" style="font-size: 0.875rem; color: var(--color-sky-600);">Iniciar Sesión</a>
                     {% endif %}
                 </div>
             </div>
@@ -27,114 +27,114 @@
     </div>
 
     <!-- Main Content -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div style="max-width: 1280px; margin: 0 auto; padding: 3rem 1rem;">
         <!-- Hero Section -->
-        <div class="text-center mb-16">
-            <h2 class="text-4xl font-bold text-gray-900 mb-4">
+        <div style="text-align: center; margin-bottom: 4rem;" class="animate-slide-in-bottom animate-delay-200">
+            <h2 style="font-size: 2.5rem; font-weight: bold; color: var(--color-sky-900); margin-bottom: 1rem;" class="animate-fade-in animate-delay-300">
                 Bienvenido a Welp App
             </h2>
-            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p style="font-size: 1.25rem; color: var(--color-sky-600); max-width: 48rem; margin: 0 auto;" class="animate-fade-in animate-delay-500">
                 Una plataforma completa que integra mesa de ayuda, sistema de pagos y herramientas de gestión 
                 para optimizar tu flujo de trabajo.
             </p>
         </div>
 
         <!-- Main Navigation Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-bottom: 4rem;">
             <!-- Dashboard -->
-            <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
-                <div class="p-8">
-                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-6">
-                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <article class="hover-lift transition-all animate-slide-in-left animate-delay-300">
+                <div style="padding: 2rem;">
+                    <div style="width: 3rem; height: 3rem; background-color: var(--color-sky-100); border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;" class="animate-pulse animate-delay-500">
+                        <svg style="width: 1.5rem; height: 1.5rem; color: var(--color-sky-600);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-3">Dashboard</h3>
-                    <p class="text-gray-600 mb-6">Panel de control principal con métricas y acceso rápido a todas las funcionalidades.</p>
+                    <h3 style="font-size: 1.25rem; font-weight: 600; color: var(--color-sky-900); margin-bottom: 0.75rem;">Dashboard</h3>
+                    <p style="color: var(--color-sky-600); margin-bottom: 1.5rem;">Panel de control principal con métricas y acceso rápido a todas las funcionalidades.</p>
                     {% if user.is_authenticated %}
-                        <a href="{% url 'core:dashboard' %}" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                        <a href="{% url 'core:dashboard' %}" class="button-primary transition-all hover-scale-sm">
                             Acceder
-                            <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg style="margin-left: 0.5rem; width: 1rem; height: 1rem; display: inline;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                             </svg>
                         </a>
                     {% else %}
-                        <a href="{% url 'core:login' %}" class="inline-flex items-center px-4 py-2 bg-gray-300 text-gray-600 rounded-lg hover:bg-gray-400 transition-colors">
+                        <a href="{% url 'core:login' %}" class="button-secondary transition-all hover-scale-sm">
                             Iniciar Sesión
-                            <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg style="margin-left: 0.5rem; width: 1rem; height: 1rem; display: inline;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                             </svg>
                         </a>
                     {% endif %}
                 </div>
-            </div>
+            </article>
 
             <!-- Welp Desk -->
-            <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
-                <div class="p-8">
-                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-6">
-                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <article class="hover-lift transition-all animate-slide-in-bottom animate-delay-500">
+                <div style="padding: 2rem;">
+                    <div style="width: 3rem; height: 3rem; background-color: var(--color-sky-100); border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;" class="animate-pulse animate-delay-700">
+                        <svg style="width: 1.5rem; height: 1.5rem; color: var(--color-sky-600);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-3">Welp Desk</h3>
-                    <p class="text-gray-600 mb-6">Sistema completo de mesa de ayuda y soporte técnico para gestionar tickets y atención al cliente.</p>
-                    <a href="{% url 'welp_desk:home' %}" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                    <h3 style="font-size: 1.25rem; font-weight: 600; color: var(--color-sky-900); margin-bottom: 0.75rem;">Welp Desk</h3>
+                    <p style="color: var(--color-sky-600); margin-bottom: 1.5rem;">Sistema completo de mesa de ayuda y soporte técnico para gestionar tickets y atención al cliente.</p>
+                    <a href="{% url 'welp_desk:home' %}" class="button-primary transition-all hover-scale-sm">
                         Explorar
-                        <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg style="margin-left: 0.5rem; width: 1rem; height: 1rem; display: inline;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                         </svg>
                     </a>
                 </div>
-            </div>
+            </article>
 
             <!-- Welp Pay -->
-            <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
-                <div class="p-8">
-                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-6">
-                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <article class="hover-lift transition-all animate-slide-in-right animate-delay-700">
+                <div style="padding: 2rem;">
+                    <div style="width: 3rem; height: 3rem; background-color: var(--color-earth-100); border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;" class="animate-pulse animate-delay-1000">
+                        <svg style="width: 1.5rem; height: 1.5rem; color: var(--color-earth-600);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-3">Welp Pay</h3>
-                    <p class="text-gray-600 mb-6">Plataforma de pagos y facturación para gestionar transacciones financieras de forma segura.</p>
-                    <a href="{% url 'welp_pay:home' %}" class="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+                    <h3 style="font-size: 1.25rem; font-weight: 600; color: var(--color-sky-900); margin-bottom: 0.75rem;">Welp Pay</h3>
+                    <p style="color: var(--color-sky-600); margin-bottom: 1.5rem;">Plataforma de pagos y facturación para gestionar transacciones financieras de forma segura.</p>
+                    <a href="{% url 'welp_pay:home' %}" class="button-success transition-all hover-scale-sm">
                         Explorar
-                        <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg style="margin-left: 0.5rem; width: 1rem; height: 1rem; display: inline;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                         </svg>
                     </a>
                 </div>
-            </div>
+            </article>
         </div>
 
         <!-- Admin Section -->
-        <div class="bg-white rounded-xl shadow-lg p-8 mb-16">
-            <div class="flex items-center justify-between">
+        <article class="animate-slide-in-bottom animate-delay-1000" style="margin-bottom: 4rem;">
+            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
                 <div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Administración</h3>
-                    <p class="text-gray-600">Panel de administración de Django para gestión avanzada del sistema.</p>
+                    <h3 style="font-size: 1.25rem; font-weight: 600; color: var(--color-sky-900); margin-bottom: 0.5rem;">Administración</h3>
+                    <p style="color: var(--color-sky-600); margin: 0;">Panel de administración de Django para gestión avanzada del sistema.</p>
                 </div>
-                <div class="flex space-x-4">
-                    <a href="{% url 'admin:index' %}" class="inline-flex items-center px-6 py-3 bg-gray-800 text-white rounded-lg hover:bg-gray-900 transition-colors">
-                        <svg class="mr-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                    <a href="{% url 'admin:index' %}" class="button-secondary transition-all hover-lift">
+                        <svg style="margin-right: 0.5rem; width: 1.25rem; height: 1.25rem; display: inline;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37.996.608 2.296.07 2.572-1.065z"></path>
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                         </svg>
                         Admin Panel
                     </a>
-                    <a href="{% url 'core:home' %}" class="inline-flex items-center px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
-                        <svg class="mr-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <a href="{% url 'core:home' %}" class="button-cancel transition-all hover-lift">
+                        <svg style="margin-right: 0.5rem; width: 1.25rem; height: 1.25rem; display: inline;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
                         Panel Técnico
                     </a>
                 </div>
             </div>
-        </div>
+        </article>
 
         <!-- Footer -->
-        <div class="text-center text-gray-500 text-sm">
+        <div style="text-align: center; color: var(--color-sky-500); font-size: 0.875rem;" class="animate-fade-in animate-delay-1000">
             <p>&copy; 2024 Welp App. Plataforma integral de gestión empresarial.</p>
         </div>
     </div>

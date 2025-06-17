@@ -12,46 +12,70 @@
     }
 
     .button-primary {
-        @apply text-sky-800 border-none;
-        @apply hover:scale-[1.1] hover:brightness-110;
+        @apply px-6 py-2 rounded-lg font-medium border-none cursor-pointer;
+        background-color: var(--color-sky-600);
+        color: white;
+        @apply hover:scale-[1.05] hover:brightness-110;
         @apply active:scale-95;
-        @apply transition-all duration-500;
+        @apply transition-all duration-300;
     }
 
     .button-secondary {
-        @apply text-earth-600 border-none;
-        @apply hover:scale-[1.1] hover:brightness-110;
+        @apply px-6 py-2 rounded-lg font-medium border-2 cursor-pointer;
+        background-color: transparent;
+        color: var(--color-earth-600);
+        border-color: var(--color-earth-600);
+        @apply hover:scale-[1.05] hover:brightness-110;
         @apply active:scale-95;
-        @apply transition-all duration-500;
+        @apply transition-all duration-300;
+    }
+
+    .button-secondary:hover {
+        background-color: var(--color-earth-600);
+        color: white;
     }
     
     .button-success {
-        @apply text-green-600 border-none;
-        @apply hover:scale-[1.1] hover:brightness-110;
+        @apply px-6 py-2 rounded-lg font-medium border-none cursor-pointer;
+        background-color: #16a34a;
+        color: white;
+        @apply hover:scale-[1.05] hover:brightness-110;
         @apply active:scale-95;
-        @apply transition-all duration-500;
+        @apply transition-all duration-300;
     }
 
     .button-danger {
-        @apply text-red-600 border-none;
-        @apply hover:scale-[1.1] hover:brightness-110;
+        @apply px-6 py-2 rounded-lg font-medium border-none cursor-pointer;
+        background-color: #dc2626;
+        color: white;
+        @apply hover:scale-[1.05] hover:brightness-110;
         @apply active:scale-95;
-        @apply transition-all duration-500;
+        @apply transition-all duration-300;
     }
     
     .button-success[disabled] {
-        @apply text-zinc-500 cursor-not-allowed;
+        @apply text-zinc-500 cursor-not-allowed opacity-50;
+        background-color: #6b7280;
     }
 
     .button-cancel {
-        @apply text-earth-700 border-none;
-        @apply hover:scale-[1.1] hover:brightness-110;
+        @apply px-6 py-2 rounded-lg font-medium border-2 cursor-pointer;
+        background-color: transparent;
+        color: var(--color-earth-700);
+        border-color: var(--color-earth-700);
+        @apply hover:scale-[1.05] hover:brightness-110;
         @apply active:scale-95;
-        @apply transition-all duration-500;
+        @apply transition-all duration-300;
+    }
+
+    .button-cancel:hover {
+        background-color: var(--color-earth-700);
+        color: white;
     }
     
     .button-disabled {
-        @apply text-zinc-500 cursor-not-allowed;
+        @apply text-zinc-500 cursor-not-allowed opacity-50;
+        background-color: #6b7280;
     }
 
     /* Tags */
@@ -100,5 +124,36 @@
 
     .status-solved {
         @apply bg-green-200 text-green-700 border-green-500;
+    }
+
+    /* Navbar */
+    .navbar {
+        @apply w-full h-full flex items-center justify-between px-4;
+        background-color: var(--color-menu-bg);
+    }
+
+    .navbar-brand a {
+        @apply text-xl font-bold;
+        color: var(--color-sky-800);
+        text-decoration: none;
+    }
+
+    .navbar-menu {
+        @apply flex items-center gap-6 list-none m-0 p-0;
+    }
+
+    .navbar-menu li {
+        @apply m-0;
+    }
+
+    .navbar-menu a {
+        @apply px-3 py-2 rounded-lg font-medium;
+        color: var(--color-sky-600);
+        text-decoration: none;
+    }
+
+    .navbar-menu a:hover {
+        background-color: var(--color-sky-100);
+        color: var(--color-sky-800);
     }
 } 
