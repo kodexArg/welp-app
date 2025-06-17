@@ -15,19 +15,19 @@ class CoreViewsTests(TestCase):
 
     def test_hello_world(self):
         """Verifica que el endpoint hello world devuelve un código de estado 200 y contiene el texto esperado."""
-        response = self.client.get(reverse('hello_world'))
+        response = self.client.get(reverse('core:hello_world'))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.content.decode(), "Hola Mundo")
 
     def test_health_check(self):
         """Verifica que el endpoint de verificación de salud devuelve 200 y el mensaje correcto."""
-        response = self.client.get(reverse('health'))
+        response = self.client.get(reverse('core:health'))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), {'status': 'ok', 'message': 'Verificación de estado exitosa'})
 
     def test_db_health_check_success(self):
         """Verifica que el endpoint de verificación de salud de la base de datos devuelve 200 cuando la base de datos es accesible."""
-        response = self.client.get(reverse('db_health_check'))
+        response = self.client.get(reverse('core:db_health_check'))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), {'status': 'ok', 'message': 'Conexión a la base de datos exitosa'})
 
@@ -35,7 +35,7 @@ class CoreViewsTests(TestCase):
         """Verifica que el endpoint de verificación de salud de la base de datos devuelve 500 cuando la base de datos es inaccesible."""
         with patch('django.db.connection.cursor') as mock_cursor:
             mock_cursor.side_effect = Exception("Simulated DB failure")
-            response = self.client.get(reverse('db_health_check'))
+            response = self.client.get(reverse('core:db_health_check'))
             self.assertEqual(response.status_code, 500)
             self.assertEqual(response.json(), {'status': 'error', 'message': 'Error en la conexión a la base de datos'})
 
