@@ -2,11 +2,31 @@
 
 @layer components {
     
+    /* ===============================================
+       CONTENEDORES Y UTILIDADES GENERALES
+       =============================================== */
+    
     .hidden-container {
         @apply hidden;
     }
 
-    /* Botones */
+    .text-gradient {
+        background: linear-gradient(135deg, var(--color-sky-600), var(--color-earth-500));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .border-gradient {
+        border: 2px solid transparent;
+        background: linear-gradient(white, white), linear-gradient(135deg, var(--color-sky-600), var(--color-earth-500));
+        background-clip: padding-box, border-box;
+    }
+
+    /* ===============================================
+       SISTEMA DE BOTONES
+       =============================================== */
+    
     .radio-button-group {
         @apply flex flex-wrap w-full gap-x-3 gap-y-1.5;
     }
@@ -78,83 +98,10 @@
         background-color: #6b7280;
     }
 
-    /* Tags */
-    .tag {
-        font-family: var(--font-ui);
-        @apply text-xs font-medium py-1 px-1 rounded-full leading-none whitespace-nowrap border-2;
-    }
+    /* ===============================================
+       FORMULARIOS Y CONTROLES
+       =============================================== */
 
-    .tag-udn {
-        @apply bg-yellow-100 text-amber-600 border-amber-300;
-    }
-
-    .tag-sector {
-        @apply text-xs font-medium py-1 px-1 rounded-full leading-none whitespace-nowrap border-2;
-        background-color: var(--color-sky-100);
-        color: var(--color-sky-700);
-        border-color: var(--color-sky-300);
-    }
-
-    .tag-category {
-        @apply bg-purple-100 text-purple-700 border-purple-300;
-    }
-
-    .tag-unpressed {
-        @apply shadow-lg border-gray-400;
-    }
-    
-    .tag-pressed {    
-        @apply brightness-110 border-white shadow-[0_0_5px_3px_rgba(255,255,255,0.8)] transform scale-101;
-    }
-
-    /* Status */
-    .status {
-        font-family: var(--font-ui);
-        @apply text-xs font-semibold py-1 px-1 rounded-full leading-none whitespace-nowrap border-2;
-    }
-
-    .status-open {
-        @apply bg-red-100 text-red-700 border-red-300;
-    }
-
-    .status-feedback {
-        @apply text-xs font-semibold py-1 px-1 rounded-full leading-none whitespace-nowrap border-2;
-        background-color: var(--color-sky-200);
-        color: var(--color-sky-700);
-        border-color: var(--color-sky-600);
-    }
-
-    .status-closed {
-        @apply bg-gray-200 text-gray-700 border-gray-400;
-    }
-
-    .status-solved {
-        @apply bg-green-200 text-green-700 border-green-500;
-    }
-
-    /* Cards y Contenedores */
-    .card {
-        @apply bg-white rounded-lg shadow-md border border-gray-200;
-        transition: all 0.2s ease;
-    }
-
-    .card:hover {
-        @apply shadow-lg transform translate-y-[-2px];
-    }
-
-    .card-header {
-        @apply px-6 py-4 border-b border-gray-200;
-    }
-
-    .card-body {
-        @apply px-6 py-4;
-    }
-
-    .card-footer {
-        @apply px-6 py-4 border-t border-gray-200 bg-gray-50;
-    }
-
-    /* Formularios */
     .form-group {
         @apply mb-4;
     }
@@ -184,11 +131,25 @@
     }
 
     .form-textarea {
-        @apply form-input resize-y min-h-[100px];
+        @apply w-full px-3 py-2 border border-gray-300 rounded-lg resize-y min-h-[100px];
+        background-color: white;
+        color: var(--color-sky-900);
+        font-family: var(--font-ui);
+        transition: border-color 0.2s ease;
+    }
+
+    .form-textarea:focus {
+        @apply outline-none ring-2;
+        border-color: var(--color-sky-500);
+        --tw-ring-color: var(--color-sky-200);
     }
 
     .form-select {
-        @apply form-input cursor-pointer;
+        @apply w-full px-3 py-2 border border-gray-300 rounded-lg cursor-pointer;
+        background-color: white;
+        color: var(--color-sky-900);
+        font-family: var(--font-ui);
+        transition: border-color 0.2s ease;
         background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
         background-position: right 0.5rem center;
         background-repeat: no-repeat;
@@ -196,7 +157,101 @@
         padding-right: 2.5rem;
     }
 
-    /* Alerts y Notificaciones */
+    .form-select:focus {
+        @apply outline-none ring-2;
+        border-color: var(--color-sky-500);
+        --tw-ring-color: var(--color-sky-200);
+    }
+
+    /* ===============================================
+       TAGS Y ETIQUETAS
+       =============================================== */
+
+    .tag {
+        font-family: var(--font-ui);
+        @apply text-xs font-medium py-1 px-1 rounded-full leading-none whitespace-nowrap border-2;
+    }
+
+    .tag-udn {
+        @apply bg-yellow-100 text-amber-600 border-amber-300;
+    }
+
+    .tag-sector {
+        @apply text-xs font-medium py-1 px-1 rounded-full leading-none whitespace-nowrap border-2;
+        background-color: var(--color-sky-100);
+        color: var(--color-sky-700);
+        border-color: var(--color-sky-300);
+    }
+
+    .tag-category {
+        @apply bg-purple-100 text-purple-700 border-purple-300;
+    }
+
+    .tag-unpressed {
+        @apply shadow-lg border-gray-400;
+    }
+    
+    .tag-pressed {    
+        @apply brightness-110 border-white shadow-[0_0_5px_3px_rgba(255,255,255,0.8)] transform scale-101;
+    }
+
+    /* ===============================================
+       INDICADORES DE ESTADO
+       =============================================== */
+
+    .status {
+        font-family: var(--font-ui);
+        @apply text-xs font-semibold py-1 px-1 rounded-full leading-none whitespace-nowrap border-2;
+    }
+
+    .status-open {
+        @apply bg-red-100 text-red-700 border-red-300;
+    }
+
+    .status-feedback {
+        @apply text-xs font-semibold py-1 px-1 rounded-full leading-none whitespace-nowrap border-2;
+        background-color: var(--color-sky-200);
+        color: var(--color-sky-700);
+        border-color: var(--color-sky-600);
+    }
+
+    .status-closed {
+        @apply bg-gray-200 text-gray-700 border-gray-400;
+    }
+
+    .status-solved {
+        @apply bg-green-200 text-green-700 border-green-500;
+    }
+
+    /* ===============================================
+       CARDS Y CONTENEDORES
+       =============================================== */
+
+    .card {
+        @apply bg-white rounded-lg shadow-md border border-gray-200;
+        transition: all 0.2s ease;
+    }
+
+    .card:hover {
+        @apply shadow-lg transform translate-y-[-2px];
+    }
+
+    .card-header {
+        @apply px-6 py-4 border-b border-gray-200;
+    }
+
+    .card-body {
+        @apply px-6 py-4;
+    }
+
+    .card-footer {
+        @apply px-6 py-4 border-t border-gray-200 bg-gray-50;
+    }
+
+    /* ===============================================
+       ALERTAS Y NOTIFICACIONES
+       =============================================== */
+
     .alert {
         @apply px-4 py-3 rounded-lg border-l-4 mb-4;
         font-family: var(--font-ui);
@@ -216,19 +271,5 @@
 
     .alert-error {
         @apply bg-red-50 border-red-400 text-red-700;
-    }
-
-    /* Utilities */
-    .text-gradient {
-        background: linear-gradient(135deg, var(--color-sky-600), var(--color-earth-500));
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-
-    .border-gradient {
-        border: 2px solid transparent;
-        background: linear-gradient(white, white), linear-gradient(135deg, var(--color-sky-600), var(--color-earth-500));
-        background-clip: padding-box, border-box;
     }
 } 
