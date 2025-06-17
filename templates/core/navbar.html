@@ -1,366 +1,77 @@
-<nav class="navbar animate-slide-in-top" role="navigation" aria-label="Navegación principal">
-    <!-- Brand/Logo -->
-    <div class="navbar-brand">
-        <div class="navbar-logo animate-pulse animate-delay-100" aria-hidden="true">W</div>
-        <a href="{% url 'landing' %}" 
-           class="transition-colors hover-scale-sm animate-fade-in animate-delay-200"
-           aria-label="Ir a página de inicio de Welp App">
+<nav style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background-color: white; border-bottom: 1px solid var(--color-sky-200);" class="animate-fade-in">
+    
+    <!-- Brand Logo -->
+    <div style="display: flex; align-items: center;">
+        <div style="width: 2.5rem; height: 2.5rem; background: linear-gradient(135deg, var(--color-sky-500), var(--color-sky-600)); border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; margin-right: 0.75rem; color: white; font-weight: bold; font-size: 1.125rem;">W</div>
+        <a href="{% url 'landing' %}" style="font-size: 1.25rem; font-weight: 600; color: var(--color-sky-700); text-decoration: none; font-family: var(--font-title);" class="transition-all">
             Welp App
         </a>
     </div>
-
-    <!-- Desktop Menu -->
-    <ul class="navbar-menu animate-fade-in animate-delay-300" role="menubar">
-        <li role="none">
-            <a href="{% url 'landing' %}" 
-               role="menuitem"
-               tabindex="0"
-               class="navbar-link transition-all hover-lift {% if request.resolver_match.url_name == 'landing' %}active{% endif %}"
-               {% if request.resolver_match.url_name == 'landing' %}aria-current="page"{% endif %}>
-                Inicio
+    
+    <!-- Navigation Links -->
+    <div style="display: flex; align-items: center; gap: 0.5rem;">
+        {% if user.is_staff %}
+            <a href="{% url 'admin:index' %}" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; color: var(--color-amber-600); text-decoration: none; font-size: 0.875rem; font-weight: 500; border-radius: 0.375rem;" class="button-minimal transition-all">
+                <span style="font-size: 0.75rem;">🛠️</span>
+                DESARROLLO
             </a>
-        </li>
-        <li role="none">
-            <a href="{% url 'welp_desk:home' %}" 
-               role="menuitem"
-               tabindex="0"
-               class="navbar-link transition-all hover-lift {% if 'welp_desk' in request.resolver_match.app_name|default:'' %}active{% endif %}"
-               {% if 'welp_desk' in request.resolver_match.app_name|default:'' %}aria-current="page"{% endif %}>
-                Welp Desk
-            </a>
-        </li>
-        <li role="none">
-            <a href="{% url 'welp_pay:home' %}" 
-               role="menuitem"
-               tabindex="0"
-               class="navbar-link transition-all hover-lift {% if 'welp_pay' in request.resolver_match.app_name|default:'' %}active{% endif %}"
-               {% if 'welp_pay' in request.resolver_match.app_name|default:'' %}aria-current="page"{% endif %}>
-                Welp Pay
-            </a>
-        </li>
-        {% if user.is_authenticated %}
-            <li role="none">
-                <a href="{% url 'core:dashboard' %}" 
-                   role="menuitem"
-                   tabindex="0"
-                   class="navbar-link transition-all hover-lift {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}"
-                   {% if request.resolver_match.url_name == 'dashboard' %}aria-current="page"{% endif %}>
-                    Dashboard
-                </a>
-            </li>
+            <div style="width: 1px; height: 1.5rem; background-color: var(--color-sky-200);"></div>
         {% endif %}
-    </ul>
-
-    <!-- User Menu / Auth Actions -->
-    <div class="navbar-user animate-fade-in animate-delay-500">
+        
         {% if user.is_authenticated %}
-            <!-- User Avatar -->
-            <button class="navbar-user-avatar animate-pulse" 
-                    type="button"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                    aria-label="Menú de usuario: {{ user.get_full_name|default:user.username }}"
-                    onclick="toggleUserMenu(event)">
-                {{ user.first_name|first|default:user.username|first|upper }}
-            </button>
+            <a href="#" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; color: var(--color-green-600); text-decoration: none; font-size: 0.875rem; font-weight: 500; border-radius: 0.375rem;" class="button-minimal transition-all">
+                <span style="font-size: 0.75rem;">➕</span>
+                REPORTE
+            </a>
+            <div style="width: 1px; height: 1.5rem; background-color: var(--color-sky-200);"></div>
             
-            <!-- User Dropdown Menu -->
-            <div class="navbar-user-menu" role="menu" aria-hidden="true" id="user-menu">
-                <ul>
-                    <li role="none">
-                        <a href="{% url 'core:dashboard' %}" 
-                           role="menuitem"
-                           tabindex="-1"
-                           class="navbar-dropdown-link transition-colors">
-                            <svg class="navbar-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                            </svg>
-                            Mi Perfil
-                        </a>
-                    </li>
-                    {% if user.is_staff %}
-                        <li role="none">
-                            <a href="{% url 'admin:index' %}" 
-                               role="menuitem"
-                               tabindex="-1"
-                               class="navbar-dropdown-link transition-colors">
-                                <svg class="navbar-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                </svg>
-                                Admin
-                            </a>
-                        </li>
-                    {% endif %}
-                    <li role="none">
-                        <div class="navbar-divider"></div>
-                    </li>
-                    <li role="none">
-                        <a href="{% url 'core:logout' %}" 
-                           role="menuitem"
-                           tabindex="-1"
-                           class="navbar-dropdown-link navbar-logout transition-colors">
-                            <svg class="navbar-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
-                            </svg>
-                            Salir
-                        </a>
-                    </li>
-                </ul>
-            </div>
+            <a href="#" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; color: var(--color-blue-600); text-decoration: none; font-size: 0.875rem; font-weight: 500; border-radius: 0.375rem;" class="button-minimal transition-all">
+                <span style="font-size: 0.75rem;">📋</span>
+                TICKETS
+            </a>
+            <div style="width: 1px; height: 1.5rem; background-color: var(--color-sky-200);"></div>
+            
+            <a href="{% url 'landing' %}" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; color: var(--color-sky-600); text-decoration: none; font-size: 0.875rem; font-weight: 500; border-radius: 0.375rem; {% if request.resolver_match.url_name == 'landing' %}background-color: var(--color-sky-50); border: 1px solid var(--color-sky-200);{% endif %}" class="button-minimal transition-all">
+                <span style="font-size: 0.75rem;">🏠</span>
+                INICIO
+            </a>
+            <div style="width: 1px; height: 1.5rem; background-color: var(--color-sky-200);"></div>
+            
+            <a href="{% url 'core:logout' %}" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; color: var(--color-red-600); text-decoration: none; font-size: 0.875rem; font-weight: 500; border-radius: 0.375rem;" class="button-minimal transition-all">
+                <span style="font-size: 0.75rem;">🚪</span>
+                SALIR
+            </a>
         {% else %}
-            <!-- Login Button -->
-            <a href="{% url 'core:login' %}" 
-               class="button-primary transition-all hover-lift"
-               aria-label="Iniciar sesión en su cuenta">
-                Iniciar Sesión
+            <a href="{% url 'core:login' %}" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; color: var(--color-sky-600); text-decoration: none; font-size: 0.875rem; font-weight: 500; border-radius: 0.375rem;" class="button-minimal transition-all">
+                <span style="font-size: 0.75rem;">🔑</span>
+                INGRESAR
             </a>
         {% endif %}
-    </div>
-
-    <!-- Mobile Menu Toggle -->
-    <button class="navbar-mobile-toggle" 
-            type="button"
-            aria-expanded="false"
-            aria-controls="mobile-menu"
-            aria-label="Abrir menú de navegación"
-            onclick="toggleMobileMenu()">
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-    </button>
-
-    <!-- Mobile Menu -->
-    <div class="navbar-mobile-menu" 
-         id="mobile-menu" 
-         role="menu"
-         aria-hidden="true"
-         aria-labelledby="mobile-menu-button">
-        <ul>
-            <li role="none">
-                <a href="{% url 'landing' %}" 
-                   role="menuitem"
-                   tabindex="-1"
-                   class="navbar-mobile-link transition-colors {% if request.resolver_match.url_name == 'landing' %}active{% endif %}"
-                   {% if request.resolver_match.url_name == 'landing' %}aria-current="page"{% endif %}>
-                    Inicio
-                </a>
-            </li>
-            <li role="none">
-                <a href="{% url 'welp_desk:home' %}" 
-                   role="menuitem"
-                   tabindex="-1"
-                   class="navbar-mobile-link transition-colors {% if 'welp_desk' in request.resolver_match.app_name|default:'' %}active{% endif %}"
-                   {% if 'welp_desk' in request.resolver_match.app_name|default:'' %}aria-current="page"{% endif %}>
-                    Welp Desk
-                </a>
-            </li>
-            <li role="none">
-                <a href="{% url 'welp_pay:home' %}" 
-                   role="menuitem"
-                   tabindex="-1"
-                   class="navbar-mobile-link transition-colors {% if 'welp_pay' in request.resolver_match.app_name|default:'' %}active{% endif %}"
-                   {% if 'welp_pay' in request.resolver_match.app_name|default:'' %}aria-current="page"{% endif %}>
-                    Welp Pay
-                </a>
-            </li>
-            {% if user.is_authenticated %}
-                <li role="none">
-                    <a href="{% url 'core:dashboard' %}" 
-                       role="menuitem"
-                       tabindex="-1"
-                       class="navbar-mobile-link transition-colors {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}"
-                       {% if request.resolver_match.url_name == 'dashboard' %}aria-current="page"{% endif %}>
-                        Dashboard
-                    </a>
-                </li>
-                <li role="none">
-                    <div class="navbar-mobile-divider"></div>
-                </li>
-                {% if user.is_staff %}
-                    <li role="none">
-                        <a href="{% url 'admin:index' %}" 
-                           role="menuitem"
-                           tabindex="-1"
-                           class="navbar-mobile-link transition-colors">
-                            Admin
-                        </a>
-                    </li>
-                {% endif %}
-                <li role="none">
-                    <a href="{% url 'core:logout' %}" 
-                       role="menuitem"
-                       tabindex="-1"
-                       class="navbar-mobile-link navbar-logout transition-colors">
-                        Salir
-                    </a>
-                </li>
-            {% else %}
-                <li role="none">
-                    <div class="navbar-mobile-divider"></div>
-                </li>
-                <li role="none">
-                    <a href="{% url 'core:login' %}" 
-                       role="menuitem"
-                       tabindex="-1"
-                       class="navbar-mobile-link button-primary-mobile transition-colors">
-                        Iniciar Sesión
-                    </a>
-                </li>
-            {% endif %}
-        </ul>
     </div>
 </nav>
 
-<script>
-// Variables de estado global
-let mobileMenuOpen = false;
-let userMenuOpen = false;
-
-function toggleMobileMenu() {
-    const toggle = document.querySelector('.navbar-mobile-toggle');
-    const menu = document.getElementById('mobile-menu');
+<style>
+/* Mobile responsive */
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column !important;
+        gap: 1rem;
+        padding: 1rem !important;
+    }
     
-    mobileMenuOpen = !mobileMenuOpen;
+    nav > div:last-child {
+        gap: 0.25rem !important;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
     
-    // Actualizar estados visuales
-    toggle.classList.toggle('active', mobileMenuOpen);
-    toggle.setAttribute('aria-expanded', mobileMenuOpen);
-    menu.classList.toggle('active', mobileMenuOpen);
-    menu.setAttribute('aria-hidden', !mobileMenuOpen);
+    nav a {
+        font-size: 0.75rem !important;
+        padding: 0.375rem 0.75rem !important;
+    }
     
-    // Gestión de tabindex para accesibilidad
-    const menuLinks = menu.querySelectorAll('a');
-    menuLinks.forEach(link => {
-        link.tabIndex = mobileMenuOpen ? 0 : -1;
-    });
-    
-    // Focus en primer elemento cuando se abre
-    if (mobileMenuOpen) {
-        setTimeout(() => {
-            const firstLink = menu.querySelector('a');
-            if (firstLink) firstLink.focus();
-        }, 300);
+    nav a span {
+        font-size: 0.625rem !important;
     }
 }
-
-function toggleUserMenu(event) {
-    event.stopPropagation();
-    const avatar = event.currentTarget;
-    const menu = document.getElementById('user-menu');
-    
-    userMenuOpen = !userMenuOpen;
-    
-    // Actualizar estados visuales
-    avatar.setAttribute('aria-expanded', userMenuOpen);
-    menu.setAttribute('aria-hidden', !userMenuOpen);
-    menu.classList.toggle('active', userMenuOpen);
-    
-    // Gestión de tabindex para accesibilidad
-    const menuLinks = menu.querySelectorAll('a');
-    menuLinks.forEach(link => {
-        link.tabIndex = userMenuOpen ? 0 : -1;
-    });
-    
-    // Focus en primer elemento cuando se abre
-    if (userMenuOpen) {
-        setTimeout(() => {
-            const firstLink = menu.querySelector('a');
-            if (firstLink) firstLink.focus();
-        }, 100);
-    }
-}
-
-function closeAllMenus() {
-    const toggle = document.querySelector('.navbar-mobile-toggle');
-    const mobileMenu = document.getElementById('mobile-menu');
-    const userMenu = document.getElementById('user-menu');
-    const avatar = document.querySelector('.navbar-user-avatar');
-    
-    // Cerrar menú móvil
-    if (mobileMenuOpen) {
-        mobileMenuOpen = false;
-        toggle.classList.remove('active');
-        toggle.setAttribute('aria-expanded', 'false');
-        mobileMenu.classList.remove('active');
-        mobileMenu.setAttribute('aria-hidden', 'true');
-        
-        const mobileLinks = mobileMenu.querySelectorAll('a');
-        mobileLinks.forEach(link => link.tabIndex = -1);
-    }
-    
-    // Cerrar menú de usuario
-    if (userMenuOpen && avatar) {
-        userMenuOpen = false;
-        avatar.setAttribute('aria-expanded', 'false');
-        userMenu.setAttribute('aria-hidden', 'true');
-        userMenu.classList.remove('active');
-        
-        const userLinks = userMenu.querySelectorAll('a');
-        userLinks.forEach(link => link.tabIndex = -1);
-    }
-}
-
-// Cerrar menús al hacer clic fuera
-document.addEventListener('click', function(event) {
-    const navbar = document.querySelector('.navbar');
-    
-    if (!navbar.contains(event.target)) {
-        closeAllMenus();
-    }
-});
-
-// Cerrar menú móvil al redimensionar ventana
-window.addEventListener('resize', function() {
-    if (window.innerWidth >= 768) {
-        closeAllMenus();
-    }
-});
-
-// Navegación por teclado mejorada
-document.addEventListener('keydown', function(event) {
-    // Escape: cerrar menús abiertos
-    if (event.key === 'Escape') {
-        closeAllMenus();
-        return;
-    }
-    
-    // Tab: gestión de focus en menús
-    if (event.key === 'Tab') {
-        const activeMenu = document.querySelector('.navbar-mobile-menu.active, .navbar-user-menu.active');
-        if (activeMenu) {
-            const focusableElements = activeMenu.querySelectorAll('a[tabindex="0"]');
-            const firstElement = focusableElements[0];
-            const lastElement = focusableElements[focusableElements.length - 1];
-            
-            if (event.shiftKey) {
-                // Shift + Tab: focus anterior
-                if (document.activeElement === firstElement) {
-                    lastElement.focus();
-                    event.preventDefault();
-                }
-            } else {
-                // Tab: focus siguiente
-                if (document.activeElement === lastElement) {
-                    firstElement.focus();
-                    event.preventDefault();
-                }
-            }
-        }
-    }
-    
-    // Enter/Space: activar toggle de menú móvil
-    if ((event.key === 'Enter' || event.key === ' ') && 
-        event.target.classList.contains('navbar-mobile-toggle')) {
-        event.preventDefault();
-        toggleMobileMenu();
-    }
-    
-    // Enter/Space: activar toggle de menú de usuario
-    if ((event.key === 'Enter' || event.key === ' ') && 
-        event.target.classList.contains('navbar-user-avatar')) {
-        event.preventDefault();
-        toggleUserMenu(event);
-    }
-});
-</script> 
+</style> 

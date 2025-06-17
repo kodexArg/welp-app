@@ -4,66 +4,56 @@
 {% block title %}dj-apprunner-template - Panel de Control{% endblock %}
 
 {% block content %}
-{# {% component "core_test_component" message="Componente de test Django OK" status="success" / %} #}
-<div style="max-width: 80rem; margin: 0 auto; padding: 1rem; display: flex; flex-direction: column; gap: 1.5rem; font-family: var(--font-ui); font-size: 0.875rem;" class="animate-fade-in">
+<div style="max-width: 60rem; margin: 0 auto; padding: 2rem 1rem; display: flex; flex-direction: column; gap: 2rem; font-family: var(--font-ui);" class="animate-fade-in">
+    
     <!-- Header minimalista -->
-    <div style="text-align: center; margin-bottom: 2rem;" class="animate-slide-in-top">
-        <h1 style="font-size: 1.5rem; font-weight: 300; color: var(--color-sky-700); margin-bottom: 0.5rem; font-family: var(--font-title);">dj-apprunner-template</h1>
-        <p style="color: var(--color-sky-500); font-size: 0.75rem;">
+    <div style="text-align: center;" class="animate-fade-in">
+        <h1 style="font-size: 2.5rem; font-weight: 300; color: var(--color-sky-700); margin-bottom: 0.5rem; font-family: var(--font-title);">Welp App</h1>
+        <p style="color: var(--color-sky-500); font-size: 1rem; margin-bottom: 2rem;">
             Template para proyectos Django en AWS App Runner
         </p>
-        <!-- Botón de Acceso -->
-        <div style="margin-top: 1rem;" class="animate-fade-in animate-delay-200">
-            {% if user.is_authenticated %}
-                <div style="display: flex; align-items: center; justify-content: center; gap: 1rem;">
-                    <span style="font-size: 0.875rem; color: var(--color-sky-600);">¡Hola, {{ user.get_full_name|default:user.username }}!</span>
-                    <a href="{% url 'core:dashboard' %}" class="button-primary transition-all hover-lift">
-                        Dashboard
-                    </a>
-                    {% if user.is_staff %}
-                        <a href="{% url 'admin:index' %}" class="button-success transition-all hover-lift">
-                            Admin
-                        </a>
-                    {% endif %}
-                    <a href="{% url 'core:logout' %}" class="button-cancel transition-all hover-lift">
-                        Salir
-                    </a>
-                </div>
-            {% else %}
-                <div style="display: flex; align-items: center; justify-content: center; gap: 1rem;">
-                    <a href="{% url 'core:login' %}" class="button-primary transition-all hover-lift">
-                        Acceso
-                    </a>
-                    <a href="{% url 'admin:index' %}" class="button-success transition-all hover-lift">
+        
+        <!-- Botones de Acceso Simplificados -->
+        {% if user.is_authenticated %}
+            <div style="display: flex; align-items: center; justify-content: center; gap: 1rem; flex-wrap: wrap;" class="animate-fade-in">
+                <span style="color: var(--color-sky-600);">Hola, {{ user.get_full_name|default:user.username }}</span>
+                {% if user.is_staff %}
+                    <a href="{% url 'admin:index' %}" class="button-minimal transition-all">
                         Admin
                     </a>
-                </div>
-            {% endif %}
-        </div>
+                {% endif %}
+            </div>
+        {% else %}
+            <div class="animate-fade-in">
+                <a href="{% url 'core:login' %}" class="button-primary transition-all">
+                    Iniciar Sesión
+                </a>
+            </div>
+        {% endif %}
     </div>
 
     <!-- Aplicaciones Disponibles -->
-    <div class="card animate-slide-in-left animate-delay-300" style="margin-bottom: 1.5rem;">
+    <div class="card animate-slide-in-bottom" style="margin-bottom: 2rem;">
         <div class="card-header">
-            <h2 style="font-size: 0.875rem; font-weight: 500; color: var(--color-sky-700); margin: 0; font-family: var(--font-ui);">Aplicaciones Disponibles</h2>
+            <h2 style="font-size: 1.125rem; font-weight: 500; color: var(--color-sky-700); margin: 0; font-family: var(--font-ui);">Aplicaciones</h2>
         </div>
         <div class="card-body">
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
-                <a href="{% url 'welp_desk:home' %}" class="hover-lift transition-all" style="display: block; padding: 1rem; border: 2px solid var(--color-sky-200); border-radius: 0.5rem; text-decoration: none; background-color: var(--color-sky-50); transition: all 0.2s ease;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+                <a href="{% url 'welp_desk:home' %}" class="transition-all" style="display: block; padding: 1.5rem; border: 1px solid var(--color-sky-200); border-radius: 0.75rem; text-decoration: none; background-color: var(--color-sky-50); transition: all 0.3s ease;">
                     <div style="display: flex; align-items: center;">
-                        <div style="width: 0.75rem; height: 0.75rem; background-color: var(--color-sky-500); border-radius: 50%; margin-right: 0.75rem;"></div>
+                        <div style="width: 3rem; height: 3rem; background: linear-gradient(135deg, var(--color-sky-500), var(--color-sky-600)); border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; margin-right: 1rem; color: white; font-size: 1.25rem;">🎧</div>
                         <div>
-                            <h3 style="font-size: 0.875rem; font-weight: 500; color: var(--color-sky-600); margin: 0; font-family: var(--font-ui);">Welp Desk</h3>
-                            <p style="font-size: 0.75rem; color: var(--color-sky-500); margin: 0; font-family: var(--font-p);">Mesa de Ayuda y Soporte Técnico</p>
+                            <h3 style="font-size: 1.125rem; font-weight: 500; color: var(--color-sky-700); margin: 0; font-family: var(--font-ui);">Welp Desk</h3>
+                            <p style="font-size: 0.875rem; color: var(--color-sky-500); margin: 0; font-family: var(--font-p);">Mesa de Ayuda y Soporte</p>
                         </div>
                     </div>
                 </a>
-                <a href="{% url 'welp_pay:home' %}" class="hover-lift transition-all" style="display: block; padding: 1rem; border: 2px solid var(--color-earth-200); border-radius: 0.5rem; text-decoration: none; background-color: var(--color-earth-50); transition: all 0.2s ease;">
+                <a href="{% url 'welp_pay:home' %}" class="transition-all" style="display: block; padding: 1.5rem; border: 1px solid var(--color-earth-200); border-radius: 0.75rem; text-decoration: none; background-color: var(--color-earth-50); transition: all 0.3s ease;">
                     <div style="display: flex; align-items: center;">
-                        <div style="width: 0.75rem; height: 0.75rem; background-color: var(--color-earth-500); border-radius: 50%; margin-right: 0.75rem;"></div>
+                        <div style="width: 3rem; height: 3rem; background: linear-gradient(135deg, var(--color-earth-500), var(--color-earth-600)); border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; margin-right: 1rem; color: white; font-size: 1.25rem;">💳</div>
                         <div>
-                            <h3 style="font-size: 0.875rem; font-weight: 500; color: var(--color-earth-600); margin: 0; font-family: var(--font-ui);">Welp Pay</h3>
-                            <p style="font-size: 0.75rem; color: var(--color-earth-500); margin: 0; font-family: var(--font-p);">Sistema de Pagos y Facturación</p>
+                            <h3 style="font-size: 1.125rem; font-weight: 500; color: var(--color-earth-700); margin: 0; font-family: var(--font-ui);">Welp Pay</h3>
+                            <p style="font-size: 0.875rem; color: var(--color-earth-500); margin: 0; font-family: var(--font-p);">Sistema de Pagos</p>
                         </div>
                     </div>
                 </a>
@@ -71,243 +61,116 @@
         </div>
     </div>
 
-    <!-- Grid de Verificación Tecnológica -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 0.75rem; margin-bottom: 1.5rem;" class="animate-slide-in-right animate-delay-500">
+    <!-- Estado del Sistema -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;" class="animate-slide-in-bottom">
+        
         <!-- Vite -->
-        <div class="card" style="max-width: 18rem; margin: 0 auto; width: 100%;">
-            <div class="card-body" style="padding: 0.75rem;">
-                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
-                    <h3 style="font-size: 0.875rem; font-weight: 500; color: var(--color-sky-700); margin: 0;">Vite</h3>
-                    <span style="display: flex; align-items: center; justify-content: center; font-size: 0.75rem; border-radius: 50%; background-color: #dcfce7; color: #166534; height: 1.5rem; width: 1.5rem;">✅</span>
-                </div>
-                <div style="display: flex; flex-direction: column; gap: 0.25rem;">
-                    <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--color-sky-500);">
-                        <span>HMR:</span>
-                        <span id="hmr-status">{{ environment|yesno:"✅,🔄" }}</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--color-sky-500);">
-                        <span>Build:</span>
-                        <span id="build-status">Verificando...</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Tailwind -->
-        <div class="card" style="max-width: 18rem; margin: 0 auto; width: 100%;">
-            <div class="card-body" style="padding: 0.75rem;">
-                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
-                    <h3 style="font-size: 0.875rem; font-weight: 500; color: var(--color-sky-700); margin: 0;">Tailwind</h3>
-                    <span style="display: flex; align-items: center; justify-content: center; font-size: 0.75rem; border-radius: 50%; background-color: #dcfce7; color: #166534; height: 1.5rem; width: 1.5rem;">✅</span>
-                </div>
-                <div style="display: flex; flex-direction: column; gap: 0.25rem;">
-                    <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--color-sky-500);">
-                        <span>Versión:</span>
-                        <span>v4</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--color-sky-500);">
-                        <span>Estado:</span>
-                        <span>Activo</span>
-                    </div>
-                </div>
+        <div class="card">
+            <div class="card-body" style="padding: 1rem; text-align: center;">
+                <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">⚡</div>
+                <h3 style="font-size: 0.875rem; font-weight: 500; color: var(--color-sky-700); margin: 0;">Vite</h3>
+                <p style="font-size: 0.75rem; color: var(--color-green-600); margin: 0.25rem 0 0 0;">Activo</p>
             </div>
         </div>
 
         <!-- HTMX -->
-        <div class="card" style="max-width: 18rem; margin: 0 auto; width: 100%;">
-            <div class="card-body" style="padding: 0.75rem;">
-                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
-                    <h3 style="font-size: 0.875rem; font-weight: 500; color: var(--color-sky-700); margin: 0;">HTMX</h3>
-                    <span style="display: flex; align-items: center; justify-content: center; font-size: 0.75rem; border-radius: 50%; background-color: #dcfce7; color: #166534; height: 1.5rem; width: 1.5rem;" id="htmx-status">✅</span>
-                </div>
-                <div style="display: flex; flex-direction: column; gap: 0.25rem;">
-                    <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--color-sky-500);">
-                        <span>Versión:</span>
-                        <span id="htmx-version">v2.0.4</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--color-sky-500);">
-                        <span>Test:</span>
-                        <span><a href="#" hx-get="{% url 'core:htmx_demo' %}" hx-target="#htmx-demo-result" hx-swap="outerHTML" class="transition-colors hover-scale-sm" style="font-size: 0.75rem; color: var(--color-sky-600);">Probar →</a></span>
-                    </div>
-                </div>
-                <div id="htmx-demo-result" style="color: var(--color-sky-400);"></div>
+        <div class="card">
+            <div class="card-body" style="padding: 1rem; text-align: center;">
+                <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">🔄</div>
+                <h3 style="font-size: 0.875rem; font-weight: 500; color: var(--color-sky-700); margin: 0;">HTMX</h3>
+                <p style="font-size: 0.75rem; color: var(--color-green-600); margin: 0.25rem 0 0 0;">v2.0.4</p>
             </div>
         </div>
 
-        <!-- Django Components -->
-        <div class="card" style="max-width: 18rem; margin: 0 auto; width: 100%;">
-            <div class="card-body" style="padding: 0.75rem;">
-                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
-                    <h3 style="font-size: 0.875rem; font-weight: 500; color: var(--color-sky-700); margin: 0;">Components</h3>
-                    <span style="display: flex; align-items: center; justify-content: center; font-size: 0.75rem; border-radius: 50%; background-color: #dcfce7; color: #166534; height: 1.5rem; width: 1.5rem;">✅</span>
-                </div>
-                <div style="display: flex; flex-direction: column; gap: 0.25rem;">
-                    <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--color-sky-500);">
-                        <span>Ping:</span>
-                        <span>{% component "ping" ping="test_ping" / %}</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--color-sky-500);">
-                        <span>Estado:</span>
-                        <span>Activo</span>
-                    </div>
-                </div>
+        <!-- Components -->
+        <div class="card">
+            <div class="card-body" style="padding: 1rem; text-align: center;">
+                <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">🧩</div>
+                <h3 style="font-size: 0.875rem; font-weight: 500; color: var(--color-sky-700); margin: 0;">Components</h3>
+                <div style="font-size: 0.75rem; color: var(--color-green-600); margin: 0.25rem 0 0 0;">{% component "ping" ping="ok" / %}</div>
+            </div>
+        </div>
+
+        <!-- Database -->
+        <div class="card">
+            <div class="card-body" style="padding: 1rem; text-align: center;">
+                <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">🗄️</div>
+                <h3 style="font-size: 0.875rem; font-weight: 500; color: var(--color-sky-700); margin: 0;">PostgreSQL</h3>
+                <p style="font-size: 0.75rem; color: var(--color-green-600); margin: 0.25rem 0 0 0;">Conectado</p>
             </div>
         </div>
     </div>
 
-    <!-- Links de Prueba -->
-    <div class="card animate-slide-in-bottom animate-delay-700" style="margin-bottom: 1.5rem;">
+    <!-- Pruebas rápidas -->
+    <div class="card animate-fade-in" style="margin-top: 1rem;">
         <div class="card-header">
-            <h2 style="font-size: 0.875rem; font-weight: 500; color: var(--color-sky-700); margin: 0;">Pruebas Disponibles</h2>
+            <h2 style="font-size: 1rem; font-weight: 500; color: var(--color-sky-700); margin: 0;">Pruebas del Sistema</h2>
         </div>
         <div class="card-body">
-            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
-                <a href="#" hx-get="{% url 'core:health' %}" hx-target="#test-health-result" hx-swap="outerHTML" class="transition-colors hover-scale-sm" style="font-size: 0.75rem; color: var(--color-sky-600);">Health Check</a>
-                <span style="color: var(--color-sky-300);">|</span>
-                <a href="#" hx-get="{% url 'core:db_health_check' %}" hx-target="#test-db-result" hx-swap="outerHTML" class="transition-colors hover-scale-sm" style="font-size: 0.75rem; color: var(--color-sky-600);">DB Health</a>
-                <span style="color: var(--color-sky-300);">|</span>
-                <a href="#" hx-get="{% url 'core:hello_world' %}" hx-target="#test-hello-result" hx-swap="outerHTML" class="transition-colors hover-scale-sm" style="font-size: 0.75rem; color: var(--color-sky-600);">Hello World</a>
+            <div style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center;">
+                <a href="#" hx-get="{% url 'core:health' %}" hx-target="#test-result" hx-swap="outerHTML" class="button-minimal transition-all">
+                    Health Check
+                </a>
+                <a href="#" hx-get="{% url 'core:db_health_check' %}" hx-target="#test-result" hx-swap="outerHTML" class="button-minimal transition-all">
+                    DB Health
+                </a>
+                <a href="#" hx-get="{% url 'core:hello_world' %}" hx-target="#test-result" hx-swap="outerHTML" class="button-minimal transition-all">
+                    Hello World
+                </a>
             </div>
-            <div id="test-health-result" style="margin-top: 0.5rem;"></div>
-            <div id="test-db-result" style="margin-top: 0.5rem;"></div>
-            <div id="test-hello-result" style="margin-top: 0.5rem;"></div>
+            <div id="test-result" style="margin-top: 1rem; text-align: center; color: var(--color-sky-600);"></div>
         </div>
     </div>
 
-    <!-- Tests -->
-    <div class="card animate-fade-in-slow animate-delay-1000" style="margin-bottom: 1.5rem;">
-        <div class="card-header">
-            <h2 style="font-size: 0.875rem; font-weight: 500; color: var(--color-sky-700); margin: 0;">Tests</h2>
-        </div>
-        <div class="card-body">
-            <details style="font-size: 0.75rem;">
-                <summary class="transition-colors hover-scale-sm" style="cursor: pointer; color: var(--color-sky-600);">Ver Tests</summary>
-                <pre style="margin-top: 0.5rem; padding: 0.5rem; background-color: var(--color-sky-50); border-radius: 0.25rem; color: var(--color-sky-600); overflow-x: auto; font-family: var(--font-mono);">
-1. Configuración (tests/test_config.py)
-   ├── test_secret_key
-   ├── test_database_config
-   ├── test_aws_config
-   ├── test_security_settings
-   ├── test_installed_apps
-   └── test_middleware
-
-2. Modelos (core/tests/test_models.py)
-   ├── test_create_user
-   ├── test_create_superuser
-   └── test_user_str_representation
-
-3. Vistas (core/tests/test_views.py)
-   ├── test_hello_world
-   ├── test_health_check
-   ├── test_db_health_check_success
-   └── test_db_health_check_failure
-
-4. Integración (tests/test_startup.py)
-   ├── test_environment_configuration
-   ├── test_database_integration
-   ├── test_aws_integration
-   └── test_security_integration</pre>
-            </details>
-        </div>
-    </div>
-
-    <!-- README -->
-    <div class="card animate-slide-in-bottom animate-delay-1000">
-        <div class="card-header">
-            <h2 style="font-size: 0.875rem; font-weight: 500; color: var(--color-sky-700); margin: 0;">Documentación</h2>
-        </div>
-        <div class="card-body" style="color: var(--color-sky-600);">
-            <h3 style="font-size: 0.75rem; font-weight: 500; color: var(--color-sky-700); margin-bottom: 0.5rem;">Stack Tecnológico</h3>
-            <table style="width: 100%; font-size: 0.75rem;">
-                <tr>
-                    <td style="padding: 0.25rem 0; border-bottom: 1px solid var(--color-sky-100);">Framework</td>
-                    <td style="padding: 0.25rem 0; border-bottom: 1px solid var(--color-sky-100);">Django</td>
-                </tr>
-                <tr>
-                    <td style="padding: 0.25rem 0; border-bottom: 1px solid var(--color-sky-100);">Frontend</td>
-                    <td style="padding: 0.25rem 0; border-bottom: 1px solid var(--color-sky-100);">Vite + HTMX + Tailwind</td>
-                </tr>
-                <tr>
-                    <td style="padding: 0.25rem 0; border-bottom: 1px solid var(--color-sky-100);">Base de Datos</td>
-                    <td style="padding: 0.25rem 0; border-bottom: 1px solid var(--color-sky-100);">PostgreSQL</td>
-                </tr>
-                <tr>
-                    <td style="padding: 0.25rem 0; border-bottom: 1px solid var(--color-sky-100);">Cloud</td>
-                    <td style="padding: 0.25rem 0; border-bottom: 1px solid var(--color-sky-100);">AWS App Runner</td>
-                </tr>
-                <tr>
-                    <td style="padding: 0.25rem 0;">Almacenamiento</td>
-                    <td style="padding: 0.25rem 0;">S3 + CloudFront</td>
-                </tr>
-            </table>
-
-            <h3 style="font-size: 0.75rem; font-weight: 500; color: var(--color-sky-700); margin: 1rem 0 0.5rem 0;">Características de la Aplicación</h3>
-            
-            <h4 style="font-size: 0.75rem; font-weight: 500; color: var(--color-earth-600); margin: 0.75rem 0 0.25rem 0;">📋 Welp Desk - Mesa de Ayuda</h4>
-            <ul style="font-size: 0.75rem; margin: 0; padding-left: 1.25rem;">
-                <li>✅ Gestión de tickets de soporte</li>
-                <li>✅ Sistema de categorización y prioridades</li>
-                <li>✅ Asignación de técnicos</li>
-                <li>✅ Seguimiento de estado</li>
-                <li>✅ Reportes de actividad</li>
-            </ul>
-
-            <h4 style="font-size: 0.75rem; font-weight: 500; color: var(--color-earth-600); margin: 0.75rem 0 0.25rem 0;">💳 Welp Pay - Sistema de Pagos</h4>
-            <ul style="font-size: 0.75rem; margin: 0; padding-left: 1.25rem;">
-                <li>✅ Procesamiento de pagos</li>
-                <li>✅ Facturación automática</li>
-                <li>✅ Gestión de suscripciones</li>
-                <li>✅ Reportes financieros</li>
-                <li>✅ Integración con pasarelas de pago</li>
-            </ul>
-
-            <h3 style="font-size: 0.75rem; font-weight: 500; color: var(--color-sky-700); margin: 1rem 0 0.5rem 0;">Integración con Servicios AWS</h3>
-            <ul style="font-size: 0.75rem; margin: 0; padding-left: 1.25rem;">
-                <li>✅ <strong>S3</strong>: Almacenamiento de archivos estáticos y media</li>
-                <li>✅ <strong>CloudFront</strong>: CDN para distribución global</li>
-                <li>✅ <strong>App Runner</strong>: Despliegue automático y escalado</li>
-                <li>✅ <strong>RDS PostgreSQL</strong>: Base de datos gestionada</li>
-                <li>✅ <strong>IAM</strong>: Gestión de permisos y accesos</li>
-            </ul>
-
-            <h3 style="font-size: 0.75rem; font-weight: 500; color: var(--color-sky-700); margin: 1rem 0 0.5rem 0;">Notas</h3>
-            <ul style="font-size: 0.75rem; margin: 0; padding-left: 1.25rem;">
-                <li>🚀 <strong>Despliegue automático</strong>: Push a <code>main</code> → Deploy automático</li>
-                <li>🔒 <strong>Seguridad</strong>: HTTPS, CSRF protection, configuración segura</li>
-                <li>📊 <strong>Monitoreo</strong>: Health checks y logs integrados</li>
-                <li>🎨 <strong>UI/UX</strong>: Sistema de diseño personalizado con Tailwind</li>
-                <li>⚡ <strong>Performance</strong>: Vite HMR + HTMX para experiencia rápida</li>
-                <li>🧪 <strong>Testing</strong>: Suite completa de tests automatizados</li>
-            </ul>
-
-            <div style="margin-top: 1rem; padding: 0.75rem; background-color: var(--color-sky-50); border-radius: 0.25rem;">
-                <p style="margin: 0; font-size: 0.75rem; color: var(--color-sky-600);">
-                    <strong>Licencia:</strong> Proyecto privado para ALVS Group. Todos los derechos reservados.
-                </p>
-            </div>
+    <!-- Información del proyecto -->
+    <div class="card animate-fade-in">
+        <div class="card-body" style="text-align: center; color: var(--color-sky-600);">
+            <p style="margin: 0; font-size: 0.875rem;">
+                <strong>Stack:</strong> Django + Vite + HTMX + Tailwind + PostgreSQL + AWS
+            </p>
+            <p style="margin: 0.5rem 0 0 0; font-size: 0.75rem; color: var(--color-sky-500);">
+                Template listo para producción en AWS App Runner
+            </p>
         </div>
     </div>
 </div>
 
-<!-- JavaScript para verificación de estado -->
-<script>
-    // Verificar estado de build
-    document.addEventListener('DOMContentLoaded', function() {
-        const buildStatus = document.getElementById('build-status');
-        if (buildStatus) {
-            // Simular verificación de build (en producción sería una llamada real)
-            setTimeout(() => {
-                buildStatus.textContent = '✅';
-            }, 1000);
-        }
-    });
+<style>
+/* Hover effects suaves */
+a[href*="welp_desk"]:hover,
+a[href*="welp_pay"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.1);
+}
 
-    // Listener para HTMX
-    document.addEventListener('htmx:loaded', function(event) {
-        const htmxVersion = document.getElementById('htmx-version');
-        if (htmxVersion && event.detail.version) {
-            htmxVersion.textContent = `v${event.detail.version}`;
-        }
-    });
-</script>
+.card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px -2px rgba(0, 0, 0, 0.1);
+}
+
+/* Animaciones más suaves */
+.animate-fade-in {
+    animation: fadeIn 0.8s ease-out;
+}
+
+.animate-slide-in-bottom {
+    animation: slideInBottom 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideInBottom {
+    from { 
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to { 
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+</style>
 {% endblock %} 

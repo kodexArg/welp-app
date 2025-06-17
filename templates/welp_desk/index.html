@@ -1,0 +1,138 @@
+{% extends 'core/base.html' %}
+
+{% block title %}WelpDesk - Inicio{% endblock %}
+
+{% block content %}
+<div style="max-width: 80rem; margin: 0 auto; padding: 1rem; display: flex; flex-direction: column; gap: 1.5rem; font-family: var(--font-ui);" class="animate-fade-in">
+    
+    <section class="animate-slide-in-top">
+        <h1 style="text-align: center; font-size: 2rem; font-weight: 600; color: var(--color-sky-700); margin-bottom: 0.5rem; font-family: var(--font-title);">Bienvenido a WelpDesk</h1>
+
+        <article id="welcome" style="text-align: center; margin-bottom: 2rem;" class="animate-fade-in animate-delay-200">
+            <p style="text-align: justify; margin-bottom: 1rem; color: var(--color-sky-600); line-height: 1.6;">
+                <span style="font-family: var(--font-title); font-size: 1.25rem; font-weight: 700; color: var(--color-sky-700);">Welp 🎧 Desk</span> es un sistema integral de mesa de ayuda diseñado para optimizar la comunicación entre departamentos en entornos empresariales con múltiples Unidades de Negocio (UDNs).
+            </p>
+            <p style="text-align: justify; color: var(--color-sky-600); line-height: 1.6;">
+                Esta plataforma permite que los equipos de administración, operaciones y soporte coordinen la recepción y resolución de incidencias, mientras que las áreas operativas y de atención al público reportan novedades, solicitan asistencia o gestionan pedidos en el sistema.
+            </p>
+        </article>
+
+        <article id="features" class="card animate-slide-in-left animate-delay-400" style="margin-bottom: 2rem;">
+            <div class="card-header">
+                <h2 style="font-size: 1.125rem; font-weight: 500; color: var(--color-sky-700); margin: 0;">Funcionalidades principales</h2>
+            </div>
+            <div class="card-body">
+                <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 1rem;">
+                    <li style="display: flex; align-items: flex-start; padding: 0.75rem;">
+                        <span style="display: flex; align-items: center; justify-content: center; width: 2rem; height: 2rem; background-color: var(--color-earth-100); color: var(--color-earth-600); border-radius: 50%; margin-right: 1rem; flex-shrink: 0; font-size: 0.875rem;">👆</span>
+                        <span style="line-height: 1.5; color: var(--color-sky-600);">Reportes simplificados con categorización por sector, tipo de incidencia: incidencias tipificadas pueden ser informadas sin escribir una palabra.</span>
+                    </li>
+                    <li style="display: flex; align-items: flex-start; padding: 0.75rem;">
+                        <span style="display: flex; align-items: center; justify-content: center; width: 2rem; height: 2rem; background-color: var(--color-earth-100); color: var(--color-earth-600); border-radius: 50%; margin-right: 1rem; flex-shrink: 0; font-size: 0.875rem;">🔧</span>
+                        <span style="line-height: 1.5; color: var(--color-sky-600);">Gestión de mantenimientos preventivos y correctivos con seguimiento técnico</span>
+                    </li>
+                    <li style="display: flex; align-items: flex-start; padding: 0.75rem;">
+                        <span style="display: flex; align-items: center; justify-content: center; width: 2rem; height: 2rem; background-color: var(--color-earth-100); color: var(--color-earth-600); border-radius: 50%; margin-right: 1rem; flex-shrink: 0; font-size: 0.875rem;">📊</span>
+                        <span style="line-height: 1.5; color: var(--color-sky-600);">Análisis estadístico detallado para toma de decisiones</span>
+                    </li>
+                    <li style="display: flex; align-items: flex-start; padding: 0.75rem;">
+                        <span style="display: flex; align-items: center; justify-content: center; width: 2rem; height: 2rem; background-color: var(--color-earth-100); color: var(--color-earth-600); border-radius: 50%; margin-right: 1rem; flex-shrink: 0; font-size: 0.875rem;">✅</span>
+                        <span style="line-height: 1.5; color: var(--color-sky-600);">Registro completo de todas las acciones en logs e históricos para auditoría y trazabilidad</span>
+                    </li>
+                    <li style="display: flex; align-items: flex-start; padding: 0.75rem;">
+                        <span style="display: flex; align-items: center; justify-content: center; width: 2rem; height: 2rem; background-color: var(--color-earth-100); color: var(--color-earth-600); border-radius: 50%; margin-right: 1rem; flex-shrink: 0; font-size: 0.875rem;">🛒</span>
+                        <span style="line-height: 1.5; color: var(--color-sky-600);">Gestión integral del ciclo de compras con workflow de aprobaciones, seguimiento y verificación <small style="font-size: 0.75rem; color: var(--color-gray-500); padding-left: 0.5rem;">🔧 En desarrollo</small></span>
+                    </li>
+                    <li style="display: flex; align-items: flex-start; padding: 0.75rem;">
+                        <span style="display: flex; align-items: center; justify-content: center; width: 2rem; height: 2rem; background-color: var(--color-earth-100); color: var(--color-earth-600); border-radius: 50%; margin-right: 1rem; flex-shrink: 0; font-size: 0.875rem;">💬</span>
+                        <span style="line-height: 1.5; color: var(--color-sky-600);">Sistema de comunicación integrado en cada ticket, con soporte para grandes archivos y seguimiento de resolución de problemas.</span>
+                    </li>
+                </ul>
+            </div>
+        </article>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin: 2rem 0;" class="animate-slide-in-right animate-delay-600">
+            <div style="border-radius: 0.75rem; border: 2px solid var(--color-green-200); background-color: var(--color-green-50); padding: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); position: relative;">
+                <div style="position: absolute; width: 5rem; height: 5rem; display: flex; justify-content: center; align-items: center; top: -2.5rem; left: 50%; transform: translateX(-50%); background-color: var(--color-green-100); padding: 0.75rem; border-radius: 50%; border: 2px solid var(--color-green-300); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+                    <span style="font-size: 2rem;">👥</span>
+                </div>
+                <h3 style="font-size: 1.125rem; font-family: var(--font-title); color: var(--color-green-700); margin: 2rem 0 1rem 0; text-align: center;">Personal de Operación</h3>
+                <ul style="list-style: none; padding: 0; margin: 0; text-align: left;">
+                    <li style="display: flex; align-items: center; gap: 0.75rem; color: var(--color-gray-700); margin-bottom: 0.75rem;"><span style="color: var(--color-green-500);">🚩</span> Reporta incidencias</li>
+                    <li style="display: flex; align-items: center; gap: 0.75rem; color: var(--color-gray-700); margin-bottom: 0.75rem;"><span style="color: var(--color-green-500);">📎</span> Aporta documentación</li>
+                    <li style="display: flex; align-items: center; gap: 0.75rem; color: var(--color-gray-700); margin-bottom: 0.75rem;"><span style="color: var(--color-green-500);">🛒</span> Solicita insumos</li>
+                    <li style="display: flex; align-items: center; gap: 0.75rem; color: var(--color-gray-700);"><span style="color: var(--color-green-500);">✅</span> Verifica soluciones</li>
+                </ul>
+            </div>
+
+            <div style="border-radius: 0.75rem; border: 2px solid var(--color-blue-200); background-color: var(--color-blue-50); padding: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); position: relative;">
+                <div style="position: absolute; width: 5rem; height: 5rem; display: flex; justify-content: center; align-items: center; top: -2.5rem; left: 50%; transform: translateX(-50%); background-color: var(--color-blue-100); padding: 0.75rem; border-radius: 50%; border: 2px solid var(--color-blue-300); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+                    <span style="font-size: 2rem;">👔</span>
+                </div>
+                <h3 style="font-size: 1.125rem; font-family: var(--font-title); color: var(--color-blue-700); margin: 2rem 0 1rem 0; text-align: center;">Líderes de UDN</h3>
+                <ul style="list-style: none; padding: 0; margin: 0; text-align: left;">
+                    <li style="display: flex; align-items: center; gap: 0.75rem; color: var(--color-gray-700); margin-bottom: 0.75rem;"><span style="color: var(--color-blue-500);">📋</span> Auditoría continua</li>
+                    <li style="display: flex; align-items: center; gap: 0.75rem; color: var(--color-gray-700); margin-bottom: 0.75rem;"><span style="color: var(--color-blue-500);">📈</span> Estadísticas</li>
+                    <li style="display: flex; align-items: center; gap: 0.75rem; color: var(--color-gray-700);"><span style="color: var(--color-blue-500);">🔖</span> Aprobaciones</li>
+                </ul>
+            </div>
+
+            <div style="border-radius: 0.75rem; border: 2px solid var(--color-amber-200); background-color: var(--color-amber-50); padding: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); position: relative;">
+                <div style="position: absolute; width: 5rem; height: 5rem; display: flex; justify-content: center; align-items: center; top: -2.5rem; left: 50%; transform: translateX(-50%); background-color: var(--color-amber-100); padding: 0.75rem; border-radius: 50%; border: 2px solid var(--color-amber-300); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+                    <span style="font-size: 2rem;">⛑️</span>
+                </div>
+                <h3 style="font-size: 1.125rem; font-family: var(--font-title); color: var(--color-amber-700); margin: 2rem 0 1rem 0; text-align: center;">Personal Técnico</h3>
+                <ul style="list-style: none; padding: 0; margin: 0; text-align: left;">
+                    <li style="display: flex; align-items: center; gap: 0.75rem; color: var(--color-gray-700); margin-bottom: 0.75rem;"><span style="color: var(--color-amber-500);">🔧</span> Resuelve incidencias</li>
+                    <li style="display: flex; align-items: center; gap: 0.75rem; color: var(--color-gray-700);"><span style="color: var(--color-amber-500);">🛠️</span> Informa mantenimiento</li>
+                </ul>
+            </div>
+
+            <div style="border-radius: 0.75rem; border: 2px solid var(--color-rose-200); background-color: var(--color-rose-50); padding: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); position: relative;">
+                <div style="position: absolute; width: 5rem; height: 5rem; display: flex; justify-content: center; align-items: center; top: -2.5rem; left: 50%; transform: translateX(-50%); background-color: var(--color-rose-100); padding: 0.75rem; border-radius: 50%; border: 2px solid var(--color-rose-300); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+                    <span style="font-size: 2rem;">💻</span>
+                </div>
+                <h3 style="font-size: 1.125rem; font-family: var(--font-title); color: var(--color-rose-700); margin: 2rem 0 1rem 0; text-align: center;">Administrativos y Comerciales</h3>
+                <ul style="list-style: none; padding: 0; margin: 0; text-align: left;">
+                    <li style="display: flex; align-items: center; gap: 0.75rem; color: var(--color-gray-700); margin-bottom: 0.75rem;"><span style="color: var(--color-rose-500);">💡</span> Aportan ideas y mejoras</li>
+                    <li style="display: flex; align-items: center; gap: 0.75rem; color: var(--color-gray-700); margin-bottom: 0.75rem;"><span style="color: var(--color-rose-500);">👥</span> Gestionan incidencias RRHH</li>
+                    <li style="display: flex; align-items: center; gap: 0.75rem; color: var(--color-gray-700); margin-bottom: 0.75rem;"><span style="color: var(--color-rose-500);">🔍</span> Colaboran en auditorías</li>
+                    <li style="display: flex; align-items: center; gap: 0.75rem; color: var(--color-gray-700);"><span style="color: var(--color-rose-500);">🏠</span> Trabajan remotamente</li>
+                </ul>
+            </div>
+        </div>
+
+        <article id="closing" class="card animate-fade-in-slow animate-delay-1000" style="text-align: center; background-color: var(--color-sky-50); border: 2px solid var(--color-sky-200);">
+            <div class="card-body">
+                <p style="margin: 0; color: var(--color-sky-700); line-height: 1.5;">
+                    Estamos trabajando para adaptar cada funcionalidad a las necesidades específicas de tu organización.
+                </p>
+            </div>
+        </article>
+
+        <!-- Navigation buttons -->
+        <div style="display: flex; justify-content: center; gap: 1rem; margin-top: 2rem;" class="animate-slide-in-bottom animate-delay-1200">
+            <a href="{% url 'welp_desk:home' %}" class="button-secondary transition-all hover-lift">
+                ← Volver al Dashboard
+            </a>
+            <a href="{% url 'landing' %}" class="button-primary transition-all hover-lift">
+                Inicio Principal
+            </a>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block styles %}
+<style>
+    /* Estilos adicionales para las tarjetas de roles */
+    .role-card {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .role-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.1);
+    }
+</style>
+{% endblock %} 

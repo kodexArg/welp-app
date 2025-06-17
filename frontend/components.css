@@ -92,6 +92,21 @@
         background-color: var(--color-earth-700);
         color: white;
     }
+
+    .button-minimal {
+        @apply px-4 py-2 rounded-lg font-medium border-none cursor-pointer;
+        background-color: transparent;
+        color: var(--color-sky-600);
+        @apply hover:scale-[1.02];
+        @apply active:scale-98;
+        @apply transition-all duration-200;
+        border: 1px solid transparent;
+    }
+
+    .button-minimal:hover {
+        background-color: var(--color-sky-50);
+        border-color: var(--color-sky-200);
+    }
     
     .button-disabled {
         @apply text-zinc-500 cursor-not-allowed opacity-50;
