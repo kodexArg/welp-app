@@ -153,7 +153,8 @@
     }
 
     input:focus, textarea:focus, select:focus {
-        @apply outline-none border-2 border-earth-400;
+        @apply outline-none border-2;
+        border-color: var(--color-earth-400);
     }
 
     /* Elementos adicionales */

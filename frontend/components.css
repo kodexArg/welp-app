@@ -89,7 +89,10 @@
     }
 
     .tag-sector {
-        @apply bg-sky-100 text-sky-700 border-sky-300;
+        @apply text-xs font-medium py-1 px-1 rounded-full leading-none whitespace-nowrap border-2;
+        background-color: var(--color-sky-100);
+        color: var(--color-sky-700);
+        border-color: var(--color-sky-300);
     }
 
     .tag-category {
@@ -115,7 +118,10 @@
     }
 
     .status-feedback {
-        @apply bg-sky-200 text-sky-700 border-sky-600;
+        @apply text-xs font-semibold py-1 px-1 rounded-full leading-none whitespace-nowrap border-2;
+        background-color: var(--color-sky-200);
+        color: var(--color-sky-700);
+        border-color: var(--color-sky-600);
     }
 
     .status-closed {
@@ -168,7 +174,9 @@
     }
 
     .form-input:focus {
-        @apply outline-none border-sky-500 ring-2 ring-sky-200;
+        @apply outline-none ring-2;
+        border-color: var(--color-sky-500);
+        --tw-ring-color: var(--color-sky-200);
     }
 
     .form-input:invalid {
