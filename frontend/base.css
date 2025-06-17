@@ -172,7 +172,9 @@
     }
 
     code {
-        @apply px-1 py-0.5 rounded text-sm bg-sky-100 text-earth-700;
+        @apply px-1 py-0.5 rounded text-sm;
+        background-color: var(--color-sky-100);
+        color: var(--color-earth-700);
     }
 
     pre {
