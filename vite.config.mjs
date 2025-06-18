@@ -16,6 +16,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: 'frontend/main.js',
+        styles: 'frontend/main.css',
         favicon: 'frontend/favicon.ico',
       },
     },
