@@ -1,0 +1,89 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Mantenimiento Automático del README
+
+## TRIGGERS AUTOMÁTICOS OBLIGATORIOS
+
+Cursor DEBE actualizar `@README.md` y `@templates/core/home.html` INMEDIATAMENTE cuando detecte:
+
+### 1. Cambios en Configuración
+- ✅ **apprunner.yaml modificado** → Actualizar "Integración AWS" y "Orden de Implementación"
+- ✅ **requirements.txt modificado** → Actualizar "Dependencias" y "Notas técnicas"  
+- ✅ **settings.py modificado** → Actualizar "Configuración" y "Características"
+
+### 2. Cambios en Estructura
+- ✅ **Nuevos archivos creados** → Actualizar "Orden de Implementación"
+- ✅ **Aplicaciones agregadas** → Actualizar "Características de la Aplicación"
+- ✅ **URLs modificadas** → Actualizar "Estructura de API"
+
+### 3. Cambios en Funcionalidad  
+- ✅ **Nuevas vistas implementadas** → Marcar como [x] en "Orden de Implementación"
+- ✅ **Modelos modificados** → Actualizar "Características de la Aplicación"
+- ✅ **Templates creados** → Actualizar estado de completitud
+
+## PROTOCOLO DE ACTUALIZACIÓN
+
+### PASO 1: Detección Automática
+```markdown
+🔍 **DETECTADO**: Cambio en [archivo]
+📝 **ACCIÓN REQUERIDA**: Actualizar README.md sección [X]
+⚠️ **CRITICIDAD**: [Alta/Media/Baja]
+```
+
+### PASO 2: Análisis de Impacto
+- Determinar qué secciones específicas necesitan cambios
+- Verificar consistencia entre README.md y home.html
+- Identificar dependencias cruzadas
+
+### PASO 3: Actualización Sincronizada
+- Actualizar README.md con cambios específicos
+- Sincronizar templates/core/home.html con misma información
+- Mantener formato de checkboxes [x] y [ ]
+- Preservar emojis y estructura de secciones
+
+## SECCIONES CRÍTICAS A MANTENER
+
+### ✅ Estado de Tareas (Obligatorio)
+```markdown
+## 📋 Orden de Implementación
+
+### Core Infrastructure
+- [x] Configuración básica de Django
+- [x] Template tags y componentes
+- [ ] Autenticación completa
+```
+
+### ✅ Integración AWS (Obligatorio)
+```markdown  
+## ☁️ Integración con Servicios AWS
+- [x] AppRunner deployment configurado
+- [x] S3 para archivos estáticos
+- [ ] CloudFront para CDN
+```
+
+### ✅ Características Técnicas (Obligatorio)
+```markdown
+## 🔧 Características de la Aplicación
+- [x] Sistema de usuarios con AbstractUser
+- [x] Template tags personalizados
+- [ ] Sistema de tickets
+```
+
+## VERIFICACIÓN POST-ACTUALIZACIÓN
+
+Cursor DEBE verificar que:
+1. **Formato consistente**: Checkboxes, emojis, jerarquía mantenida
+2. **Sincronización**: README.md y home.html con misma información  
+3. **Links funcionales**: Referencias a archivos y secciones válidas
+4. **Estado actualizado**: Progreso real reflejado en checkboxes
+
+## ACCIONES PROHIBIDAS
+
+❌ **NO modificar** estructura básica del README
+❌ **NO eliminar** secciones existentes sin justificación
+❌ **NO desincronizar** README.md y home.html
+❌ **NO ignorar** cambios en archivos críticos
+

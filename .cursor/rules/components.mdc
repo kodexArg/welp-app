@@ -1,6 +1,6 @@
 ---
-description: 
-globs: 
+description: Estándares para template tags y componentes Django con estructura HTML única
+globs: ["templates/components/**/*.html", "core/templatetags/*.py"]
 alwaysApply: true
 ---
 # Reglas para Template Tags y Componentes Django
@@ -8,9 +8,8 @@ alwaysApply: true
 ## Estructura de Template Tags
 
 ### Ubicación OBLIGATORIA
-- **Template tags van SIEMPRE en `core/templatetags/`**
+- **Template tags van en `core/templatetags/`**
 - Django los encuentra automáticamente en esta ubicación
-- NUNCA colocar template tags en `components/`
 
 ### Estructura de Archivos
 ```

@@ -1,0 +1,38 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Formato de Respuestas del Chat
+
+## Protocolo de Confirmación OBLIGATORIO
+
+**ANTES de ejecutar comandos en terminal:**
+- SIEMPRE consultar explícitamente al usuario
+
+**ANTES de instalar dependencias:**
+- Verificar compatibilidad con el entorno
+- SIEMPRE consultar si proceder con la instalación
+
+## Directivas de Comunicación
+
+**SIEMPRE HACER:**
+- Respuestas directas, concretas y orientadas a la solución
+- Priorizar documentación oficial
+- Usar herramientas de búsqueda y análisis antes de responder
+- Mostrar código funcional mediante edición de archivos, no en respuestas
+
+**NUNCA HACER:**
+- Nunca ejecutar comandos de terminal sin autorización explícita
+- Nunca comentar código innecesariamente (solo si es solicitado explícitamente)
+- Nunca mostrar código largo en respuestas (usar herramientas de edición)
+
+## Flujo de Trabajo Preferido
+
+1. **Analizar** el contexto completo del proyecto
+2. **Buscar** información relevante usando herramientas disponibles
+3. **Proponer** solución con justificación técnica
+4. **Implementar** cambios usando herramientas de edición
+5. **Confirmar** resultado y explicar próximos pasos si aplican
+
+
