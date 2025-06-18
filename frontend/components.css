@@ -8,6 +8,10 @@
         @apply hidden;
     }
 
+    .font-brand {
+        font-family: var(--font-brand);
+    }
+
     .text-gradient {
         background: linear-gradient(135deg, var(--color-sky-600), var(--color-earth-500));
         -webkit-background-clip: text;
