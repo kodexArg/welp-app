@@ -1,10 +1,5 @@
-<ul>
-    <li><a href="{% url 'landing' %}">Landing</a></li>
-    <li><a href="{% url 'core:home' %}">Home</a></li>
-    {% if user.is_authenticated %}
-        <li><a href="{% url 'core:dashboard' %}">Dashboard</a></li>
-        <li><a href="{% url 'core:logout' %}">Salir</a></li>
-    {% else %}
-        <li><a href="{% url 'core:login' %}">Login</a></li>
-    {% endif %}
-</ul> 
+<nav class="navbar">
+    <div class="navbar-brand">
+        <span>Welp App</span>
+    </div>
+</nav> 
