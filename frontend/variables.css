@@ -32,6 +32,19 @@
     --color-sky-900: #0f2332;
     --color-sky-950: #071219;
 
+    /* Paleta forest - Verdes mate naturales */
+    --color-forest-50: #f1f5f1;
+    --color-forest-100: #e0e8e0;
+    --color-forest-200: #c1d2c1;
+    --color-forest-300: #9bb59b;
+    --color-forest-400: #759875;
+    --color-forest-500: #567856;
+    --color-forest-600: #446144;
+    --color-forest-700: #374d37;
+    --color-forest-800: #2d3e2d;
+    --color-forest-900: #253225;
+    --color-forest-950: #151b15;
+
     /* Colores semánticos */
     --color-page-bg: var(--color-sky-50);
     --color-menu-bg: var(--color-sky-100);
