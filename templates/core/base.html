@@ -12,6 +12,9 @@
     <title>{% block title %}Welp App{% endblock %}</title>
     <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
     
+    {# CSS directo para evitar FOUC - carga ANTES que JavaScript #}
+    <link rel="stylesheet" href="{% vite_asset_url 'frontend/styles.css' %}">
+    
     {# Dependencias CSS de componentes #}
     {% component_css_dependencies %}
     

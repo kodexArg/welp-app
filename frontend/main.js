@@ -1,4 +1,3 @@
-import './styles.css'
 import htmx from 'htmx.org'
 
 // Configuración de HTMX
@@ -14,8 +13,3 @@ document.addEventListener('DOMContentLoaded', function() {
         detail: { version: htmx.version }
     }));
 });
-
-// Log de versión de HTMX
-console.log('HTMX version:', htmx.version)
-
-console.log('Vite + HTMX is running! 🚀') 
