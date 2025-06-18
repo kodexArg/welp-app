@@ -4,12 +4,10 @@
 
 {% block content %}
 {% if user.is_authenticated %}
-    <!-- Dashboard para usuarios logueados -->
     <section class="animate-fade-in">
         <h1 class="font-title">Dashboard</h1>
         <p class="font-content">Bienvenido, {{ user.get_full_name|default:user.username }}</p>
 
-        <!-- Navegación Principal -->
         <article class="animate-slide-in-bottom animate-delay-200">
             <h3 class="font-title">Aplicaciones</h3>
             
@@ -68,7 +66,6 @@
             {% endif %}
         </article>
 
-        <!-- Información del Sistema -->
         <article class="animate-slide-in-bottom animate-delay-500">
             <h3 class="font-title">Información del Sistema</h3>
             <table>
@@ -121,7 +118,6 @@
     </section>
 
 {% else %}
-    <!-- Landing para usuarios no logueados -->
     <section class="animate-fade-in">
         <h1 class="font-brand text-gradient text-5xl font-bold">Welp App</h1>
         <p class="font-content">Plataforma integral de soporte y pagos</p>

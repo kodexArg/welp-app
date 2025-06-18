@@ -10,7 +10,6 @@
             <p>Ingresa tus credenciales para acceder</p>
         </div>
 
-        <!-- Mostrar mensajes de error/éxito -->
         {% if messages %}
             {% for message in messages %}
                 <div class="{% if message.tags == 'error' %}alert-error{% elif message.tags == 'success' %}alert-success{% else %}alert-info{% endif %}">
@@ -20,11 +19,9 @@
         {% endif %}
         
         <div class="card-body">
-            <!-- Formulario -->
             <form method="post">
                 {% csrf_token %}
                 
-                <!-- Campo Usuario -->
                 <div class="form-group">
                     <label for="username" class="form-label">Usuario</label>
                     <input 
@@ -38,7 +35,6 @@
                     >
                 </div>
 
-                <!-- Campo Contraseña -->
                 <div class="form-group">
                     <label for="password" class="form-label">Contraseña</label>
                     <input 
@@ -51,7 +47,6 @@
                     >
                 </div>
 
-                <!-- Botón de envío -->
                 <div class="form-group">
                     <button type="submit" class="button-primary">
                         <i class="fa fa-sign-in-alt"></i>
@@ -59,7 +54,6 @@
                     </button>
                 </div>
 
-                <!-- Botón Admin -->
                 <div class="form-group">
                     <a href="/admin/" class="button-secondary">
                         <i class="fa fa-cog"></i>

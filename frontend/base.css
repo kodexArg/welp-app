@@ -13,14 +13,6 @@
         background-color: var(--color-menu-bg);
     }
 
-    /* 
-     * Estilos genéricos de nav removidos para evitar conflictos 
-     * con el navbar personalizado en components.css
-     */
-    /* nav {
-        @apply w-full h-full flex items-center justify-between px-3;
-    } */
-
     main {
         @apply mx-auto;
         width: var(--breakpoint-md);

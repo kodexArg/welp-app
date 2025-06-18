@@ -1,5 +1,4 @@
 <div class="logout">
-    <!-- Logout text link that submits the hidden form -->
     <a href="#" 
        onclick="document.getElementById('logout-form').submit(); return false;" 
        class="group relative inline-flex items-center justify-center 
@@ -24,7 +23,6 @@
         </div>
     </a>
 
-    <!-- Hidden form for logout -->
     <form id="logout-form" 
           method="post" 
           action="{% url 'core:logout' %}" 

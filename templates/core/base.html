@@ -11,12 +11,8 @@
     <title>{% block title %}Welp App{% endblock %}</title>
     <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
     
-    <!-- Fuentes cargadas desde CSS para mejor rendimiento -->
-    
-    <!-- FontAwesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
     
-    {# CSS directo para evitar FOUC - carga ANTES que JavaScript #}
     <link rel="stylesheet" href="{% vite_asset_url 'frontend/styles.css' %}">
     
     
