@@ -73,7 +73,7 @@ def htmx_demo(request):
 
 def login_view(request):
     if request.user.is_authenticated:
-        return redirect('core:dashboard')
+        return redirect('core:home')
     
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -84,7 +84,8 @@ def login_view(request):
             if user is not None:
                 login(request, user)
                 messages.success(request, f'¡Bienvenido, {user.get_full_name() or user.username}!')
-                return redirect('core:dashboard')
+                next_url = request.GET.get('next', 'core:home')
+                return redirect(next_url)
             else:
                 messages.error(request, 'Usuario o contraseña incorrectos.')
         else:
@@ -92,12 +93,13 @@ def login_view(request):
     
     return render(request, 'core/login.html')
 
-@login_required
 def logout_view(request):
-    user_name = request.user.get_full_name() or request.user.username
-    logout(request)
-    messages.info(request, f'¡Hasta luego, {user_name}!')
-    return redirect('core:index')
+    if request.method == 'POST':
+        user_name = request.user.get_full_name() or request.user.username if request.user.is_authenticated else 'Usuario'
+        logout(request)
+        messages.info(request, f'¡Hasta luego, {user_name}!')
+        return redirect('core:home')
+    return redirect('core:home')
 
 @login_required
 def dashboard_view(request):
@@ -105,3 +107,6 @@ def dashboard_view(request):
         'user': request.user,
     }
     return render(request, 'core/dashboard.html', context)
+
+def dev_view(request):
+    return render(request, 'core/dev.html')

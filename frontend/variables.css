@@ -56,4 +56,9 @@
     --color-interactive-neutral: var(--color-sky-600);
     --color-interactive-hover: var(--color-earth-600);
     --color-interactive-active: var(--color-earth-700);
+
+    /* Variables de navbar */
+    --navbar-link-text: rgb(148 163 184); /* slate-400 */
+    --navbar-link-hover: rgb(241 245 249); /* slate-100 */
+    --navbar-link-active: rgb(255 255 255); /* white */
 } 

@@ -1,5 +1,23 @@
-<nav class="navbar">
-    <div class="navbar-brand">
-        <span>Welp App</span>
+{% load component_tags %}
+
+<nav class="flex items-center justify-between w-full px-4 py-2 bg-gradient-to-r from-slate-800 to-slate-900">
+    {% component "brand-logo" / %}
+    
+    <div class="flex items-center space-x-1">
+        {% if user.is_staff %}
+            {% component "nav-link" link="core:dev" icon="fa fa-code" label="DEV" current_view=request.resolver_match.view_name / %}
+            {% component "separator" / %}
+        {% endif %}
+        {% component "nav-link" link="core:home" icon="fa fa-home" label="INICIO" current_view=request.resolver_match.view_name / %}
+        {% component "separator" / %}
+        {% component "nav-link" link="welp_desk:index" icon="fa fa-headset" label="WelpDesk" current_view=request.resolver_match.view_name / %}
+        {% component "separator" / %}
+        {% component "nav-link" link="welp_pay:index" icon="fa fa-user-check" label="WelpPay" current_view=request.resolver_match.view_name / %}
+        {% component "separator" / %}
+        {% if user.is_authenticated %}
+            {% component "logout" / %}
+        {% else %}
+            {% component "nav-link" link="core:login" icon="fa fa-sign-in" label="INGRESAR" current_view=request.resolver_match.view_name / %}
+        {% endif %}
     </div>
 </nav> 

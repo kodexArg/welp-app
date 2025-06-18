@@ -50,7 +50,31 @@ $viteJob = Start-Job -ScriptBlock {
 Start-Sleep 3
 Write-Host "🐍 Django: http://localhost:8000" -ForegroundColor Green
 
-# Iniciar Django en primer plano
+# Iniciar Django con opciones de desarrollo optimizadas
+uv run python manage.py runserver --noreload &
+
+# Configurar watchdog para reiniciar Django cuando cambien componentes
+Write-Host "👁️  Monitoreando cambios en components/" -ForegroundColor Magenta
+
+# Monitorear cambios en tiempo real
+$watcher = New-Object System.IO.FileSystemWatcher
+$watcher.Path = "components"
+$watcher.IncludeSubdirectories = $true
+$watcher.EnableRaisingEvents = $true
+
+# Reiniciar Django al detectar cambios
+$action = {
+    Write-Host "🔄 Cambio detectado en componentes, reiniciando..." -ForegroundColor Yellow
+    Stop-Process -Name "python" -Force -ErrorAction SilentlyContinue
+    Start-Sleep 1
+    Start-Process "uv" -ArgumentList "run", "python", "manage.py", "runserver" -WindowStyle Hidden
+}
+
+Register-ObjectEvent -InputObject $watcher -EventName Changed -Action $action
+Register-ObjectEvent -InputObject $watcher -EventName Created -Action $action
+Register-ObjectEvent -InputObject $watcher -EventName Deleted -Action $action
+
+# Iniciar Django normalmente
 uv run .\manage.py runserver
 
 # Limpiar el trabajo de Vite cuando Django se detenga

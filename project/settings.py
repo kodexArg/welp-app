@@ -180,6 +180,7 @@ STATICFILES_FINDERS = [
 
 STATICFILES_DIRS = [
     VITE_ASSETS_PATH,
+    BASE_DIR / "components",
 ]
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
@@ -241,3 +242,17 @@ COMPONENTS = ComponentsSettings(
         BASE_DIR / "components",
     ],
 )
+
+# Configuración de auto-reload para componentes en desarrollo
+if IS_LOCAL:
+    import os
+    import django.utils.autoreload
+    
+    # Añadir directorio de componentes al auto-reload
+    django.utils.autoreload.autoreload_started.connect(
+        lambda sender, **kwargs: [
+            django.utils.autoreload.watch_dir(BASE_DIR / "components", "**/*.html"),
+            django.utils.autoreload.watch_dir(BASE_DIR / "components", "**/*.css"),
+            django.utils.autoreload.watch_dir(BASE_DIR / "components", "**/*.js"),
+        ]
+    )
