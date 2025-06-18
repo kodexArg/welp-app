@@ -1,11 +1,10 @@
 from pathlib import Path
 import os
 import json
-from loguru import logger
 import sys
 from datetime import datetime
 from dotenv import load_dotenv
-from django_components import ComponentsSettings
+from loguru import logger
 
 # Cargar variables de entorno desde .env
 load_dotenv(override=True)
@@ -56,31 +55,32 @@ SESSION_COOKIE_SAMESITE = 'Strict'  # Previene envío de cookie de sesión en pe
 CSRF_USE_SESSIONS = True  # Almacena token CSRF en sesión en lugar de cookie
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')  # Detecta HTTPS detrás del proxy de App Runner
 
+# === APPS ===
 INSTALLED_APPS = [
+    'core',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.sessions',
     'django.contrib.staticfiles',
-    'django_components',
-    'django_vite',
     'django_htmx',
+    'django_vite',
     'storages',
-    'core',
     'welp_desk',
     'welp_pay',
 ]
 
+# === MIDDLEWARE ===
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django_htmx.middleware.HtmxMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.security.SecurityMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_htmx.middleware.HtmxMiddleware',
 ]
 
 ROOT_URLCONF = 'project.urls'
@@ -97,19 +97,13 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
-            'builtins': [
-                'django_components.templatetags.component_tags',
-            ],
-            # Configuración condicional del loader - SIN caché en desarrollo
             'loaders': [
                 'django.template.loaders.filesystem.Loader',
                 'django.template.loaders.app_directories.Loader',
-                'django_components.template_loader.Loader',
             ] if IS_LOCAL else [(
                 'django.template.loaders.cached.Loader', [
                     'django.template.loaders.filesystem.Loader',
                     'django.template.loaders.app_directories.Loader',
-                    'django_components.template_loader.Loader',
                 ]
             )],
         },
@@ -130,18 +124,10 @@ DATABASES = {
 }
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
 LANGUAGE_CODE = 'es-ar'
@@ -171,11 +157,8 @@ AWS_S3_VERIFY = True
 VITE_ASSETS_PATH = BASE_DIR / "static" / "dist"
 
 STATICFILES_FINDERS = [
-    # Buscadores por defecto
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
-    # Buscador de componentes Django
-    "django_components.finders.ComponentsFileSystemFinder",
 ]
 
 STATICFILES_DIRS = [
@@ -235,24 +218,3 @@ else:
 
 # Ejecutor de pruebas
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
-
-# Configuración de django-components según documentación oficial
-COMPONENTS = ComponentsSettings(
-    dirs=[
-        BASE_DIR / "components",
-    ],
-)
-
-# Configuración de auto-reload para componentes en desarrollo
-if IS_LOCAL:
-    import os
-    import django.utils.autoreload
-    
-    # Añadir directorio de componentes al auto-reload
-    django.utils.autoreload.autoreload_started.connect(
-        lambda sender, **kwargs: [
-            django.utils.autoreload.watch_dir(BASE_DIR / "components", "**/*.html"),
-            django.utils.autoreload.watch_dir(BASE_DIR / "components", "**/*.css"),
-            django.utils.autoreload.watch_dir(BASE_DIR / "components", "**/*.js"),
-        ]
-    )

@@ -1,7 +1,6 @@
 {% load static %}
 {% load django_vite %}
 {% load django_htmx %}
-{% load component_tags %}
 
 <!DOCTYPE html>
 <html lang="es">
@@ -28,8 +27,6 @@
     {# CSS directo para evitar FOUC - carga ANTES que JavaScript #}
     <link rel="stylesheet" href="{% vite_asset_url 'frontend/styles.css' %}">
     
-    {# Dependencias CSS de componentes #}
-    {% component_css_dependencies %}
     
     {% vite_hmr_client %}
     {% vite_asset 'frontend/main.js' %}
@@ -61,8 +58,6 @@
         {% block footer %}{% endblock %}
     </footer>
 
-    {# Dependencias JS de componentes #}
-    {% component_js_dependencies %}
     
     {% block scripts %}{% endblock %}
 </body>
