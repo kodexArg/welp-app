@@ -5,138 +5,152 @@
 {% block content %}
 {% if user.is_authenticated %}
     <!-- Dashboard para usuarios logueados -->
-    <div class="min-h-screen bg-gray-50 py-6">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <!-- Header del Dashboard -->
-            <div class="mb-8">
-                <h1 class="text-3xl font-bold text-gray-900">Dashboard</h1>
-                <p class="text-gray-600">Bienvenido, {{ user.get_full_name|default:user.username }}</p>
-            </div>
+    <section class="animate-fade-in">
+        <h1>Dashboard</h1>
+        <p>Bienvenido, {{ user.get_full_name|default:user.username }}</p>
 
-            <!-- Grid Principal -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                
-                <!-- DEV (Solo para staff) -->
-                {% if user.is_staff %}
-                <div class="bg-white rounded-lg shadow p-6">
-                    <div class="flex items-center mb-4">
-                        <i class="fa fa-code text-2xl text-purple-600 mr-3"></i>
-                        <h3 class="text-lg font-semibold">Desarrollo</h3>
-                    </div>
-                    <p class="text-gray-600 mb-4">Herramientas de desarrollo y testing</p>
-                    <a href="{% url 'core:dev' %}" class="inline-block bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 transition">Acceder</a>
+        <!-- Navegación Principal -->
+        <article class="animate-slide-in-bottom animate-delay-200">
+            <h3>Aplicaciones</h3>
+            
+            {% if user.is_staff %}
+            <div class="card">
+                <div class="card-header">
+                    <h4><i class="fa fa-code"></i> Desarrollo</h4>
                 </div>
-                {% endif %}
-
-                <!-- WelpDesk -->
-                <div class="bg-white rounded-lg shadow p-6">
-                    <div class="flex items-center mb-4">
-                        <i class="fa fa-headset text-2xl text-indigo-600 mr-3"></i>
-                        <h3 class="text-lg font-semibold">WelpDesk</h3>
-                    </div>
-                    <p class="text-gray-600 mb-4">Sistema de soporte y tickets</p>
-                    <a href="{% url 'welp_desk:index' %}" class="inline-block bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition">Acceder</a>
-                </div>
-
-                <!-- WelpPay -->
-                <div class="bg-white rounded-lg shadow p-6">
-                    <div class="flex items-center mb-4">
-                        <i class="fa fa-user-check text-2xl text-green-600 mr-3"></i>
-                        <h3 class="text-lg font-semibold">WelpPay</h3>
-                    </div>
-                    <p class="text-gray-600 mb-4">Sistema de pagos y facturación</p>
-                    <a href="{% url 'welp_pay:index' %}" class="inline-block bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition">Acceder</a>
-                </div>
-
-                <!-- Panel de Usuario -->
-                <div class="bg-white rounded-lg shadow p-6">
-                    <div class="flex items-center mb-4">
-                        <i class="fa fa-user text-2xl text-blue-600 mr-3"></i>
-                        <h3 class="text-lg font-semibold">Mi Perfil</h3>
-                    </div>
-                    <p class="text-gray-600 mb-4">Configuración de cuenta y perfil</p>
-                    <a href="{% url 'core:dashboard' %}" class="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">Ver Perfil</a>
-                </div>
-
-                <!-- Panel de Administración (Solo para staff) -->
-                {% if user.is_staff %}
-                <div class="bg-white rounded-lg shadow p-6">
-                    <div class="flex items-center mb-4">
-                        <i class="fa fa-cog text-2xl text-gray-700 mr-3"></i>
-                        <h3 class="text-lg font-semibold">Administración</h3>
-                    </div>
-                    <p class="text-gray-600 mb-4">Panel de administración del sistema</p>
-                    <a href="/admin/" class="inline-block bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-800 transition">Admin Panel</a>
-                </div>
-                {% endif %}
-            </div>
-
-            <!-- Información del Proyecto -->
-            <div class="bg-white rounded-lg shadow p-6">
-                <h3 class="text-lg font-semibold mb-4">Información del Sistema</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
-                    <div class="bg-gray-50 p-3 rounded">
-                        <div class="font-medium text-gray-700">Entorno</div>
-                        <div class="text-gray-600">{{ environment }}</div>
-                    </div>
-                    <div class="bg-gray-50 p-3 rounded">
-                        <div class="font-medium text-gray-700">Django</div>
-                        <div class="text-gray-600">{{ django_version }}</div>
-                    </div>
-                    <div class="bg-gray-50 p-3 rounded">
-                        <div class="font-medium text-gray-700">Python</div>
-                        <div class="text-gray-600">{{ python_version }}</div>
-                    </div>
-                    <div class="bg-gray-50 p-3 rounded">
-                        <div class="font-medium text-gray-700">Almacenamiento</div>
-                        <div class="text-gray-600">{{ storage_backend }}</div>
-                    </div>
-                    <div class="bg-gray-50 p-3 rounded">
-                        <div class="font-medium text-gray-700">Servidor</div>
-                        <div class="text-gray-600">{{ server_info }}</div>
-                    </div>
-                    <div class="bg-gray-50 p-3 rounded">
-                        <div class="font-medium text-gray-700">Región AWS</div>
-                        <div class="text-gray-600">{{ aws_region }}</div>
-                    </div>
-                    <div class="bg-gray-50 p-3 rounded">
-                        <div class="font-medium text-gray-700">CDN</div>
-                        <div class="text-gray-600">{% if cdn_enabled %}Habilitado{% else %}Deshabilitado{% endif %}</div>
-                    </div>
-                    <div class="bg-gray-50 p-3 rounded">
-                        <div class="font-medium text-gray-700">HTMX</div>
-                        <div class="text-gray-600">{% if htmx_enabled %}Activo{% else %}Inactivo{% endif %}</div>
-                    </div>
+                <div class="card-body">
+                    <p>Herramientas de desarrollo y testing</p>
+                    <a href="{% url 'core:dev' %}" class="button-primary">Acceder</a>
                 </div>
             </div>
-        </div>
-    </div>
+            {% endif %}
+
+            <div class="card">
+                <div class="card-header">
+                    <h4><i class="fa fa-headset"></i> WelpDesk</h4>
+                </div>
+                <div class="card-body">
+                    <p>Sistema de soporte y tickets</p>
+                    <a href="{% url 'welp_desk:index' %}" class="button-primary">Acceder</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h4><i class="fa fa-user-check"></i> WelpPay</h4>
+                </div>
+                <div class="card-body">
+                    <p>Sistema de pagos y facturación</p>
+                    <a href="{% url 'welp_pay:index' %}" class="button-primary">Acceder</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h4><i class="fa fa-user"></i> Mi Perfil</h4>
+                </div>
+                <div class="card-body">
+                    <p>Configuración de cuenta y perfil</p>
+                    <a href="{% url 'core:dashboard' %}" class="button-primary">Ver Perfil</a>
+                </div>
+            </div>
+
+            {% if user.is_staff %}
+            <div class="card">
+                <div class="card-header">
+                    <h4><i class="fa fa-cog"></i> Administración</h4>
+                </div>
+                <div class="card-body">
+                    <p>Panel de administración del sistema</p>
+                    <a href="/admin/" class="button-primary">Admin Panel</a>
+                </div>
+            </div>
+            {% endif %}
+        </article>
+
+        <!-- Información del Sistema -->
+        <article class="animate-slide-in-bottom animate-delay-500">
+            <h3>Información del Sistema</h3>
+            <table>
+                <tr>
+                    <th>Entorno</th>
+                    <td>{{ environment }}</td>
+                </tr>
+                <tr>
+                    <th>Django</th>
+                    <td>{{ django_version }}</td>
+                </tr>
+                <tr>
+                    <th>Python</th>
+                    <td>{{ python_version }}</td>
+                </tr>
+                <tr>
+                    <th>Almacenamiento</th>
+                    <td>{{ storage_backend }}</td>
+                </tr>
+                <tr>
+                    <th>Servidor</th>
+                    <td>{{ server_info }}</td>
+                </tr>
+                <tr>
+                    <th>Región AWS</th>
+                    <td>{{ aws_region }}</td>
+                </tr>
+                <tr>
+                    <th>CDN</th>
+                    <td>
+                        {% if cdn_enabled %}
+                            <span class="tag tag-sector">Habilitado</span>
+                        {% else %}
+                            <span class="tag">Deshabilitado</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th>HTMX</th>
+                    <td>
+                        {% if htmx_enabled %}
+                            <span class="tag tag-sector">Activo</span>
+                        {% else %}
+                            <span class="tag">Inactivo</span>
+                        {% endif %}
+                    </td>
+                </tr>
+            </table>
+        </article>
+    </section>
 
 {% else %}
     <!-- Landing para usuarios no logueados -->
-    <div class="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-cyan-50">
-        <div class="flex flex-col items-center justify-center min-h-screen px-4">
-            <div class="text-center mb-12">
-                <h1 class="text-5xl font-bold text-gray-900 mb-4">Welp App</h1>
-                <p class="text-xl text-gray-600 mb-8">Plataforma integral de soporte y pagos</p>
-                <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="{% url 'core:login' %}" class="bg-indigo-600 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition">Iniciar Sesión</a>
+    <section class="animate-fade-in">
+        <h1 class="text-gradient">Welp App</h1>
+        <p>Plataforma integral de soporte y pagos</p>
+        
+        <div class="card">
+            <div class="card-body">
+                <a href="{% url 'core:login' %}" class="button-primary">Iniciar Sesión</a>
+            </div>
+        </div>
+        
+        <article class="animate-slide-in-bottom animate-delay-300">
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fa fa-headset"></i> WelpDesk</h3>
+                </div>
+                <div class="card-body">
+                    <p>Sistema completo de soporte al cliente y gestión de tickets</p>
                 </div>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl">
-                <div class="bg-white rounded-xl shadow-lg p-8 text-center">
-                    <i class="fa fa-headset text-4xl text-indigo-600 mb-4"></i>
-                    <h3 class="text-xl font-semibold mb-2">WelpDesk</h3>
-                    <p class="text-gray-600">Sistema completo de soporte al cliente y gestión de tickets</p>
+            <div class="card">
+                <div class="card-header">
+                    <h3><i class="fa fa-user-check"></i> WelpPay</h3>
                 </div>
-                <div class="bg-white rounded-xl shadow-lg p-8 text-center">
-                    <i class="fa fa-user-check text-4xl text-green-600 mb-4"></i>
-                    <h3 class="text-xl font-semibold mb-2">WelpPay</h3>
-                    <p class="text-gray-600">Solución de pagos y facturación automatizada</p>
+                <div class="card-body">
+                    <p>Solución de pagos y facturación automatizada</p>
                 </div>
             </div>
-        </div>
-    </div>
+        </article>
+    </section>
 {% endif %}
 {% endblock %} 

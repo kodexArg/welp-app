@@ -3,7 +3,18 @@
 {% block title %}Dev - Welp App{% endblock %}
 
 {% block content %}
-<section>
-    <!-- Vista vacía de desarrollo -->
+<section class="animate-fade-in">
+    <h1>Desarrollo</h1>
+    <p>Herramientas de desarrollo y testing</p>
+    
+    <div class="card">
+        <div class="card-header">
+            <h3>Panel de Desarrollo</h3>
+        </div>
+        <div class="card-body">
+            <p>Esta sección está disponible solo para usuarios con permisos de staff.</p>
+            <a href="{% url 'core:home' %}" class="button-primary">Volver al Dashboard</a>
+        </div>
+    </div>
 </section>
 {% endblock %} 
