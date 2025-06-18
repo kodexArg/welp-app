@@ -4,7 +4,9 @@ from django_components import Component, register
 class NavLink(Component):
     """Componente para links de navegación en la navbar"""
     
-    template_name = "nav-link.html"
+    template_file = "nav-link.html"
+    css_file = "nav-link.css"
+    js_file = "nav-link.js"
     
     def get_context_data(self, link=None, icon=None, label=None, current_view=None, always_show_label=False, **kwargs):
         """
@@ -19,8 +21,4 @@ class NavLink(Component):
             "label": label,
             "active": active,
             "always_show_label": always_show_label,
-        }
-    
-    class Media:
-        css = ["core/nav-link/nav-link.css"]
-        js = ["core/nav-link/nav-link.js"] 
+        } 

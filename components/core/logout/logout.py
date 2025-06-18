@@ -12,8 +12,4 @@ class Logout(Component):
         """
         Define el contexto que se pasará a la plantilla HTML.
         """
-        return {}
-    
-    class Media:
-        css = ["core/logout/logout.css"]
-        js = ["core/logout/logout.js"] 
+        return {} 

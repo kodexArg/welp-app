@@ -12,3 +12,4 @@ alwaysApply: true
 
 **NUNCA**
 - Nunca comentes código si no es requerido.
+- Nunca ejecutes comandos de terminal

@@ -1,82 +1,162 @@
 #!/usr/bin/env pwsh
 
-# Script simple para desarrollo local
-# Uso: .\scripts\dev.ps1
+param(
+    [switch]$Vite,
+    [switch]$Help
+)
 
-# Verificar que estamos en el directorio raíz del proyecto
-$scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
-$projectRoot = Split-Path -Parent $scriptPath
-$currentDir = Get-Location
-
-if ($currentDir.Path -ne $projectRoot) {
-    Write-Host "⚠️  Cambiando al directorio raíz: $projectRoot" -ForegroundColor Yellow
-    Set-Location $projectRoot
-}
-
-# Verificar que el archivo .env existe
-if (-not (Test-Path ".env")) {
-    Write-Host "❌ No se encontró el archivo .env en el directorio raíz" -ForegroundColor Red
-    exit 1
+if ($Help) {
+    Write-Host "🚀 Script de desarrollo local" -ForegroundColor Green
+    Write-Host ""
+    Write-Host "Uso:" -ForegroundColor Yellow
+    Write-Host "  .\scripts\dev.ps1                # Solo Django + Watcher"
+    Write-Host "  .\scripts\dev.ps1 -Vite          # Django + Watcher + Vite"
+    Write-Host "  .\scripts\dev.ps1 -Help          # Mostrar esta ayuda"
+    Write-Host ""
+    Write-Host "Opciones:" -ForegroundColor Yellow
+    Write-Host "  -Vite    Incluir servidor Vite (http://localhost:5173)"
+    Write-Host "  -Help    Mostrar esta ayuda"
+    return
 }
 
 Write-Host "🚀 Iniciando desarrollo local..." -ForegroundColor Green
 
-# Verificar que npm esté disponible
-if (-not (Get-Command npm -ErrorAction SilentlyContinue)) {
-    Write-Host "❌ npm no está instalado" -ForegroundColor Red
-    exit 1
+if ($Vite) {
+    Write-Host "⚡ Iniciando servidores (Django + Vite)..." -ForegroundColor Yellow
+    
+    # Iniciar Vite en segundo plano
+    Write-Host "🎯 Vite: http://localhost:5173" -ForegroundColor Cyan
+    $viteJob = Start-Job -ScriptBlock {
+        Set-Location $using:PWD
+        npm run dev
+    }
+} else {
+    Write-Host "⚡ Iniciando servidor Django..." -ForegroundColor Yellow
+    Write-Host "ℹ️  Para incluir Vite, usa: .\scripts\dev.ps1 -Vite" -ForegroundColor DarkGray
 }
 
-# Verificar que uv esté disponible
-if (-not (Get-Command uv -ErrorAction SilentlyContinue)) {
-    Write-Host "❌ uv no está instalado" -ForegroundColor Red
-    exit 1
+# Función para iniciar Django
+function Start-DjangoServer {
+    return Start-Job -ScriptBlock {
+        Set-Location $using:PWD
+        uv run manage.py runserver --noreload
+    }
 }
 
-# Instalar dependencias de frontend
-Write-Host "📦 Instalando dependencias..." -ForegroundColor Yellow
-npm install
-
-Write-Host "⚡ Iniciando servidores..." -ForegroundColor Yellow
-
-# Iniciar Vite en segundo plano
-Write-Host "🎯 Vite: http://localhost:5173" -ForegroundColor Cyan
-$viteJob = Start-Job -ScriptBlock {
-    Set-Location $using:PWD
-    npm run dev
-}
-
-# Esperar un momento y luego iniciar Django
-Start-Sleep 3
+# Iniciar Django SIN auto-reload (--noreload)
 Write-Host "🐍 Django: http://localhost:8000" -ForegroundColor Green
+$djangoJob = Start-DjangoServer
 
-# Iniciar Django con opciones de desarrollo optimizadas
-uv run python manage.py runserver --noreload &
+# Configurar FileSystemWatcher para todo el proyecto
+Write-Host "👁️  Monitoreando cambios en todo el proyecto..." -ForegroundColor Magenta
 
-# Configurar watchdog para reiniciar Django cuando cambien componentes
-Write-Host "👁️  Monitoreando cambios en components/" -ForegroundColor Magenta
-
-# Monitorear cambios en tiempo real
 $watcher = New-Object System.IO.FileSystemWatcher
-$watcher.Path = "components"
+$watcher.Path = (Get-Location).Path
 $watcher.IncludeSubdirectories = $true
 $watcher.EnableRaisingEvents = $true
 
-# Reiniciar Django al detectar cambios
+# Filtros de archivos a monitorear
+$watcher.Filter = "*"
+$watcher.NotifyFilter = [System.IO.NotifyFilters]::LastWrite -bor [System.IO.NotifyFilters]::FileName -bor [System.IO.NotifyFilters]::DirectoryName
+
+# Variable global para el trabajo de Django (accesible en script blocks)
+$Global:CurrentDjangoJob = $djangoJob
+
+# Acción al detectar cambios
 $action = {
-    Write-Host "🔄 Cambio detectado en componentes, reiniciando..." -ForegroundColor Yellow
-    Stop-Process -Name "python" -Force -ErrorAction SilentlyContinue
-    Start-Sleep 1
-    Start-Process "uv" -ArgumentList "run", "python", "manage.py", "runserver" -WindowStyle Hidden
+    $path = $Event.SourceEventArgs.FullPath
+    $changeType = $Event.SourceEventArgs.ChangeType
+    $fileName = Split-Path $path -Leaf
+    $extension = [System.IO.Path]::GetExtension($fileName)
+    
+    # Filtros más específicos para evitar ruido
+    $ignorePatterns = @(
+        '^\..*',           # Archivos ocultos
+        '.*\.tmp$',        # Archivos temporales
+        '.*\.log$',        # Logs
+        '__pycache__',     # Python cache
+        '\.pyc$',          # Python compiled
+        'node_modules',    # Node modules
+        '\.git',           # Git
+        'index\.lock$',    # Git index lock
+        '.*\.lock$',       # Archivos de lock
+        'staticfiles',     # Django static files
+        '\.sqlite3$',      # SQLite database
+        'venv',            # Virtual environment
+        '\.venv',          # Virtual environment
+        '\.env$'           # Environment files
+    )
+    
+    $shouldIgnore = $false
+    foreach ($pattern in $ignorePatterns) {
+        if ($fileName -match $pattern -or $path -match $pattern) {
+            $shouldIgnore = $true
+            break
+        }
+    }
+    
+    if ($shouldIgnore) {
+        return
+    }
+    
+    Write-Host "🔄 Cambio detectado: $fileName ($changeType)" -ForegroundColor Yellow
+    
+    # Reiniciar Django
+    try {
+        # Detener job actual
+        if ($Global:CurrentDjangoJob -and $Global:CurrentDjangoJob.State -eq 'Running') {
+            Stop-Job $Global:CurrentDjangoJob -ErrorAction SilentlyContinue
+            Wait-Job $Global:CurrentDjangoJob -Timeout 5 -ErrorAction SilentlyContinue
+        }
+        Remove-Job $Global:CurrentDjangoJob -ErrorAction SilentlyContinue
+        
+        Start-Sleep 1
+        
+        # Iniciar nuevo job
+        $Global:CurrentDjangoJob = Start-Job -ScriptBlock {
+            Set-Location $using:PWD
+            uv run manage.py runserver --noreload
+        }
+        
+        Write-Host "✅ Django reiniciado" -ForegroundColor Green
+    }
+    catch {
+        Write-Host "❌ Error reiniciando Django: $_" -ForegroundColor Red
+    }
 }
 
+# Registrar eventos del watcher
 Register-ObjectEvent -InputObject $watcher -EventName Changed -Action $action
 Register-ObjectEvent -InputObject $watcher -EventName Created -Action $action
 Register-ObjectEvent -InputObject $watcher -EventName Deleted -Action $action
+Register-ObjectEvent -InputObject $watcher -EventName Renamed -Action $action
 
-# Iniciar Django normalmente
-uv run .\manage.py runserver
+Write-Host "✅ Watcher configurado - Presiona Ctrl+C para detener" -ForegroundColor Green
 
-# Limpiar el trabajo de Vite cuando Django se detenga
-Stop-Job $viteJob -ErrorAction SilentlyContinue
-Remove-Job $viteJob -ErrorAction SilentlyContinue 
+try {
+    # Mantener el script corriendo
+    while ($true) {
+        Start-Sleep 1
+    }
+}
+finally {
+    # Limpieza al salir
+    Write-Host "🧹 Limpiando procesos..." -ForegroundColor Yellow
+    
+    # Detener trabajos en segundo plano
+    if ($Vite -and $viteJob) {
+        Stop-Job $viteJob -ErrorAction SilentlyContinue
+        Remove-Job $viteJob -ErrorAction SilentlyContinue
+    }
+    
+    if ($Global:CurrentDjangoJob) {
+        Stop-Job $Global:CurrentDjangoJob -ErrorAction SilentlyContinue
+        Remove-Job $Global:CurrentDjangoJob -ErrorAction SilentlyContinue
+    }
+    
+    # Limpiar watcher
+    $watcher.EnableRaisingEvents = $false
+    $watcher.Dispose()
+    
+    Write-Host "✅ Limpieza completada" -ForegroundColor Green
+}

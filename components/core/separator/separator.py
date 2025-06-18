@@ -4,7 +4,9 @@ from django_components import Component, register
 class Separator(Component):
     """Componente para separadores en la navbar"""
     
-    template_name = "separator.html"
+    template_file = "separator.html"
+    css_file = "separator.css"
+    js_file = "separator.js"
     
     def get_context_data(self, custom_classes="", **kwargs):
         """
@@ -12,8 +14,4 @@ class Separator(Component):
         """
         return {
             "custom_classes": custom_classes,
-        }
-    
-    class Media:
-        css = ["core/separator/separator.css"]
-        js = ["core/separator/separator.js"] 
+        } 
