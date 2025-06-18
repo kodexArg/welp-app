@@ -10,8 +10,6 @@ urlpatterns = [
     path('welp-desk/', include('welp_desk.urls')),
     path('welp-pay/', include('welp_pay.urls')),
     path('admin/', admin.site.urls),
-    # Django components URLs
-    path("", include("django_components.urls")),
 ]
 
 if settings.IS_LOCAL:

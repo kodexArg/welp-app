@@ -32,63 +32,59 @@ core/
 ## Estructura de Componentes Django
 
 ### Ubicación de Componentes
-- **Componentes comunes/públicos**: `components/core/`
-- **Componentes específicos**: `components/{app_name}/`
-- Todos los componentes en `components/core/` son públicos y reutilizables
+- **Componentes comunes/públicos**: `templates/components/core/`
+- **Componentes específicos**: `templates/components/{app_name}/`
+- Todos los componentes en `templates/components/core/` son públicos y reutilizables
 
 ### Estructura de Archivos por Componente
 ```
-components/
-├── core/                    # Componentes comunes/públicos
-│   ├── button/
-│   │   └── button.html     # SOLO archivo HTML
-│   ├── modal/
-│   │   └── modal.html      # SOLO archivo HTML
-│   └── nav-link/
-│       └── nav-link.html   # SOLO archivo HTML
-└── welp_desk/              # Componentes específicos (futuro)
-    ├── ticket-card/
-    │   └── ticket-card.html
-    └── status-badge/
-        └── status-badge.html
+templates/
+└── components/
+    ├── core/                    # Componentes comunes/públicos
+    │   ├── brand-logo.html      # Logo animado con efecto glow
+    │   ├── nav-link.html        # Enlaces de navegación con estados
+    │   ├── logout.html          # Botón de logout con formulario
+    │   ├── separator.html       # Separador para navbar
+    │   ├── status-badge.html    # Badges de estado (open, closed, etc.)
+    │   └── button.html          # Botón genérico reutilizable
+    └── welp_desk/              # Componentes específicos (futuro)
+        ├── ticket-card.html
+        └── dashboard-widget.html
 ```
 
 ### Formato OBLIGATORIO de Componentes
 
 **REGLA CRÍTICA**: Cada componente usa ÚNICAMENTE un archivo `*.html`. No archivos separados de CSS o JS.
 
-#### Estructura del archivo HTML:
+#### Estructura OBLIGATORIA del archivo HTML:
 ```html
-<!-- components/core/ejemplo/ejemplo.html -->
+<!-- templates/components/core/ejemplo.html -->
 
-<!-- Estilos van al INICIO en bloque <style> -->
+<!-- 1. HTML PRIMERO - Siempre en <div> con clase del nombre del componente -->
+<div class="ejemplo">
+    <h3 class="text-lg font-semibold text-gray-900">{{ title|default:"Título por defecto" }}</h3>
+    <p class="text-sm text-gray-600">{{ content|default:"Contenido..." }}</p>
+</div>
+
+<!-- 2. CSS SEGUNDO - Solo si es necesario, usar @apply con clases de /frontend -->
 <style>
 @layer components {
-    .ejemplo-container {
+    .ejemplo {
         @apply flex items-center space-x-2 p-4 rounded-lg;
         @apply bg-white border border-gray-200 shadow-sm;
     }
     
-    .ejemplo-title {
-        @apply text-lg font-semibold text-gray-900;
-    }
-    
-    .ejemplo-content {
-        @apply text-sm text-gray-600;
+    /* Solo agregar CSS personalizado si no existe en /frontend */
+    .ejemplo-special {
+        @apply transition-all duration-300;
     }
 }
 </style>
 
-<!-- HTML del componente -->
-<div class="ejemplo-container">
-    <h3 class="ejemplo-title">{{ title|default:"Título por defecto" }}</h3>
-    <p class="ejemplo-content">{{ content|default:"Contenido..." }}</p>
-</div>
-
-<!-- JavaScript va al FINAL en bloque <script> -->
+<!-- 3. JAVASCRIPT ÚLTIMO - Solo si es necesario -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const ejemploElements = document.querySelectorAll('.ejemplo-container');
+    const ejemploElements = document.querySelectorAll('.ejemplo');
     ejemploElements.forEach(function(element) {
         element.addEventListener('click', function() {
             console.log('Ejemplo clickeado');
@@ -98,22 +94,28 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 ```
 
-### Archivo Python del Componente
-```python
-# components/core/ejemplo/ejemplo.py
-from django_components import Component, register
+#### Reglas de Formato:
+1. **HTML PRIMERO**: Siempre en `<div class="nombre-componente">`
+2. **CSS SEGUNDO**: Solo si necesario, usando `@apply` y clases de `/frontend`
+3. **JS ÚLTIMO**: Solo si necesario, con `DOMContentLoaded`
+4. **REUTILIZAR**: Siempre buscar clases en `/frontend` antes de crear nuevas
+5. **TAILWIND DIRECTO**: Preferir clases Tailwind en HTML cuando sea simple
 
-@register("ejemplo")
-class Ejemplo(Component):
-    template_name = "ejemplo.html"
-    
-    def get_context_data(self, **kwargs):
-        """Procesa los parámetros y devuelve el contexto para el template"""
-        return {
-            "title": kwargs.get("title"),
-            "content": kwargs.get("content"),
-            "variant": kwargs.get("variant", "default"),
-        }
+### Template Tags Python
+```python
+# core/templatetags/core_tags.py
+from django import template
+
+register = template.Library()
+
+@register.inclusion_tag('components/core/ejemplo.html')
+def ejemplo(title="", content="", variant="default"):
+    """Componente de ejemplo usando template tags"""
+    return {
+        "title": title,
+        "content": content,
+        "variant": variant,
+    }
 ```
 
 ## Reglas de Estilos
@@ -134,31 +136,25 @@ class Ejemplo(Component):
 
 ## Configuración en Settings.py
 
-### Configuración OBLIGATORIA al final de settings.py:
-```python
-# === DJANGO COMPONENTS ===
-STATICFILES_DIRS = [
-    VITE_ASSETS_PATH,
-    BASE_DIR / "components",  # Simple: todos los componentes
-]
-```
-
-### Auto-registro en apps.py:
-Mantener la configuración existente en `core/apps.py` para auto-registro de componentes.
+### Template Tags se cargan automáticamente
+- Los template tags en `core/templatetags/` se detectan automáticamente
+- No requieren configuración adicional en `settings.py`
+- Solo agregar `{% load core_tags %}` en los templates que los usen
 
 ## Uso en Templates
 
 ### Carga de Componentes:
 ```html
-{% load django_components %}
+{% load core_tags %}
 
-<!-- Uso básico -->
-{% component "button" text="Click me" / %}
-
-<!-- Con parámetros -->
-{% component "modal" title="Confirmación" size="large" %}
-    <p>¿Estás seguro?</p>
-{% endcomponent %}
+<!-- Componentes disponibles -->
+{% brand_logo show_text=True %}
+{% nav_link "core:home" "fa fa-home" "INICIO" current_view=request.resolver_match.view_name %}
+{% logout_link user=user %}
+{% separator %}
+{% status_badge "Activo" "open" %}
+{% button "Guardar" variant="primary" icon="fa fa-save" %}
+{% button "Cancelar" variant="secondary" href="/back/" %}
 ```
 
 ### Carga de Template Tags:
@@ -175,14 +171,14 @@ Mantener la configuración existente en `core/apps.py` para auto-registro de com
 ### NO HACER:
 - ❌ Archivos CSS separados por componente
 - ❌ Archivos JS separados por componente  
-- ❌ Template tags en `components/`
+- ❌ Template tags fuera de `core/templatetags/`
 - ❌ CSS sin `@layer components`
 - ❌ JavaScript sin `DOMContentLoaded`
-- ❌ Configuración compleja en `STATICFILES_DIRS`
+- ❌ Usar django_components (obsoleto en este proyecto)
 
 ### SÍ HACER:
-- ✅ Un solo archivo HTML por componente
+- ✅ Un solo archivo HTML por template tag
 - ✅ Estilos con `@apply` al inicio
 - ✅ JavaScript al final del HTML
 - ✅ Template tags en `core/templatetags/`
-- ✅ Componentes en `components/core/` para uso general
+- ✅ Templates de componentes en `templates/components/`

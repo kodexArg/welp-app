@@ -1,0 +1,5 @@
+<div class="status-badge">
+    <span class="status {% if variant == 'open' %}status-open{% elif variant == 'feedback' %}status-feedback{% elif variant == 'closed' %}status-closed{% elif variant == 'solved' %}status-solved{% else %}status{% endif %}">
+        {{ text|default:"Estado" }}
+    </span>
+</div> 

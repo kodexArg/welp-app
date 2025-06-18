@@ -1,0 +1,85 @@
+<div class="brand-logo">
+    <a href="{{ home_url }}" 
+       class="flex items-center 
+              font-brand font-semibold 
+              text-4xl -tracking-wide 
+              no-underline">
+        <div class="flex items-center translate-y-1">
+            {% if show_text %}
+                <span class="text-white hidden min-[30rem]:inline">Welp</span>
+            {% endif %}
+            <div class="relative">
+                <i class="absolute 
+                          text-5xl fa fa-headset 
+                          text-sky-900 
+                          shadow-md blur-[0.4rem] 
+                          translate-x-[-0.05rem] translate-y-[0.05rem] 
+                          opacity-50"></i>
+                <i class="absolute 
+                          text-5xl fa fa-headset 
+                          text-sky-900 
+                          shadow-md blur-[0.2rem] 
+                          translate-x-[-0.05rem] translate-y-[0.05rem] 
+                          opacity-20"></i>
+                <i class="relative 
+                          text-5xl fa fa-headset 
+                          text-sky-200 
+                          shadow-md 
+                          translate-x-[0.05rem] translate-y-[-0.05rem]
+                          brand-logo-glow"></i>
+            </div>
+            {% if show_text %}
+                <span class="text-white hidden min-[30rem]:inline">Desk</span>
+            {% endif %}
+        </div>
+    </a>
+</div>
+
+<style>
+@layer components {
+    .brand-logo {
+        @apply flex items-center justify-start;
+    }
+    
+    .brand-logo-glow {
+        animation: brief-glow 30s ease-in-out infinite;
+    }
+    
+    @keyframes brief-glow {
+        0%, 4%, 100% {
+            filter: brightness(1);
+            text-shadow: 0 0 0 rgba(255, 255, 255, 0);
+        }
+        1% {
+            filter: brightness(1.5);
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
+        }
+    }
+    
+    @media (prefers-reduced-motion: reduce) {
+        .brand-logo-glow {
+            animation: none;
+        }
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const brandLogos = document.querySelectorAll('.brand-logo');
+    
+    brandLogos.forEach(function(logo) {
+        const iconElement = logo.querySelector('.brand-logo-glow');
+        
+        if (iconElement) {
+            logo.addEventListener('mouseenter', function() {
+                iconElement.style.filter = 'brightness(1.2)';
+            });
+            
+            logo.addEventListener('mouseleave', function() {
+                iconElement.style.filter = '';
+            });
+        }
+    });
+});
+</script> 

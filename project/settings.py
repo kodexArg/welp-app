@@ -163,7 +163,6 @@ STATICFILES_FINDERS = [
 
 STATICFILES_DIRS = [
     VITE_ASSETS_PATH,
-    BASE_DIR / "components",
 ]
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
