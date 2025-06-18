@@ -1,8 +1,7 @@
 @import "tailwindcss";
+@import "./fonts.css";
 @import "./variables.css";
 @import "./base.css";
 @import "./components.css";
 @import "./navbar.css";
 @import "./animations.css";
-
-/* Add your styles here */

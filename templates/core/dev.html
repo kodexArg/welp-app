@@ -3,18 +3,100 @@
 {% block title %}Dev - Welp App{% endblock %}
 
 {% block content %}
-<section class="animate-fade-in">
-    <h1>Desarrollo</h1>
-    <p>Herramientas de desarrollo y testing</p>
-    
-    <div class="card">
-        <div class="card-header">
-            <h3>Panel de Desarrollo</h3>
+<div>
+    <div class="p-8 space-y-8">
+        <h1 class="text-3xl font-bold text-gray-900 mb-8">Demo de Fuentes - Sistema de Diseño</h1>
+        
+        <!-- Font Brand Demo -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Font Brand (Logotipo)</h2>
+            <div class="space-y-3">
+                <div class="font-brand text-4xl text-sky-900 font-bold">WelpDesk</div>
+                <div class="font-brand text-3xl text-sky-700 font-semibold">Sistema de Tickets</div>
+                <div class="font-brand text-2xl text-sky-500">Gestión Empresarial</div>
+                <p class="text-sm text-gray-600">Usada para: Logotipo principal, elementos de marca distintivos</p>
+                <p class="font-brand text-base text-gray-800">Test directo: ¿Se ve Grandstander?</p>
+            </div>
         </div>
-        <div class="card-body">
-            <p>Esta sección está disponible solo para usuarios con permisos de staff.</p>
-            <a href="{% url 'core:home' %}" class="button-primary">Volver al Dashboard</a>
+        
+        <!-- Font UI Demo -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Font UI (Interfaz)</h2>
+            <div class="space-y-3">
+                <div class="font-ui text-2xl font-bold text-gray-900">Título Principal</div>
+                <div class="font-ui text-xl font-semibold text-gray-800">Subtítulo</div>
+                <div class="font-ui text-lg font-medium text-gray-700">Texto Medio</div>
+                <div class="font-ui text-base text-gray-600">Texto normal de interfaz</div>
+                <div class="font-ui text-sm text-gray-500">Texto pequeño</div>
+                <p class="text-sm text-gray-600">Usada para: Navegación, botones, etiquetas, elementos de UI</p>
+            </div>
+        </div>
+        
+        <!-- Font Content Demo -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Font Content (Contenido)</h2>
+            <div class="space-y-4">
+                <h3 class="font-content text-2xl font-bold text-gray-900">Título de Artículo</h3>
+                <h4 class="font-content text-xl font-semibold text-gray-800">Subtítulo de Sección</h4>
+                <p class="font-content text-base text-gray-700 leading-relaxed">
+                    Este es un párrafo de ejemplo que muestra cómo se ve el texto de contenido principal. 
+                    La fuente content está optimizada para lectura prolongada y ofrece excelente legibilidad 
+                    en diferentes tamaños de pantalla. Es ideal para descripciones de tickets, comentarios 
+                    y cualquier texto extenso.
+                </p>
+                <p class="font-content text-sm text-gray-600 leading-relaxed">
+                    Texto secundario o notas adicionales que complementan el contenido principal. 
+                    Mantiene la consistencia visual mientras proporciona jerarquía de información.
+                </p>
+                <p class="text-sm text-gray-600">Usada para: Descripciones, comentarios, texto largo, contenido principal</p>
+            </div>
+        </div>
+        
+        <!-- Comparación de Fuentes -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Comparación Visual</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="text-center">
+                    <div class="font-brand text-2xl text-sky-900 mb-2">WelpDesk</div>
+                    <span class="text-xs text-gray-500">font-brand</span>
+                </div>
+                <div class="text-center">
+                    <div class="font-ui text-2xl text-gray-900 mb-2">Navegación</div>
+                    <span class="text-xs text-gray-500">font-ui</span>
+                </div>
+                <div class="text-center">
+                    <div class="font-content text-2xl text-gray-900 mb-2">Contenido</div>
+                    <span class="text-xs text-gray-500">font-content</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Implementación en Componentes -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Uso en Componentes Existentes</h2>
+            <div class="space-y-4">
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h3 class="font-ui text-lg font-semibold text-gray-800 mb-3">Brand Logo</h3>
+                    {% load core_tags %}
+                    {% brand_logo show_text=True %}
+                    <p class="text-sm text-gray-600 mt-2">Usa <code>font-brand</code> para el texto del logotipo</p>
+                </div>
+                
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h3 class="font-ui text-lg font-semibold text-gray-800 mb-3">Navegación</h3>
+                    {% nav_link "core:home" "fa fa-home" "INICIO" %}
+                    <p class="text-sm text-gray-600 mt-2">Usa <code>font-ui</code> para enlaces de navegación</p>
+                </div>
+                
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h3 class="font-ui text-lg font-semibold text-gray-800 mb-3">Botones</h3>
+                    {% button "Ejemplo Primario" variant="primary" icon="fa fa-check" %}
+                    {% button "Ejemplo Secundario" variant="secondary" icon="fa fa-info" %}
+                    <p class="text-sm text-gray-600 mt-2">Los botones heredan la fuente del contexto</p>
+                </div>
+            </div>
         </div>
     </div>
-</section>
+
+</div>
 {% endblock %} 

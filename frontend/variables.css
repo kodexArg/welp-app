@@ -1,14 +1,6 @@
 /* Variables CSS globales */
 
 :root {
-    /* Tipografía */
-    --font-brand: 'Grandstander', cursive;
-    --font-sans: 'Noto Sans', ui-sans-serif, system-ui, sans-serif; 
-    --font-ui: 'Roboto Condensed', 'Noto Sans', ui-sans-serif, system-ui, sans-serif;
-    --font-title: 'Roboto Slab', ui-sans-serif, system-ui, sans-serif;
-    --font-p: 'Lato', ui-sans-serif, system-ui, sans-serif;
-    --font-mono: 'Roboto', 'Consolas', 'Monaco', 'Courier New', monospace;
-
     /* Layout */
     --header-height: 4rem;
     --aside-width: 16rem;
