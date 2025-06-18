@@ -1,77 +1,10 @@
-<nav style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background-color: white; border-bottom: 1px solid var(--color-sky-200);" class="animate-fade-in">
-    
-    <!-- Brand Logo -->
-    <div style="display: flex; align-items: center;">
-        <div style="width: 2.5rem; height: 2.5rem; background: linear-gradient(135deg, var(--color-sky-500), var(--color-sky-600)); border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; margin-right: 0.75rem; color: white; font-weight: bold; font-size: 1.125rem;">W</div>
-        <a href="{% url 'landing' %}" style="font-size: 1.25rem; font-weight: 600; color: var(--color-sky-700); text-decoration: none; font-family: var(--font-title);" class="transition-all">
-            Welp App
-        </a>
-    </div>
-    
-    <!-- Navigation Links -->
-    <div style="display: flex; align-items: center; gap: 0.5rem;">
-        {% if user.is_staff %}
-            <a href="{% url 'admin:index' %}" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; color: var(--color-amber-600); text-decoration: none; font-size: 0.875rem; font-weight: 500; border-radius: 0.375rem;" class="button-minimal transition-all">
-                <span style="font-size: 0.75rem;">🛠️</span>
-                DESARROLLO
-            </a>
-            <div style="width: 1px; height: 1.5rem; background-color: var(--color-sky-200);"></div>
-        {% endif %}
-        
-        {% if user.is_authenticated %}
-            <a href="#" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; color: var(--color-green-600); text-decoration: none; font-size: 0.875rem; font-weight: 500; border-radius: 0.375rem;" class="button-minimal transition-all">
-                <span style="font-size: 0.75rem;">➕</span>
-                REPORTE
-            </a>
-            <div style="width: 1px; height: 1.5rem; background-color: var(--color-sky-200);"></div>
-            
-            <a href="#" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; color: var(--color-blue-600); text-decoration: none; font-size: 0.875rem; font-weight: 500; border-radius: 0.375rem;" class="button-minimal transition-all">
-                <span style="font-size: 0.75rem;">📋</span>
-                TICKETS
-            </a>
-            <div style="width: 1px; height: 1.5rem; background-color: var(--color-sky-200);"></div>
-            
-            <a href="{% url 'landing' %}" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; color: var(--color-sky-600); text-decoration: none; font-size: 0.875rem; font-weight: 500; border-radius: 0.375rem; {% if request.resolver_match.url_name == 'landing' %}background-color: var(--color-sky-50); border: 1px solid var(--color-sky-200);{% endif %}" class="button-minimal transition-all">
-                <span style="font-size: 0.75rem;">🏠</span>
-                INICIO
-            </a>
-            <div style="width: 1px; height: 1.5rem; background-color: var(--color-sky-200);"></div>
-            
-            <a href="{% url 'core:logout' %}" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; color: var(--color-red-600); text-decoration: none; font-size: 0.875rem; font-weight: 500; border-radius: 0.375rem;" class="button-minimal transition-all">
-                <span style="font-size: 0.75rem;">🚪</span>
-                SALIR
-            </a>
-        {% else %}
-            <a href="{% url 'core:login' %}" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; color: var(--color-sky-600); text-decoration: none; font-size: 0.875rem; font-weight: 500; border-radius: 0.375rem;" class="button-minimal transition-all">
-                <span style="font-size: 0.75rem;">🔑</span>
-                INGRESAR
-            </a>
-        {% endif %}
-    </div>
-</nav>
-
-<style>
-/* Mobile responsive */
-@media (max-width: 768px) {
-    nav {
-        flex-direction: column !important;
-        gap: 1rem;
-        padding: 1rem !important;
-    }
-    
-    nav > div:last-child {
-        gap: 0.25rem !important;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-    
-    nav a {
-        font-size: 0.75rem !important;
-        padding: 0.375rem 0.75rem !important;
-    }
-    
-    nav a span {
-        font-size: 0.625rem !important;
-    }
-}
-</style> 
+<ul>
+    <li><a href="{% url 'landing' %}">Landing</a></li>
+    <li><a href="{% url 'core:home' %}">Home</a></li>
+    {% if user.is_authenticated %}
+        <li><a href="{% url 'core:dashboard' %}">Dashboard</a></li>
+        <li><a href="{% url 'core:logout' %}">Salir</a></li>
+    {% else %}
+        <li><a href="{% url 'core:login' %}">Login</a></li>
+    {% endif %}
+</ul> 

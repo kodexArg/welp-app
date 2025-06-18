@@ -1,35 +1,10 @@
 {% extends 'core/base.html' %}
 
-{% block title %}Welp Pay - Sistema de Pagos{% endblock %}
+{% block title %}Welp Pay{% endblock %}
 
 {% block content %}
-<div class="animate-fade-in">
-    <section class="animate-slide-in-bottom">
-        <article class="animate-fade-in-slow animate-delay-300">
-            <div class="animate-slide-in-top animate-delay-100">
-                <h1 style="color: var(--color-earth-600);">Welp Pay</h1>
-                <p style="text-align: center; font-size: 1.25rem; color: var(--color-sky-600);">
-                    Sistema de Pagos y Facturación
-                </p>
-            </div>
-            
-            <div style="background-color: var(--color-earth-100); padding: 1.5rem; border-radius: 0.5rem; margin-bottom: 1.5rem; border: 2px solid var(--color-earth-300);" class="animate-fade-in animate-delay-500">
-                <h2 style="color: var(--color-earth-800); margin-bottom: 0.5rem;">¡Bienvenido!</h2>
-                <p style="color: var(--color-earth-700);">
-                    Esta es la aplicación Welp Pay, diseñada para gestionar pagos, 
-                    facturación y transacciones financieras.
-                </p>
-            </div>
-            
-            <div style="display: flex; justify-content: center; gap: 1rem;" class="animate-slide-in-bottom animate-delay-1000">
-                <a href="{% url 'welp_desk:home' %}" class="button-primary transition-all hover-lift">
-                    ← Ir a Welp Desk
-                </a>
-                <a href="{% url 'landing' %}" class="button-secondary transition-all hover-lift">
-                    Inicio →
-                </a>
-            </div>
-        </article>
-    </section>
-</div>
+<ul>
+    <li><a href="{% url 'welp_desk:home' %}">Welp Desk</a></li>
+    <li><a href="{% url 'landing' %}">Landing</a></li>
+</ul>
 {% endblock %} 
