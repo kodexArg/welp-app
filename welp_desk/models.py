@@ -184,9 +184,8 @@ class Ticket(models.Model):
 
 
 class Message(models.Model):
-    STATUS_CHOICES = TICKET_STATUS_CHOICES
     ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE, related_name="messages", verbose_name="Ticket")
-    status = models.CharField(max_length=STATUS_MAX_LENGTH, choices=STATUS_CHOICES, default='open', verbose_name="Estado")
+    status = models.CharField(max_length=STATUS_MAX_LENGTH, choices=TICKET_STATUS_CHOICES, default='open', verbose_name="Estado")
     reported_on = models.DateTimeField(null=True, blank=True, verbose_name="Fecha Reportada")
     created_on = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de Creación")
     user = models.ForeignKey('core.User', on_delete=models.SET_NULL, null=True, blank=True, related_name="welp_messages", verbose_name="Usuario")
