@@ -1,37 +1,18 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from django.contrib.auth.models import Group
-from django.contrib.auth.admin import GroupAdmin
 from .models import UDN, Sector, IssueCategory, Issue, Roles, Ticket, Message, Attachment
 from .constants import TICKET_STATUS_COLORS
 
 
 class WelpDeskAdminConfig:
-    """Organiza admin en categorías: Autenticación, Configuración y Gestión"""
+    """Organiza admin en categorías: Permisos/Usuarios, Categorías y Tablas de Hecho"""
     pass
 
-from django.contrib.auth.models import Group
-Group._meta.verbose_name_plural = "Grupos"
 
-admin.site.unregister(Group)
-
-@admin.register(Group)
-class WelpGroupAdmin(GroupAdmin):
-    """Complementa el sistema granular de roles de Welp Desk"""
-    list_display = ['name', 'permissions_count']
-    search_fields = ['name']
-    filter_horizontal = ['permissions']
-    
-    def permissions_count(self, obj):
-        """Cantidad de permisos asignados al grupo"""
-        return obj.permissions.count()
-    permissions_count.short_description = 'Permisos'
-
-
-# === AUTORIZACIÓN Y GESTIÓN DE USUARIOS ===
+# === PERMISOS Y USUARIOS ===
 
 @admin.register(Roles)
-class RolesAdmin(admin.ModelAdmin):
+class UserPermissions(admin.ModelAdmin):
     """Sistema granular de permisos por UDN/Sector/Categoría"""
     list_display = ['user', 'udn', 'sector', 'issue_category', 'permissions_summary']
     list_filter = ['udn', 'sector', 'issue_category', 'can_read', 'can_comment', 'can_solve', 'can_authorize', 'can_open', 'can_close']
@@ -75,7 +56,7 @@ class RolesAdmin(admin.ModelAdmin):
         return super().get_queryset(request).select_related('user', 'udn', 'sector', 'issue_category')
 
 
-# === CATEGORÍAS FIJAS ===
+# === CATEGORÍAS ===
 
 @admin.register(UDN)
 class UDNAdmin(admin.ModelAdmin):
