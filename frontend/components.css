@@ -1,6 +1,19 @@
 @layer components {
     
     /* ===============================================
+       OPTIMIZACIÓN DE FUENTES - ANTI-FOUC
+       =============================================== */
+    
+    /* Definición local de Grandstander para evitar FOUC */
+    @font-face {
+        font-family: 'Grandstander-local';
+        font-style: normal;
+        font-weight: 700;
+        font-display: block; /* Evitar FOUC crítico en logo */
+        src: local('Grandstander Bold'), local('Grandstander-Bold');
+    }
+    
+    /* ===============================================
        CONTENEDORES Y UTILIDADES GENERALES
        =============================================== */
     
@@ -10,6 +23,13 @@
 
     .font-brand {
         font-family: var(--font-brand);
+        /* Anti-FOUC: Mantener espacio consistente */
+        min-height: 1.2em;
+        line-height: 1.2;
+        font-weight: 700;
+        /* Placeholder hasta que cargue Grandstander */
+        font-synthesis: none;
+        -webkit-font-smoothing: antialiased;
     }
 
 

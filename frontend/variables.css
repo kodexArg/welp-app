@@ -1,6 +1,6 @@
 :root {
     /* Fuentes */
-    --font-brand: 'Grandstander', cursive;
+    --font-brand: 'Grandstander-local', 'Grandstander', 'Comic Sans MS', 'Marker Felt', cursive;
     --font-p: 'Noto Sans', sans-serif;
     --font-ui: 'Lato', sans-serif;
     --font-mono: 'Roboto Mono', monospace;
