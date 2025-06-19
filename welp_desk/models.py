@@ -2,6 +2,7 @@ from django.db import models
 from django.db.models import Q
 from django.urls import reverse
 from django.utils import timezone
+from .constants import TICKET_STATUS_CHOICES
 
 
 class UDN(models.Model):
@@ -11,8 +12,8 @@ class UDN(models.Model):
     name = models.CharField(max_length=255, verbose_name="Nombre")
 
     class Meta:
-        verbose_name = "🏢 UDN (Unidad de Negocio)"
-        verbose_name_plural = "🏢 ESTRUCTURA - UDNs"
+        verbose_name = "UDN (Unidad de Negocio)"
+        verbose_name_plural = "📋 CONFIGURACIÓN - UDNs"
 
     def __str__(self):
         return self.name
@@ -27,8 +28,8 @@ class Sector(models.Model):
     name = models.CharField(max_length=255, verbose_name="Nombre")
 
     class Meta:
-        verbose_name = "🏢 Sector"
-        verbose_name_plural = "🏢 ESTRUCTURA - Sectores"
+        verbose_name = "Sector"
+        verbose_name_plural = "📋 CONFIGURACIÓN - Sectores"
 
     def __str__(self):
         return self.name
@@ -42,8 +43,8 @@ class IssueCategory(models.Model):
     sector = models.ManyToManyField("Sector", related_name="issue_categories", verbose_name="Sectores")
 
     class Meta:
-        verbose_name = "🏢 Categoría de Incidencia"
-        verbose_name_plural = "🏢 ESTRUCTURA - Categorías"
+        verbose_name = "Categoría de Incidencia"
+        verbose_name_plural = "📋 CONFIGURACIÓN - Categorías"
 
     def __str__(self):
         return self.name
@@ -59,8 +60,8 @@ class Issue(models.Model):
     description = models.TextField(blank=True, null=True, verbose_name="Descripción")
 
     class Meta:
-        verbose_name = "🏢 Incidencia"
-        verbose_name_plural = "🏢 ESTRUCTURA - Incidencias"
+        verbose_name = "Incidencia"
+        verbose_name_plural = "📋 CONFIGURACIÓN - Incidencias"
 
     def __str__(self):
         return self.name
@@ -85,8 +86,8 @@ class Roles(models.Model):
     can_close = models.BooleanField(default=False, verbose_name="Puede Cerrar")
     
     class Meta:
-        verbose_name = "🔐 Rol y Permiso"
-        verbose_name_plural = "🔐 ROLES Y PERMISOS"
+        verbose_name = "Rol y Permiso"
+        verbose_name_plural = "🔐 AUTENTICACIÓN - Roles y Permisos"
         unique_together = ['user', 'udn', 'sector', 'issue_category']
     
     def __str__(self):
@@ -149,8 +150,8 @@ class Ticket(models.Model):
     objects = TicketManager()
 
     class Meta:
-        verbose_name = "🎫 Ticket"
-        verbose_name_plural = "🎫 TICKETS - Gestión"
+        verbose_name = "Ticket"
+        verbose_name_plural = "🎫 GESTIÓN - Tickets"
 
     def __str__(self):
         return f"{self.issue.name} - {self.udn.name}"
@@ -179,9 +180,11 @@ class Ticket(models.Model):
 class Message(models.Model):
     STATUS_CHOICES = [
         ('open', 'Abierto'),
-        ('solved', 'Solucionado'),
-        ('closed', 'Cerrado'),
         ('feedback', 'Comentado'),
+        ('solved', 'Solucionado'),
+        ('authorized', 'Autorizado'),
+        ('rejected', 'Rechazado'),
+        ('closed', 'Cerrado'),
     ]
     ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE, related_name="messages", verbose_name="Ticket")
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='open', verbose_name="Estado")
@@ -191,8 +194,8 @@ class Message(models.Model):
     body = models.TextField(verbose_name="Cuerpo del Mensaje", blank=True, null=True)
 
     class Meta:
-        verbose_name = "🎫 Mensaje"
-        verbose_name_plural = "🎫 TICKETS - Mensajes"
+        verbose_name = "Mensaje"
+        verbose_name_plural = "🎫 GESTIÓN - Mensajes"
         ordering = ['created_on']
 
     def __str__(self):
@@ -214,8 +217,8 @@ class Attachment(models.Model):
     message = models.ForeignKey(Message, on_delete=models.CASCADE, related_name="attachments", verbose_name="Mensaje", blank=True, null=True)
 
     class Meta:
-        verbose_name = "🎫 Archivo Adjunto"
-        verbose_name_plural = "🎫 TICKETS - Adjuntos"
+        verbose_name = "Archivo Adjunto"
+        verbose_name_plural = "🎫 GESTIÓN - Adjuntos"
 
     def __str__(self):
         return self.filename 

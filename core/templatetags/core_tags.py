@@ -120,3 +120,32 @@ def button(text, variant='primary', href=None, icon=None, onclick=None, type='bu
         'disabled': disabled,
         'extra_classes': extra_classes,
     }
+
+@register.inclusion_tag('components/core/status-badge.html')
+def status_badge(status, label=None, variant=None):
+    """
+    Componente de badge de estado para tickets
+    
+    Args:
+        status (str): Estado del ticket (open, feedback, solved, authorized, rejected, closed)
+        label (str): Etiqueta personalizada (opcional)
+        variant (str): Variante de estilo (solid, outline) (opcional)
+    
+    Returns:
+        dict: Contexto para el template
+    """
+    # Mapeo de estados a etiquetas en español
+    status_labels = {
+        'open': 'Abierto',
+        'feedback': 'Comentado',
+        'solved': 'Solucionado', 
+        'authorized': 'Autorizado',
+        'rejected': 'Rechazado',
+        'closed': 'Cerrado',
+    }
+    
+    return {
+        'status': status,
+        'label': label or status_labels.get(status, status.title() if status else 'Sin Estado'),
+        'variant': variant,
+    }

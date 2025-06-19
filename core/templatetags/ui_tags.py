@@ -1,5 +1,6 @@
 from django import template
 from django.urls import reverse, NoReverseMatch
+from django.utils.html import format_html
 
 register = template.Library()
 
@@ -35,3 +36,36 @@ def add_class(field, css_class):
     if hasattr(field, 'as_widget'):
         return field.as_widget(attrs={'class': css_class})
     return field
+
+@register.simple_tag
+def status_badge(status, variant=None):
+    """
+    Renderiza un badge de estado con las clases CSS correspondientes
+    
+    Usage: {% status_badge "open" %}
+           {% status_badge "solved" "solid" %}
+    """
+    if not status:
+        return ''
+    
+    # Mapeo de estados válidos a etiquetas en español
+    status_labels = {
+        'open': 'Abierto',
+        'feedback': 'Comentado', 
+        'solved': 'Solucionado',
+        'authorized': 'Autorizado',
+        'rejected': 'Rechazado',
+        'closed': 'Cerrado',
+    }
+    
+    label = status_labels.get(status, status.title())
+    css_class = f'status status-{status}'
+    
+    if variant:
+        css_class += f' status-{variant}'
+    
+    return format_html(
+        '<span class="{}">{}</span>',
+        css_class,
+        label
+    )

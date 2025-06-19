@@ -43,6 +43,56 @@ Incluye:
 
 > **Nota Técnica:** El stack frontend está diseñado para ser completamente autónomo en producción. Todos los assets (JS, CSS, imágenes) se sirven desde S3/CloudFront, sin dependencias de CDNs externos. HTMX, Vite, Tailwind y django-components funcionan 100% offline una vez desplegados.
 
+### Welp Desk ✅
+- [x] Sistema de tickets y mesa de ayuda
+- [x] Admin panel organizado por categorías
+- [x] Estados de tickets configurados
+- [x] Template tags para UI
+- [x] Clases CSS para estados
+- [x] Sistema de colores consistente
+
+**Estados de Tickets Disponibles:**
+- `open`: Abierto (rojo)
+- `feedback`: Comentado (azul)  
+- `solved`: Solucionado (verde)
+- `authorized`: Autorizado (verde claro)
+- `rejected`: Rechazado (amarillo)
+- `closed`: Cerrado (gris)
+
+**Sistema de Clases CSS:**
+```css
+/* Badges básicos */
+.status-open, .status-feedback, .status-solved, 
+.status-authorized, .status-rejected, .status-closed
+
+/* Badges con fondo sólido (mayor contraste) */
+.status-solid.status-[estado]
+
+/* Clases utilitarias */
+.text-status-[estado]     /* Color de texto */
+.bg-status-[estado]       /* Color de fondo */
+.border-status-[estado]   /* Color de borde */
+.hover-status-[estado]    /* Efectos hover */
+```
+
+**Uso en Templates:**
+```html
+{% load ui_tags %}
+{% load core_tags %}
+
+<!-- Badge básico -->
+{% status_badge ticket.status %}
+
+<!-- Badge con fondo sólido para mayor contraste -->
+{% status_badge ticket.status "solid" %}
+
+<!-- Template tag con componente -->
+{% status_badge ticket.status variant="solid" %}
+
+<!-- Badge con etiqueta personalizada -->
+{% status_badge "authorized" label="Aprobado" variant="solid" %}
+```
+
 ### Próximos Pasos 🚧
 1. Sistema de Autenticación
    - [ ] Implementación de autenticación Django

@@ -67,3 +67,5 @@ yarn-error.log*
 !package.json
 !package-lock.json
 !vite.config.mjs
+
+excluded/

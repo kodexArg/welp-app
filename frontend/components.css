@@ -249,20 +249,92 @@
     }
 
     .status-open {
-        @apply bg-blue-100 text-blue-700;
+        @apply bg-red-100 text-red-700;
     }
 
     .status-feedback {
-        @apply bg-orange-100 text-orange-700;
-    }
-
-    .status-closed {
-        @apply bg-red-100 text-red-700;
+        @apply bg-blue-100 text-blue-700;
     }
 
     .status-solved {
         @apply bg-green-100 text-green-700;
     }
+
+    .status-authorized {
+        @apply bg-green-50 text-green-600;
+    }
+
+    .status-rejected {
+        @apply bg-yellow-100 text-yellow-700;
+    }
+
+    .status-closed {
+        @apply bg-gray-100 text-gray-700;
+    }
+
+    /* ===============================================
+       VARIANTES DE STATUS PARA MEJOR CONTRASTE
+       =============================================== */
+
+    /* Status con fondo sólido para mejor visibilidad */
+    .status-solid {
+        @apply text-white font-bold shadow-sm;
+    }
+
+    .status-solid.status-open {
+        @apply bg-red-600 text-white;
+    }
+
+    .status-solid.status-feedback {
+        @apply bg-blue-600 text-white;
+    }
+
+    .status-solid.status-solved {
+        @apply bg-green-600 text-white;
+    }
+
+    .status-solid.status-authorized {
+        @apply bg-green-500 text-white;
+    }
+
+    .status-solid.status-rejected {
+        @apply bg-yellow-500 text-black;
+    }
+
+    .status-solid.status-closed {
+        @apply bg-gray-500 text-white;
+    }
+
+    /* Clases de color por estado para aplicar en cualquier elemento */
+    .text-status-open { @apply text-red-700; }
+    .text-status-feedback { @apply text-blue-700; }
+    .text-status-solved { @apply text-green-700; }
+    .text-status-authorized { @apply text-green-600; }
+    .text-status-rejected { @apply text-yellow-700; }
+    .text-status-closed { @apply text-gray-700; }
+
+    .bg-status-open { @apply bg-red-100; }
+    .bg-status-feedback { @apply bg-blue-100; }
+    .bg-status-solved { @apply bg-green-100; }
+    .bg-status-authorized { @apply bg-green-50; }
+    .bg-status-rejected { @apply bg-yellow-100; }
+    .bg-status-closed { @apply bg-gray-100; }
+
+    /* Clases de borde por estado */
+    .border-status-open { @apply border-red-300; }
+    .border-status-feedback { @apply border-blue-300; }
+    .border-status-solved { @apply border-green-300; }
+    .border-status-authorized { @apply border-green-200; }
+    .border-status-rejected { @apply border-yellow-300; }
+    .border-status-closed { @apply border-gray-300; }
+
+    /* Efectos hover para elementos interactivos por estado */
+    .hover-status-open:hover { @apply bg-red-50 border-red-400; }
+    .hover-status-feedback:hover { @apply bg-blue-50 border-blue-400; }
+    .hover-status-solved:hover { @apply bg-green-50 border-green-400; }
+    .hover-status-authorized:hover { @apply bg-green-25 border-green-300; }
+    .hover-status-rejected:hover { @apply bg-yellow-50 border-yellow-400; }
+    .hover-status-closed:hover { @apply bg-gray-50 border-gray-400; }
 
     /* ===============================================
        CARDS Y CONTENEDORES CON VARIABLES DINÁMICAS
