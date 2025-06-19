@@ -1,0 +1,50 @@
+{% extends "core/base.html" %}
+
+{% block title %}Welp Pay - Welp App{% endblock %}
+
+{% block content %}
+<section>
+    <h1>Welp Pay</h1>
+    <h2>Sistema de Pagos y Facturación</h2>
+    
+    <div class="card">
+        <div class="card-header">
+            <h3>Tema Forest Activo</h3>
+            <p>Esta página usa automáticamente el tema Forest (verde/naranja)</p>
+        </div>
+        <div class="card-body">
+            <p>Esta es la página principal de <strong>Welp Pay</strong>, el sistema de gestión de pagos y facturación empresarial.</p>
+            
+            <h3>Características del Tema Forest:</h3>
+            <ul class="list-disc pl-6 space-y-2">
+                <li><strong>Color primario:</strong> Verde bosque profundo</li>
+                <li><strong>Color de acento:</strong> Naranja tierra</li>
+                <li><strong>Navbar:</strong> Fondo verde oscuro</li>
+                <li><strong>Scrollbar:</strong> Tonos verdes</li>
+                <li><strong>Títulos:</strong> Jerarquía en verdes</li>
+            </ul>
+        </div>
+        <div class="card-footer">
+            <a href="{% url 'core:index' %}" class="button-secondary">
+                <i class="fa fa-arrow-left mr-2"></i>
+                Volver
+            </a>
+        </div>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+        <a href="{% url 'core:index' %}" class="button-secondary">
+            <i class="fa fa-home mr-2"></i>
+            Ir a Core
+        </a>
+        <a href="{% url 'welp_desk:index' %}" class="button-secondary">
+            <i class="fa fa-headset mr-2"></i>
+            Ir a WelpDesk
+        </a>
+        <a href="{% url 'core:dev' %}" class="button-secondary">
+            <i class="fa fa-tools mr-2"></i>
+            Ver Demo Completo
+        </a>
+    </div>
+</section>
+{% endblock %}

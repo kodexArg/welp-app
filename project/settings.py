@@ -1,11 +1,10 @@
 from pathlib import Path
 import os
 import json
-from loguru import logger
 import sys
 from datetime import datetime
 from dotenv import load_dotenv
-from django_components import ComponentsSettings
+from loguru import logger
 
 # Cargar variables de entorno desde .env
 load_dotenv(override=True)
@@ -41,20 +40,10 @@ SECRET_KEY = os.environ['SECRET_KEY']
 DEBUG = os.environ['DEBUG'] == 'True'
 IS_LOCAL = os.environ.get('IS_LOCAL') == 'True'
 
-ALLOWED_HOSTS = [
-    '*.amazonaws.com',
-    '*.apprunner.aws',
-    '*.awsapprunner.com',
-    f'*.{os.environ["AWS_S3_REGION_NAME"]}.awsapprunner.com',
-    'csjqtfjiu7.us-east-1.awsapprunner.com',  # Dominio específico como respaldo
-    'localhost',
-    '127.0.0.1'
-]
+ALLOWED_HOSTS = ['*']  # Acepta cualquier host
 
-CSRF_TRUSTED_ORIGINS = [  # Dominios permitidos para peticiones POST con token CSRF
-    'https://*.amazonaws.com',
-    'https://*.apprunner.aws',
-    'https://*.awsapprunner.com',
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.awsapprunner.com',  # Cubre todos los dominios App Runner
     'http://localhost:8080',
     'http://127.0.0.1:8080'
 ]
@@ -66,29 +55,32 @@ SESSION_COOKIE_SAMESITE = 'Strict'  # Previene envío de cookie de sesión en pe
 CSRF_USE_SESSIONS = True  # Almacena token CSRF en sesión en lugar de cookie
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')  # Detecta HTTPS detrás del proxy de App Runner
 
+# === APPS ===
 INSTALLED_APPS = [
+    'core',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.sessions',
     'django.contrib.staticfiles',
-    'django_components',
-    'django_vite',
     'django_htmx',
+    'django_vite',
     'storages',
-    'core',
+    'welp_desk',
+    'welp_pay',
 ]
 
+# === MIDDLEWARE ===
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django_htmx.middleware.HtmxMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.security.SecurityMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_htmx.middleware.HtmxMiddleware',
 ]
 
 ROOT_URLCONF = 'project.urls'
@@ -105,17 +97,13 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
-            'builtins': [
-                'django_components.templatetags.component_tags',
-            ],
-            'loaders': [(
+            'loaders': [
+                'django.template.loaders.filesystem.Loader',
+                'django.template.loaders.app_directories.Loader',
+            ] if IS_LOCAL else [(
                 'django.template.loaders.cached.Loader', [
-                    # Loader por defecto de Django
                     'django.template.loaders.filesystem.Loader',
-                    # Incluir esto es equivalente a APP_DIRS=True
                     'django.template.loaders.app_directories.Loader',
-                    # Loader de componentes
-                    'django_components.template_loader.Loader',
                 ]
             )],
         },
@@ -136,29 +124,24 @@ DATABASES = {
 }
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es-ar'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = os.environ['TIMEZONE']
 
 USE_I18N = True
 
 USE_TZ = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Modelo de usuario personalizado
+AUTH_USER_MODEL = 'core.User'
 
 # Configuración de S3
 AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
@@ -174,11 +157,8 @@ AWS_S3_VERIFY = True
 VITE_ASSETS_PATH = BASE_DIR / "static" / "dist"
 
 STATICFILES_FINDERS = [
-    # Buscadores por defecto
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
-    # Buscador de componentes Django
-    "django_components.finders.ComponentsFileSystemFinder",
 ]
 
 STATICFILES_DIRS = [
@@ -188,8 +168,12 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 DJANGO_VITE = {
     "default": {
-        "dev_mode": IS_LOCAL,  # Solo modo desarrollo cuando está ejecutándose localmente
+        "dev_mode": IS_LOCAL,
+        "dev_server_host": "localhost",
+        "dev_server_port": 5173,
+        "dev_server_protocol": "http",
         "manifest_path": VITE_ASSETS_PATH / "manifest.json",
+        "static_url_prefix": "",
     }
 }
 
@@ -233,10 +217,3 @@ else:
 
 # Ejecutor de pruebas
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
-
-# Configuración de django-components según documentación oficial
-COMPONENTS = ComponentsSettings(
-    dirs=[
-        BASE_DIR / "components",
-    ],
-)

@@ -1,0 +1,444 @@
+@layer components {
+    
+    /* ===============================================
+       OPTIMIZACIÓN DE FUENTES - ANTI-FOUC
+       =============================================== */
+    
+    /* Definición local de Grandstander para evitar FOUC */
+    @font-face {
+        font-family: 'Grandstander-local';
+        font-style: normal;
+        font-weight: 700;
+        font-display: block; /* Evitar FOUC crítico en logo */
+        src: local('Grandstander Bold'), local('Grandstander-Bold');
+    }
+    
+    /* ===============================================
+       CONTENEDORES Y UTILIDADES GENERALES
+       =============================================== */
+    
+    .hidden-container {
+        @apply hidden;
+    }
+
+    .font-brand {
+        font-family: var(--font-brand);
+        /* Anti-FOUC: Mantener espacio consistente */
+        min-height: 1.2em;
+        line-height: 1.2;
+        font-weight: 700;
+        /* Placeholder hasta que cargue Grandstander */
+        font-synthesis: none;
+        -webkit-font-smoothing: antialiased;
+    }
+
+
+    .text-gradient {
+        background: linear-gradient(135deg, var(--title-gradient-start), var(--title-gradient-end));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .border-gradient {
+        border: 2px solid transparent;
+        background: linear-gradient(var(--theme-surface), var(--theme-surface)), linear-gradient(135deg, var(--theme-primary), var(--theme-accent));
+        background-clip: padding-box, border-box;
+    }
+
+    /* ===============================================
+       SISTEMA DE BOTONES CON VARIABLES DINÁMICAS
+       =============================================== */
+    
+    .radio-button-group {
+        @apply flex flex-wrap w-full gap-x-3 gap-y-1.5;
+    }
+
+    .button-primary {
+        @apply px-6 py-2 rounded-lg font-medium border-none cursor-pointer;
+        background-color: var(--theme-primary);
+        color: var(--theme-surface);
+        @apply hover:scale-[1.05] hover:brightness-110;
+        @apply active:scale-95;
+        @apply transition-all duration-300;
+    }
+
+    .button-secondary {
+        @apply px-6 py-2 rounded-lg font-medium border-2 cursor-pointer;
+        background-color: transparent;
+        color: var(--theme-primary);
+        border-color: var(--theme-primary);
+        @apply hover:scale-[1.05] hover:brightness-110;
+        @apply active:scale-95;
+        @apply transition-all duration-300;
+    }
+
+    .button-secondary:hover {
+        background-color: var(--theme-primary);
+        color: var(--theme-surface);
+    }
+    
+    .button-success {
+        @apply px-6 py-2 rounded-lg font-medium border-none cursor-pointer;
+        background-color: #16a34a;
+        color: var(--theme-surface);
+        @apply hover:scale-[1.05] hover:brightness-110;
+        @apply active:scale-95;
+        @apply transition-all duration-300;
+    }
+
+    .button-danger {
+        @apply px-6 py-2 rounded-lg font-medium border-none cursor-pointer;
+        background-color: #dc2626;
+        color: var(--theme-surface);
+        @apply hover:scale-[1.05] hover:brightness-110;
+        @apply active:scale-95;
+        @apply transition-all duration-300;
+    }
+    
+    .button-success[disabled] {
+        @apply text-zinc-500 cursor-not-allowed opacity-50;
+        background-color: #6b7280;
+    }
+
+    .button-cancel {
+        @apply px-6 py-2 rounded-lg font-medium border-2 cursor-pointer;
+        background-color: transparent;
+        color: var(--theme-accent);
+        border-color: var(--theme-accent);
+        @apply hover:scale-[1.05] hover:brightness-110;
+        @apply active:scale-95;
+        @apply transition-all duration-300;
+    }
+
+    .button-cancel:hover {
+        background-color: var(--theme-accent);
+        color: var(--theme-surface);
+    }
+
+    .button-minimal {
+        @apply px-4 py-2 rounded-lg font-medium border-none cursor-pointer;
+        background-color: transparent;
+        color: var(--theme-primary);
+        @apply hover:scale-[1.02];
+        @apply active:scale-98;
+        @apply transition-all duration-200;
+        border: 1px solid transparent;
+    }
+
+    .button-minimal:hover {
+        background-color: var(--theme-primary-light);
+        border-color: var(--theme-border);
+    }
+    
+    .button-disabled {
+        @apply text-zinc-500 cursor-not-allowed opacity-50;
+        background-color: #6b7280;
+    }
+
+    /* ===============================================
+       FORMULARIOS Y CONTROLES CON VARIABLES DINÁMICAS
+       =============================================== */
+
+    .form-group {
+        @apply mb-4;
+    }
+
+    .form-label {
+        @apply block text-sm font-medium mb-2;
+        color: var(--theme-text);
+        font-family: var(--font-ui);
+        transition: color 0.3s ease;
+    }
+
+    .form-input {
+        @apply w-full px-3 py-2 border rounded-lg;
+        background-color: var(--theme-surface);
+        color: var(--theme-text);
+        border-color: var(--theme-border);
+        font-family: var(--font-ui);
+        transition: border-color 0.2s ease, background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .form-input:focus {
+        @apply outline-none ring-2;
+        border-color: var(--theme-primary);
+        --tw-ring-color: var(--theme-primary-light);
+    }
+
+    .form-input:invalid {
+        @apply border-red-500;
+    }
+
+    .form-textarea {
+        @apply w-full px-3 py-2 border rounded-lg resize-y min-h-[100px];
+        background-color: var(--theme-surface);
+        color: var(--theme-text);
+        border-color: var(--theme-border);
+        font-family: var(--font-ui);
+        transition: border-color 0.2s ease, background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .form-textarea:focus {
+        @apply outline-none ring-2;
+        border-color: var(--theme-primary);
+        --tw-ring-color: var(--theme-primary-light);
+    }
+
+    .form-select {
+        @apply w-full px-3 py-2 border rounded-lg cursor-pointer;
+        background-color: var(--theme-surface);
+        color: var(--theme-text);
+        border-color: var(--theme-border);
+        font-family: var(--font-ui);
+        transition: border-color 0.2s ease, background-color 0.3s ease, color 0.3s ease;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+        background-position: right 0.5rem center;
+        background-repeat: no-repeat;
+        background-size: 1.5em 1.5em;
+        padding-right: 2.5rem;
+    }
+
+    .form-select:focus {
+        @apply outline-none ring-2;
+        border-color: var(--theme-primary);
+        --tw-ring-color: var(--theme-primary-light);
+    }
+
+    /* ===============================================
+       TAGS Y ETIQUETAS CON VARIABLES DINÁMICAS
+       =============================================== */
+
+    .tag {
+        font-family: var(--font-ui);
+        @apply text-xs font-medium py-1 px-1 rounded-full leading-none whitespace-nowrap border-2;
+        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .tag-udn {
+        @apply bg-yellow-100 text-amber-600 border-amber-300;
+    }
+
+    .tag-sector {
+        @apply text-xs font-medium py-1 px-1 rounded-full leading-none whitespace-nowrap border-2;
+        background-color: var(--theme-primary-light);
+        color: var(--theme-text);
+        border-color: var(--theme-primary);
+    }
+
+    .tag-category {
+        @apply bg-purple-100 text-purple-600 border-purple-300;
+    }
+
+    .tag-unpressed {
+        @apply bg-gray-100 text-gray-600 border-gray-300;
+    }
+    
+    .tag-pressed {    
+        background-color: var(--theme-primary-light);
+        color: var(--theme-text);
+        border-color: var(--theme-primary);
+    }
+
+    /* ===============================================
+       STATUS BADGES CON VARIABLES DINÁMICAS
+       =============================================== */
+
+    .status {
+        @apply text-xs font-semibold py-1 px-2 rounded-full uppercase tracking-wide;
+    }
+
+    .status-open {
+        @apply bg-blue-100 text-blue-700;
+    }
+
+    .status-feedback {
+        @apply bg-orange-100 text-orange-700;
+    }
+
+    .status-closed {
+        @apply bg-red-100 text-red-700;
+    }
+
+    .status-solved {
+        @apply bg-green-100 text-green-700;
+    }
+
+    /* ===============================================
+       CARDS Y CONTENEDORES CON VARIABLES DINÁMICAS
+       =============================================== */
+
+    .card {
+        @apply rounded-lg shadow-md;
+        background-color: var(--theme-surface);
+        border: 1px solid var(--theme-border);
+        transition: all 0.2s ease;
+    }
+
+    .card:hover {
+        @apply shadow-lg transform translate-y-[-2px];
+    }
+
+    .card-header {
+        @apply px-6 py-4;
+        border-bottom: 1px solid var(--theme-border);
+        color: var(--theme-text);
+        transition: border-color 0.3s ease, color 0.3s ease;
+    }
+
+    .card-body {
+        @apply px-6 py-4;
+        color: var(--theme-text-secondary);
+        transition: color 0.3s ease;
+    }
+
+    .card-footer {
+        @apply px-6 py-4;
+        border-top: 1px solid var(--theme-border);
+        background-color: var(--theme-primary-light);
+        transition: border-color 0.3s ease, background-color 0.3s ease;
+    }
+
+    /* ===============================================
+       ALERTAS CON VARIABLES DINÁMICAS
+       =============================================== */
+
+    .alert {
+        @apply px-4 py-3 rounded-lg border-l-4 mb-4;
+        font-family: var(--font-ui);
+    }
+
+    .alert-info {
+        background-color: var(--theme-primary-light);
+        border-color: var(--theme-primary);
+        color: var(--theme-text);
+    }
+
+    .alert-success {
+        @apply bg-green-50 border-green-400 text-green-700;
+    }
+
+    .alert-warning {
+        @apply bg-yellow-50 border-yellow-400 text-yellow-700;
+    }
+
+    .alert-error {
+        @apply bg-red-50 border-red-400 text-red-700;
+    }
+
+    /* ===============================================
+       APP CARDS - DISEÑO DE APLICACIONES CON BOTONES CUADRADOS
+       =============================================== */
+
+    .app-card {
+        @apply rounded-lg shadow-md overflow-hidden;
+        background-color: var(--theme-surface);
+        border: 1px solid var(--theme-border);
+        transition: all 0.3s ease;
+    }
+
+    .app-card:hover {
+        @apply shadow-lg;
+        transform: scale(1.02);
+    }
+
+    .app-card-link {
+        @apply flex items-center w-full h-full no-underline;
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .app-card-link:hover {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .app-icon {
+        @apply flex items-center justify-center text-white text-2xl pl-3;
+        width: 5rem;
+        height: 5rem;
+        min-width: 5rem;
+        background: linear-gradient(135deg, var(--theme-primary), var(--theme-primary-dark));
+    }
+
+    .app-icon.dev {
+        background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+    }
+
+    .app-icon.welp-desk {
+        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    }
+
+    .app-icon.welp-pay {
+        background: linear-gradient(135deg, #10b981, #047857);
+    }
+
+    .app-icon.profile {
+        background: linear-gradient(135deg, #64748b, #334155);
+    }
+
+    .app-icon.admin {
+        background: linear-gradient(135deg, #f97316, #c2410c);
+    }
+
+    .app-icon.login {
+        background: linear-gradient(135deg, #64748b, #334155);
+    }
+
+    .app-content {
+        @apply flex-1 p-6;
+    }
+
+    .app-title {
+        @apply font-semibold text-lg mb-1;
+        color: var(--theme-text);
+        font-family: var(--font-ui);
+        transition: color 0.3s ease;
+    }
+
+    .app-card:hover .app-title.dev {
+        color: #8b5cf6;
+    }
+
+    .app-card:hover .app-title.welp-desk {
+        color: #3b82f6;
+    }
+
+    .app-card:hover .app-title.welp-pay {
+        color: #10b981;
+    }
+
+    .app-card:hover .app-title.profile {
+        color: #64748b;
+    }
+
+    .app-card:hover .app-title.admin {
+        color: #f97316;
+    }
+
+    .app-card:hover .app-title.login {
+        color: #64748b;
+    }
+
+    .app-description {
+        color: var(--theme-text-secondary);
+        font-family: var(--font-p);
+        transition: color 0.3s ease;
+    }
+
+    .app-badge {
+        @apply inline-flex items-center gap-3;
+    }
+
+    .theme-badge {
+        @apply px-2 py-1 text-xs rounded-full;
+    }
+
+    .theme-badge.sky {
+        @apply bg-blue-100 text-blue-700;
+    }
+
+    .theme-badge.forest {
+        @apply bg-green-100 text-green-700;
+    }
+} 

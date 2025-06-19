@@ -1,13 +1,31 @@
-import boto3
+import os
+import json
 from django.test import TestCase
-from django.conf import settings
 
 class PingSecretTest(TestCase):
     """Prueba de lectura del secret PING."""
 
     def test_ping_secret(self):
-        client = boto3.client('secretsmanager', region_name=settings.AWS_S3_REGION_NAME)
-        secret_name = "pingping/secret-VcQsw5"
-        response = client.get_secret_value(SecretId=secret_name)
-        value = response['SecretString']
-        self.assertEqual(value.strip().lower(), "pong") 
+        ping_value = os.environ.get('PING')
+        self.assertIsNotNone(ping_value, "Variable de entorno PING no encontrada")
+        
+        # Verificar si es JSON
+        try:
+            ping_json = json.loads(ping_value)
+            if isinstance(ping_json, dict):
+                # Buscar la clave en diferentes formatos (case-insensitive)
+                ping_key = None
+                for key in ping_json.keys():
+                    if key.lower() == 'ping':
+                        ping_key = key
+                        break
+                
+                if ping_key:
+                    self.assertEqual(ping_json[ping_key].strip().lower(), "pong")
+                else:
+                    self.fail(f"Clave 'ping' no encontrada en JSON: {ping_json}")
+            else:
+                self.fail(f"Formato JSON no es diccionario: {ping_json}")
+        except json.JSONDecodeError:
+            # Si no es JSON, verificar como string
+            self.assertEqual(ping_value.strip().lower(), "pong") 

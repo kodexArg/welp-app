@@ -37,6 +37,8 @@ run:
   env:
     - name: DEBUG
       value: "True" #atención con esto!
+    - name: TIMEZONE
+      value: "America/Argentina/Mendoza"
     - name: DB_HOST
       value: "database-free-tier.cccpxuiv6n1v.us-east-1.rds.amazonaws.com"
     - name: DB_PORT

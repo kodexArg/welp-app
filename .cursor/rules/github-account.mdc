@@ -1,6 +1,6 @@
 ---
-description: github, commit, repository, repositorio
-globs: 
+description: Información del repositorio GitHub y restricciones de commits
+globs: [".git/**/*", "*.md"]
 alwaysApply: false
 ---
 # Project Repository Information

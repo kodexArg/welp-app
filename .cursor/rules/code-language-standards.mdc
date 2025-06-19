@@ -1,0 +1,70 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Estándares de Idioma en el Código
+
+## REGLAS OBLIGATORIAS - Sin Excepciones
+
+### Español OBLIGATORIO en:
+- **Docstrings de Python**: Siempre en español completo
+- **Comentarios HTML**: Solo si son explícitamente solicitados
+- **Comentarios Python**: Solo si son explícitamente solicitados
+- **Mensajes de error y logs**: En español para usuarios finales
+- **Textos en commits de git**: Siempre en español y muy resumido.
+
+### Inglés OBLIGATORIO en:
+- **Nombres de variables**: camelCase, snake_case, PascalCase
+- **Nombres de funciones**: snake_case en Python, camelCase en JS
+- **Nombres de clases**: PascalCase siempre
+- **URLs y endpoints**: snake_case o kebab-case
+- **Campos de base de datos**: snake_case
+- **Atributos HTML**: kebab-case estándar
+
+## PROHIBICIONES ESTRICTAS
+
+### ❌ NUNCA comentar código a menos que:
+1. El usuario lo solicite explícitamente
+2. Sea documentación técnica compleja
+3. Sea un workaround temporal que requiera explicación
+
+### ❌ NUNCA mezclar idiomas en:
+- Una misma función o clase
+- Nombres de variables relacionadas  
+- Documentación del mismo módulo
+
+### ❌ NUNCA usar español en:
+- Nombres de archivos
+- Nombres de directorios
+- Configuración de dependencias
+
+## EJEMPLOS CORRECTOS
+
+```python
+def create_user_profile(username: str, email: str) -> UserProfile:
+    """Crea un perfil de usuario con los datos proporcionados."""
+    # Sin comentarios innecesarios
+    profile = UserProfile.objects.create(
+        username=username,
+        email=email,
+        created_at=timezone.now()
+    )
+    return profile
+```
+
+```html
+<!-- Solo comentarios si son solicitados explícitamente -->
+<div class="user-card">
+    <h3>{{ user.get_full_name }}</h3>
+</div>
+```
+
+## VERIFICACIÓN AUTOMÁTICA
+
+Cursor debe rechazar:
+- Comentarios no solicitados en código
+- Mezcla de idiomas en nombres
+- Docstrings en inglés
+
+- Variables o funciones en español

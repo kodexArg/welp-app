@@ -1,0 +1,61 @@
+{% extends "core/base.html" %}
+
+{% block title %}Dashboard - {{ user.get_full_name|default:user.username }} - Welp App{% endblock %}
+
+{% block content %}
+<section class="animate-fade-in">
+    <h1>Mi Perfil</h1>
+    <p>Información de la cuenta</p>
+
+    <div class="card">
+        <div class="card-header">
+            <h3>Información Personal</h3>
+            <p>Detalles de tu cuenta</p>
+        </div>
+        <div class="card-body">
+            <table>
+                <tr>
+                    <th>Usuario</th>
+                    <td>{{ user.username }}</td>
+                </tr>
+                <tr>
+                    <th>Nombre completo</th>
+                    <td>{{ user.get_full_name|default:"No especificado" }}</td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td>{{ user.email|default:"No especificado" }}</td>
+                </tr>
+                <tr>
+                    <th>Fecha de registro</th>
+                    <td>{{ user.date_joined|date:"d/m/Y H:i" }}</td>
+                </tr>
+                <tr>
+                    <th>Último acceso</th>
+                    <td>{{ user.last_login|date:"d/m/Y H:i"|default:"Nunca" }}</td>
+                </tr>
+                <tr>
+                    <th>Permisos</th>
+                    <td>
+                        {% if user.is_staff %}
+                            <span class="tag tag-category">Staff</span>
+                        {% endif %}
+                        {% if user.is_superuser %}
+                            <span class="tag tag-udn">Superusuario</span>
+                        {% endif %}
+                        {% if not user.is_staff and not user.is_superuser %}
+                            <span class="tag tag-sector">Usuario</span>
+                        {% endif %}
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="card-footer text-right">
+            <a href="{% url 'core:index' %}" class="button-primary">
+                <i class="fa fa-arrow-left mr-2"></i>
+                Volver al Inicio
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %} 

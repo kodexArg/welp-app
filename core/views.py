@@ -1,22 +1,16 @@
-from django.http import HttpResponse
-import os
+from django.http import HttpResponse, JsonResponse
+from django.shortcuts import render, redirect
+from django.db import connection
+from django.conf import settings
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 import sys
 import django
-from django.db import connection
-from django.shortcuts import render
-from django.http import JsonResponse
-from django.conf import settings
+import time
 
-def home(request):
-    """
-    Vista principal de la aplicación con información detallada del sistema.
-    
-    Args:
-        request: Objeto HttpRequest de Django
-        
-    Returns:
-        HttpResponse: Renderiza la plantilla home.html con información del sistema
-    """
+def index(request):
+    """Vista home principal con información del sistema"""
     context = {
         'django_version': django.get_version(),
         'python_version': sys.version.split()[0],
@@ -31,42 +25,18 @@ def home(request):
         'server_info': 'Gunicorn' if not settings.IS_LOCAL else 'Django Development Server',
         'htmx_enabled': hasattr(request, 'htmx'),
     }
-    return render(request, 'core/home.html', context)
+    return render(request, 'core/index.html', context)
 
 def hello_world(request):
-    """
-    Vista de prueba que devuelve un mensaje simple.
-    
-    Args:
-        request: Objeto HttpRequest de Django
-        
-    Returns:
-        HttpResponse: Mensaje "Hello World"
-    """
+    """Endpoint de prueba básico"""
     return HttpResponse("Hola Mundo")
 
 def health(request):
-    """
-    Endpoint de verificación de salud de la aplicación.
-    
-    Args:
-        request: Objeto HttpRequest de Django
-        
-    Returns:
-        JsonResponse: Estado de la aplicación y mensaje de éxito
-    """
+    """Endpoint de verificación de salud del sistema"""
     return JsonResponse({'status': 'ok', 'message': 'Verificación de estado exitosa'}, status=200)
 
 def db_health_check(request):
-    """
-    Verifica la conexión a la base de datos.
-    
-    Args:
-        request: Objeto HttpRequest de Django
-        
-    Returns:
-        JsonResponse: Estado de la conexión a la base de datos
-    """
+    """Endpoint de verificación de salud de la base de datos"""
     try:
         with connection.cursor() as cursor:
             cursor.execute("SELECT 1")
@@ -75,12 +45,8 @@ def db_health_check(request):
         return JsonResponse({'status': 'error', 'message': 'Error en la conexión a la base de datos'}, status=500)
 
 def htmx_demo(request):
-    """
-    Vista de demostración para HTMX
-    """
+    """Vista de demostración de funcionalidad HTMX"""
     if request.htmx:
-        # Es una request HTMX, devolver solo el fragmento
-        import time
         timestamp = int(time.time())
         return HttpResponse(f"""
             <div class="bg-green-50 border border-green-200 rounded p-3">
@@ -101,9 +67,52 @@ def htmx_demo(request):
             </div>
         """)
     else:
-        # Request normal
         return HttpResponse("""
             <div class="bg-yellow-50 border border-yellow-200 rounded p-3">
                 <span class="text-yellow-700">⚠️ Request no HTMX detectada</span>
             </div>
         """)
+
+def login_view(request):
+    """Vista de inicio de sesión con autenticación"""
+    if request.user.is_authenticated:
+        return redirect('core:index')
+    
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        
+        if username and password:
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                messages.success(request, f'¡Bienvenido, {user.get_full_name() or user.username}!')
+                next_url = request.GET.get('next', 'core:index')
+                return redirect(next_url)
+            else:
+                messages.error(request, 'Usuario o contraseña incorrectos.')
+        else:
+            messages.error(request, 'Por favor, completa todos los campos.')
+    
+    return render(request, 'core/login.html')
+
+def logout_view(request):
+    """Vista de cierre de sesión"""
+    if request.method == 'POST':
+        user_name = request.user.get_full_name() or request.user.username if request.user.is_authenticated else 'Usuario'
+        logout(request)
+        messages.info(request, f'¡Hasta luego, {user_name}!')
+        return redirect('core:index')
+    return redirect('core:index')
+
+@login_required
+def dashboard_view(request):
+    """Vista del dashboard de usuario autenticado"""
+    context = {
+        'user': request.user,
+    }
+    return render(request, 'core/dashboard.html', context)
+
+def dev_view(request):
+    """Vista de desarrollo y herramientas de testing"""
+    return render(request, 'core/dev.html')

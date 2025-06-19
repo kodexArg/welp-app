@@ -1,58 +1,60 @@
-#!/usr/bin/env pwsh
+$componentsPath = Join-Path $PSScriptRoot "..\components"
+$serverProcess = $null
+$npmProcess = $null
+$lastRestartTime = [DateTime]::MinValue
 
-# Script simple para desarrollo local
-# Uso: .\scripts\dev.ps1
-
-# Verificar que estamos en el directorio raíz del proyecto
-$scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
-$projectRoot = Split-Path -Parent $scriptPath
-$currentDir = Get-Location
-
-if ($currentDir.Path -ne $projectRoot) {
-    Write-Host "⚠️  Cambiando al directorio raíz: $projectRoot" -ForegroundColor Yellow
-    Set-Location $projectRoot
+function Start-Server {
+    $now = Get-Date
+    if (($now - $lastRestartTime).TotalSeconds -lt 2) {
+        return
+    }
+    $lastRestartTime = $now
+    
+    if ($serverProcess) { 
+        $serverProcess.Kill()
+        Start-Sleep 2
+    }
+    Write-Host "[Django] Limpiando cache y reiniciando servidor..." -ForegroundColor Green
+    # Limpiar cache de Django
+    uv run python manage.py shell -c "from django.core.cache import cache; cache.clear()" | Out-Null
+    $serverProcess = Start-Process -FilePath "uv" -ArgumentList "run", "manage.py", "runserver", "--noreload" -PassThru -NoNewWindow
 }
 
-# Verificar que el archivo .env existe
-if (-not (Test-Path ".env")) {
-    Write-Host "❌ No se encontró el archivo .env en el directorio raíz" -ForegroundColor Red
-    exit 1
+function Start-Npm {
+    Write-Host "[NPM] Iniciando npm run dev..." -ForegroundColor Blue
+    $npmProcess = Start-Process -FilePath "cmd.exe" -ArgumentList "/c", "npm", "run", "dev" -PassThru -NoNewWindow
 }
 
-Write-Host "🚀 Iniciando desarrollo local..." -ForegroundColor Green
-
-# Verificar que npm esté disponible
-if (-not (Get-Command npm -ErrorAction SilentlyContinue)) {
-    Write-Host "❌ npm no está instalado" -ForegroundColor Red
-    exit 1
+# Cleanup al salir
+Register-EngineEvent -SourceIdentifier PowerShell.Exiting -Action { 
+    if ($serverProcess) { $serverProcess.Kill() }
+    if ($npmProcess) { $npmProcess.Kill() }
 }
 
-# Verificar que uv esté disponible
-if (-not (Get-Command uv -ErrorAction SilentlyContinue)) {
-    Write-Host "❌ uv no está instalado" -ForegroundColor Red
-    exit 1
+# Iniciar procesos
+Start-Server
+Start-Npm
+
+# Monitorear cambios en components
+$watcher = New-Object System.IO.FileSystemWatcher
+$watcher.Path = $componentsPath
+$watcher.IncludeSubdirectories = $true
+$watcher.EnableRaisingEvents = $true
+
+Register-ObjectEvent -InputObject $watcher -EventName "Changed" -Action { 
+    Write-Host "[Components] Cambio detectado, reiniciando Django..." -ForegroundColor Yellow
+    Start-Server 
+}
+Register-ObjectEvent -InputObject $watcher -EventName "Created" -Action { 
+    Write-Host "[Components] Archivo creado, reiniciando Django..." -ForegroundColor Yellow
+    Start-Server 
+}
+Register-ObjectEvent -InputObject $watcher -EventName "Deleted" -Action { 
+    Write-Host "[Components] Archivo eliminado, reiniciando Django..." -ForegroundColor Yellow
+    Start-Server 
 }
 
-# Instalar dependencias de frontend
-Write-Host "📦 Instalando dependencias..." -ForegroundColor Yellow
-npm install
+Write-Host "Servidor en ejecución. Presiona Ctrl+C para detener." -ForegroundColor Cyan
 
-Write-Host "⚡ Iniciando servidores..." -ForegroundColor Yellow
-
-# Iniciar Vite en segundo plano
-Write-Host "🎯 Vite: http://localhost:5173" -ForegroundColor Cyan
-$viteJob = Start-Job -ScriptBlock {
-    Set-Location $using:PWD
-    npm run dev
-}
-
-# Esperar un momento y luego iniciar Django
-Start-Sleep 3
-Write-Host "🐍 Django: http://localhost:8000" -ForegroundColor Green
-
-# Iniciar Django en primer plano
-uv run .\manage.py runserver
-
-# Limpiar el trabajo de Vite cuando Django se detenga
-Stop-Job $viteJob -ErrorAction SilentlyContinue
-Remove-Job $viteJob -ErrorAction SilentlyContinue 
+# Mantener activo
+while ($true) { Start-Sleep 1 }

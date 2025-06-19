@@ -14,3 +14,5 @@ python-dotenv
 django-vite
 django-htmx
 django-components
+Pillow
+PyYAML
