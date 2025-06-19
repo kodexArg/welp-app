@@ -1,53 +1,22 @@
 <div class="brand-logo flex items-center h-full">
-    <a href="{{ home_url }}" class="flex pt-2 items-center justify-center h-full font-brand font-bold text-3xl tracking-wide">
+    <a href="{{ home_url }}" 
+       class="flex pt-2 items-center justify-center h-full font-brand font-bold text-3xl tracking-wide text-white/95 hover:text-white no-underline transition-all duration-300 hover:brightness-105">
         {% if show_text %}
-            <span class="brand-text hidden min-[30rem]:inline mr-0.5">Welp</span>
+            <span class="brand-text hidden min-[30rem]:inline mr-0.5 text-white/95 hover:text-white transition-colors duration-300">Welp</span>
         {% endif %}
         <div class="relative">
-            <i class="brand-icon-glow absolute left-0 top-0 text-4xl fa fa-headset translate-x-[-0.5] translate-y-[0.5] opacity-50"></i>
-            <i class="brand-icon-glow absolute left-0 top-0 text-4xl fa fa-headset translate-x-[-0.5] translate-y-[0.5] opacity-20"></i>
-            <i class="brand-icon-main relative text-4xl fa fa-headset translate-x-[-0.5] translate-y-[-0.5] icon-glow"></i>
+            <i class="brand-icon-glow absolute left-0 top-0 text-4xl fa fa-headset translate-x-[-0.5] translate-y-[0.5] opacity-50 text-white"></i>
+            <i class="brand-icon-glow absolute left-0 top-0 text-4xl fa fa-headset translate-x-[-0.5] translate-y-[0.5] opacity-20 text-white"></i>
+            <i class="brand-icon-main relative text-4xl fa fa-headset translate-x-[-0.5] translate-y-[-0.5] icon-glow drop-shadow-sm text-white"></i>
         </div>
         {% if show_text %}
-            <span class="brand-text hidden min-[30rem]:inline ml-0.5">{{ brand_text }}</span>
+            <span class="brand-text hidden min-[30rem]:inline ml-0.5 text-white/95 hover:text-white transition-colors duration-300">{{ brand_text }}</span>
         {% endif %}
     </a>
 </div>
 
 <style>
 @layer components {
-    /* ====================================================================
-       VARIABLES DE TEMA PARA BRAND - TODOS LOS TEMAS
-       ==================================================================== */
-    
-    /* Variables base para brand */
-    .brand-logo {
-        --navbar-brand-text-local: #ffffff;
-        --navbar-brand-accent-local: #f59e0b; /* amber-500 */
-        --navbar-brand-icon-local: #e0f2fe;
-    }
-    
-    /* Tema Slate */
-    [data-theme="slate"] .brand-logo {
-        --navbar-brand-text-local: #ffffff;
-        --navbar-brand-accent-local: #fbbf24; /* amber-400 - más suave */
-        --navbar-brand-icon-local: #f1f5f9; /* slate-100 */
-    }
-    
-    /* Tema Sky */
-    [data-theme="sky"] .brand-logo {
-        --navbar-brand-text-local: #ffffff;
-        --navbar-brand-accent-local: #eb9651; /* earth-400 - más suave */
-        --navbar-brand-icon-local: #e0f2fe; /* sky-200 */
-    }
-    
-    /* Tema Forest */
-    [data-theme="forest"] .brand-logo {
-        --navbar-brand-text-local: #ffffff;
-        --navbar-brand-accent-local: #eb9651; /* earth-400 - más suave */
-        --navbar-brand-icon-local: #dcfce7; /* forest-200 */
-    }
-    
     /* ====================================================================
        ANIMACIÓN DE BRILLO PARA EL ICONO
        ==================================================================== */
@@ -71,48 +40,6 @@
         .icon-glow {
             animation: none;
         }
-    }
-    
-    /* ====================================================================
-       ESTILOS ESPECÍFICOS DEL COMPONENTE BRAND
-       ==================================================================== */
-    
-    .brand-logo a {
-        color: var(--navbar-brand-text-local);
-        text-decoration: none;
-        transition: all 300ms ease;
-    }
-    
-    .brand-logo a:hover {
-        filter: brightness(1.05);
-    }
-    
-    .brand-text {
-        color: var(--navbar-brand-text-local);
-    }
-    
-    .brand-icon-main {
-        color: var(--navbar-brand-icon-local);
-        filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.1));
-    }
-    
-    .brand-icon-glow {
-        color: white;
-        filter: drop-shadow(0 0 12px white);
-    }
-    
-    /* ====================================================================
-       EFECTOS HOVER COMPLEJOS
-       ==================================================================== */
-    
-    .brand-logo:hover .brand-icon-main {
-        opacity: 1;
-        filter: brightness(1.1) drop-shadow(0 0 1px rgba(0, 0, 0, 0.1)) drop-shadow(0 0 18px white);
-    }
-    
-    .brand-logo:hover .brand-icon-glow {
-        opacity: 0.25;
-        filter: drop-shadow(0 0 18px white);
     }
 }
 </style>

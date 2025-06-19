@@ -89,22 +89,6 @@ def separator(custom_classes=""):
         'custom_classes': custom_classes,
     }
 
-@register.inclusion_tag('components/core/status-badge.html')
-def status_badge(text, variant='default'):
-    """
-    Componente de badge de estado
-    
-    Args:
-        text (str): Texto del estado
-        variant (str): Variante del badge (open, feedback, closed, solved)
-    
-    Returns:
-        dict: Contexto para el template
-    """
-    return {
-        'text': text,
-        'variant': variant,
-    }
 
 @register.inclusion_tag('components/core/button.html')
 def button(text, variant='primary', href=None, icon=None, onclick=None, type='button', target=None, disabled=False, extra_classes=""):
