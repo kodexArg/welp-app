@@ -6,7 +6,7 @@ from .models import User
 
 
 class CustomUserCreationForm(UserCreationForm):
-    """Formulario personalizado para crear usuarios"""
+    """Hace obligatorios first_name, last_name y email en creación"""
     
     class Meta:
         model = User
@@ -20,7 +20,6 @@ class CustomUserCreationForm(UserCreationForm):
 
 
 class CustomUserChangeForm(UserChangeForm):
-    """Formulario personalizado para editar usuarios"""
     
     class Meta:
         model = User
@@ -29,7 +28,7 @@ class CustomUserChangeForm(UserChangeForm):
 
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
-    """Configuración del admin para el modelo User personalizado"""
+    """Admin personalizado con preview de avatar y campos organizados"""
     
     form = CustomUserChangeForm
     add_form = CustomUserCreationForm
@@ -75,7 +74,7 @@ class UserAdmin(BaseUserAdmin):
     readonly_fields = ('date_joined', 'last_login')
     
     def avatar_preview(self, obj):
-        """Mostrar preview del avatar en la lista"""
+        """Preview circular del avatar en lista"""
         if obj.avatar:
             return format_html(
                 '<img src="{}" width="30" height="30" style="border-radius: 50%;" />',
@@ -85,12 +84,12 @@ class UserAdmin(BaseUserAdmin):
     avatar_preview.short_description = "Avatar"
     
     def get_full_name(self, obj):
-        """Mostrar nombre completo en la lista"""
+        """Fallback a username si no hay nombre completo"""
         return obj.get_full_name() or obj.username
     get_full_name.short_description = "Nombre Completo"
     
     def save_model(self, request, obj, form, change):
-        """Personalizar el guardado del modelo"""
+        """Establece is_active=True por defecto en nuevos usuarios"""
         if not change:
             if not hasattr(obj, 'is_active') or obj.is_active is None:
                 obj.is_active = True

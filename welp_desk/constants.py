@@ -1,9 +1,4 @@
-# welp_desk/constants.py
-
-# Configuración del campo de estado
-STATUS_MAX_LENGTH = 12  # Suficiente para 'authorized' (10 chars) + margen
-
-# Estados de tickets en orden de flujo de trabajo lógico
+STATUS_MAX_LENGTH = 12
 TICKET_STATUS_CHOICES = [
     ('open', 'Abierto'),
     ('feedback', 'Comentado'),
@@ -13,13 +8,8 @@ TICKET_STATUS_CHOICES = [
     ('closed', 'Cerrado'),
 ]
 
-# Extraer solo las keys para validación
 VALID_TICKET_STATUSES = [choice[0] for choice in TICKET_STATUS_CHOICES]
-
-# Mapeo directo desde choices (elimina redundancia)
 TICKET_STATUS_LABELS = dict(TICKET_STATUS_CHOICES)
-
-# Colores hex para admin panel
 TICKET_STATUS_COLORS = {
     'open': '#dc2626',      # rojo (casi naranja)
     'feedback': '#2563eb',  # azul
@@ -29,7 +19,6 @@ TICKET_STATUS_COLORS = {
     'closed': '#6b7280'     # gris
 }
 
-# Transiciones válidas de estado (flujo de trabajo)
 TICKET_STATUS_TRANSITIONS = {
     'open': ['feedback', 'solved', 'closed'],
     'feedback': ['solved', 'closed'],
@@ -39,20 +28,19 @@ TICKET_STATUS_TRANSITIONS = {
     'closed': [],  # Estado final
 }
 
-# Estados que permiten continuar trabajando
 ACTIVE_STATUSES = ['open', 'feedback', 'solved', 'rejected']
 FINAL_STATUSES = ['authorized', 'closed']
 
 def is_valid_status(status):
-    """Valida si un estado es válido"""
+    """Valida estados según TICKET_STATUS_CHOICES"""
     return status in VALID_TICKET_STATUSES
 
 def can_transition_to(current_status, new_status):
-    """Verifica si es posible transicionar de un estado a otro"""
+    """Verifica transiciones válidas según business rules"""
     if not is_valid_status(current_status) or not is_valid_status(new_status):
         return False
     return new_status in TICKET_STATUS_TRANSITIONS.get(current_status, [])
 
 def get_available_transitions(current_status):
-    """Obtiene los estados disponibles desde el estado actual"""
+    """Estados disponibles desde estado actual"""
     return TICKET_STATUS_TRANSITIONS.get(current_status, []) 

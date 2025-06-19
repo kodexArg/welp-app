@@ -13,9 +13,7 @@ from .constants import (
 
 
 class UDN(models.Model):
-    """
-    Unidad de Negocio (UDN) representa divisiones principales como sucursales o departamentos.
-    """
+    """Divisiones principales: sucursales, departamentos, etc."""
     name = models.CharField(max_length=255, verbose_name="Nombre")
 
     class Meta:
@@ -27,10 +25,7 @@ class UDN(models.Model):
 
 
 class Sector(models.Model):
-    """
-    Sector representa áreas funcionales dentro de una UDN (por ejemplo, TI, RRHH, Finanzas).
-    La relación con UDN es ManyToMany ya que un sector puede existir en múltiples UDNs.
-    """
+    """Áreas funcionales dentro de UDNs. Relación M2M permite sectores transversales."""
     udn = models.ManyToManyField(UDN, related_name="sectors", verbose_name="UDNs")
     name = models.CharField(max_length=255, verbose_name="Nombre")
 
@@ -43,9 +38,7 @@ class Sector(models.Model):
 
 
 class IssueCategory(models.Model):
-    """
-    Categoría de problemas asociada a sectores específicos.
-    """
+    """Categorías específicas por sector (ej: TI->Hardware, RRHH->Vacaciones)"""
     name = models.CharField(max_length=255, verbose_name="Nombre")
     sector = models.ManyToManyField("Sector", related_name="issue_categories", verbose_name="Sectores")
 
@@ -58,9 +51,7 @@ class IssueCategory(models.Model):
 
 
 class Issue(models.Model):
-    """
-    Incidencia específica dentro de una categoría.
-    """
+    """Incidencias específicas dentro de categorías. display_name para UX customizable."""
     issue_category = models.ForeignKey(IssueCategory, on_delete=models.CASCADE, related_name="issues", verbose_name="Categoría")
     name = models.CharField(max_length=255, verbose_name="Nombre")
     display_name = models.CharField(max_length=255, verbose_name="Nombre a Mostrar", blank=True, null=True)
@@ -75,10 +66,7 @@ class Issue(models.Model):
 
 
 class Roles(models.Model):
-    """
-    Modelo que vincula usuarios de core con permisos específicos en welp_desk.
-    Define permisos granulares para UDN, Sector e IssueCategory.
-    """
+    """Sistema de permisos granular por UDN/Sector/Categoría. Superusuarios bypass automático."""
     user = models.ForeignKey('core.User', on_delete=models.CASCADE, related_name='welp_roles')
     udn = models.ForeignKey(UDN, on_delete=models.CASCADE)
     sector = models.ForeignKey(Sector, on_delete=models.CASCADE, null=True, blank=True)
@@ -104,7 +92,6 @@ class Roles(models.Model):
         if self.issue_category:
             parts.append(self.issue_category.name)
         
-        # Mostrar permisos activos
         permissions = []
         if self.can_read: permissions.append("R")
         if self.can_comment: permissions.append("C")
@@ -118,23 +105,16 @@ class Roles(models.Model):
 
 
 class TicketManager(models.Manager):
-    """
-    Gestor personalizado para el modelo Ticket que filtra automáticamente 
-    los tickets según los roles del usuario.
+    """Filtrado automático de tickets por roles. Superusuarios ven todo."""
     
-    Los superusuarios (is_superuser=True) pueden ver todos los tickets.
-    """
     def get_queryset(self, user=None):
         queryset = super().get_queryset()
         if user and not user.is_superuser:
-            # Filtrar tickets basado en los roles del usuario
             user_roles = user.welp_roles.filter(can_read=True)
             
             if not user_roles.exists():
-                # Si el usuario no tiene roles con can_read=True, no ve ningún ticket
                 return queryset.none()
             
-            # Construir filtros dinámicos basados en los roles
             ticket_filters = Q()
             for role in user_roles:
                 role_filter = Q(udn=role.udn)
@@ -164,45 +144,43 @@ class Ticket(models.Model):
         return f"{self.issue.name} - {self.udn.name}"
 
     def get_absolute_url(self):
-        """Devuelve la URL para ver los detalles del ticket"""
         return reverse('welp_desk:ticket-view', kwargs={'ticket_id': self.id})
 
     def get_close_url(self):
-        """Devuelve la URL para el endpoint de confirmación de cierre del ticket"""
         return reverse('welp_desk:htmx-confirm-close', kwargs={'ticket_id': self.id})
 
     @property
     def created_by(self):
-        """Devuelve el usuario que creó el ticket (el primer mensaje)."""
+        """Usuario del primer mensaje."""
         first_message = self.messages.order_by('created_on').first()
         return first_message.user if first_message else None
 
     @property
     def status(self):
-        """Devuelve el estado actual del ticket (el estado del último mensaje)."""
+        """Estado del último mensaje."""
         last_message = self.messages.order_by('-created_on').first()
         return last_message.status if last_message else None
 
     def can_transition_to_status(self, new_status):
-        """Verifica si el ticket puede cambiar al nuevo estado"""
+        """Valida transiciones de estado según business rules."""
         current_status = self.status
         if not current_status:
-            return new_status == 'open'  # Solo se puede abrir un ticket sin estado
+            return new_status == 'open'
         return can_transition_to(current_status, new_status)
     
     def get_available_status_transitions(self):
-        """Obtiene los estados disponibles desde el estado actual"""
+        """Estados disponibles desde estado actual."""
         current_status = self.status
         return get_available_transitions(current_status) if current_status else ['open']
     
     @property
     def is_active(self):
-        """Indica si el ticket está en un estado activo (no finalizado)"""
+        """True si ticket no está en estado final."""
         return self.status in ACTIVE_STATUSES if self.status else True
     
     @property
     def is_final(self):
-        """Indica si el ticket está en un estado final"""
+        """True si ticket está en estado final."""
         return self.status in FINAL_STATUSES if self.status else False
 
 
@@ -234,6 +212,7 @@ class Message(models.Model):
 
 
 class Attachment(models.Model):
+    """Archivos adjuntos vinculados a mensajes específicos."""
     file = models.FileField(upload_to="attachments/", verbose_name="Archivo")
     filename = models.CharField(max_length=255, verbose_name="Nombre del Archivo")
     message = models.ForeignKey(Message, on_delete=models.CASCADE, related_name="attachments", verbose_name="Mensaje", blank=True, null=True)

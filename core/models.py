@@ -3,10 +3,7 @@ from django.contrib.auth.models import AbstractUser
 
 
 class User(AbstractUser):
-    """
-    Modelo de usuario personalizado que extiende AbstractUser
-    Utiliza campos nativos de Django al máximo
-    """
+    """Extiende AbstractUser maximizando campos nativos de Django"""
     
     phone = models.CharField(max_length=20, blank=True, verbose_name="Teléfono")
     avatar = models.ImageField(upload_to='avatars/', blank=True, null=True, verbose_name="Avatar")

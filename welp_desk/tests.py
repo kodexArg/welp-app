@@ -8,18 +8,14 @@ User = get_user_model()
 
 
 class WelpDeskModelsTest(TestCase):
-    """
-    Suite de pruebas para los modelos críticos de welp_desk.
-    """
+    """Tests para modelos críticos de welp_desk"""
 
     def setUp(self):
-        """Configura datos de prueba para todos los tests."""
-        # Usuarios
+        """Datos de prueba para todos los tests"""
         self.superuser = User.objects.create_user(username='admin', is_superuser=True)
         self.regular_user = User.objects.create_user(username='user1')
         self.other_user = User.objects.create_user(username='user2')
         
-        # Estructura organizacional
         self.udn1 = UDN.objects.create(name='UDN TI')
         self.udn2 = UDN.objects.create(name='UDN RRHH')
         
