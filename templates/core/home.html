@@ -5,81 +5,88 @@
 {% block content %}
 {% if user.is_authenticated %}
     <section class="animate-fade-in">
-        <h1 class="font-title">Dashboard</h1>
         <p class="font-content">Bienvenido, {{ user.get_full_name|default:user.username }}</p>
 
-        <div class="card mb-6">
-            <div class="card-header">
-                <h3>Tema Slate Activo</h3>
-                <p>Página Core usando el tema por defecto</p>
-            </div>
-            <div class="card-body">
-                <p>Esta es la página principal de <strong>Core</strong>, usando el tema Slate (gris/ámbar) por defecto.</p>
-            </div>
-        </div>
-
-        <article class="animate-slide-in-bottom animate-delay-200">
+        <div class="animate-slide-in-bottom animate-delay-200 space-y-6 mt-10">
             <h3 class="font-title">Aplicaciones</h3>
             
+            <div class="app-card">
+                <a href="{% url 'welp_desk:index' %}" class="app-card-link">
+                    <div class="app-icon welp-desk">
+                        <i class="fa fa-headset"></i>
+                    </div>
+                    <div class="app-content">
+                        <div class="app-badge">
+                            <h4 class="app-title welp-desk">WelpDesk</h4>
+                            <span class="theme-badge sky">Tema Sky</span>
+                        </div>
+                        <p class="app-description">Sistema de soporte y tickets - Se activará automáticamente el tema azul</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="app-card">
+                <a href="{% url 'welp_pay:index' %}" class="app-card-link">
+                    <div class="app-icon welp-pay">
+                        <i class="fa fa-user-check"></i>
+                    </div>
+                    <div class="app-content">
+                        <div class="app-badge">
+                            <h4 class="app-title welp-pay">WelpPay</h4>
+                            <span class="theme-badge forest">Tema Forest</span>
+                        </div>
+                        <p class="app-description">Sistema de pagos y facturación - Se activará automáticamente el tema verde</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="app-card">
+                <a href="{% url 'core:dashboard' %}" class="app-card-link">
+                    <div class="app-icon profile">
+                        <i class="fa fa-user"></i>
+                    </div>
+                    <div class="app-content">
+                        <div class="app-badge">
+                            <h4 class="app-title profile">Mi Perfil</h4>
+                        </div>
+                        <p class="app-description">Configuración de cuenta y perfil</p>
+                    </div>
+                </a>
+            </div>
+
             {% if user.is_staff %}
-            <div class="card">
-                <div class="card-header">
-                    <h4 class="font-ui"><i class="fa fa-code"></i> Desarrollo</h4>
-                </div>
-                <div class="card-body">
-                    <p class="font-content">Herramientas de desarrollo y testing del sistema de temas</p>
-                    <a href="{% url 'core:dev' %}" class="button-primary font-ui">Acceder al Demo</a>
-                </div>
+            <div class="app-card">
+                <a href="/admin/" class="app-card-link">
+                    <div class="app-icon admin">
+                        <i class="fa fa-cog"></i>
+                    </div>
+                    <div class="app-content">
+                        <div class="app-badge">
+                            <h4 class="app-title admin">Administración</h4>
+                        </div>
+                        <p class="app-description">Panel de administración del sistema</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="app-card">
+                <a href="{% url 'core:dev' %}" class="app-card-link">
+                    <div class="app-icon dev">
+                        <i class="fa fa-code"></i>
+                    </div>
+                    <div class="app-content">
+                        <div class="app-badge">
+                            <h4 class="app-title dev">Desarrollo</h4>
+                        </div>
+                        <p class="app-description">Herramientas de desarrollo y testing del sistema de temas</p>
+                    </div>
+                </a>
             </div>
             {% endif %}
+        </div>
 
-            <div class="card">
-                <div class="card-header">
-                    <h4 class="font-ui"><i class="fa fa-headset"></i> WelpDesk</h4>
-                    <span class="ml-2 px-2 py-1 text-xs bg-blue-100 text-blue-700 rounded-full">Tema Sky</span>
-                </div>
-                <div class="card-body">
-                    <p class="font-content">Sistema de soporte y tickets - Se activará automáticamente el tema azul</p>
-                    <a href="{% url 'welp_desk:index' %}" class="button-primary font-ui">Acceder</a>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                    <h4 class="font-ui"><i class="fa fa-user-check"></i> WelpPay</h4>
-                    <span class="ml-2 px-2 py-1 text-xs bg-green-100 text-green-700 rounded-full">Tema Forest</span>
-                </div>
-                <div class="card-body">
-                    <p class="font-content">Sistema de pagos y facturación - Se activará automáticamente el tema verde</p>
-                    <a href="{% url 'welp_pay:index' %}" class="button-primary font-ui">Acceder</a>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                    <h4 class="font-ui"><i class="fa fa-user"></i> Mi Perfil</h4>
-                </div>
-                <div class="card-body">
-                    <p class="font-content">Configuración de cuenta y perfil</p>
-                    <a href="{% url 'core:dashboard' %}" class="button-primary font-ui">Ver Perfil</a>
-                </div>
-            </div>
-
-            {% if user.is_staff %}
-            <div class="card">
-                <div class="card-header">
-                    <h4 class="font-ui"><i class="fa fa-cog"></i> Administración</h4>
-                </div>
-                <div class="card-body">
-                    <p class="font-content">Panel de administración del sistema</p>
-                    <a href="/admin/" class="button-primary font-ui">Admin Panel</a>
-                </div>
-            </div>
-            {% endif %}
-        </article>
-
-        <article class="animate-slide-in-bottom animate-delay-500">
-            <h3 class="font-title">Información del Sistema</h3>
+        <div class="animate-slide-in-bottom animate-delay-200 space-y-6 mt-10">
+            <h3 class="font-title">Info del sistema</h3>
             <table>
                 <tr>
                     <th>Entorno</th>
@@ -133,39 +140,62 @@
                     </td>
                 </tr>
             </table>
-        </article>
+        </div>
     </section>
 
 {% else %}
     <section class="animate-fade-in">
-        <h1 class="font-brand text-gradient text-5xl font-bold">Welp App</h1>
-        <p class="font-content">Plataforma integral de soporte y pagos</p>
+        <p class="font-content text-center">Bienvenido a Welp App, plataforma de soporte y gestión de tickets</p>
         
-        <div class="card">
-            <div class="card-body">
-                <a href="{% url 'core:login' %}" class="button-primary">Iniciar Sesión</a>
+        <div class="animate-slide-in-bottom animate-delay-200 space-y-6 mt-10">
+            <div class="app-card">
+                <a href="{% url 'core:login' %}" class="app-card-link">
+                    <div class="app-icon login">
+                        <i class="fa fa-sign-in-alt"></i>
+                    </div>
+                    <div class="app-content">
+                        <div class="app-badge">
+                            <h4 class="app-title login">Iniciar Sesión</h4>
+                        </div>
+                        <p class="app-description">Accede a tu cuenta para usar todas las aplicaciones</p>
+                    </div>
+                </a>
             </div>
         </div>
         
-        <article class="animate-slide-in-bottom animate-delay-300">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="font-ui"><i class="fa fa-headset"></i> WelpDesk</h3>
-                </div>
-                <div class="card-body">
-                    <p class="font-content">Sistema completo de soporte al cliente y gestión de tickets</p>
+        <div class="animate-slide-in-bottom animate-delay-300 space-y-6 mt-10">
+            <h3 class="font-title">Nuestras Aplicaciones</h3>
+            
+            <div class="app-card">
+                <div class="app-card-link">
+                    <div class="app-icon welp-desk">
+                        <i class="fa fa-headset"></i>
+                    </div>
+                    <div class="app-content">
+                        <div class="app-badge">
+                            <h4 class="app-title welp-desk">WelpDesk</h4>
+                            <span class="theme-badge sky">Tema Sky</span>
+                        </div>
+                        <p class="app-description">Sistema completo de soporte al cliente y gestión de tickets</p>
+                    </div>
                 </div>
             </div>
             
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="font-ui"><i class="fa fa-user-check"></i> WelpPay</h3>
-                </div>
-                <div class="card-body">
-                    <p class="font-content">Solución de pagos y facturación automatizada</p>
+            <div class="app-card">
+                <div class="app-card-link">
+                    <div class="app-icon welp-pay">
+                        <i class="fa fa-user-check"></i>
+                    </div>
+                    <div class="app-content">
+                        <div class="app-badge">
+                            <h4 class="app-title welp-pay">WelpPay</h4>
+                            <span class="theme-badge forest">Tema Forest</span>
+                        </div>
+                        <p class="app-description">Solución de pagos y facturación automatizada</p>
+                    </div>
                 </div>
             </div>
-        </article>
+        </div>
     </section>
 {% endif %}
 {% endblock %} 

@@ -325,4 +325,120 @@
     .alert-error {
         @apply bg-red-50 border-red-400 text-red-700;
     }
+
+    /* ===============================================
+       APP CARDS - DISEÑO DE APLICACIONES CON BOTONES CUADRADOS
+       =============================================== */
+
+    .app-card {
+        @apply rounded-lg shadow-md overflow-hidden;
+        background-color: var(--theme-surface);
+        border: 1px solid var(--theme-border);
+        transition: all 0.3s ease;
+    }
+
+    .app-card:hover {
+        @apply shadow-lg;
+        transform: scale(1.02);
+    }
+
+    .app-card-link {
+        @apply flex items-center w-full h-full no-underline;
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .app-card-link:hover {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .app-icon {
+        @apply flex items-center justify-center text-white text-2xl pl-3;
+        width: 5rem;
+        height: 5rem;
+        min-width: 5rem;
+        background: linear-gradient(135deg, var(--theme-primary), var(--theme-primary-dark));
+    }
+
+    .app-icon.dev {
+        background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+    }
+
+    .app-icon.welp-desk {
+        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    }
+
+    .app-icon.welp-pay {
+        background: linear-gradient(135deg, #10b981, #047857);
+    }
+
+    .app-icon.profile {
+        background: linear-gradient(135deg, #64748b, #334155);
+    }
+
+    .app-icon.admin {
+        background: linear-gradient(135deg, #f97316, #c2410c);
+    }
+
+    .app-icon.login {
+        background: linear-gradient(135deg, #64748b, #334155);
+    }
+
+    .app-content {
+        @apply flex-1 p-6;
+    }
+
+    .app-title {
+        @apply font-semibold text-lg mb-1;
+        color: var(--theme-text);
+        font-family: var(--font-ui);
+        transition: color 0.3s ease;
+    }
+
+    .app-card:hover .app-title.dev {
+        color: #8b5cf6;
+    }
+
+    .app-card:hover .app-title.welp-desk {
+        color: #3b82f6;
+    }
+
+    .app-card:hover .app-title.welp-pay {
+        color: #10b981;
+    }
+
+    .app-card:hover .app-title.profile {
+        color: #64748b;
+    }
+
+    .app-card:hover .app-title.admin {
+        color: #f97316;
+    }
+
+    .app-card:hover .app-title.login {
+        color: #64748b;
+    }
+
+    .app-description {
+        color: var(--theme-text-secondary);
+        font-family: var(--font-p);
+        transition: color 0.3s ease;
+    }
+
+    .app-badge {
+        @apply inline-flex items-center gap-3;
+    }
+
+    .theme-badge {
+        @apply px-2 py-1 text-xs rounded-full;
+    }
+
+    .theme-badge.sky {
+        @apply bg-blue-100 text-blue-700;
+    }
+
+    .theme-badge.forest {
+        @apply bg-green-100 text-green-700;
+    }
 } 
