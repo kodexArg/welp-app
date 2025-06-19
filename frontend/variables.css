@@ -6,7 +6,7 @@
     --font-mono: 'Roboto Mono', monospace;
 
     /* Layout */
-    --header-height: 4rem;
+    --header-height: 3rem;
     --aside-width: 16rem;
     --breakpoint-sm: 640px;
     --breakpoint-md: 768px;
@@ -53,7 +53,7 @@
 
     /* Colores semánticos */
     --color-page-bg: var(--color-sky-50);
-    --color-menu-bg: var(--color-sky-100);
+    --color-menu-bg: var(--color-sky-800);
     --color-interactive-neutral: var(--color-sky-600);
     --color-interactive-hover: var(--color-earth-600);
     --color-interactive-active: var(--color-earth-700);

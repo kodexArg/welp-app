@@ -34,8 +34,10 @@ def nav_link(link, icon, label, current_view=None, always_show_label=False):
     Returns:
         dict: Contexto para el template
     """
-    view_name = link.split(':')[-1] if ':' in link else link
-    is_active = current_view == view_name if current_view else False
+    # Comparar tanto el link completo como solo el nombre de la vista
+    is_active = False
+    if current_view:
+        is_active = (current_view == link) or (current_view == link.split(':')[-1])
     
     return {
         'link': link,
