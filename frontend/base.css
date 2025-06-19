@@ -12,7 +12,6 @@
     header {
         @apply fixed top-0 left-0 right-0 z-10 w-full;
         @apply h-[var(--header-height)] min-h-[var(--header-height)] max-h-[var(--header-height)];
-        background-color: var(--color-menu-bg);
     }
 
     nav {

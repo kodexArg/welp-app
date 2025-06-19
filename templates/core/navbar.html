@@ -1,7 +1,7 @@
 {% load core_tags %}
 
-<nav>
-    {% brand_logo show_text=True %}
+<nav class="{% if 'welp_pay' in request.resolver_match.namespace %}bg-green-800{% elif 'welp_desk' in request.resolver_match.namespace %}bg-sky-800{% else %}bg-slate-800{% endif %}">
+    {% brand_logo show_text=True current_namespace=request.resolver_match.namespace %}
     
     <div class="flex items-center space-x-1">
         {% if user.is_staff %}

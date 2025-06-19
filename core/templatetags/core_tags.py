@@ -4,19 +4,29 @@ from django.urls import reverse
 register = template.Library()
 
 @register.inclusion_tag('components/core/brand-logo.html')
-def brand_logo(show_text=True):
+def brand_logo(show_text=True, current_namespace=None):
     """
     Componente de logo de marca con animación
     
     Args:
-        show_text (bool): Si mostrar el texto "WelpDesk" o solo el ícono
+        show_text (bool): Si mostrar el texto o solo el ícono
+        current_namespace (str): Namespace actual para determinar el texto
     
     Returns:
         dict: Contexto para el template
     """
+    # Determinar el texto según el namespace
+    if current_namespace and 'welp_pay' in current_namespace:
+        brand_text = 'Pay'
+    elif current_namespace and 'welp_desk' in current_namespace:
+        brand_text = 'Desk'
+    else:
+        brand_text = 'App'
+    
     return {
         'show_text': show_text,
         'home_url': reverse('core:home'),
+        'brand_text': brand_text,
     }
 
 @register.inclusion_tag('components/core/nav-link.html')
