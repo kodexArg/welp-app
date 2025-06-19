@@ -1,103 +1,118 @@
-<div class="brand-logo h-full flex items-center">
-    <a href="{{ home_url }}" 
-       class="flex items-center h-full pt-2 pl-2
-              font-brand font-bold text-3xl tracking-wide 
-              no-underline transition-all duration-300">
+<div class="brand-logo flex items-center h-full">
+    <a href="{{ home_url }}" class="flex pt-2 items-center justify-center h-full font-brand font-bold text-3xl tracking-wide">
         {% if show_text %}
-            <span class="brand-text hidden min-[30rem]:inline mr-1 transition-colors duration-300">Welp</span>
+            <span class="brand-text hidden min-[30rem]:inline mr-0.5">Welp</span>
         {% endif %}
         <div class="relative">
-            <i class="absolute text-4xl brand-icon brand-shadow-1
-                      blur-[0.4rem] translate-x-[-0.05rem] translate-y-[0.05rem] 
-                      opacity-50 transition-all duration-300"></i>
-            <i class="absolute text-4xl brand-icon brand-shadow-2
-                      blur-[0.2rem] translate-x-[-0.05rem] translate-y-[0.05rem] 
-                      opacity-20 transition-all duration-300"></i>
-            <i class="relative text-4xl brand-icon brand-icon-main
-                      translate-x-[0.05rem] translate-y-[-0.05rem]
-                      brand-logo-glow opacity-80 transition-all duration-300"></i>
+            <i class="brand-icon-glow absolute left-0 top-0 text-4xl fa fa-headset translate-x-[-0.5] translate-y-[0.5] opacity-50"></i>
+            <i class="brand-icon-glow absolute left-0 top-0 text-4xl fa fa-headset translate-x-[-0.5] translate-y-[0.5] opacity-20"></i>
+            <i class="brand-icon-main relative text-4xl fa fa-headset translate-x-[-0.5] translate-y-[-0.5] icon-glow"></i>
         </div>
         {% if show_text %}
-            <span class="brand-text hidden min-[30rem]:inline ml-1 transition-colors duration-300">{{ brand_text }}</span>
+            <span class="brand-text hidden min-[30rem]:inline ml-0.5">{{ brand_text }}</span>
         {% endif %}
     </a>
 </div>
 
 <style>
 @layer components {
-    /* Solo variables CSS específicas de tema y pseudo-elementos */
-    .brand-text {
-        color: var(--navbar-brand-text);
+    /* ====================================================================
+       VARIABLES DE TEMA PARA BRAND - TODOS LOS TEMAS
+       ==================================================================== */
+    
+    /* Variables base para brand */
+    .brand-logo {
+        --navbar-brand-text-local: #ffffff;
+        --navbar-brand-accent-local: #f59e0b; /* amber-500 */
+        --navbar-brand-icon-local: #e0f2fe;
     }
     
-    /* Íconos específicos por tema - CSS necesario para pseudo-elementos */
-    .brand-icon::before {
-        content: "\f590"; /* fa-headset fallback */
-        font-family: "Font Awesome 6 Free";
-        font-weight: 900;
-        font-style: normal;
+    /* Tema Slate */
+    [data-theme="slate"] .brand-logo {
+        --navbar-brand-text-local: #ffffff;
+        --navbar-brand-accent-local: #fbbf24; /* amber-400 - más suave */
+        --navbar-brand-icon-local: #f1f5f9; /* slate-100 */
     }
     
-    [data-theme="slate"] .brand-icon::before {
-        content: "\f590"; /* fa-headset */
+    /* Tema Sky */
+    [data-theme="sky"] .brand-logo {
+        --navbar-brand-text-local: #ffffff;
+        --navbar-brand-accent-local: #eb9651; /* earth-400 - más suave */
+        --navbar-brand-icon-local: #e0f2fe; /* sky-200 */
     }
     
-    [data-theme="sky"] .brand-icon::before {
-        content: "\f590"; /* fa-headset */
+    /* Tema Forest */
+    [data-theme="forest"] .brand-logo {
+        --navbar-brand-text-local: #ffffff;
+        --navbar-brand-accent-local: #eb9651; /* earth-400 - más suave */
+        --navbar-brand-icon-local: #dcfce7; /* forest-200 */
     }
     
-    [data-theme="forest"] .brand-icon::before {
-        content: "\f651"; /* fa-comment-dollar */
-    }
-    
-    /* Colores dinámicos */
-    .brand-shadow-1,
-    .brand-shadow-2,
-    .brand-icon-main {
-        color: var(--navbar-brand-icon-color);
-        filter: drop-shadow(0 0 4px var(--navbar-brand-icon-color));
-    }
-    
-    .brand-icon-main {
-        filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.1));
-    }
-    
-    /* Animación de glow */
-    .brand-logo-glow {
-        animation: brief-glow 30s ease-in-out infinite;
-    }
+    /* ====================================================================
+       ANIMACIÓN DE BRILLO PARA EL ICONO
+       ==================================================================== */
     
     @keyframes brief-glow {
         0%, 4%, 100% {
-            filter: brightness(1) drop-shadow(0 0 0 transparent);
+            filter: brightness(1) drop-shadow(0 0 0 white);
         }
         1% {
-            filter: brightness(1.3) drop-shadow(0 0 12px var(--navbar-brand-icon-color));
+            filter: brightness(1.7) drop-shadow(0 0 18px white);
         }
     }
     
-    /* Hover effects */
-    .brand-logo:hover .brand-icon-main {
-        opacity: 1;
-        filter: brightness(1.1) 
-                drop-shadow(0 0 1px rgba(0, 0, 0, 0.1)) 
-                drop-shadow(0 0 8px var(--navbar-brand-icon-color));
+    /* Clases de animación */
+    .icon-glow {
+        animation: brief-glow 30s ease-in-out infinite;
     }
     
-    .brand-logo:hover .brand-text {
+    /* Respeto por preferencias de movimiento reducido */
+    @media (prefers-reduced-motion: reduce) {
+        .icon-glow {
+            animation: none;
+        }
+    }
+    
+    /* ====================================================================
+       ESTILOS ESPECÍFICOS DEL COMPONENTE BRAND
+       ==================================================================== */
+    
+    .brand-logo a {
+        color: var(--navbar-brand-text-local);
+        text-decoration: none;
+        transition: all 300ms ease;
+    }
+    
+    .brand-logo a:hover {
         filter: brightness(1.05);
     }
     
-    .brand-logo:hover .brand-shadow-1,
-    .brand-logo:hover .brand-shadow-2 {
-        opacity: 0.25;
-        filter: drop-shadow(0 0 6px var(--navbar-brand-icon-color));
+    .brand-text {
+        color: var(--navbar-brand-text-local);
     }
     
-    @media (prefers-reduced-motion: reduce) {
-        .brand-logo-glow {
-            animation: none;
-        }
+    .brand-icon-main {
+        color: var(--navbar-brand-icon-local);
+        filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.1));
+    }
+    
+    .brand-icon-glow {
+        color: white;
+        filter: drop-shadow(0 0 12px white);
+    }
+    
+    /* ====================================================================
+       EFECTOS HOVER COMPLEJOS
+       ==================================================================== */
+    
+    .brand-logo:hover .brand-icon-main {
+        opacity: 1;
+        filter: brightness(1.1) drop-shadow(0 0 1px rgba(0, 0, 0, 0.1)) drop-shadow(0 0 18px white);
+    }
+    
+    .brand-logo:hover .brand-icon-glow {
+        opacity: 0.25;
+        filter: drop-shadow(0 0 18px white);
     }
 }
 </style>
@@ -105,27 +120,21 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const brandLogos = document.querySelectorAll('.brand-logo');
-    
     brandLogos.forEach(function(logo) {
-        const iconElement = logo.querySelector('.brand-logo-glow');
-        
+        const iconElement = logo.querySelector('.icon-glow');
         if (iconElement) {
             logo.addEventListener('mouseenter', function() {
-                iconElement.style.filter = 'brightness(1.2) drop-shadow(0 0 10px var(--navbar-brand-icon-color))';
+                iconElement.style.filter = 'brightness(1.2) drop-shadow(0 0 18px white)';
             });
-            
             logo.addEventListener('mouseleave', function() {
                 iconElement.style.filter = '';
             });
         }
     });
     
-    // Escuchar cambios de tema para actualizar efectos
+    // Efecto sutil al cambiar tema
     document.addEventListener('themeChanged', function(event) {
-        console.log(`🎨 Brand logo adaptado al tema: ${event.detail.theme}`);
-        
-        // Forzar repaint para cambio de ícono
-        const brandIcons = document.querySelectorAll('.brand-icon');
+        const brandIcons = document.querySelectorAll('.brand-icon-main');
         brandIcons.forEach(icon => {
             icon.style.transform = 'scale(0.99)';
             setTimeout(() => {

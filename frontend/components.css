@@ -12,6 +12,7 @@
         font-family: var(--font-brand);
     }
 
+
     .text-gradient {
         background: linear-gradient(135deg, var(--title-gradient-start), var(--title-gradient-end));
         -webkit-background-clip: text;

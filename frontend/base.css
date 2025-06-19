@@ -63,7 +63,7 @@
     /* TÍTULOS - Ahora usan variables dinámicas de tema */
     h1, h2, h3, h4 {
         @apply font-bold leading-tight mb-4 text-center;
-        font-family: var(--font-brand);
+        font-family: var(--font-ui);
         transition: color 0.3s ease;
     }
 

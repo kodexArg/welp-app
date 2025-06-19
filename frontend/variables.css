@@ -6,7 +6,7 @@
     --font-mono: 'Roboto Mono', monospace;
 
     /* Layout */
-    --header-height: 3rem;
+    --header-height: 8vh;
     --aside-width: 16rem;
     --breakpoint-sm: 640px;
     --breakpoint-md: 768px;
@@ -71,8 +71,6 @@
     --navbar-link-text: #94a3b8; /* slate-400 */
     --navbar-link-hover: #f1f5f9; /* slate-100 */
     --navbar-link-active: #ffffff; /* white */
-    --navbar-brand-text: #ffffff;
-    --navbar-brand-accent: var(--theme-accent);
 
     /* Variables específicas para SCROLLBAR */
     --scrollbar-track: var(--theme-primary-light);
@@ -114,9 +112,6 @@
     --navbar-link-text: #94a3b8; /* slate-400 */
     --navbar-link-hover: #f1f5f9; /* slate-100 */
     --navbar-link-active: #ffffff;
-    --navbar-brand-text: #ffffff;
-    --navbar-brand-accent: #fbbf24; /* amber-400 - más suave */
-    --navbar-brand-icon-color: #94a3b8; /* slate-400 - suave */
 
     /* Scrollbar específico para Slate */
     --scrollbar-track: #e2e8f0; /* slate-200 */
@@ -151,9 +146,6 @@
     --navbar-link-text: var(--color-sky-300);
     --navbar-link-hover: #ffffff;
     --navbar-link-active: #ffffff;
-    --navbar-brand-text: #ffffff;
-    --navbar-brand-accent: var(--color-earth-400); /* más suave */
-    --navbar-brand-icon-color: var(--color-sky-400); /* sky-400 - suave */
 
     /* Scrollbar específico para Sky */
     --scrollbar-track: var(--color-sky-200);
@@ -188,9 +180,6 @@
     --navbar-link-text: var(--color-forest-300);
     --navbar-link-hover: #ffffff;
     --navbar-link-active: #ffffff;
-    --navbar-brand-text: #ffffff;
-    --navbar-brand-accent: var(--color-earth-400); /* más suave */
-    --navbar-brand-icon-color: var(--color-forest-400); /* forest-400 - suave */
 
     /* Scrollbar específico para Forest */
     --scrollbar-track: var(--color-forest-200);
