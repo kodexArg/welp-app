@@ -50,43 +50,59 @@ Incluye:
 - [x] Template tags para UI
 - [x] Clases CSS para estados
 - [x] Sistema de colores consistente
+- [x] Validación de transiciones de estado
+- [x] Funciones utilitarias para flujo de trabajo
 
 **Estados de Tickets Disponibles:**
-- `open`: Abierto (rojo)
-- `feedback`: Comentado (azul)  
-- `solved`: Solucionado (verde)
-- `authorized`: Autorizado (verde claro)
-- `rejected`: Rechazado (amarillo)
-- `closed`: Cerrado (gris)
+- `open`: Abierto (rojo) → feedback, solved, closed
+- `feedback`: Comentado (azul) → solved, closed  
+- `solved`: Solucionado (verde) → authorized, rejected, closed
+- `authorized`: Autorizado (verde claro) → closed
+- `rejected`: Rechazado (amarillo) → feedback, solved
+- `closed`: Cerrado (gris) → [estado final]
 
 **Sistema de Clases CSS:**
 ```css
-/* Badges básicos */
+/* Badges básicos (fondo suave) */
 .status-open, .status-feedback, .status-solved, 
 .status-authorized, .status-rejected, .status-closed
 
 /* Badges con fondo sólido (mayor contraste) */
 .status-solid.status-[estado]
 
-/* Clases utilitarias */
+/* Clases utilitarias por contexto */
 .text-status-[estado]     /* Color de texto */
 .bg-status-[estado]       /* Color de fondo */
 .border-status-[estado]   /* Color de borde */
 .hover-status-[estado]    /* Efectos hover */
 ```
 
+**Funciones Utilitarias Python:**
+```python
+from welp_desk.constants import (
+    is_valid_status, can_transition_to, 
+    get_available_transitions, ACTIVE_STATUSES
+)
+
+# Validación de estados
+is_valid_status('open')  # True
+can_transition_to('solved', 'authorized')  # True
+
+# Métodos del modelo Ticket
+ticket.can_transition_to_status('closed')  # Boolean
+ticket.get_available_status_transitions()  # Lista
+ticket.is_active  # Boolean
+ticket.is_final   # Boolean
+```
+
 **Uso en Templates:**
 ```html
-{% load ui_tags %}
 {% load core_tags %}
 
 <!-- Badge básico -->
 {% status_badge ticket.status %}
 
 <!-- Badge con fondo sólido para mayor contraste -->
-{% status_badge ticket.status "solid" %}
-
-<!-- Template tag con componente -->
 {% status_badge ticket.status variant="solid" %}
 
 <!-- Badge con etiqueta personalizada -->

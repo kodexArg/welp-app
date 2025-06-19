@@ -241,13 +241,22 @@
     }
 
     /* ===============================================
-       STATUS BADGES CON VARIABLES DINÁMICAS
+       STATUS BADGES Y SISTEMA DE COLORES
        =============================================== */
 
+    /* BADGES BÁSICOS: Fondo suave, ideal para mostrar estado sin distraer */
     .status {
         @apply text-xs font-semibold py-1 px-2 rounded-full uppercase tracking-wide;
     }
 
+    /* Estados individuales con colores específicos por flujo de trabajo:
+       - open (rojo): Requiere atención inmediata
+       - feedback (azul): Conversación en progreso  
+       - solved (verde): Solución propuesta
+       - authorized (verde claro): Solución aprobada
+       - rejected (amarillo): Requiere revisión
+       - closed (gris): Finalizado
+    */
     .status-open {
         @apply bg-red-100 text-red-700;
     }
@@ -276,7 +285,7 @@
        VARIANTES DE STATUS PARA MEJOR CONTRASTE
        =============================================== */
 
-    /* Status con fondo sólido para mejor visibilidad */
+    /* BADGES SÓLIDOS: Alto contraste, ideal para interfaces oscuras o mayor visibilidad */
     .status-solid {
         @apply text-white font-bold shadow-sm;
     }
@@ -305,7 +314,11 @@
         @apply bg-gray-500 text-white;
     }
 
-    /* Clases de color por estado para aplicar en cualquier elemento */
+    /* ===============================================
+       CLASES UTILITARIAS POR ESTADO
+       =============================================== */
+
+    /* COLORES DE TEXTO: Para aplicar color de estado a cualquier elemento */
     .text-status-open { @apply text-red-700; }
     .text-status-feedback { @apply text-blue-700; }
     .text-status-solved { @apply text-green-700; }
@@ -313,6 +326,7 @@
     .text-status-rejected { @apply text-yellow-700; }
     .text-status-closed { @apply text-gray-700; }
 
+    /* COLORES DE FONDO: Para resaltar secciones según estado */
     .bg-status-open { @apply bg-red-100; }
     .bg-status-feedback { @apply bg-blue-100; }
     .bg-status-solved { @apply bg-green-100; }
@@ -320,7 +334,7 @@
     .bg-status-rejected { @apply bg-yellow-100; }
     .bg-status-closed { @apply bg-gray-100; }
 
-    /* Clases de borde por estado */
+    /* COLORES DE BORDE: Para tarjetas y contenedores */
     .border-status-open { @apply border-red-300; }
     .border-status-feedback { @apply border-blue-300; }
     .border-status-solved { @apply border-green-300; }
@@ -328,11 +342,11 @@
     .border-status-rejected { @apply border-yellow-300; }
     .border-status-closed { @apply border-gray-300; }
 
-    /* Efectos hover para elementos interactivos por estado */
+    /* EFECTOS HOVER: Para elementos interactivos (botones, links) */
     .hover-status-open:hover { @apply bg-red-50 border-red-400; }
     .hover-status-feedback:hover { @apply bg-blue-50 border-blue-400; }
     .hover-status-solved:hover { @apply bg-green-50 border-green-400; }
-    .hover-status-authorized:hover { @apply bg-green-25 border-green-300; }
+    .hover-status-authorized:hover { @apply bg-green-100 border-green-300; }
     .hover-status-rejected:hover { @apply bg-yellow-50 border-yellow-400; }
     .hover-status-closed:hover { @apply bg-gray-50 border-gray-400; }
 

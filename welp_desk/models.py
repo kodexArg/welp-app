@@ -2,7 +2,14 @@ from django.db import models
 from django.db.models import Q
 from django.urls import reverse
 from django.utils import timezone
-from .constants import TICKET_STATUS_CHOICES
+from .constants import (
+    TICKET_STATUS_CHOICES, 
+    STATUS_MAX_LENGTH,
+    can_transition_to,
+    get_available_transitions, 
+    ACTIVE_STATUSES,
+    FINAL_STATUSES
+)
 
 
 class UDN(models.Model):
@@ -176,18 +183,33 @@ class Ticket(models.Model):
         last_message = self.messages.order_by('-created_on').first()
         return last_message.status if last_message else None
 
+    def can_transition_to_status(self, new_status):
+        """Verifica si el ticket puede cambiar al nuevo estado"""
+        current_status = self.status
+        if not current_status:
+            return new_status == 'open'  # Solo se puede abrir un ticket sin estado
+        return can_transition_to(current_status, new_status)
+    
+    def get_available_status_transitions(self):
+        """Obtiene los estados disponibles desde el estado actual"""
+        current_status = self.status
+        return get_available_transitions(current_status) if current_status else ['open']
+    
+    @property
+    def is_active(self):
+        """Indica si el ticket está en un estado activo (no finalizado)"""
+        return self.status in ACTIVE_STATUSES if self.status else True
+    
+    @property
+    def is_final(self):
+        """Indica si el ticket está en un estado final"""
+        return self.status in FINAL_STATUSES if self.status else False
+
 
 class Message(models.Model):
-    STATUS_CHOICES = [
-        ('open', 'Abierto'),
-        ('feedback', 'Comentado'),
-        ('solved', 'Solucionado'),
-        ('authorized', 'Autorizado'),
-        ('rejected', 'Rechazado'),
-        ('closed', 'Cerrado'),
-    ]
+    STATUS_CHOICES = TICKET_STATUS_CHOICES
     ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE, related_name="messages", verbose_name="Ticket")
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='open', verbose_name="Estado")
+    status = models.CharField(max_length=STATUS_MAX_LENGTH, choices=STATUS_CHOICES, default='open', verbose_name="Estado")
     reported_on = models.DateTimeField(null=True, blank=True, verbose_name="Fecha Reportada")
     created_on = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de Creación")
     user = models.ForeignKey('core.User', on_delete=models.SET_NULL, null=True, blank=True, related_name="welp_messages", verbose_name="Usuario")

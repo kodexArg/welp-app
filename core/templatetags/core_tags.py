@@ -1,5 +1,6 @@
 from django import template
 from django.urls import reverse
+from welp_desk.constants import TICKET_STATUS_LABELS
 
 register = template.Library()
 
@@ -134,18 +135,8 @@ def status_badge(status, label=None, variant=None):
     Returns:
         dict: Contexto para el template
     """
-    # Mapeo de estados a etiquetas en español
-    status_labels = {
-        'open': 'Abierto',
-        'feedback': 'Comentado',
-        'solved': 'Solucionado', 
-        'authorized': 'Autorizado',
-        'rejected': 'Rechazado',
-        'closed': 'Cerrado',
-    }
-    
     return {
         'status': status,
-        'label': label or status_labels.get(status, status.title() if status else 'Sin Estado'),
+        'label': label or TICKET_STATUS_LABELS.get(status, status.title() if status else 'Sin Estado'),
         'variant': variant,
     }

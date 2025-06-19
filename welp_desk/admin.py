@@ -3,6 +3,7 @@ from django.utils.html import format_html
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import GroupAdmin
 from .models import UDN, Sector, IssueCategory, Issue, Roles, Ticket, Message, Attachment
+from .constants import TICKET_STATUS_COLORS
 
 
 # ========================================
@@ -178,7 +179,7 @@ class AttachmentInline(admin.TabularInline):
 @admin.register(Ticket)
 class TicketAdmin(admin.ModelAdmin):
     """Gestión principal de tickets. Estado y creador se calculan desde mensajes."""
-    list_display = ['id', 'issue', 'udn', 'sector', 'status_display', 'created_by_display', 'messages_count']
+    list_display = ['id', 'issue', 'udn', 'sector', 'status_display', 'ticket_state', 'created_by_display', 'messages_count']
     list_filter = ['udn', 'sector', 'issue_category', 'messages__status']
     search_fields = ['issue__name', 'udn__name', 'sector__name', 'messages__body']
     ordering = ['-id']
@@ -196,17 +197,20 @@ class TicketAdmin(admin.ModelAdmin):
         if not status:
             return '<span style="color: gray;">Sin estado</span>'
         
-        colors = {
-            'open': '#dc2626',      # rojo (casi naranja)
-            'feedback': '#2563eb',  # azul
-            'solved': '#16a34a',    # verde
-            'authorized': '#22c55e', # verde claro
-            'rejected': '#eab308',  # naranja (casi amarillo)
-            'closed': '#6b7280'     # gris
-        }
+        colors = TICKET_STATUS_COLORS
         color = colors.get(status, 'gray')
         return format_html(f'<span style="color: {color};">● {status.title()}</span>')
     status_display.short_description = 'Estado'
+    
+    def ticket_state(self, obj):
+        """Indica si el ticket está activo o finalizado"""
+        if obj.is_final:
+            return format_html('<span style="color: #6b7280;">🔒 Finalizado</span>')
+        elif obj.is_active:
+            return format_html('<span style="color: #16a34a;">🔄 Activo</span>')
+        else:
+            return format_html('<span style="color: #eab308;">⚠️ Pendiente</span>')
+    ticket_state.short_description = 'Estado del Ticket'
     
     def created_by_display(self, obj):
         """Usuario que escribió el primer mensaje."""
