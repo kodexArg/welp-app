@@ -1,128 +1,97 @@
-<div class="brand-logo">
+<div class="brand-logo h-full flex items-center">
     <a href="{{ home_url }}" 
-       class="flex items-center 
-              font-ui font-bold 
-              text-3xl tracking-wide 
-              no-underline">
-        <div class="flex items-center translate-y-1">
-            {% if show_text %}
-                <span class="brand-text hidden min-[30rem]:inline">Welp</span>
-            {% endif %}
-            <div class="relative">
-                <i class="absolute 
-                          text-4xl brand-icon 
-                          brand-shadow-1
-                          shadow-md blur-[0.4rem] 
-                          translate-x-[-0.05rem] translate-y-[0.05rem] 
-                          opacity-50"></i>
-                <i class="absolute 
-                          text-4xl brand-icon 
-                          brand-shadow-2
-                          shadow-md blur-[0.2rem] 
-                          translate-x-[-0.05rem] translate-y-[0.05rem] 
-                          opacity-20"></i>
-                <i class="relative 
-                          text-4xl brand-icon 
-                          brand-icon-main
-                          shadow-md 
-                          translate-x-[0.05rem] translate-y-[-0.05rem]
-                          brand-logo-glow"></i>
-            </div>
-            {% if show_text %}
-                <span class="brand-text hidden min-[30rem]:inline">{{ brand_text }}</span>
-            {% endif %}
+       class="flex items-center h-full pt-2 pl-2
+              font-brand font-bold text-3xl tracking-wide 
+              no-underline transition-all duration-300">
+        {% if show_text %}
+            <span class="brand-text hidden min-[30rem]:inline mr-1 transition-colors duration-300">Welp</span>
+        {% endif %}
+        <div class="relative">
+            <i class="absolute text-4xl brand-icon brand-shadow-1
+                      blur-[0.4rem] translate-x-[-0.05rem] translate-y-[0.05rem] 
+                      opacity-50 transition-all duration-300"></i>
+            <i class="absolute text-4xl brand-icon brand-shadow-2
+                      blur-[0.2rem] translate-x-[-0.05rem] translate-y-[0.05rem] 
+                      opacity-20 transition-all duration-300"></i>
+            <i class="relative text-4xl brand-icon brand-icon-main
+                      translate-x-[0.05rem] translate-y-[-0.05rem]
+                      brand-logo-glow opacity-80 transition-all duration-300"></i>
         </div>
+        {% if show_text %}
+            <span class="brand-text hidden min-[30rem]:inline ml-1 transition-colors duration-300">{{ brand_text }}</span>
+        {% endif %}
     </a>
 </div>
 
 <style>
 @layer components {
-    .brand-logo {
-        @apply flex items-center justify-start;
-    }
-    
-    /* Texto del brand usa variables dinámicas */
+    /* Solo variables CSS específicas de tema y pseudo-elementos */
     .brand-text {
         color: var(--navbar-brand-text);
-        transition: color 0.3s ease;
-        font-style: normal;
     }
     
-    /* Íconos específicos por tema */
-    .brand-icon {
-        transition: all 0.3s ease;
-        font-style: normal;
-    }
-    
-    /* Fallback - ícono por defecto si no hay tema específico */
+    /* Íconos específicos por tema - CSS necesario para pseudo-elementos */
     .brand-icon::before {
         content: "\f590"; /* fa-headset fallback */
         font-family: "Font Awesome 6 Free";
         font-weight: 900;
+        font-style: normal;
     }
     
-    /* Default (slate) - WelpApp - Mismo ícono que WelpDesk */
     [data-theme="slate"] .brand-icon::before {
         content: "\f590"; /* fa-headset */
-        font-family: "Font Awesome 6 Free";
-        font-weight: 900;
     }
     
-    /* Sky theme (welp_desk) */
     [data-theme="sky"] .brand-icon::before {
         content: "\f590"; /* fa-headset */
-        font-family: "Font Awesome 6 Free";
-        font-weight: 900;
     }
     
-    /* Forest theme (welp_pay) */
     [data-theme="forest"] .brand-icon::before {
         content: "\f651"; /* fa-comment-dollar */
-        font-family: "Font Awesome 6 Free";
-        font-weight: 900;
     }
     
-    /* Sombras usan el color del ícono principal con opacidad */
+    /* Colores dinámicos */
     .brand-shadow-1,
-    .brand-shadow-2 {
+    .brand-shadow-2,
+    .brand-icon-main {
         color: var(--navbar-brand-icon-color);
-        opacity: 0.15; /* Más suave */
+        filter: drop-shadow(0 0 4px var(--navbar-brand-icon-color));
     }
     
     .brand-icon-main {
-        color: var(--navbar-brand-icon-color);
-        opacity: 0.8; /* Tono más suave */
-        transition: color 0.3s ease, filter 0.3s ease, opacity 0.3s ease;
+        filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.1));
     }
     
+    /* Animación de glow */
     .brand-logo-glow {
         animation: brief-glow 30s ease-in-out infinite;
     }
     
     @keyframes brief-glow {
         0%, 4%, 100% {
-            filter: brightness(1);
-            text-shadow: 0 0 0 rgba(255, 255, 255, 0);
+            filter: brightness(1) drop-shadow(0 0 0 transparent);
         }
         1% {
-            filter: brightness(1.5);
-            text-shadow: 0 0 20px var(--navbar-brand-icon-color);
+            filter: brightness(1.3) drop-shadow(0 0 12px var(--navbar-brand-icon-color));
         }
     }
     
-    /* Hover effects más suaves */
+    /* Hover effects */
     .brand-logo:hover .brand-icon-main {
-        opacity: 1; /* Aumenta a opacidad completa en hover */
-        filter: brightness(1.1) drop-shadow(0 0 8px var(--navbar-brand-icon-color));
+        opacity: 1;
+        filter: brightness(1.1) 
+                drop-shadow(0 0 1px rgba(0, 0, 0, 0.1)) 
+                drop-shadow(0 0 8px var(--navbar-brand-icon-color));
     }
     
     .brand-logo:hover .brand-text {
-        filter: brightness(1.05); /* Más sutil */
+        filter: brightness(1.05);
     }
     
     .brand-logo:hover .brand-shadow-1,
     .brand-logo:hover .brand-shadow-2 {
-        opacity: 0.25; /* Sombras ligeramente más visibles en hover */
+        opacity: 0.25;
+        filter: drop-shadow(0 0 6px var(--navbar-brand-icon-color));
     }
     
     @media (prefers-reduced-motion: reduce) {
@@ -142,7 +111,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (iconElement) {
             logo.addEventListener('mouseenter', function() {
-                iconElement.style.filter = 'brightness(1.2) drop-shadow(0 0 10px var(--navbar-brand-accent))';
+                iconElement.style.filter = 'brightness(1.2) drop-shadow(0 0 10px var(--navbar-brand-icon-color))';
             });
             
             logo.addEventListener('mouseleave', function() {
