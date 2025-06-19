@@ -25,7 +25,7 @@ def brand_logo(show_text=True, current_namespace=None):
     
     return {
         'show_text': show_text,
-        'home_url': reverse('core:home'),
+        'home_url': reverse('core:index'),
         'brand_text': brand_text,
     }
 

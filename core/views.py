@@ -10,10 +10,6 @@ import django
 import time
 
 def index(request):
-    """Vista index principal para core"""
-    return render(request, 'core/index.html')
-
-def home(request):
     """Vista home principal con información del sistema"""
     context = {
         'django_version': django.get_version(),
@@ -29,7 +25,7 @@ def home(request):
         'server_info': 'Gunicorn' if not settings.IS_LOCAL else 'Django Development Server',
         'htmx_enabled': hasattr(request, 'htmx'),
     }
-    return render(request, 'core/home.html', context)
+    return render(request, 'core/index.html', context)
 
 def hello_world(request):
     """Endpoint de prueba básico"""
@@ -80,7 +76,7 @@ def htmx_demo(request):
 def login_view(request):
     """Vista de inicio de sesión con autenticación"""
     if request.user.is_authenticated:
-        return redirect('core:home')
+        return redirect('core:index')
     
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -91,7 +87,7 @@ def login_view(request):
             if user is not None:
                 login(request, user)
                 messages.success(request, f'¡Bienvenido, {user.get_full_name() or user.username}!')
-                next_url = request.GET.get('next', 'core:home')
+                next_url = request.GET.get('next', 'core:index')
                 return redirect(next_url)
             else:
                 messages.error(request, 'Usuario o contraseña incorrectos.')
@@ -106,8 +102,8 @@ def logout_view(request):
         user_name = request.user.get_full_name() or request.user.username if request.user.is_authenticated else 'Usuario'
         logout(request)
         messages.info(request, f'¡Hasta luego, {user_name}!')
-        return redirect('core:home')
-    return redirect('core:home')
+        return redirect('core:index')
+    return redirect('core:index')
 
 @login_required
 def dashboard_view(request):

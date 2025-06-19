@@ -1,15 +1,188 @@
 {% extends "core/base.html" %}
 
-{% block title %}Core - Welp App{% endblock %}
+{% block title %}{% if user.is_authenticated %}Dashboard{% else %}Bienvenido{% endif %} - Welp App{% endblock %}
 
 {% block content %}
-<section class="animate-fade-in">
-    <h1>Core</h1>
-    
-    <ul>
-        <li><a href="{% url 'core:index' %}">Core</a></li>
-        <li><a href="{% url 'welp_desk:index' %}">Welp Desk</a></li>
-        <li><a href="{% url 'welp_pay:index' %}">Welp Pay</a></li>
-    </ul>
-</section>
+{% if user.is_authenticated %}
+    <section class="animate-fade-in">
+        <p class="font-content">Bienvenido, {{ user.get_full_name|default:user.username }}</p>
+
+        <div class="animate-slide-in-bottom animate-delay-200 space-y-6 mt-10">
+            <h3 class="font-title">Aplicaciones</h3>
+            
+            <div class="app-card">
+                <a href="{% url 'welp_desk:index' %}" class="app-card-link">
+                    <div class="app-icon welp-desk">
+                        <i class="fa fa-headset"></i>
+                    </div>
+                    <div class="app-content">
+                        <div class="app-badge">
+                            <h4 class="app-title welp-desk">WelpDesk</h4>
+                        </div>
+                        <p class="app-description">Sistema de soporte y tickets - Se activará automáticamente el tema azul</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="app-card">
+                <a href="{% url 'welp_pay:index' %}" class="app-card-link">
+                    <div class="app-icon welp-pay">
+                        <i class="fa fa-user-check"></i>
+                    </div>
+                    <div class="app-content">
+                        <div class="app-badge">
+                            <h4 class="app-title welp-pay">WelpPay</h4>
+                        </div>
+                        <p class="app-description">Sistema de pagos y facturación - Se activará automáticamente el tema verde</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="app-card">
+                <a href="{% url 'core:dashboard' %}" class="app-card-link">
+                    <div class="app-icon profile">
+                        <i class="fa fa-user"></i>
+                    </div>
+                    <div class="app-content">
+                        <h4 class="app-title profile">Mi Perfil</h4>
+                        <p class="app-description">Configuración de cuenta y perfil</p>
+                    </div>
+                </a>
+            </div>
+
+            {% if user.is_staff %}
+            <div class="app-card">
+                <a href="/admin/" class="app-card-link">
+                    <div class="app-icon admin">
+                        <i class="fa fa-cog"></i>
+                    </div>
+                    <div class="app-content">
+                        <h4 class="app-title admin">Administración</h4>
+                        <p class="app-description">Panel de administración del sistema</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="app-card">
+                <a href="{% url 'core:dev' %}" class="app-card-link">
+                    <div class="app-icon dev">
+                        <i class="fa fa-code"></i>
+                    </div>
+                    <div class="app-content">
+                        <h4 class="app-title dev">Desarrollo</h4>
+                        <p class="app-description">Herramientas de desarrollo y testing del sistema de temas</p>
+                    </div>
+                </a>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="animate-slide-in-bottom animate-delay-200 space-y-6 mt-10">
+            <h3 class="font-title">Info del sistema</h3>
+            <table>
+                <tr>
+                    <th>Entorno</th>
+                    <td>{{ environment }}</td>
+                </tr>
+                <tr>
+                    <th>Django</th>
+                    <td>{{ django_version }}</td>
+                </tr>
+                <tr>
+                    <th>Python</th>
+                    <td>{{ python_version }}</td>
+                </tr>
+                <tr>
+                    <th>Almacenamiento</th>
+                    <td>{{ storage_backend }}</td>
+                </tr>
+                <tr>
+                    <th>Servidor</th>
+                    <td>{{ server_info }}</td>
+                </tr>
+                <tr>
+                    <th>Región AWS</th>
+                    <td>{{ aws_region }}</td>
+                </tr>
+                <tr>
+                    <th>CDN</th>
+                    <td>
+                        {% if cdn_enabled %}
+                            <span class="tag tag-sector">Habilitado</span>
+                        {% else %}
+                            <span class="tag">Deshabilitado</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th>HTMX</th>
+                    <td>
+                        {% if htmx_enabled %}
+                            <span class="tag tag-sector">Activo</span>
+                        {% else %}
+                            <span class="tag">Inactivo</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Sistema de Temas</th>
+                    <td>
+                        <span class="tag tag-sector">Activo</span>
+                        <small>(Cambio automático por app)</small>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </section>
+
+{% else %}
+    <section class="animate-fade-in">
+        
+        <div class="animate-slide-in-bottom animate-delay-200 space-y-6 mt-10">
+            <div class="app-card">
+                <a href="{% url 'core:login' %}" class="app-card-link">
+                    <div class="app-icon login">
+                        <i class="fa fa-sign-in-alt"></i>
+                    </div>
+                    <div class="app-content">
+                        <h4 class="app-title login">Iniciar Sesión</h4>
+                        <p class="app-description">Accede a tu cuenta para usar todas las aplicaciones</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+        
+        <div class="animate-slide-in-bottom animate-delay-300 space-y-6 mt-10">
+            <h3 class="font-title">Nuestras Aplicaciones</h3>
+            
+            <div class="app-card">
+                <div class="app-card-link">
+                    <div class="app-icon welp-desk">
+                        <i class="fa fa-headset"></i>
+                    </div>
+                    <div class="app-content">
+                        <div class="app-badge">
+                            <h4 class="app-title welp-desk">WelpDesk</h4>
+                        </div>
+                        <p class="app-description">Sistema completo de soporte al cliente y gestión de tickets</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="app-card">
+                <div class="app-card-link">
+                    <div class="app-icon welp-pay">
+                        <i class="fa fa-user-check"></i>
+                    </div>
+                    <div class="app-content">
+                        <div class="app-badge">
+                            <h4 class="app-title welp-pay">WelpPay</h4>
+                        </div>
+                        <p class="app-description">Solución de pagos y facturación automatizada</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endif %}
 {% endblock %}

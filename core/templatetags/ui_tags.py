@@ -1,23 +1,26 @@
 from django import template
+from django.urls import reverse, NoReverseMatch
 
 register = template.Library()
 
-@register.simple_tag
-def active_class(request, url_name, css_class='active'):
+@register.simple_tag(takes_context=True)
+def active_class(context, view_name, class_name='active'):
     """
     Devuelve una clase CSS si la URL actual coincide con la especificada
     
-    Usage: {% active_class request 'core:home' 'text-blue-500' %}
+    Usage: {% active_class request 'core:index' 'text-blue-500' %}
     """
-    from django.urls import reverse, resolve
+    request = context.get('request')
+    if not request:
+        return ''
     
     try:
-        current_url = resolve(request.path_info).url_name
-        target_url = url_name.split(':')[-1] if ':' in url_name else url_name
+        current_url = reverse(view_name)
+        target_url = view_name.split(':')[-1] if ':' in view_name else view_name
         
         if current_url == target_url:
-            return css_class
-    except:
+            return class_name
+    except NoReverseMatch:
         pass
     
     return ''

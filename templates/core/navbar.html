@@ -14,7 +14,7 @@
             {% separator %}
             {% nav_link "welp_pay:index" "fa fa-user-check" "WelpPay" current_view=request.resolver_match.view_name %}
             {% separator %}
-            {% nav_link "core:home" "fa fa-home" "Inicio" current_view=request.resolver_match.view_name %}
+            {% nav_link "core:index" "fa fa-home" "Inicio" current_view=request.resolver_match.view_name %}
             {% separator %}
             {% logout_link user=user %}
         {% else %}
