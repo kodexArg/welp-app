@@ -6,21 +6,13 @@ from .models import UDN, Sector, IssueCategory, Issue, Roles, Ticket, Message, A
 from .constants import TICKET_STATUS_COLORS
 
 
-# ========================================
-# 📱 CONFIGURACIÓN DE CATEGORÍAS ADMIN
-# ========================================
-
 class WelpDeskAdminConfig:
     """Organiza admin en categorías: Autenticación, Configuración y Gestión"""
     pass
 
-# Personalizar Group para la categoría de autenticación
 from django.contrib.auth.models import Group
+Group._meta.verbose_name_plural = "Grupos"
 
-# Patch del modelo Group para cambiar su verbose_name_plural
-Group._meta.verbose_name_plural = "🔐 AUTENTICACIÓN - Grupos"
-
-# Registrar Group en welp_desk para la categoría de autenticación
 admin.site.unregister(Group)
 
 @admin.register(Group)
@@ -36,9 +28,7 @@ class WelpGroupAdmin(GroupAdmin):
     permissions_count.short_description = 'Permisos'
 
 
-# ========================================
-# 🔐 AUTENTICACIÓN Y AUTORIZACIÓN
-# ========================================
+# === AUTORIZACIÓN Y GESTIÓN DE USUARIOS ===
 
 @admin.register(Roles)
 class RolesAdmin(admin.ModelAdmin):
@@ -84,6 +74,8 @@ class RolesAdmin(admin.ModelAdmin):
         """Optimiza consultas con select_related para evitar N+1"""
         return super().get_queryset(request).select_related('user', 'udn', 'sector', 'issue_category')
 
+
+# === CATEGORÍAS FIJAS ===
 
 @admin.register(UDN)
 class UDNAdmin(admin.ModelAdmin):
@@ -151,6 +143,8 @@ class IssueAdmin(admin.ModelAdmin):
         return obj.ticket_set.count()
     tickets_count.short_description = 'Tickets'
 
+
+# === TABLAS DE HECHO ===
 
 class MessageInline(admin.TabularInline):
     """Gestión inline de mensajes dentro de tickets"""
@@ -266,4 +260,4 @@ class AttachmentAdmin(admin.ModelAdmin):
 
 admin.site.site_header = 'Welp Desk - Administración'
 admin.site.site_title = 'Welp Desk Admin'
-admin.site.index_title = 'Panel de Administración - Mesa de Ayuda' 
+admin.site.index_title = 'Panel de Administración' 

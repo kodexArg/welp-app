@@ -18,7 +18,7 @@ class UDN(models.Model):
 
     class Meta:
         verbose_name = "UDN (Unidad de Negocio)"
-        verbose_name_plural = "📋 CONFIGURACIÓN - UDNs"
+        verbose_name_plural = "UDNs"
 
     def __str__(self):
         return self.name
@@ -31,7 +31,7 @@ class Sector(models.Model):
 
     class Meta:
         verbose_name = "Sector"
-        verbose_name_plural = "📋 CONFIGURACIÓN - Sectores"
+        verbose_name_plural = "Sectores"
 
     def __str__(self):
         return self.name
@@ -44,7 +44,7 @@ class IssueCategory(models.Model):
 
     class Meta:
         verbose_name = "Categoría de Incidencia"
-        verbose_name_plural = "📋 CONFIGURACIÓN - Categorías"
+        verbose_name_plural = "Categorías de Incidencias"
 
     def __str__(self):
         return self.name
@@ -59,7 +59,7 @@ class Issue(models.Model):
 
     class Meta:
         verbose_name = "Incidencia"
-        verbose_name_plural = "📋 CONFIGURACIÓN - Incidencias"
+        verbose_name_plural = "Incidencias"
 
     def __str__(self):
         return self.name
@@ -72,7 +72,6 @@ class Roles(models.Model):
     sector = models.ForeignKey(Sector, on_delete=models.CASCADE, null=True, blank=True)
     issue_category = models.ForeignKey(IssueCategory, on_delete=models.CASCADE, null=True, blank=True)
     
-    # Permisos granulares independientes
     can_read = models.BooleanField(default=False, verbose_name="Puede Leer")
     can_comment = models.BooleanField(default=False, verbose_name="Puede Comentar")
     can_solve = models.BooleanField(default=False, verbose_name="Puede Solucionar")
@@ -82,7 +81,7 @@ class Roles(models.Model):
     
     class Meta:
         verbose_name = "Rol y Permiso"
-        verbose_name_plural = "🔐 AUTENTICACIÓN - Roles y Permisos"
+        verbose_name_plural = "Roles y Permisos"
         unique_together = ['user', 'udn', 'sector', 'issue_category']
     
     def __str__(self):
@@ -138,7 +137,7 @@ class Ticket(models.Model):
 
     class Meta:
         verbose_name = "Ticket"
-        verbose_name_plural = "🎫 GESTIÓN - Tickets"
+        verbose_name_plural = "Tickets"
 
     def __str__(self):
         return f"{self.issue.name} - {self.udn.name}"
@@ -151,36 +150,36 @@ class Ticket(models.Model):
 
     @property
     def created_by(self):
-        """Usuario del primer mensaje."""
+        """Usuario del primer mensaje"""
         first_message = self.messages.order_by('created_on').first()
         return first_message.user if first_message else None
 
     @property
     def status(self):
-        """Estado del último mensaje."""
+        """Estado del último mensaje"""
         last_message = self.messages.order_by('-created_on').first()
         return last_message.status if last_message else None
 
     def can_transition_to_status(self, new_status):
-        """Valida transiciones de estado según business rules."""
+        """Valida transiciones de estado según business rules"""
         current_status = self.status
         if not current_status:
             return new_status == 'open'
         return can_transition_to(current_status, new_status)
     
     def get_available_status_transitions(self):
-        """Estados disponibles desde estado actual."""
+        """Estados disponibles desde estado actual"""
         current_status = self.status
         return get_available_transitions(current_status) if current_status else ['open']
     
     @property
     def is_active(self):
-        """True si ticket no está en estado final."""
+        """True si ticket no está en estado final"""
         return self.status in ACTIVE_STATUSES if self.status else True
     
     @property
     def is_final(self):
-        """True si ticket está en estado final."""
+        """True si ticket está en estado final"""
         return self.status in FINAL_STATUSES if self.status else False
 
 
@@ -195,7 +194,7 @@ class Message(models.Model):
 
     class Meta:
         verbose_name = "Mensaje"
-        verbose_name_plural = "🎫 GESTIÓN - Mensajes"
+        verbose_name_plural = "Mensajes"
         ordering = ['created_on']
 
     def __str__(self):
@@ -212,14 +211,14 @@ class Message(models.Model):
 
 
 class Attachment(models.Model):
-    """Archivos adjuntos vinculados a mensajes específicos."""
+    """Archivos adjuntos vinculados a mensajes específicos"""
     file = models.FileField(upload_to="attachments/", verbose_name="Archivo")
     filename = models.CharField(max_length=255, verbose_name="Nombre del Archivo")
     message = models.ForeignKey(Message, on_delete=models.CASCADE, related_name="attachments", verbose_name="Mensaje", blank=True, null=True)
 
     class Meta:
         verbose_name = "Archivo Adjunto"
-        verbose_name_plural = "🎫 GESTIÓN - Adjuntos"
+        verbose_name_plural = "Archivos Adjuntos"
 
     def __str__(self):
         return self.filename 

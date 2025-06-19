@@ -33,42 +33,29 @@ class WelpDeskModelsTest(TestCase):
         self.issue2 = Issue.objects.create(name='Consulta vacaciones', issue_category=self.category2)
 
     def test_ticket_manager_filters_by_user_roles(self):
-        """
-        TEST #1 -Verificar que TicketManager filtra tickets según roles del usuario.
-        Este test es el más importante porque controla la seguridad y acceso a datos.
-        """
-        # Crear tickets en diferentes UDNs
+        """TicketManager filtra por roles - test crítico de seguridad"""
         ticket1 = Ticket.objects.create(udn=self.udn1, sector=self.sector1, 
                                        issue_category=self.category1, issue=self.issue1)
         ticket2 = Ticket.objects.create(udn=self.udn2, sector=self.sector2,
                                        issue_category=self.category2, issue=self.issue2)
         
-        # Dar permisos solo para UDN1 al usuario regular
         Roles.objects.create(user=self.regular_user, udn=self.udn1, can_read=True)
         
-        # Superuser ve todos los tickets
         all_tickets = Ticket.objects.get_queryset(user=self.superuser)
         self.assertEqual(all_tickets.count(), 2)
         
-        # Usuario regular solo ve tickets de su UDN
         user_tickets = Ticket.objects.get_queryset(user=self.regular_user)
         self.assertEqual(user_tickets.count(), 1)
         self.assertEqual(user_tickets.first().id, ticket1.id)
         
-        # Usuario sin roles no ve ningún ticket
         no_tickets = Ticket.objects.get_queryset(user=self.other_user)
         self.assertEqual(no_tickets.count(), 0)
 
     def test_roles_unique_together_constraint(self):
-        """
-        TEST #2 - Verificar que el constraint unique_together de Roles funciona.
-        Previene duplicación de permisos que podría corromper el sistema.
-        """
-        # Crear un rol
+        """Constraint unique_together previene duplicación de permisos"""
         Roles.objects.create(user=self.regular_user, udn=self.udn1, sector=self.sector1,
                             issue_category=self.category1, can_read=True)
         
-        # Intentar crear rol duplicado debe lanzar IntegrityError
         with self.assertRaises(IntegrityError):
             Roles.objects.create(user=self.regular_user, udn=self.udn1, sector=self.sector1,
                                 issue_category=self.category1, can_comment=True)
