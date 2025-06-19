@@ -15,7 +15,6 @@
     
     <link rel="stylesheet" href="{% vite_asset_url 'frontend/main.css' %}">
     
-    
     {% vite_hmr_client %}
     {% vite_asset 'frontend/main.js' %}
     
@@ -25,7 +24,7 @@
     {% block styles %}{% endblock %}
 </head>
 
-<body>
+<body data-namespace="{{ request.resolver_match.namespace|default:'core' }}">
     <header>
         {% block header %}
             {% include "core/navbar.html" %}
@@ -45,7 +44,6 @@
     <footer>
         {% block footer %}{% endblock %}
     </footer>
-
     
     {% block scripts %}{% endblock %}
 </body>

@@ -1,12 +1,12 @@
-
 @layer components {
-
 
     /* Estilos base del layout */
     body {
         @apply flex md:flex-col justify-center font-sans;
         @apply w-screen overflow-y-auto overflow-x-hidden;
-        background-color: var(--color-page-bg);
+        background-color: var(--theme-background);
+        color: var(--theme-text);
+        transition: background-color 0.3s ease, color 0.3s ease;
     }
 
     header {
@@ -14,8 +14,11 @@
         @apply h-[var(--header-height)] min-h-[var(--header-height)] max-h-[var(--header-height)];
     }
 
+    /* NAVBAR - Ahora usa variables dinámicas de tema */
     nav {
         @apply flex items-center justify-between w-full h-full px-3 py-1;
+        background-color: var(--navbar-bg);
+        transition: background-color 0.3s ease;
     }
 
     main {
@@ -34,41 +37,69 @@
         z-index: 1000;
     }
 
-    /* Scrollbar personalizada */
+    /* SCROLLBAR - Ahora usa variables dinámicas de tema */
     body::-webkit-scrollbar {
         width: 1rem;
-        @apply bg-sky-800;
+        background-color: var(--scrollbar-thumb);
         -webkit-appearance: none;
     }
 
     body::-webkit-scrollbar-track {
-        @apply bg-sky-100;
+        background-color: var(--scrollbar-track);
         margin-top: var(--header-height);
     }
 
     body::-webkit-scrollbar-thumb {
-        @apply bg-sky-800 rounded-full border-2 border-sky-100;
+        background-color: var(--scrollbar-thumb);
+        border: 2px solid var(--scrollbar-border);
+        @apply rounded-full;
+        transition: background-color 0.3s ease;
     }
 
     body::-webkit-scrollbar-thumb:hover {
-        @apply bg-sky-700;
+        background-color: var(--scrollbar-thumb-hover);
     }
 
-    /* Tipografía */
+    /* TÍTULOS - Ahora usan variables dinámicas de tema */
     h1, h2, h3, h4 {
         @apply font-bold leading-tight mb-4 text-center;
         font-family: var(--font-brand);
-        @apply text-sky-700;
+        transition: color 0.3s ease;
     }
 
-    h1 { @apply text-3xl mb-8; }
-    h2 { @apply text-2xl mb-6; }
-    h3 { @apply text-xl mb-4; }
-    h4 { @apply text-base mb-2; }
+    h1 { 
+        @apply text-3xl mb-8; 
+        color: var(--title-color-primary);
+    }
+    
+    h2 { 
+        @apply text-2xl mb-6; 
+        color: var(--title-color-secondary);
+    }
+    
+    h3 { 
+        @apply text-xl mb-4; 
+        color: var(--title-color-tertiary);
+    }
+    
+    h4 { 
+        @apply text-base mb-2; 
+        color: var(--theme-text-secondary);
+    }
+
+    /* Clase especial para títulos con gradiente */
+    .title-gradient {
+        background: linear-gradient(135deg, var(--title-gradient-start), var(--title-gradient-end));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
 
     p {
         @apply mb-3;
         font-family: var(--font-p);
+        color: var(--theme-text-secondary);
+        transition: color 0.3s ease;
     }
 
     span {
@@ -77,16 +108,16 @@
 
     a {
         @apply transition-colors duration-200;
-        color: var(--color-interactive-neutral);
+        color: var(--theme-primary);
     }
 
     a:hover {
-        color: var(--color-interactive-hover);
+        color: var(--theme-accent);
         @apply underline;
     }
 
     a:active {
-        color: var(--color-interactive-active);
+        color: var(--theme-primary-dark);
     }
 
     strong, b { @apply font-bold; }
@@ -94,7 +125,9 @@
 
     /* Listas */
     ul, ol {
-        @apply mb-4 pl-5 text-sky-900;
+        @apply mb-4 pl-5;
+        color: var(--theme-text);
+        transition: color 0.3s ease;
     }
 
     ul { @apply list-disc; }
@@ -108,11 +141,18 @@
     }
 
     article {
-        @apply mb-7 rounded-lg p-4 shadow-md bg-white border border-sky-200 overflow-hidden;
+        @apply mb-7 rounded-lg p-4 shadow-md overflow-hidden;
+        background-color: var(--theme-surface);
+        border: 1px solid var(--theme-border);
+        transition: background-color 0.3s ease, border-color 0.3s ease;
     }
 
     blockquote {
-        @apply pl-4 py-2 my-4 border-l-4 italic border-sky-400 bg-sky-50;
+        @apply pl-4 py-2 my-4 border-l-4 italic;
+        border-color: var(--theme-primary);
+        background-color: var(--theme-primary-light);
+        color: var(--theme-text);
+        transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
     }
 
     /* Tablas */
@@ -121,16 +161,23 @@
     }
 
     th {
-        @apply py-2 px-3 text-left font-bold border-b-2 bg-sky-50 border-sky-200 text-sky-800;
+        @apply py-2 px-3 text-left font-bold border-b-2;
+        background-color: var(--theme-primary-light);
+        border-color: var(--theme-border);
+        color: var(--theme-text);
         font-family: var(--font-ui);
+        transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
     }
 
     td {
-        @apply py-2 px-3 border-b border-sky-100;
+        @apply py-2 px-3 border-b;
+        border-color: var(--theme-border);
+        color: var(--theme-text-secondary);
+        transition: border-color 0.3s ease, color 0.3s ease;
     }
 
     tr:hover td {
-        @apply bg-sky-50;
+        background-color: var(--theme-primary-light);
     }
 
     /* Formularios */
@@ -139,17 +186,23 @@
     }
 
     label {
-        @apply block mb-2 font-medium text-sky-800;
+        @apply block mb-2 font-medium;
+        color: var(--theme-text);
         font-family: var(--font-ui);
+        transition: color 0.3s ease;
     }
 
     input, textarea, select {
-        @apply w-full px-3 py-2 mb-2 border-2 rounded-md border-sky-200 bg-white;
+        @apply w-full px-3 py-2 mb-2 border-2 rounded-md;
+        border-color: var(--theme-border);
+        background-color: var(--theme-surface);
+        color: var(--theme-text);
+        transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
     }
 
     input:focus, textarea:focus, select:focus {
         @apply outline-none border-2;
-        border-color: var(--color-earth-400);
+        border-color: var(--theme-primary);
     }
 
     /* Elementos adicionales */
@@ -158,22 +211,28 @@
     }
 
     hr {
-        @apply my-6 border-t border-sky-200;
+        @apply my-6 border-t;
+        border-color: var(--theme-border);
+        transition: border-color 0.3s ease;
     }
 
     code, pre {
         font-family: var(--font-mono);
-        @apply bg-transparent text-white p-0;
+        @apply p-0;
     }
 
     code {
         @apply px-1 py-0.5 rounded text-sm;
-        background-color: var(--color-sky-100);
-        color: var(--color-earth-700);
+        background-color: var(--theme-primary-light);
+        color: var(--theme-text);
+        transition: background-color 0.3s ease, color 0.3s ease;
     }
 
     pre {
-        @apply p-3 mb-4 rounded overflow-x-auto bg-sky-800 text-white;
+        @apply p-3 mb-4 rounded overflow-x-auto;
+        background-color: var(--theme-primary-dark);
+        color: var(--theme-surface);
+        transition: background-color 0.3s ease, color 0.3s ease;
     }
 
     /* Animaciones */

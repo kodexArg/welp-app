@@ -5,43 +5,132 @@
 {% block content %}
 <div>
     <div class="p-8 space-y-8">
-        <h1 class="text-3xl font-bold text-gray-900 mb-8">Demo de Fuentes - Sistema de Diseño</h1>
+        <h1 class="title-gradient">Demo del Sistema de Temas</h1>
         
+        <div class="card">
+            <div class="card-header">
+                <h2>Gestión de Temas Dinámicos</h2>
+                <p>Este sistema cambia automáticamente según la página</p>
+            </div>
+            <div class="card-body">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <button onclick="setTheme('slate')" class="button-primary">
+                        <i class="fa fa-palette mr-2"></i>
+                        Tema Slate (Core)
+                    </button>
+                    <button onclick="setTheme('sky')" class="button-primary">
+                        <i class="fa fa-headset mr-2"></i>
+                        Tema Sky (WelpDesk)
+                    </button>
+                    <button onclick="setTheme('forest')" class="button-primary">
+                        <i class="fa fa-user-check mr-2"></i>
+                        Tema Forest (WelpPay)
+                    </button>
+                </div>
+                
+                <div class="space-y-4">
+                    <div class="alert alert-info">
+                        <strong>Tema actual:</strong> <span id="current-theme">Detectando...</span>
+                    </div>
+                    
+                    <div class="alert alert-info">
+                        <strong>URL actual:</strong> <span id="current-url">{{ request.get_full_path }}</span>
+                    </div>
+                    
+                    <div class="alert alert-info">
+                        <strong>Namespace detectado:</strong> <span id="current-namespace">{{ request.resolver_match.namespace|default:"core" }}</span>
+                    </div>
+                    
+                    <h3>Elementos que cambian automáticamente:</h3>
+                    <ul class="list-disc pl-6 space-y-2">
+                        <li><strong>Navbar:</strong> Fondo y colores de enlaces</li>
+                        <li><strong>Scrollbar:</strong> Colores del track y thumb</li>
+                        <li><strong>Títulos H1, H2, H3:</strong> Colores específicos por jerarquía</li>
+                        <li><strong>Fondos:</strong> Página y componentes</li>
+                        <li><strong>Bordes y superficies:</strong> Colores coherentes</li>
+                        <li><strong>Texto:</strong> Primario y secundario</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h2>Pruebas de Navegación Automática</h2>
+                <p>Navega entre las apps para ver el cambio automático de tema</p>
+            </div>
+            <div class="card-body">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <a href="{% url 'core:home' %}" class="button-secondary">
+                        <i class="fa fa-home mr-2"></i>
+                        Ir a Core (Slate)
+                    </a>
+                    <a href="{% url 'welp_desk:index' %}" class="button-secondary">
+                        <i class="fa fa-headset mr-2"></i>
+                        Ir a WelpDesk (Sky)
+                    </a>
+                    <a href="{% url 'welp_pay:index' %}" class="button-secondary">
+                        <i class="fa fa-user-check mr-2"></i>
+                        Ir a WelpPay (Forest)
+                    </a>
+                </div>
+                
+                <div class="mt-6 p-4 bg-gray-100 rounded-lg">
+                    <h4 class="font-bold mb-2">Debug Info:</h4>
+                    <div class="text-sm space-y-1" id="debug-info">
+                        <div>Cargando información de debug...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h2 class="text-xl font-semibold text-gray-800 mb-4">Font Brand (Logotipo)</h2>
-            <div class="space-y-3">
-                <div class="font-brand text-4xl text-sky-900 font-bold">WelpDesk</div>
-                <div class="font-brand text-3xl text-sky-700 font-semibold">Sistema de Tickets</div>
-                <div class="font-brand text-2xl text-sky-500">Gestión Empresarial</div>
-                <p class="text-sm text-gray-600">Usada para: Logotipo principal, elementos de marca distintivos</p>
-                <p class="font-brand text-base text-gray-800">Test directo: ¿Se ve Grandstander?</p>
+            <h2>Demostración de Títulos</h2>
+            <h3>Este es un H3 que cambia de color</h3>
+            <p>Este párrafo usa el color de texto secundario del tema activo.</p>
+            
+            <div class="mt-4">
+                <h4 class="title-gradient">Título con gradiente dinámico</h4>
+                <p>El gradiente se adapta a los colores del tema activo.</p>
             </div>
         </div>
         
         <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h2 class="text-xl font-semibold text-gray-800 mb-4">Font UI (Interfaz)</h2>
+            <h2>Demo de Fuentes - Sistema de Diseño</h2>
+            
             <div class="space-y-3">
-                <div class="font-ui text-2xl font-bold text-gray-900">Título Principal</div>
-                <div class="font-ui text-xl font-semibold text-gray-800">Subtítulo</div>
-                <div class="font-ui text-lg font-medium text-gray-700">Texto Medio</div>
-                <div class="font-ui text-base text-gray-600">Texto normal de interfaz</div>
-                <div class="font-ui text-sm text-gray-500">Texto pequeño</div>
+                <div class="font-brand text-4xl font-bold">WelpDesk</div>
+                <div class="font-brand text-3xl font-semibold">Sistema de Tickets</div>
+                <div class="font-brand text-2xl">Gestión Empresarial</div>
+                <p class="text-sm text-gray-600">Usada para: Logotipo principal, elementos de marca distintivos</p>
+                <p class="font-brand text-base">Test directo: ¿Se ve Grandstander?</p>
+            </div>
+        </div>
+        
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h2>Font UI (Interfaz)</h2>
+            <div class="space-y-3">
+                <div class="font-ui text-2xl font-bold">Título Principal</div>
+                <div class="font-ui text-xl font-semibold">Subtítulo</div>
+                <div class="font-ui text-lg font-medium">Texto Medio</div>
+                <div class="font-ui text-base">Texto normal de interfaz</div>
+                <div class="font-ui text-sm">Texto pequeño</div>
                 <p class="text-sm text-gray-600">Usada para: Navegación, botones, etiquetas, elementos de UI</p>
             </div>
         </div>
         
         <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h2 class="text-xl font-semibold text-gray-800 mb-4">Font Content (Contenido)</h2>
+            <h2>Font Content (Contenido)</h2>
             <div class="space-y-4">
-                <h3 class="font-content text-2xl font-bold text-gray-900">Título de Artículo</h3>
-                <h4 class="font-content text-xl font-semibold text-gray-800">Subtítulo de Sección</h4>
-                <p class="font-content text-base text-gray-700 leading-relaxed">
+                <h3 class="font-content text-2xl font-bold">Título de Artículo</h3>
+                <h4 class="font-content text-xl font-semibold">Subtítulo de Sección</h4>
+                <p class="font-content text-base leading-relaxed">
                     Este es un párrafo de ejemplo que muestra cómo se ve el texto de contenido principal. 
                     La fuente content está optimizada para lectura prolongada y ofrece excelente legibilidad 
                     en diferentes tamaños de pantalla. Es ideal para descripciones de tickets, comentarios 
                     y cualquier texto extenso.
                 </p>
-                <p class="font-content text-sm text-gray-600 leading-relaxed">
+                <p class="font-content text-sm leading-relaxed">
                     Texto secundario o notas adicionales que complementan el contenido principal. 
                     Mantiene la consistencia visual mientras proporciona jerarquía de información.
                 </p>
@@ -50,41 +139,41 @@
         </div>
         
         <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h2 class="text-xl font-semibold text-gray-800 mb-4">Comparación Visual</h2>
+            <h2>Comparación Visual</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div class="text-center">
-                    <div class="font-brand text-2xl text-sky-900 mb-2">WelpDesk</div>
+                    <div class="font-brand text-2xl mb-2">WelpDesk</div>
                     <span class="text-xs text-gray-500">font-brand</span>
                 </div>
                 <div class="text-center">
-                    <div class="font-ui text-2xl text-gray-900 mb-2">Navegación</div>
+                    <div class="font-ui text-2xl mb-2">Navegación</div>
                     <span class="text-xs text-gray-500">font-ui</span>
                 </div>
                 <div class="text-center">
-                    <div class="font-content text-2xl text-gray-900 mb-2">Contenido</div>
+                    <div class="font-content text-2xl mb-2">Contenido</div>
                     <span class="text-xs text-gray-500">font-content</span>
                 </div>
             </div>
         </div>
         
         <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h2 class="text-xl font-semibold text-gray-800 mb-4">Uso en Componentes Existentes</h2>
+            <h2>Uso en Componentes Existentes</h2>
             <div class="space-y-4">
                 <div class="bg-gray-50 p-4 rounded-lg">
-                    <h3 class="font-ui text-lg font-semibold text-gray-800 mb-3">Brand Logo</h3>
+                    <h3 class="font-ui text-lg font-semibold mb-3">Brand Logo</h3>
                     {% load core_tags %}
                     {% brand_logo show_text=True %}
                     <p class="text-sm text-gray-600 mt-2">Usa <code>font-brand</code> para el texto del logotipo</p>
                 </div>
                 
                 <div class="bg-gray-50 p-4 rounded-lg">
-                    <h3 class="font-ui text-lg font-semibold text-gray-800 mb-3">Navegación</h3>
+                    <h3 class="font-ui text-lg font-semibold mb-3">Navegación</h3>
                     {% nav_link "core:home" "fa fa-home" "INICIO" %}
                     <p class="text-sm text-gray-600 mt-2">Usa <code>font-ui</code> para enlaces de navegación</p>
                 </div>
                 
                 <div class="bg-gray-50 p-4 rounded-lg">
-                    <h3 class="font-ui text-lg font-semibold text-gray-800 mb-3">Botones</h3>
+                    <h3 class="font-ui text-lg font-semibold mb-3">Botones</h3>
                     {% button "Ejemplo Primario" variant="primary" icon="fa fa-check" %}
                     {% button "Ejemplo Secundario" variant="secondary" icon="fa fa-info" %}
                     <p class="text-sm text-gray-600 mt-2">Los botones heredan la fuente del contexto</p>
@@ -92,6 +181,59 @@
             </div>
         </div>
     </div>
-
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Elementos de la interfaz
+    const currentThemeEl = document.getElementById('current-theme');
+    const currentUrlEl = document.getElementById('current-url');
+    const currentNamespaceEl = document.getElementById('current-namespace');
+    const debugInfoEl = document.getElementById('debug-info');
+    
+    // Función para actualizar la información mostrada
+    function updateThemeInfo() {
+        const currentTheme = window.getCurrentTheme ? window.getCurrentTheme() : 'unknown';
+        const currentUrl = window.location.pathname;
+        
+        if (currentThemeEl) {
+            currentThemeEl.textContent = currentTheme;
+        }
+        
+        if (currentUrlEl) {
+            currentUrlEl.textContent = currentUrl;
+        }
+        
+        // Actualizar debug info
+        if (debugInfoEl && window.themeManager) {
+            const themeInfo = window.getThemeInfo ? window.getThemeInfo(currentTheme) : null;
+            debugInfoEl.innerHTML = `
+                <div><strong>Theme Manager Estado:</strong> ${window.themeManager ? 'Activo' : 'No encontrado'}</div>
+                <div><strong>Tema Actual:</strong> ${currentTheme}</div>
+                <div><strong>Nombre del Tema:</strong> ${themeInfo ? themeInfo.name : 'N/A'}</div>
+                <div><strong>URL Path:</strong> ${currentUrl}</div>
+                <div><strong>Data-theme en HTML:</strong> ${document.documentElement.getAttribute('data-theme') || 'No configurado'}</div>
+                <div><strong>Namespace del Body:</strong> ${document.body.getAttribute('data-namespace') || 'No configurado'}</div>
+            `;
+        }
+    }
+    
+    // Actualizar al cargar
+    updateThemeInfo();
+    
+    // Escuchar cambios de tema
+    document.addEventListener('themeChanged', function(event) {
+        updateThemeInfo();
+        console.log(`🎨 Demo page: tema cambiado a ${event.detail.theme}`);
+        console.log(`📊 Detalles:`, event.detail);
+    });
+    
+    // Actualizar periódicamente para capturar cambios de URL
+    setInterval(updateThemeInfo, 1000);
+    
+    // Log inicial
+    console.log('🧪 Página de desarrollo cargada');
+    console.log('📊 Estado inicial del ThemeManager:', window.themeManager);
+});
+</script>
 {% endblock %} 

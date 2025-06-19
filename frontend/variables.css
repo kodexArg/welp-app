@@ -51,15 +51,157 @@
     --color-forest-900: #121e12;
     --color-forest-950: #0a120a;
 
-    /* Colores semánticos */
-    --color-page-bg: var(--color-sky-50);
-    --color-menu-bg: var(--color-sky-800);
-    --color-interactive-neutral: var(--color-sky-600);
-    --color-interactive-hover: var(--color-earth-600);
-    --color-interactive-active: var(--color-earth-700);
+    /* ====================================================================
+       SISTEMA DE VARIABLES DINÁMICAS DE TEMA
+       ==================================================================== */
 
-    /* Variables de navbar */
-    --navbar-link-text: rgb(148 163 184); /* slate-400 */
-    --navbar-link-hover: rgb(241 245 249); /* slate-100 */
-    --navbar-link-active: rgb(255 255 255); /* white */
+    /* Variables dinámicas principales - valores por defecto (slate) */
+    --theme-primary: #64748b; /* slate-500 */
+    --theme-primary-dark: #1e293b; /* slate-800 */
+    --theme-primary-light: #e2e8f0; /* slate-200 */
+    --theme-accent: #f59e0b; /* amber-500 */
+    --theme-background: #f8fafc; /* slate-50 */
+    --theme-surface: #ffffff;
+    --theme-text: #0f172a; /* slate-900 */
+    --theme-text-secondary: #334155; /* slate-700 */
+    --theme-border: #e2e8f0; /* slate-200 */
+
+    /* Variables específicas para NAVBAR */
+    --navbar-bg: var(--theme-primary-dark);
+    --navbar-link-text: #94a3b8; /* slate-400 */
+    --navbar-link-hover: #f1f5f9; /* slate-100 */
+    --navbar-link-active: #ffffff; /* white */
+    --navbar-brand-text: #ffffff;
+    --navbar-brand-accent: var(--theme-accent);
+
+    /* Variables específicas para SCROLLBAR */
+    --scrollbar-track: var(--theme-primary-light);
+    --scrollbar-thumb: var(--theme-primary-dark);
+    --scrollbar-thumb-hover: var(--theme-primary);
+    --scrollbar-border: var(--theme-primary-light);
+
+    /* Variables específicas para TÍTULOS */
+    --title-color-primary: var(--theme-text); /* h1 */
+    --title-color-secondary: var(--theme-text-secondary); /* h2 */
+    --title-color-tertiary: var(--theme-primary); /* h3 */
+    --title-gradient-start: var(--theme-primary);
+    --title-gradient-end: var(--theme-accent);
+
+    /* Colores semánticos que ahora usan variables de tema */
+    --color-page-bg: var(--theme-background);
+    --color-menu-bg: var(--navbar-bg);
+    --color-interactive-neutral: var(--theme-primary);
+    --color-interactive-hover: var(--theme-accent);
+    --color-interactive-active: var(--theme-primary-dark);
+}
+
+/* ====================================================================
+   TEMA SLATE (Default/Core)
+   ==================================================================== */
+[data-theme="slate"] {
+    --theme-primary: #64748b; /* slate-500 */
+    --theme-primary-dark: #1e293b; /* slate-800 */
+    --theme-primary-light: #e2e8f0; /* slate-200 */
+    --theme-accent: #f59e0b; /* amber-500 */
+    --theme-background: #f8fafc; /* slate-50 */
+    --theme-surface: #ffffff;
+    --theme-text: #0f172a; /* slate-900 */
+    --theme-text-secondary: #334155; /* slate-700 */
+    --theme-border: #e2e8f0; /* slate-200 */
+
+    /* Navbar específico para Slate */
+    --navbar-bg: #1e293b; /* slate-800 */
+    --navbar-link-text: #94a3b8; /* slate-400 */
+    --navbar-link-hover: #f1f5f9; /* slate-100 */
+    --navbar-link-active: #ffffff;
+    --navbar-brand-text: #ffffff;
+    --navbar-brand-accent: #fbbf24; /* amber-400 - más suave */
+    --navbar-brand-icon-color: #94a3b8; /* slate-400 - suave */
+
+    /* Scrollbar específico para Slate */
+    --scrollbar-track: #e2e8f0; /* slate-200 */
+    --scrollbar-thumb: #1e293b; /* slate-800 */
+    --scrollbar-thumb-hover: #475569; /* slate-600 */
+    --scrollbar-border: #e2e8f0; /* slate-200 */
+
+    /* Títulos específicos para Slate */
+    --title-color-primary: #0f172a; /* slate-900 */
+    --title-color-secondary: #334155; /* slate-700 */
+    --title-color-tertiary: #64748b; /* slate-500 */
+    --title-gradient-start: #64748b; /* slate-500 */
+    --title-gradient-end: #f59e0b; /* amber-500 */
+}
+
+/* ====================================================================
+   TEMA SKY (WelpDesk)
+   ==================================================================== */
+[data-theme="sky"] {
+    --theme-primary: var(--color-sky-600);
+    --theme-primary-dark: var(--color-sky-800);
+    --theme-primary-light: var(--color-sky-200);
+    --theme-accent: var(--color-earth-600);
+    --theme-background: var(--color-sky-50);
+    --theme-surface: #ffffff;
+    --theme-text: var(--color-sky-900);
+    --theme-text-secondary: var(--color-sky-700);
+    --theme-border: var(--color-sky-200);
+
+    /* Navbar específico para Sky */
+    --navbar-bg: var(--color-sky-800);
+    --navbar-link-text: var(--color-sky-300);
+    --navbar-link-hover: #ffffff;
+    --navbar-link-active: #ffffff;
+    --navbar-brand-text: #ffffff;
+    --navbar-brand-accent: var(--color-earth-400); /* más suave */
+    --navbar-brand-icon-color: var(--color-sky-400); /* sky-400 - suave */
+
+    /* Scrollbar específico para Sky */
+    --scrollbar-track: var(--color-sky-200);
+    --scrollbar-thumb: var(--color-sky-800);
+    --scrollbar-thumb-hover: var(--color-sky-600);
+    --scrollbar-border: var(--color-sky-200);
+
+    /* Títulos específicos para Sky */
+    --title-color-primary: var(--color-sky-900);
+    --title-color-secondary: var(--color-sky-700);
+    --title-color-tertiary: var(--color-sky-600);
+    --title-gradient-start: var(--color-sky-600);
+    --title-gradient-end: var(--color-earth-600);
+}
+
+/* ====================================================================
+   TEMA FOREST (WelpPay)
+   ==================================================================== */
+[data-theme="forest"] {
+    --theme-primary: var(--color-forest-600);
+    --theme-primary-dark: var(--color-forest-800);
+    --theme-primary-light: var(--color-forest-200);
+    --theme-accent: var(--color-earth-600);
+    --theme-background: var(--color-forest-50);
+    --theme-surface: #ffffff;
+    --theme-text: var(--color-forest-900);
+    --theme-text-secondary: var(--color-forest-700);
+    --theme-border: var(--color-forest-200);
+
+    /* Navbar específico para Forest */
+    --navbar-bg: var(--color-forest-800);
+    --navbar-link-text: var(--color-forest-300);
+    --navbar-link-hover: #ffffff;
+    --navbar-link-active: #ffffff;
+    --navbar-brand-text: #ffffff;
+    --navbar-brand-accent: var(--color-earth-400); /* más suave */
+    --navbar-brand-icon-color: var(--color-forest-400); /* forest-400 - suave */
+
+    /* Scrollbar específico para Forest */
+    --scrollbar-track: var(--color-forest-200);
+    --scrollbar-thumb: var(--color-forest-800);
+    --scrollbar-thumb-hover: var(--color-forest-600);
+    --scrollbar-border: var(--color-forest-200);
+
+    /* Títulos específicos para Forest */
+    --title-color-primary: var(--color-forest-900);
+    --title-color-secondary: var(--color-forest-700);
+    --title-color-tertiary: var(--color-forest-600);
+    --title-gradient-start: var(--color-forest-600);
+    --title-gradient-end: var(--color-earth-600);
 } 

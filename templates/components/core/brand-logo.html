@@ -1,35 +1,35 @@
 <div class="brand-logo">
     <a href="{{ home_url }}" 
        class="flex items-center 
-              font-brand font-semibold 
+              font-ui font-bold 
               text-3xl tracking-wide 
               no-underline">
         <div class="flex items-center translate-y-1">
             {% if show_text %}
-                <span class="text-white hidden min-[30rem]:inline">Welp</span>
+                <span class="brand-text hidden min-[30rem]:inline">Welp</span>
             {% endif %}
             <div class="relative">
                 <i class="absolute 
-                          text-4xl fa fa-headset 
-                          text-sky-900 
+                          text-4xl brand-icon 
+                          brand-shadow-1
                           shadow-md blur-[0.4rem] 
                           translate-x-[-0.05rem] translate-y-[0.05rem] 
                           opacity-50"></i>
                 <i class="absolute 
-                          text-4xl fa fa-headset 
-                          text-sky-900 
+                          text-4xl brand-icon 
+                          brand-shadow-2
                           shadow-md blur-[0.2rem] 
                           translate-x-[-0.05rem] translate-y-[0.05rem] 
                           opacity-20"></i>
                 <i class="relative 
-                          text-4xl fa fa-headset 
-                          text-sky-200 
+                          text-4xl brand-icon 
+                          brand-icon-main
                           shadow-md 
                           translate-x-[0.05rem] translate-y-[-0.05rem]
                           brand-logo-glow"></i>
             </div>
             {% if show_text %}
-                <span class="text-white hidden min-[30rem]:inline">{{ brand_text }}</span>
+                <span class="brand-text hidden min-[30rem]:inline">{{ brand_text }}</span>
             {% endif %}
         </div>
     </a>
@@ -39,6 +39,60 @@
 @layer components {
     .brand-logo {
         @apply flex items-center justify-start;
+    }
+    
+    /* Texto del brand usa variables dinámicas */
+    .brand-text {
+        color: var(--navbar-brand-text);
+        transition: color 0.3s ease;
+        font-style: normal;
+    }
+    
+    /* Íconos específicos por tema */
+    .brand-icon {
+        transition: all 0.3s ease;
+        font-style: normal;
+    }
+    
+    /* Fallback - ícono por defecto si no hay tema específico */
+    .brand-icon::before {
+        content: "\f590"; /* fa-headset fallback */
+        font-family: "Font Awesome 6 Free";
+        font-weight: 900;
+    }
+    
+    /* Default (slate) - WelpApp - Mismo ícono que WelpDesk */
+    [data-theme="slate"] .brand-icon::before {
+        content: "\f590"; /* fa-headset */
+        font-family: "Font Awesome 6 Free";
+        font-weight: 900;
+    }
+    
+    /* Sky theme (welp_desk) */
+    [data-theme="sky"] .brand-icon::before {
+        content: "\f590"; /* fa-headset */
+        font-family: "Font Awesome 6 Free";
+        font-weight: 900;
+    }
+    
+    /* Forest theme (welp_pay) */
+    [data-theme="forest"] .brand-icon::before {
+        content: "\f651"; /* fa-comment-dollar */
+        font-family: "Font Awesome 6 Free";
+        font-weight: 900;
+    }
+    
+    /* Sombras usan el color del ícono principal con opacidad */
+    .brand-shadow-1,
+    .brand-shadow-2 {
+        color: var(--navbar-brand-icon-color);
+        opacity: 0.15; /* Más suave */
+    }
+    
+    .brand-icon-main {
+        color: var(--navbar-brand-icon-color);
+        opacity: 0.8; /* Tono más suave */
+        transition: color 0.3s ease, filter 0.3s ease, opacity 0.3s ease;
     }
     
     .brand-logo-glow {
@@ -52,8 +106,23 @@
         }
         1% {
             filter: brightness(1.5);
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
+            text-shadow: 0 0 20px var(--navbar-brand-icon-color);
         }
+    }
+    
+    /* Hover effects más suaves */
+    .brand-logo:hover .brand-icon-main {
+        opacity: 1; /* Aumenta a opacidad completa en hover */
+        filter: brightness(1.1) drop-shadow(0 0 8px var(--navbar-brand-icon-color));
+    }
+    
+    .brand-logo:hover .brand-text {
+        filter: brightness(1.05); /* Más sutil */
+    }
+    
+    .brand-logo:hover .brand-shadow-1,
+    .brand-logo:hover .brand-shadow-2 {
+        opacity: 0.25; /* Sombras ligeramente más visibles en hover */
     }
     
     @media (prefers-reduced-motion: reduce) {
@@ -73,13 +142,27 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (iconElement) {
             logo.addEventListener('mouseenter', function() {
-                iconElement.style.filter = 'brightness(1.2)';
+                iconElement.style.filter = 'brightness(1.2) drop-shadow(0 0 10px var(--navbar-brand-accent))';
             });
             
             logo.addEventListener('mouseleave', function() {
                 iconElement.style.filter = '';
             });
         }
+    });
+    
+    // Escuchar cambios de tema para actualizar efectos
+    document.addEventListener('themeChanged', function(event) {
+        console.log(`🎨 Brand logo adaptado al tema: ${event.detail.theme}`);
+        
+        // Forzar repaint para cambio de ícono
+        const brandIcons = document.querySelectorAll('.brand-icon');
+        brandIcons.forEach(icon => {
+            icon.style.transform = 'scale(0.99)';
+            setTimeout(() => {
+                icon.style.transform = '';
+            }, 50);
+        });
     });
 });
 </script> 
