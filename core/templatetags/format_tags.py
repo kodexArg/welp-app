@@ -49,4 +49,4 @@ def current_time():
         tz = zoneinfo.ZoneInfo(settings.TIME_ZONE)
         return timezone.now().astimezone(tz)
     except:
-        return timezone.now() 
+        return timezone.now()

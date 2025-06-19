@@ -1,4 +1,4 @@
-from django.contrib import admin
+t from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.utils.html import format_html
@@ -14,7 +14,6 @@ class CustomUserCreationForm(UserCreationForm):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # Hacer campos obligatorios
         self.fields['first_name'].required = True
         self.fields['last_name'].required = True
         self.fields['email'].required = True
@@ -32,20 +31,14 @@ class CustomUserChangeForm(UserChangeForm):
 class UserAdmin(BaseUserAdmin):
     """Configuración del admin para el modelo User personalizado"""
     
-    # Formularios personalizados
     form = CustomUserChangeForm
     add_form = CustomUserCreationForm
     
-    # Campos mostrados en la lista
     list_display = ('username', 'get_full_name', 'email', 'phone', 'avatar_preview', 'is_active', 'is_staff', 'date_joined')
     list_filter = ('is_active', 'is_staff', 'is_superuser', 'date_joined')
     search_fields = ('username', 'first_name', 'last_name', 'email', 'phone')
     ordering = ('username',)
-    
-    # Para autocomplete en otros admin
     autocomplete_fields = []
-    
-    # Configuración de fieldsets para el formulario de edición
     fieldsets = (
         (None, {
             'fields': ('username', 'password')
@@ -63,7 +56,6 @@ class UserAdmin(BaseUserAdmin):
         }),
     )
     
-    # Configuración para agregar usuario
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
@@ -80,7 +72,6 @@ class UserAdmin(BaseUserAdmin):
         }),
     )
     
-    # Campos de solo lectura
     readonly_fields = ('date_joined', 'last_login')
     
     def avatar_preview(self, obj):
@@ -100,10 +91,7 @@ class UserAdmin(BaseUserAdmin):
     
     def save_model(self, request, obj, form, change):
         """Personalizar el guardado del modelo"""
-        if not change:  # Si es un nuevo usuario
-            # Asegurar que el usuario esté activo por defecto
+        if not change:
             if not hasattr(obj, 'is_active') or obj.is_active is None:
                 obj.is_active = True
         super().save_model(request, obj, form, change)
-
-

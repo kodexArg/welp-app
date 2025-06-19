@@ -41,4 +41,4 @@ class CoreViewsTests(TestCase):
 
     def tearDown(self):
         """Limpia después de cada prueba."""
-        pass 
+        pass

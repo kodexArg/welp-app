@@ -8,11 +8,9 @@ class User(AbstractUser):
     Utiliza campos nativos de Django al máximo
     """
     
-    # Campos personalizados mínimos
     phone = models.CharField(max_length=20, blank=True, verbose_name="Teléfono")
     avatar = models.ImageField(upload_to='avatars/', blank=True, null=True, verbose_name="Avatar")
     
-    # Configuración del modelo
     REQUIRED_FIELDS = []
     
     class Meta:
@@ -22,5 +20,3 @@ class User(AbstractUser):
     
     def __str__(self):
         return self.get_full_name() or self.username
-
-

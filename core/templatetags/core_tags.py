@@ -34,7 +34,6 @@ def nav_link(link, icon, label, current_view=None, always_show_label=False):
     Returns:
         dict: Contexto para el template
     """
-    # Extraer el nombre de la vista desde el link
     view_name = link.split(':')[-1] if ':' in link else link
     is_active = current_view == view_name if current_view else False
     
@@ -124,4 +123,4 @@ def button(text, variant='primary', href=None, icon=None, onclick=None, type='bu
         'target': target,
         'disabled': disabled,
         'extra_classes': extra_classes,
-    } 
+    }

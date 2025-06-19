@@ -5,10 +5,12 @@ from pathlib import Path
 
 
 class CoreConfig(AppConfig):
+    """Configuración de la aplicación core"""
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'core'
 
     def ready(self):
+        """Inicialización de la aplicación y carga de componentes"""
         components_dir = Path(__file__).parent.parent / "components" / "core"
         if components_dir.exists():
             for component_dir in components_dir.iterdir():

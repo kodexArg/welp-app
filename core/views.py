@@ -10,9 +10,11 @@ import django
 import time
 
 def index(request):
+    """Vista index principal para core"""
     return render(request, 'core/index.html')
 
 def home(request):
+    """Vista home principal con información del sistema"""
     context = {
         'django_version': django.get_version(),
         'python_version': sys.version.split()[0],
@@ -30,12 +32,15 @@ def home(request):
     return render(request, 'core/home.html', context)
 
 def hello_world(request):
+    """Endpoint de prueba básico"""
     return HttpResponse("Hola Mundo")
 
 def health(request):
+    """Endpoint de verificación de salud del sistema"""
     return JsonResponse({'status': 'ok', 'message': 'Verificación de estado exitosa'}, status=200)
 
 def db_health_check(request):
+    """Endpoint de verificación de salud de la base de datos"""
     try:
         with connection.cursor() as cursor:
             cursor.execute("SELECT 1")
@@ -44,6 +49,7 @@ def db_health_check(request):
         return JsonResponse({'status': 'error', 'message': 'Error en la conexión a la base de datos'}, status=500)
 
 def htmx_demo(request):
+    """Vista de demostración de funcionalidad HTMX"""
     if request.htmx:
         timestamp = int(time.time())
         return HttpResponse(f"""
@@ -72,6 +78,7 @@ def htmx_demo(request):
         """)
 
 def login_view(request):
+    """Vista de inicio de sesión con autenticación"""
     if request.user.is_authenticated:
         return redirect('core:home')
     
@@ -94,6 +101,7 @@ def login_view(request):
     return render(request, 'core/login.html')
 
 def logout_view(request):
+    """Vista de cierre de sesión"""
     if request.method == 'POST':
         user_name = request.user.get_full_name() or request.user.username if request.user.is_authenticated else 'Usuario'
         logout(request)
@@ -103,10 +111,12 @@ def logout_view(request):
 
 @login_required
 def dashboard_view(request):
+    """Vista del dashboard de usuario autenticado"""
     context = {
         'user': request.user,
     }
     return render(request, 'core/dashboard.html', context)
 
 def dev_view(request):
+    """Vista de desarrollo y herramientas de testing"""
     return render(request, 'core/dev.html')

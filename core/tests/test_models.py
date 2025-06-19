@@ -51,4 +51,4 @@ class ModelTests(TestCase):
 
     def tearDown(self):
         """Limpia después de cada prueba."""
-        super().tearDown() 
+        super().tearDown()
