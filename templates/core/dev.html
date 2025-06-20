@@ -4,336 +4,170 @@
 
 {% block content %}
 <div class="dev-container">
+    <h1 class="dev-title">Sistema de Tickets - Desarrollo</h1>
     
-    <h1 class="dev-title">Sistema de Tickets</h1>
-    
-    <section class="dev-section">
-        <h2 class="section-title">UDNs</h2>
-        <div class="tag-container">
-            <span class="tag tag-udn">Km 1151</span>
-            <span class="tag tag-udn">Las Bóvedas</span>
-            <span class="tag tag-udn">Oficina Espejo</span>
+    <div class="dev-navigation">
+        <div class="nav-buttons">
+            <button 
+                hx-get="{% url 'core:dev_udns' %}"
+                hx-target="#dev-content"
+                hx-swap="innerHTML"
+                class="nav-btn active"
+                data-section="udns">
+                📍 UDNs
+            </button>
+            
+            <button 
+                hx-get="{% url 'core:dev_sectors' %}"
+                hx-target="#dev-content"
+                hx-swap="innerHTML"
+                class="nav-btn"
+                data-section="sectors">
+                🏢 Sectores
+            </button>
+            
+            <button 
+                hx-get="{% url 'core:dev_categories' %}"
+                hx-target="#dev-content"
+                hx-swap="innerHTML"
+                class="nav-btn"
+                data-section="categories">
+                📋 Categorías
+            </button>
+            
+            <button 
+                hx-get="{% url 'core:dev_hierarchy' %}"
+                hx-target="#dev-content"
+                hx-swap="innerHTML"
+                class="nav-btn"
+                data-section="hierarchy">
+                🔄 Jerarquía
+            </button>
+            
+            <button 
+                hx-get="{% url 'core:dev_purchase_workflow' %}"
+                hx-target="#dev-content"
+                hx-swap="innerHTML"
+                class="nav-btn"
+                data-section="workflow">
+                💰 Workflow Compras
+            </button>
         </div>
-    </section>
+    </div>
 
-    <section class="dev-section">
-        <h2 class="section-title">Sectores</h2>
-        <div class="sector-list">
-            <div class="sector-item">
-                <span class="tag tag-sector">Full</span>
-                <div class="sector-udns">
-                    <span class="tag tag-udn-mini">Km 1151</span>
-                    <span class="tag tag-udn-mini">Las Bóvedas</span>
-                </div>
-            </div>
-
-            <div class="sector-separator"></div>
-
-            <div class="sector-item">
-                <span class="tag tag-sector">Playa</span>
-                <div class="sector-udns">
-                    <span class="tag tag-udn-mini">Km 1151</span>
-                    <span class="tag tag-udn-mini">Las Bóvedas</span>
-                </div>
-            </div>
-
-            <div class="sector-separator"></div>
-
-            <div class="sector-item">
-                <span class="tag tag-sector">Administración</span>
-                <div class="sector-udns">
-                    <span class="tag tag-udn-mini">Km 1151</span>
-                    <span class="tag tag-udn-mini">Las Bóvedas</span>
-                    <span class="tag tag-udn-mini">Oficina Espejo</span>
-                </div>
-            </div>
-
-            <div class="sector-separator"></div>
-
-            <div class="sector-item">
-                <span class="tag tag-sector">Parador</span>
-                <div class="sector-udns">
-                    <span class="tag tag-udn-mini">Km 1151</span>
-                </div>
-            </div>
+    <div id="dev-content" class="dev-content">
+        <!-- Contenido por defecto: UDNs -->
+        <div class="loading-placeholder">
+            <div class="loading-spinner"></div>
+            <p>Cargando contenido...</p>
         </div>
-    </section>
-
-    <section class="dev-section">
-        <h2 class="section-title">Categorías de Issues</h2>
-        <div class="category-list">
-            <div class="category-item">
-                <span class="tag tag-category">DEBO</span>
-                <div class="category-sectors">
-                    <span class="tag tag-sector-mini">Full</span>
-                    <span class="tag tag-sector-mini">Playa</span>
-                    <span class="tag tag-sector-mini">Administración</span>
-                </div>
-            </div>
-
-            <div class="category-separator"></div>
-
-            <div class="category-item">
-                <span class="tag tag-category">YPF</span>
-                <div class="category-sectors">
-                    <span class="tag tag-sector-mini">Playa</span>
-                    <span class="tag tag-sector-mini">Administración</span>
-                </div>
-            </div>
-
-            <div class="category-separator"></div>
-
-            <div class="category-item">
-                <span class="tag tag-category">Soporte IT</span>
-                <div class="category-sectors">
-                    <span class="tag tag-sector-mini">Full</span>
-                    <span class="tag tag-sector-mini">Playa</span>
-                    <span class="tag tag-sector-mini">Administración</span>
-                    <span class="tag tag-sector-mini">Parador</span>
-                </div>
-            </div>
-
-            <div class="category-separator"></div>
-
-            <div class="category-item">
-                <span class="tag tag-category">Seguridad</span>
-                <div class="category-sectors">
-                    <span class="tag tag-sector-mini">Full</span>
-                    <span class="tag tag-sector-mini">Playa</span>
-                    <span class="tag tag-sector-mini">Parador</span>
-                </div>
-            </div>
-
-            <div class="category-separator"></div>
-
-            <div class="category-item">
-                <span class="tag tag-category">Mantenimiento</span>
-                <div class="category-sectors">
-                    <span class="tag tag-sector-mini">Full</span>
-                    <span class="tag tag-sector-mini">Playa</span>
-                    <span class="tag tag-sector-mini">Administración</span>
-                    <span class="tag tag-sector-mini">Parador</span>
-                </div>
-            </div>
-
-            <div class="category-separator"></div>
-
-            <div class="category-item">
-                <span class="tag tag-category">Compras</span>
-                <div class="category-sectors">
-                    <span class="tag tag-sector-mini">Full</span>
-                    <span class="tag tag-sector-mini">Playa</span>
-                    <span class="tag tag-sector-mini">Administración</span>
-                    <span class="tag tag-sector-mini">Parador</span>
-                </div>
-            </div>
-
-            <div class="category-separator"></div>
-
-            <div class="category-item">
-                <span class="tag tag-category">Cartelería</span>
-                <div class="category-sectors">
-                    <span class="tag tag-sector-mini">Full</span>
-                    <span class="tag tag-sector-mini">Playa</span>
-                    <span class="tag tag-sector-mini">Parador</span>
-                </div>
-            </div>
-
-            <div class="category-separator"></div>
-
-            <div class="category-item">
-                <span class="tag tag-category">Edilicios</span>
-                <div class="category-sectors">
-                    <span class="tag tag-sector-mini">Full</span>
-                    <span class="tag tag-sector-mini">Playa</span>
-                    <span class="tag tag-sector-mini">Parador</span>
-                </div>
-            </div>
-
-            <div class="category-separator"></div>
-
-            <div class="category-item">
-                <span class="tag tag-category">Telefonía y Comunicación</span>
-                <div class="category-sectors">
-                    <span class="tag tag-sector-mini">Full</span>
-                    <span class="tag tag-sector-mini">Playa</span>
-                    <span class="tag tag-sector-mini">Administración</span>
-                    <span class="tag tag-sector-mini">Parador</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="dev-section">
-        <div class="hierarchy-flow">
-            <span class="flow-item">UDN</span>
-            <span class="flow-arrow">→</span>
-            <span class="flow-item">Sector</span>
-            <span class="flow-arrow">→</span>
-            <span class="flow-item">IssueCategory</span>
-            <span class="flow-arrow">→</span>
-            <span class="flow-item">Issue</span>
-            <span class="flow-arrow">→</span>
-            <span class="flow-item">Ticket</span>
-        </div>
-    </section>
+    </div>
 </div>
 
 <style>
     .dev-container {
-        @apply max-w-4xl mx-auto p-8;
+        @apply max-w-6xl mx-auto p-8;
     }
 
     .dev-title {
-        @apply text-3xl font-semibold mb-10;
+        @apply text-3xl font-semibold mb-8 text-center;
         color: var(--theme-text);
         font-family: var(--font-ui);
     }
 
-    .dev-section {
-        @apply mb-12;
+    .dev-navigation {
+        @apply mb-8;
     }
 
-    .section-title {
-        @apply text-xl font-medium mb-6;
+    .nav-buttons {
+        @apply flex flex-wrap justify-center gap-3 mb-6;
+    }
+
+    .nav-btn {
+        @apply px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200;
+        background-color: var(--theme-surface);
         color: var(--theme-text-secondary);
+        border: 2px solid var(--theme-border);
         font-family: var(--font-ui);
     }
 
-    .tag-container {
-        @apply flex flex-wrap gap-3;
-    }
-
-    /* Tags base con colores más vibrantes */
-    .tag {
-        @apply text-xs font-medium py-1.5 px-3 rounded-full leading-none whitespace-nowrap border-2 transition-all duration-200;
-        font-family: var(--font-ui);
-    }
-
-    /* UDN tags - amarillo/amber más vibrante */
-    .tag-udn {
-        @apply bg-yellow-100 text-amber-600 border-amber-300;
-    }
-
-    .tag-udn:hover {
-        @apply bg-yellow-200 border-amber-400 cursor-pointer;
-        transform: translateY(-1px);
-    }
-
-    /* Sector tags - usando el color del tema */
-    .tag-sector {
+    .nav-btn:hover {
         background-color: var(--theme-primary-light);
         color: var(--theme-primary);
         border-color: var(--theme-primary);
+        transform: translateY(-1px);
     }
 
-    .tag-sector:hover {
+    .nav-btn.active {
         background-color: var(--theme-primary);
         color: var(--theme-surface);
-        @apply cursor-pointer;
-        transform: translateY(-1px);
-    }
-
-    /* Category tags - púrpura */
-    .tag-category {
-        @apply bg-purple-100 text-purple-600 border-purple-300;
-    }
-
-    .tag-category:hover {
-        @apply bg-purple-200 border-purple-400 cursor-pointer;
-        transform: translateY(-1px);
-    }
-
-    /* UDN mini tags */
-    .tag-udn-mini {
-        @apply py-1 px-2 rounded-full border;
-        background-color: #fef3c7;
-        color: #d97706;
-        border-color: #fcd34d;
-        font-family: var(--font-ui);
-        font-size: 10px;
-        font-weight: 500;
-    }
-
-    /* Sector mini tags */
-    .tag-sector-mini {
-        @apply py-1 px-2 rounded-full border;
-        background-color: var(--theme-primary-light);
-        color: var(--theme-primary);
         border-color: var(--theme-primary);
-        font-family: var(--font-ui);
-        font-size: 10px;
-        font-weight: 500;
-        opacity: 0.8;
     }
 
-    /* Lista de sectores */
-    .sector-list {
-        @apply space-y-0;
-    }
-
-    .sector-item {
-        @apply flex flex-col gap-3 py-3;
-    }
-
-    .sector-udns {
-        @apply flex flex-wrap gap-2 pl-8 ml-4;
-    }
-
-    .sector-separator {
-        @apply h-px my-4;
-        background-color: var(--theme-border);
-        opacity: 0.5;
-    }
-
-    /* Lista de categorías */
-    .category-list {
-        @apply space-y-0;
-    }
-
-    .category-item {
-        @apply flex flex-col gap-3 py-3;
-    }
-
-    .category-sectors {
-        @apply flex flex-wrap gap-2 pl-8;
-    }
-
-    .category-separator {
-        @apply h-px my-4;
-        background-color: var(--theme-border);
-        opacity: 0.3;
-    }
-
-    /* Flujo de jerarquía */
-    .hierarchy-flow {
-        @apply flex flex-wrap items-center justify-center gap-3 p-6 rounded-lg;
-        background-color: var(--theme-primary-light);
-        border: 1px solid var(--theme-border);
-    }
-
-    .flow-item {
-        @apply px-4 py-2 rounded-md font-medium;
+    .dev-content {
+        @apply min-h-96 rounded-lg;
         background-color: var(--theme-surface);
-        color: var(--theme-text);
         border: 1px solid var(--theme-border);
-        font-family: var(--font-ui);
+        padding: 2rem;
     }
 
-    .flow-arrow {
-        @apply text-lg font-bold;
-        color: var(--theme-text-secondary);
+    .loading-placeholder {
+        @apply flex flex-col items-center justify-center py-12;
+    }
+
+    .loading-spinner {
+        @apply w-8 h-8 border-4 border-gray-200 border-t-blue-500 rounded-full animate-spin mb-4;
+    }
+
+    .loading-placeholder p {
+        @apply text-gray-500;
+        font-family: var(--font-ui);
     }
 
     /* Responsive */
     @media (max-width: 640px) {
-        .hierarchy-flow {
-            @apply flex-col gap-2;
+        .nav-buttons {
+            @apply flex-col;
         }
         
-        .flow-arrow {
-            @apply rotate-90;
+        .nav-btn {
+            @apply w-full text-center;
         }
     }
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Cargar UDNs por defecto
+    const defaultBtn = document.querySelector('.nav-btn[data-section="udns"]');
+    if (defaultBtn) {
+        defaultBtn.click();
+    }
+    
+    // Manejar cambio de botones activos
+    document.addEventListener('htmx:beforeRequest', function(event) {
+        const targetBtn = event.detail.elt;
+        if (targetBtn.classList.contains('nav-btn')) {
+            // Remover active de todos
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Agregar active al clickeado
+            targetBtn.classList.add('active');
+        }
+    });
+    
+    // Manejar errores de carga
+    document.addEventListener('htmx:responseError', function(event) {
+        const content = document.getElementById('dev-content');
+        content.innerHTML = `
+            <div class="text-red-600 p-4 text-center">
+                <h3 class="font-semibold mb-2">Error al cargar el contenido</h3>
+                <p class="text-sm">Por favor, intenta de nuevo o verifica la configuración.</p>
+            </div>
+        `;
+    });
+});
+</script>
 {% endblock %} 

@@ -1,0 +1,159 @@
+<section class="dev-section">
+    <h2 class="section-title">Categorías de Issues</h2>
+    <div class="category-list">
+        <div class="category-item">
+            <span class="tag tag-category">DEBO</span>
+            <div class="category-sectors">
+                <span class="tag tag-sector-mini">Full</span>
+                <span class="tag tag-sector-mini">Playa</span>
+                <span class="tag tag-sector-mini">Administración</span>
+            </div>
+        </div>
+
+        <div class="category-separator"></div>
+
+        <div class="category-item">
+            <span class="tag tag-category">YPF</span>
+            <div class="category-sectors">
+                <span class="tag tag-sector-mini">Playa</span>
+                <span class="tag tag-sector-mini">Administración</span>
+            </div>
+        </div>
+
+        <div class="category-separator"></div>
+
+        <div class="category-item">
+            <span class="tag tag-category">Soporte IT</span>
+            <div class="category-sectors">
+                <span class="tag tag-sector-mini">Full</span>
+                <span class="tag tag-sector-mini">Playa</span>
+                <span class="tag tag-sector-mini">Administración</span>
+                <span class="tag tag-sector-mini">Parador</span>
+            </div>
+        </div>
+
+        <div class="category-separator"></div>
+
+        <div class="category-item">
+            <span class="tag tag-category">Seguridad</span>
+            <div class="category-sectors">
+                <span class="tag tag-sector-mini">Full</span>
+                <span class="tag tag-sector-mini">Playa</span>
+                <span class="tag tag-sector-mini">Parador</span>
+            </div>
+        </div>
+
+        <div class="category-separator"></div>
+
+        <div class="category-item">
+            <span class="tag tag-category">Mantenimiento</span>
+            <div class="category-sectors">
+                <span class="tag tag-sector-mini">Full</span>
+                <span class="tag tag-sector-mini">Playa</span>
+                <span class="tag tag-sector-mini">Administración</span>
+                <span class="tag tag-sector-mini">Parador</span>
+            </div>
+        </div>
+
+        <div class="category-separator"></div>
+
+        <div class="category-item">
+            <span class="tag tag-category">Compras</span>
+            <div class="category-sectors">
+                <span class="tag tag-sector-mini">Full</span>
+                <span class="tag tag-sector-mini">Playa</span>
+                <span class="tag tag-sector-mini">Administración</span>
+                <span class="tag tag-sector-mini">Parador</span>
+            </div>
+        </div>
+
+        <div class="category-separator"></div>
+
+        <div class="category-item">
+            <span class="tag tag-category">Cartelería</span>
+            <div class="category-sectors">
+                <span class="tag tag-sector-mini">Full</span>
+                <span class="tag tag-sector-mini">Playa</span>
+                <span class="tag tag-sector-mini">Parador</span>
+            </div>
+        </div>
+
+        <div class="category-separator"></div>
+
+        <div class="category-item">
+            <span class="tag tag-category">Edilicios</span>
+            <div class="category-sectors">
+                <span class="tag tag-sector-mini">Full</span>
+                <span class="tag tag-sector-mini">Playa</span>
+                <span class="tag tag-sector-mini">Parador</span>
+            </div>
+        </div>
+
+        <div class="category-separator"></div>
+
+        <div class="category-item">
+            <span class="tag tag-category">Telefonía y Comunicación</span>
+            <div class="category-sectors">
+                <span class="tag tag-sector-mini">Full</span>
+                <span class="tag tag-sector-mini">Playa</span>
+                <span class="tag tag-sector-mini">Administración</span>
+                <span class="tag tag-sector-mini">Parador</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .dev-section {
+        @apply mb-12;
+    }
+
+    .section-title {
+        @apply text-xl font-medium mb-6;
+        color: var(--theme-text-secondary);
+        font-family: var(--font-ui);
+    }
+
+    .tag {
+        @apply text-xs font-medium py-1.5 px-3 rounded-full leading-none whitespace-nowrap border-2 transition-all duration-200;
+        font-family: var(--font-ui);
+    }
+
+    .tag-category {
+        @apply bg-purple-100 text-purple-600 border-purple-300;
+    }
+
+    .tag-category:hover {
+        @apply bg-purple-200 border-purple-400 cursor-pointer;
+        transform: translateY(-1px);
+    }
+
+    .tag-sector-mini {
+        @apply py-1 px-2 rounded-full border;
+        background-color: var(--theme-primary-light);
+        color: var(--theme-primary);
+        border-color: var(--theme-primary);
+        font-family: var(--font-ui);
+        font-size: 10px;
+        font-weight: 500;
+        opacity: 0.8;
+    }
+
+    .category-list {
+        @apply space-y-0;
+    }
+
+    .category-item {
+        @apply flex flex-col gap-3 py-3;
+    }
+
+    .category-sectors {
+        @apply flex flex-wrap gap-2 pl-8;
+    }
+
+    .category-separator {
+        @apply h-px my-4;
+        background-color: var(--theme-border);
+        opacity: 0.3;
+    }
+</style> 

@@ -1,0 +1,48 @@
+<section class="dev-section">
+    <div class="hierarchy-flow">
+        <span class="flow-item">UDN</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-item">Sector</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-item">IssueCategory</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-item">Issue</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-item">Ticket</span>
+    </div>
+</section>
+
+<style>
+    .dev-section {
+        @apply mb-12;
+    }
+
+    .hierarchy-flow {
+        @apply flex flex-wrap items-center justify-center gap-3 p-6 rounded-lg;
+        background-color: var(--theme-primary-light);
+        border: 1px solid var(--theme-border);
+    }
+
+    .flow-item {
+        @apply px-4 py-2 rounded-md font-medium;
+        background-color: var(--theme-surface);
+        color: var(--theme-text);
+        border: 1px solid var(--theme-border);
+        font-family: var(--font-ui);
+    }
+
+    .flow-arrow {
+        @apply text-lg font-bold;
+        color: var(--theme-text-secondary);
+    }
+
+    @media (max-width: 640px) {
+        .hierarchy-flow {
+            @apply flex-col gap-2;
+        }
+        
+        .flow-arrow {
+            @apply rotate-90;
+        }
+    }
+</style> 
