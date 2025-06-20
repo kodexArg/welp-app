@@ -12,10 +12,12 @@
                 {% endif %}">
         <i class="text-lg sm:text-xl 
                   {{ icon }} 
-                  transition-colors duration-100"></i>
-        <span class="ml-2 hidden md:inline
-                     text-lg font-medium 
-                     tracking-wide">
+                  transition-colors duration-100
+                  {% if label == 'WelpDesk' or label == 'WelpPay' %}block md:!hidden{% else %}inline{% endif %}"></i>
+        <span class="{% if label == 'WelpDesk' or label == 'WelpPay' %}hidden md:inline{% else %}ml-2 hidden md:inline{% endif %}
+                     {% if label == 'WelpDesk' or label == 'WelpPay' %}text-xl font-bold{% else %}text-lg font-medium{% endif %}
+                     tracking-wide
+                     {% if label == 'WelpDesk' or label == 'WelpPay' %}brand-text-override{% endif %}">
             {{ label }}
         </span>
     </div>

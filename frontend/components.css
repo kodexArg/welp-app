@@ -34,6 +34,24 @@
         -webkit-font-smoothing: antialiased;
     }
 
+    /* Fuente UI siempre uppercase y condensada */
+    .font-ui {
+        font-family: var(--font-ui);
+        @apply uppercase tracking-wide;
+        font-feature-settings: 'kern' 1, 'liga' 1;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    /* Excepción: Fuente brand para textos de marca específicos */
+    .brand-text-override {
+        font-family: var(--font-brand) !important;
+        text-transform: none !important;
+        letter-spacing: 0.025em !important;
+        font-weight: 700 !important;
+        font-feature-settings: 'liga' 1 !important;
+        -webkit-font-smoothing: antialiased;
+    }
+
 
     .text-gradient {
         background: linear-gradient(135deg, var(--theme-primary), var(--theme-accent));
@@ -60,6 +78,8 @@
         @apply px-6 py-2 rounded-lg font-medium border-none cursor-pointer;
         background-color: var(--theme-primary);
         color: var(--theme-surface);
+        font-family: var(--font-ui);
+        @apply uppercase tracking-wide;
         @apply hover:scale-[1.05] hover:brightness-110;
         @apply active:scale-95;
         @apply transition-all duration-300;

@@ -30,8 +30,8 @@ export default defineConfig({
     // 
     // ¿Por qué es necesario?
     // - Vite solo incluye archivos que están importados en JS/CSS
-    // - El favicon.ico NO está importado en main.js, por lo que no se incluiría
-    // - Este plugin asegura que se copie al directorio de salida
+    // - Las fuentes y favicon NO están importados en main.js, por lo que no se incluirían
+    // - Este plugin asegura que se copien al directorio de salida
     //
     // Ventajas sobre alternativas:
     // - Dev server support: archivos disponibles en desarrollo sin build físico
@@ -39,12 +39,17 @@ export default defineConfig({
     // - Control granular vs directorio public/ que copia todo
     //
     // Flujo:
+    // frontend/fonts/ → static/dist/fonts/ → Django puede servirlas
     // frontend/favicon.ico → static/dist/favicon.ico → Django puede servirlo
     viteStaticCopy({
       targets: [
         {
           src: 'frontend/favicon.ico',  // Archivo origen
           dest: '.'                     // Destino: static/dist/ (raíz del outDir)
+        },
+        {
+          src: 'frontend/fonts/**/*',   // Todas las fuentes y subdirectorios
+          dest: 'fonts'                 // Destino: static/dist/fonts/
         }
       ]
     })

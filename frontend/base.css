@@ -63,12 +63,13 @@
     /* TÍTULOS - Ahora usan variables dinámicas de tema */
     h2, h3, h4 {
         @apply font-bold leading-tight mb-4 text-center;
-        font-family: var(--font-ui);
+        @apply font-title;
         transition: color 0.3s ease;
     }
 
     h1 { 
-        @apply text-3xl mb-8 font-bold leading-tight text-center; 
+        @apply text-3xl mb-8 font-bold leading-tight text-center;
+        @apply font-title;
         color: var(--theme-primary-dark);
         transition: color 0.3s ease;
     }
@@ -164,7 +165,7 @@
     }
 
     th {
-        @apply py-2 px-3 text-left font-bold border-b-2;
+        @apply py-2 px-3 text-left font-bold border-b-2 uppercase tracking-wide;
         background-color: var(--theme-primary-light);
         border-color: var(--theme-border);
         color: var(--theme-text);
@@ -189,7 +190,7 @@
     }
 
     label {
-        @apply block mb-2 font-medium;
+        @apply block mb-2 font-medium uppercase tracking-wide;
         color: var(--theme-text);
         font-family: var(--font-ui);
         transition: color 0.3s ease;
