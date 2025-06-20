@@ -92,7 +92,7 @@
 
     /* Clase especial para títulos con gradiente */
     .title-gradient {
-        background: linear-gradient(135deg, var(--title-gradient-start), var(--title-gradient-end));
+        background: linear-gradient(135deg, var(--theme-primary), var(--theme-accent));
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;

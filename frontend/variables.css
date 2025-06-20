@@ -79,19 +79,7 @@
     --scrollbar-thumb-hover: var(--theme-primary);
     --scrollbar-border: var(--theme-primary-light);
 
-    /* Variables específicas para TÍTULOS */
-    --title-color-primary: var(--theme-primary-dark); /* h1 */
-    --title-color-secondary: var(--theme-text-secondary); /* h2 */
-    --title-color-tertiary: var(--theme-primary); /* h3 */
-    --title-gradient-start: var(--theme-primary);
-    --title-gradient-end: var(--theme-accent);
-
     /* Colores semánticos que ahora usan variables de tema */
-    --color-page-bg: var(--theme-background);
-    --color-menu-bg: var(--navbar-bg);
-    --color-interactive-neutral: var(--theme-primary);
-    --color-interactive-hover: var(--theme-accent);
-    --color-interactive-active: var(--theme-primary-dark);
 }
 
 /* ====================================================================
@@ -120,12 +108,7 @@
     --scrollbar-thumb-hover: #475569; /* slate-600 */
     --scrollbar-border: #e2e8f0; /* slate-200 */
 
-    /* Títulos específicos para Slate */
-    --title-color-primary: #0f172a; /* slate-900 */
-    --title-color-secondary: #334155; /* slate-700 */
-    --title-color-tertiary: #64748b; /* slate-500 */
-    --title-gradient-start: #64748b; /* slate-500 */
-    --title-gradient-end: #f59e0b; /* amber-500 */
+
 }
 
 /* ====================================================================
@@ -154,12 +137,7 @@
     --scrollbar-thumb-hover: var(--color-sky-600);
     --scrollbar-border: var(--color-sky-200);
 
-    /* Títulos específicos para Sky */
-    --title-color-primary: var(--color-sky-900);
-    --title-color-secondary: var(--color-sky-700);
-    --title-color-tertiary: var(--color-sky-600);
-    --title-gradient-start: var(--color-sky-600);
-    --title-gradient-end: var(--color-earth-600);
+
 }
 
 /* ====================================================================
@@ -188,10 +166,5 @@
     --scrollbar-thumb-hover: var(--color-forest-600);
     --scrollbar-border: var(--color-forest-200);
 
-    /* Títulos específicos para Forest */
-    --title-color-primary: var(--color-forest-900);
-    --title-color-secondary: var(--color-forest-700);
-    --title-color-tertiary: var(--color-forest-600);
-    --title-gradient-start: var(--color-forest-600);
-    --title-gradient-end: var(--color-earth-600);
+
 } 
