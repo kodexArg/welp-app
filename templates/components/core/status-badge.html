@@ -1,4 +1,3 @@
-<!-- templates/components/core/status-badge.html -->
-
-<!-- Badge de estado para tickets con clases CSS consistentes -->
-<span class="status status-{{ status|default:'open' }}{% if variant %} status-{{ variant }}{% endif %}">{{ label|default:status|title }}</span> 
+<span class="status status-{{ status|default:'open' }}{% if variant %} status-{{ variant }}{% endif %}">
+    {{ label|default:status|title }}
+</span> 

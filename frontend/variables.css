@@ -1,9 +1,10 @@
 :root {
-    /* Fuentes */
+    /* ⚠️ IMPORTANTE: No modificar esta variable - Fuente de marca para Welp Desk */
     --font-brand: 'Grandstander-local', 'Grandstander', 'Comic Sans MS', 'Marker Felt', cursive;
     --font-p: 'Noto Sans', sans-serif;
     --font-ui: 'Lato', sans-serif;
     --font-mono: 'Roboto Mono', monospace;
+    --font-title: 'Roboto Slab', 'Georgia', 'Times New Roman', serif;
 
     /* Layout */
     --header-height: 8vh;
@@ -79,7 +80,7 @@
     --scrollbar-border: var(--theme-primary-light);
 
     /* Variables específicas para TÍTULOS */
-    --title-color-primary: var(--theme-text); /* h1 */
+    --title-color-primary: var(--theme-primary-dark); /* h1 */
     --title-color-secondary: var(--theme-text-secondary); /* h2 */
     --title-color-tertiary: var(--theme-primary); /* h3 */
     --title-gradient-start: var(--theme-primary);
@@ -132,7 +133,7 @@
    ==================================================================== */
 [data-theme="sky"] {
     --theme-primary: var(--color-sky-600);
-    --theme-primary-dark: var(--color-sky-800);
+    --theme-primary-dark: var(--color-sky-700);
     --theme-primary-light: var(--color-sky-200);
     --theme-accent: var(--color-earth-600);
     --theme-background: var(--color-sky-50);

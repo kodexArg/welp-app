@@ -4,6 +4,7 @@
        OPTIMIZACIÓN DE FUENTES - ANTI-FOUC
        =============================================== */
     
+    /* ⚠️ IMPORTANTE: No modificar esta definición - Fuente de marca para Welp Desk */
     /* Definición local de Grandstander para evitar FOUC */
     @font-face {
         font-family: 'Grandstander-local';
@@ -21,6 +22,7 @@
         @apply hidden;
     }
 
+    /* ⚠️ IMPORTANTE: No modificar esta clase - Fuente de marca para Welp Desk */
     .font-brand {
         font-family: var(--font-brand);
         /* Anti-FOUC: Mantener espacio consistente */

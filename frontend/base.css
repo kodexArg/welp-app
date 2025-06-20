@@ -61,25 +61,28 @@
     }
 
     /* TÍTULOS - Ahora usan variables dinámicas de tema */
-    h1, h2, h3, h4 {
+    h2, h3, h4 {
         @apply font-bold leading-tight mb-4 text-center;
         font-family: var(--font-ui);
         transition: color 0.3s ease;
     }
 
     h1 { 
-        @apply text-3xl mb-8; 
-        color: var(--title-color-primary);
+        @apply text-3xl mb-8 font-bold leading-tight text-center; 
+        color: var(--theme-primary-dark);
+        transition: color 0.3s ease;
     }
     
     h2 { 
-        @apply text-2xl mb-6; 
-        color: var(--title-color-secondary);
+        @apply text-2xl mb-6 font-semibold leading-tight; 
+        color: var(--theme-text-secondary);
+        transition: color 0.3s ease;
     }
     
     h3 { 
-        @apply text-xl mb-4; 
-        color: var(--title-color-tertiary);
+        @apply text-xl mb-4 font-medium leading-tight; 
+        color: var(--theme-primary);
+        transition: color 0.3s ease;
     }
     
     h4 { 
@@ -239,5 +242,12 @@
     @keyframes fadeIn {
         from { opacity: 0; }
         to { opacity: 1; }
+    }
+
+    .text-gradient {
+        background: linear-gradient(135deg, var(--theme-primary), var(--theme-accent));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
     }
 } 
