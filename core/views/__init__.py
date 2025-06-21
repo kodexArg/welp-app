@@ -14,3 +14,4 @@ Para usar las vistas, importe directamente desde el módulo específico:
     from .views.auth import login_view, logout_view
     
 Esta estructura facilita el mantenimiento, testing y colaboración en equipo.
+"""

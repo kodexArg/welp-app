@@ -33,7 +33,7 @@ def brand_logo(show_text=True, current_namespace=None):
 @register.inclusion_tag('components/core/nav-link.html')
 def nav_link(link, icon, label, current_view=None, always_show_label=False):
     """
-    Componente de enlace de navegación
+    Componente de enlace de navegación que se ilumina cuando está seleccionado
     
     Args:
         link (str): Nombre de la URL de Django
@@ -45,10 +45,14 @@ def nav_link(link, icon, label, current_view=None, always_show_label=False):
     Returns:
         dict: Contexto para el template
     """
-    # Comparar tanto el link completo como solo el nombre de la vista
     is_active = False
     if current_view:
-        is_active = (current_view == link) or (current_view == link.split(':')[-1])
+        # Comparación exacta
+        if current_view == link:
+            is_active = True
+        # Caso especial: URL raíz (/) mapea a 'index' pero el enlace es 'core:index'
+        elif current_view == 'index' and link == 'core:index':
+            is_active = True
     
     return {
         'link': link,

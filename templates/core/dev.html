@@ -3,171 +3,84 @@
 {% block title %}Dev - Welp App{% endblock %}
 
 {% block content %}
-<div class="dev-container">
-    <h1 class="dev-title">Sistema de Tickets - Desarrollo</h1>
-    
-    <div class="dev-navigation">
-        <div class="nav-buttons">
-            <button 
-                hx-get="{% url 'core:dev_udns' %}"
-                hx-target="#dev-content"
-                hx-swap="innerHTML"
-                class="nav-btn active"
-                data-section="udns">
-                📍 UDNs
-            </button>
-            
-            <button 
-                hx-get="{% url 'core:dev_sectors' %}"
-                hx-target="#dev-content"
-                hx-swap="innerHTML"
-                class="nav-btn"
-                data-section="sectors">
-                🏢 Sectores
-            </button>
-            
-            <button 
-                hx-get="{% url 'core:dev_categories' %}"
-                hx-target="#dev-content"
-                hx-swap="innerHTML"
-                class="nav-btn"
-                data-section="categories">
-                📋 Categorías
-            </button>
-            
-            <button 
-                hx-get="{% url 'core:dev_hierarchy' %}"
-                hx-target="#dev-content"
-                hx-swap="innerHTML"
-                class="nav-btn"
-                data-section="hierarchy">
-                🔄 Jerarquía
-            </button>
-            
-            <button 
-                hx-get="{% url 'core:dev_purchase_workflow' %}"
-                hx-target="#dev-content"
-                hx-swap="innerHTML"
-                class="nav-btn"
-                data-section="workflow">
-                💰 Workflow Compras
-            </button>
+<section>
+    <div class="space-y-6 mt-8">
+            <ul class="space-y-2">
+                <li>
+                    <a 
+                        hx-get="{% url 'core:dev_udns' %}"
+                        hx-target="#content"
+                        hx-swap="innerHTML"
+                        href="#"
+                        class="button-minimal flex items-center gap-3 justify-start w-full text-left">
+                        <i class="fa fa-map-marker-alt w-5"></i>
+                        <span>UDNs</span>
+                        <small class="ml-auto text-xs opacity-60">Ubicaciones y centros de operación</small>
+                    </a>
+                </li>
+                <li>
+                    <a 
+                        hx-get="{% url 'core:dev_sectors' %}"
+                        hx-target="#content"
+                        hx-swap="innerHTML"
+                        href="#"
+                        class="button-minimal flex items-center gap-3 justify-start w-full text-left">
+                        <i class="fa fa-building w-5"></i>
+                        <span>Sectores</span>
+                        <small class="ml-auto text-xs opacity-60">Áreas funcionales por ubicación</small>
+                    </a>
+                </li>
+                <li>
+                    <a 
+                        hx-get="{% url 'core:dev_categories' %}"
+                        hx-target="#content"
+                        hx-swap="innerHTML"
+                        href="#"
+                        class="button-minimal flex items-center gap-3 justify-start w-full text-left">
+                        <i class="fa fa-tags w-5"></i>
+                        <span>Categorías</span>
+                        <small class="ml-auto text-xs opacity-60">Tipos de incidencias y tickets</small>
+                    </a>
+                </li>
+                <li>
+                    <a 
+                        hx-get="{% url 'core:dev_hierarchy' %}"
+                        hx-target="#content"
+                        hx-swap="innerHTML"
+                        href="#"
+                        class="button-minimal flex items-center gap-3 justify-start w-full text-left">
+                        <i class="fa fa-sitemap w-5"></i>
+                        <span>Jerarquía</span>
+                        <small class="ml-auto text-xs opacity-60">Estructura organizacional del sistema</small>
+                    </a>
+                </li>
+                <li>
+                    <a 
+                        hx-get="{% url 'core:dev_purchase_workflow' %}"
+                        hx-target="#content"
+                        hx-swap="innerHTML"
+                        href="#"
+                        class="button-minimal flex items-center gap-3 justify-start w-full text-left">
+                        <i class="fa fa-shopping-cart w-5"></i>
+                        <span>Workflow de Compras</span>
+                        <small class="ml-auto text-xs opacity-60">Proceso completo de adquisiciones</small>
+                    </a>
+                </li>
+            </ul>
+
+        <div id="content" class="mt-8">
+            <p class="text-gray-500">Selecciona una sección para ver la documentación</p>
         </div>
     </div>
-
-    <div id="dev-content" class="dev-content">
-        <!-- Contenido por defecto: UDNs -->
-        <div class="loading-placeholder">
-            <div class="loading-spinner"></div>
-            <p>Cargando contenido...</p>
-        </div>
-    </div>
-</div>
-
-<style>
-    .dev-container {
-        @apply max-w-6xl mx-auto p-8;
-    }
-
-    .dev-title {
-        @apply text-3xl font-semibold mb-8 text-center;
-        color: var(--theme-text);
-        font-family: var(--font-ui);
-    }
-
-    .dev-navigation {
-        @apply mb-8;
-    }
-
-    .nav-buttons {
-        @apply flex flex-wrap justify-center gap-3 mb-6;
-    }
-
-    .nav-btn {
-        @apply px-4 py-2 rounded-lg font-medium text-sm transition-all duration-200;
-        background-color: var(--theme-surface);
-        color: var(--theme-text-secondary);
-        border: 2px solid var(--theme-border);
-        font-family: var(--font-ui);
-    }
-
-    .nav-btn:hover {
-        background-color: var(--theme-primary-light);
-        color: var(--theme-primary);
-        border-color: var(--theme-primary);
-        transform: translateY(-1px);
-    }
-
-    .nav-btn.active {
-        background-color: var(--theme-primary);
-        color: var(--theme-surface);
-        border-color: var(--theme-primary);
-    }
-
-    .dev-content {
-        @apply min-h-96 rounded-lg;
-        background-color: var(--theme-surface);
-        border: 1px solid var(--theme-border);
-        padding: 2rem;
-    }
-
-    .loading-placeholder {
-        @apply flex flex-col items-center justify-center py-12;
-    }
-
-    .loading-spinner {
-        @apply w-8 h-8 border-4 border-gray-200 border-t-blue-500 rounded-full animate-spin mb-4;
-    }
-
-    .loading-placeholder p {
-        @apply text-gray-500;
-        font-family: var(--font-ui);
-    }
-
-    /* Responsive */
-    @media (max-width: 640px) {
-        .nav-buttons {
-            @apply flex-col;
-        }
-        
-        .nav-btn {
-            @apply w-full text-center;
-        }
-    }
-</style>
+</section>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // Cargar UDNs por defecto
-    const defaultBtn = document.querySelector('.nav-btn[data-section="udns"]');
-    if (defaultBtn) {
-        defaultBtn.click();
+    const firstLink = document.querySelector('.button-minimal');
+    if (firstLink) {
+        firstLink.click();
     }
-    
-    // Manejar cambio de botones activos
-    document.addEventListener('htmx:beforeRequest', function(event) {
-        const targetBtn = event.detail.elt;
-        if (targetBtn.classList.contains('nav-btn')) {
-            // Remover active de todos
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            // Agregar active al clickeado
-            targetBtn.classList.add('active');
-        }
-    });
-    
-    // Manejar errores de carga
-    document.addEventListener('htmx:responseError', function(event) {
-        const content = document.getElementById('dev-content');
-        content.innerHTML = `
-            <div class="text-red-600 p-4 text-center">
-                <h3 class="font-semibold mb-2">Error al cargar el contenido</h3>
-                <p class="text-sm">Por favor, intenta de nuevo o verifica la configuración.</p>
-            </div>
-        `;
-    });
 });
 </script>
 {% endblock %} 
