@@ -1,0 +1,72 @@
+{% extends "core/base.html" %}
+
+{% block title %}Crear Ticket - Welp Desk{% endblock %}
+
+{% block content %}
+<section>
+    <h1>Crear Nuevo Ticket</h1>
+    
+    <div class="card">
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="{{ form.udn.id_for_label }}" class="form-label">{{ form.udn.label }}</label>
+                    {{ form.udn }}
+                    {% for error in form.udn.errors %}
+                        <div class="alert alert-error" id="{{ form.udn.id_for_label }}_error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ form.sector.id_for_label }}" class="form-label">{{ form.sector.label }}</label>
+                    {{ form.sector }}
+                    {% for error in form.sector.errors %}
+                        <div class="alert alert-error" id="{{ form.sector.id_for_label }}_error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ form.issue_category.id_for_label }}" class="form-label">{{ form.issue_category.label }}</label>
+                    {{ form.issue_category }}
+                    {% for error in form.issue_category.errors %}
+                        <div class="alert alert-error" id="{{ form.issue_category.id_for_label }}_error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ form.issue.id_for_label }}" class="form-label">{{ form.issue.label }}</label>
+                    {{ form.issue }}
+                    {% for error in form.issue.errors %}
+                        <div class="alert alert-error" id="{{ form.issue.id_for_label }}_error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ form.body.id_for_label }}" class="form-label">{{ form.body.label }}</label>
+                    {{ form.body }}
+                    {% for error in form.body.errors %}
+                        <div class="alert alert-error" id="{{ form.body.id_for_label }}_error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Archivos Adjuntos</label>
+                    <input type="file" name="attachments" multiple class="form-input" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.txt">
+                    <small class="text-gray-600">Máximo 50MB por archivo. Formatos: PDF, JPG, PNG, DOC, DOCX, TXT</small>
+                </div>
+                
+                {% for error in form.non_field_errors %}
+                    <div class="alert alert-error">{{ error }}</div>
+                {% endfor %}
+                
+                <div class="flex gap-4 mt-6">
+                    <button type="submit" class="button-primary">Crear Ticket</button>
+                    <a href="{% url 'welp_desk:index' %}" class="button-secondary">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %} 

@@ -1,0 +1,144 @@
+{% extends "core/base.html" %}
+
+{% block title %}Tickets y Datos - Welp Desk{% endblock %}
+
+{% block content %}
+<section>
+    <div class="flex justify-between items-center mb-6">
+        <div>
+            <h1>Tickets y Datos del Sistema</h1>
+            <h2>Tablas de Hecho - Welp Desk</h2>
+        </div>
+        <a href="{% url 'welp_desk:index' %}" class="button-secondary">
+            <i class="fa fa-arrow-left mr-2"></i>
+            Volver
+        </a>
+    </div>
+
+    <!-- Tickets -->
+    {% if tickets %}
+        {% for ticket in tickets %}
+            <div class="card mb-8">
+                <div class="card-header">
+                    <div class="flex justify-between items-center">
+                        <h3><i class="fa fa-ticket-alt mr-2"></i>Ticket #{{ ticket.id }}</h3>
+                        {% if ticket.status %}
+                            <span class="status status-{{ ticket.status }}">{{ ticket.status|title }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="card-body">
+                    <!-- Información del Ticket -->
+                    <div class="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+                        <h4 class="font-semibold text-green-800 mb-3">Información del Ticket</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
+                            <div>
+                                <p><strong>ID:</strong> {{ ticket.id }}</p>
+                                <p><strong>UDN:</strong> {{ ticket.udn.name }}</p>
+                                <p><strong>Sector:</strong> {{ ticket.sector.name }}</p>
+                            </div>
+                            <div>
+                                <p><strong>Categoría:</strong> {{ ticket.issue_category.name }}</p>
+                                <p><strong>Incidencia:</strong> {{ ticket.issue.name }}</p>
+                                {% if ticket.issue.display_name %}
+                                    <p><strong>Mostrar como:</strong> {{ ticket.issue.display_name }}</p>
+                                {% endif %}
+                            </div>
+                            <div>
+                                {% if ticket.created_by %}
+                                    <p><strong>Creado por:</strong> {{ ticket.created_by.get_full_name|default:ticket.created_by.username }}</p>
+                                {% endif %}
+                                <p><strong>Total mensajes:</strong> {{ ticket.messages.count }}</p>
+                                <p><strong>Estado del ticket:</strong> 
+                                    {% if ticket.is_final %}
+                                        <span class="text-gray-600">🔒 Finalizado</span>
+                                    {% elif ticket.is_active %}
+                                        <span class="text-green-600">🔄 Activo</span>
+                                    {% else %}
+                                        <span class="text-yellow-600">⚠️ Pendiente</span>
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
+                        {% if ticket.issue.description %}
+                            <div class="mt-3 p-3 bg-white rounded border">
+                                <p class="text-sm"><strong>Descripción de la incidencia:</strong> {{ ticket.issue.description }}</p>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Mensajes del Ticket -->
+                    <div class="mb-6">
+                        <h4 class="font-semibold text-gray-800 mb-3">
+                            <i class="fa fa-comments mr-2"></i>Mensajes ({{ ticket.messages.count }})
+                        </h4>
+                        {% if ticket.messages.all %}
+                            <div class="space-y-4">
+                                {% for message in ticket.messages.all %}
+                                    <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                                        <div class="flex justify-between items-start mb-3">
+                                            <div class="text-sm text-gray-600">
+                                                <p><strong>ID Mensaje:</strong> {{ message.id }}</p>
+                                                <p><strong>Usuario:</strong> {{ message.user.get_full_name|default:message.user.username|default:"Usuario eliminado" }}</p>
+                                                <p><strong>Fecha creación:</strong> {{ message.created_on|date:"d/m/Y H:i:s" }}</p>
+                                                {% if message.reported_on %}
+                                                    <p><strong>Fecha reportada:</strong> {{ message.reported_on|date:"d/m/Y H:i:s" }}</p>
+                                                {% endif %}
+                                            </div>
+                                            <span class="status status-{{ message.status }}">{{ message.status|title }}</span>
+                                        </div>
+                                        
+                                        {% if message.body %}
+                                            <div class="bg-white p-3 rounded border mb-3">
+                                                <p class="text-sm"><strong>Contenido:</strong></p>
+                                                <p class="text-sm mt-1">{{ message.body }}</p>
+                                            </div>
+                                        {% endif %}
+
+                                        <!-- Attachments del Mensaje -->
+                                        {% if message.attachments.all %}
+                                            <div class="mt-3">
+                                                <p class="text-sm font-medium text-gray-700 mb-2">
+                                                    <i class="fa fa-paperclip mr-1"></i>Archivos Adjuntos ({{ message.attachments.count }}):
+                                                </p>
+                                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                                                    {% for attachment in message.attachments.all %}
+                                                        <div class="bg-indigo-50 border border-indigo-200 rounded p-3">
+                                                            <div class="text-xs text-gray-600">
+                                                                <p><strong>ID:</strong> {{ attachment.id }}</p>
+                                                                <p><strong>Nombre:</strong> {{ attachment.filename }}</p>
+                                                                <p><strong>Archivo:</strong> {{ attachment.file.name }}</p>
+                                                                <p><strong>Ruta:</strong> {{ attachment.file.url }}</p>
+                                                            </div>
+                                                        </div>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        {% else %}
+                                            <p class="text-xs text-gray-500 mt-2">Sin archivos adjuntos</p>
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <p class="text-gray-500 text-sm">No hay mensajes en este ticket</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="card">
+            <div class="card-body text-center">
+                <i class="fa fa-inbox text-4xl text-gray-400 mb-4"></i>
+                <h3 class="text-lg font-medium text-gray-600 mb-2">No hay tickets registrados</h3>
+                <p class="text-gray-500">Crea tu primer ticket para comenzar</p>
+                <a href="{% url 'welp_desk:ticket-create-dev' %}" class="button-primary mt-4">
+                    <i class="fa fa-plus mr-2"></i>
+                    Crear Primer Ticket
+                </a>
+            </div>
+        </div>
+    {% endif %}
+</section>
+{% endblock %} 

@@ -4,8 +4,22 @@
 
 {% block content %}
 <section>
-    <h1 class="brand-text-override">Welp Desk</h1>
-    <h2>Sistema de Tickets y Soporte</h2>
+    <div class="mb-6">
+        <div>
+            <h1 class="brand-text-override">Welp Desk</h1>
+            <h2>Sistema de Tickets y Soporte</h2>
+        </div>
+        <div class="flex gap-4 mt-4">
+            <a href="{% url 'welp_desk:ticket-create-dev' %}" class="button-primary">
+                <i class="fa fa-plus mr-2"></i>
+                Crear Ticket
+            </a>
+            <a href="{% url 'welp_desk:list-dev' %}" class="button-secondary">
+                <i class="fa fa-list mr-2"></i>
+                Ver Datos
+            </a>
+        </div>
+    </div>
     
     <div class="card">
         <div class="card-header">
