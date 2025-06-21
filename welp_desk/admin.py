@@ -140,7 +140,7 @@ class AttachmentInline(admin.TabularInline):
     """Gestión inline de archivos adjuntos"""
     model = Attachment
     extra = 0
-    fields = ['filename', 'file']
+    fields = ['file']
 
 
 @admin.register(Ticket)
@@ -218,11 +218,16 @@ class MessageAdmin(admin.ModelAdmin):
 
 @admin.register(Attachment)
 class AttachmentAdmin(admin.ModelAdmin):
-    """Archivos adjuntos: evidencia, documentación, capturas"""
-    list_display = ['filename', 'message', 'file_size']
+    """Archivos adjuntos internos de mensajes"""
+    list_display = ['id', 'file_name', 'message', 'file_size']
     list_filter = ['message__ticket__udn']
-    search_fields = ['filename', 'message__ticket__issue__name']
+    search_fields = ['message__ticket__issue__name']
     ordering = ['-id']
+    
+    def file_name(self, obj):
+        """Nombre del archivo en el sistema"""
+        return obj.file.name
+    file_name.short_description = 'Archivo'
     
     def file_size(self, obj):
         """Tamaño del archivo en unidades legibles (B, KB, MB)"""

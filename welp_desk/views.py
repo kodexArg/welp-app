@@ -58,7 +58,6 @@ class CreateTicketView(LoginRequiredMixin, FormView):
                     if file.size <= 52428800:  # 50MB
                         Attachment.objects.create(
                             file=file,
-                            filename=file.name,
                             message=message
                         )
                 

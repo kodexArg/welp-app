@@ -38,7 +38,6 @@ class TicketCreationForm(forms.Form):
 class AttachmentForm(forms.Form):
     """Formulario para archivos adjuntos a tickets."""
     file = forms.FileField(label="Archivo")
-    filename = forms.CharField(max_length=255, label="Nombre del archivo")
     
     def clean_file(self):
         file = self.cleaned_data.get('file')

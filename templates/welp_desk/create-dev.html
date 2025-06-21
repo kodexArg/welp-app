@@ -53,8 +53,9 @@
                 
                 <div class="form-group">
                     <label class="form-label">Archivos Adjuntos</label>
-                    <input type="file" name="attachments" multiple class="form-input" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.txt">
+                    <input type="file" name="attachments" multiple class="form-input" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.txt" id="attachments-input">
                     <small class="text-gray-600">Máximo 50MB por archivo. Formatos: PDF, JPG, PNG, DOC, DOCX, TXT</small>
+                    <div id="selected-files" class="mt-2 space-y-1"></div>
                 </div>
                 
                 {% for error in form.non_field_errors %}
@@ -69,4 +70,65 @@
         </div>
     </div>
 </section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const fileInput = document.getElementById('attachments-input');
+    const selectedFilesDiv = document.getElementById('selected-files');
+    
+    fileInput.addEventListener('change', function() {
+        selectedFilesDiv.innerHTML = '';
+        
+        if (this.files.length > 0) {
+            const title = document.createElement('p');
+            title.className = 'text-sm font-medium text-gray-700 mb-2';
+            title.textContent = `Archivos seleccionados (${this.files.length}):`;
+            selectedFilesDiv.appendChild(title);
+            
+            Array.from(this.files).forEach((file, index) => {
+                const fileDiv = document.createElement('div');
+                fileDiv.className = 'flex items-center justify-between bg-gray-50 border rounded p-2 text-sm';
+                
+                const fileInfo = document.createElement('div');
+                fileInfo.className = 'flex items-center space-x-2';
+                
+                const icon = document.createElement('i');
+                if (file.type.startsWith('image/')) {
+                    icon.className = 'fa fa-image text-green-600';
+                } else if (file.type === 'application/pdf') {
+                    icon.className = 'fa fa-file-pdf text-red-600';
+                } else if (file.type.includes('document') || file.type.includes('word')) {
+                    icon.className = 'fa fa-file-word text-blue-600';
+                } else {
+                    icon.className = 'fa fa-file text-gray-600';
+                }
+                
+                const fileName = document.createElement('span');
+                fileName.textContent = file.name;
+                
+                const fileSize = document.createElement('span');
+                fileSize.className = 'text-gray-500';
+                fileSize.textContent = `(${(file.size / 1024 / 1024).toFixed(2)} MB)`;
+                
+                fileInfo.appendChild(icon);
+                fileInfo.appendChild(fileName);
+                fileInfo.appendChild(fileSize);
+                
+                // Validación de tamaño
+                if (file.size > 52428800) { // 50MB
+                    const warning = document.createElement('span');
+                    warning.className = 'text-red-600 text-xs';
+                    warning.textContent = '⚠️ Archivo muy grande';
+                    fileDiv.appendChild(warning);
+                    fileDiv.className += ' border-red-300 bg-red-50';
+                }
+                
+                fileDiv.appendChild(fileInfo);
+                selectedFilesDiv.appendChild(fileDiv);
+            });
+        }
+    });
+});
+</script>
+
 {% endblock %} 

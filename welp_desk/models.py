@@ -209,15 +209,38 @@ class Message(models.Model):
         super().save(*args, **kwargs)
 
 
+def attachment_upload_path(instance, filename):
+    """Genera ruta de upload organizada: attachments/YYYY/MM/DD/ticket_ID_hash.ext"""
+    import os
+    import hashlib
+    from datetime import datetime
+    
+    # Obtener fecha actual
+    now = datetime.now()
+    date_path = f"{now.year}/{now.month:02d}/{now.day:02d}"
+    
+    # Obtener ID del ticket
+    ticket_id = instance.message.ticket.id if instance.message else "unknown"
+    
+    # Generar hash único + timestamp
+    extension = os.path.splitext(filename)[1]
+    hash_input = f"{ticket_id}_{now.strftime('%Y%m%d_%H%M%S')}"
+    file_hash = hashlib.md5(hash_input.encode()).hexdigest()[:8]
+    
+    # Nombre final: ticket_ID_hash.ext
+    new_filename = f"ticket_{ticket_id}_{file_hash}{extension}"
+    
+    return f"attachments/{date_path}/{new_filename}"
+
+
 class Attachment(models.Model):
-    """Archivos adjuntos vinculados a mensajes específicos"""
-    file = models.FileField(upload_to="attachments/", verbose_name="Archivo")
-    filename = models.CharField(max_length=255, verbose_name="Nombre del Archivo")
-    message = models.ForeignKey(Message, on_delete=models.CASCADE, related_name="attachments", verbose_name="Mensaje", blank=True, null=True)
+    """Archivos adjuntos internos de mensajes"""
+    file = models.FileField(upload_to=attachment_upload_path, verbose_name="Archivo")
+    message = models.ForeignKey(Message, on_delete=models.CASCADE, related_name="attachments", verbose_name="Mensaje")
 
     class Meta:
         verbose_name = "Archivo Adjunto"
         verbose_name_plural = "Archivos Adjuntos"
 
     def __str__(self):
-        return self.filename 
+        return f"Archivo #{self.id} - Ticket #{self.message.ticket.id}" 

@@ -106,10 +106,19 @@
                                                         <div class="bg-indigo-50 border border-indigo-200 rounded p-3">
                                                             <div class="text-xs text-gray-600">
                                                                 <p><strong>ID:</strong> {{ attachment.id }}</p>
-                                                                <p><strong>Nombre:</strong> {{ attachment.filename }}</p>
                                                                 <p><strong>Archivo:</strong> {{ attachment.file.name }}</p>
-                                                                <p><strong>Ruta:</strong> {{ attachment.file.url }}</p>
+                                                                <p><strong>URL:</strong> <a href="{{ attachment.file.url }}" target="_blank" class="text-blue-600 hover:underline">{{ attachment.file.url }}</a></p>
                                                             </div>
+                                                            
+                                                            {% if attachment.file.name|lower|slice:"-4:" == ".png" or attachment.file.name|lower|slice:"-4:" == ".jpg" or attachment.file.name|lower|slice:"-5:" == ".jpeg" %}
+                                                                <div class="mt-2">
+                                                                    <img src="{{ attachment.file.url }}" 
+                                                                         alt="Imagen adjunta" 
+                                                                         class="max-w-full h-auto max-h-32 rounded border cursor-pointer"
+                                                                         onclick="window.open('{{ attachment.file.url }}', '_blank')">
+                                                                    <p class="text-xs text-gray-500 mt-1">Click para ver en tamaño completo</p>
+                                                                </div>
+                                                            {% endif %}
                                                         </div>
                                                     {% endfor %}
                                                 </div>
