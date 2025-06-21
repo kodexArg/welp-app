@@ -5,7 +5,7 @@
 /* Grandstander - Fuente de marca (Solo Bold - Único peso usado) */
 @font-face {
     font-family: 'Grandstander-local';
-    src: url('./fonts/Grandstander/static/Grandstander-Bold.ttf') format('truetype');
+    src: url('../fonts/Grandstander/static/Grandstander-Bold.ttf') format('truetype');
     font-weight: 700;
     font-style: normal;
     font-display: block;
@@ -14,7 +14,7 @@
 /* Inter - Fuente principal variable (Reemplaza Noto Sans) */
 @font-face {
     font-family: 'Inter';
-    src: url('./fonts/Inter/Inter-VariableFont_opsz,wght.ttf') format('truetype-variations');
+    src: url('../fonts/Inter/Inter-VariableFont_opsz,wght.ttf') format('truetype-variations');
     font-weight: 100 900;
     font-style: normal;
     font-display: swap;
@@ -23,7 +23,7 @@
 
 @font-face {
     font-family: 'Inter';
-    src: url('./fonts/Inter/Inter-Italic-VariableFont_opsz,wght.ttf') format('truetype-variations');
+    src: url('../fonts/Inter/Inter-Italic-VariableFont_opsz,wght.ttf') format('truetype-variations');
     font-weight: 100 900;
     font-style: italic;
     font-display: swap;
@@ -33,7 +33,7 @@
 /* Roboto Condensed - Fuente UI narrow variable (Perfecto para uppercase) */
 @font-face {
     font-family: 'Roboto Condensed';
-    src: url('./fonts/Roboto_Condensed/RobotoCondensed-VariableFont_wght.ttf') format('truetype-variations');
+    src: url('../fonts/Roboto_Condensed/RobotoCondensed-VariableFont_wght.ttf') format('truetype-variations');
     font-weight: 100 900;
     font-style: normal;
     font-display: swap;
@@ -42,7 +42,7 @@
 /* Roboto Mono - Fuente código (Sin cambios) */
 @font-face {
     font-family: 'Roboto Mono';
-    src: url('./fonts/Roboto_Mono/static/RobotoMono-Regular.ttf') format('truetype');
+    src: url('../fonts/Roboto_Mono/static/RobotoMono-Regular.ttf') format('truetype');
     font-weight: 400;
     font-style: normal;
     font-display: swap;
@@ -50,7 +50,7 @@
 
 @font-face {
     font-family: 'Roboto Mono';
-    src: url('./fonts/Roboto_Mono/static/RobotoMono-Bold.ttf') format('truetype');
+    src: url('../fonts/Roboto_Mono/static/RobotoMono-Bold.ttf') format('truetype');
     font-weight: 700;
     font-style: normal;
     font-display: swap;
@@ -59,7 +59,7 @@
 /* Nunito - Fuente títulos variable (Reemplaza Roboto Slab) */
 @font-face {
     font-family: 'Nunito';
-    src: url('./fonts/Nunito/Nunito-VariableFont_wght.ttf') format('truetype-variations');
+    src: url('../fonts/Nunito/Nunito-VariableFont_wght.ttf') format('truetype-variations');
     font-weight: 200 1000;
     font-style: normal;
     font-display: swap;
@@ -67,7 +67,7 @@
 
 @font-face {
     font-family: 'Nunito';
-    src: url('./fonts/Nunito/Nunito-Italic-VariableFont_wght.ttf') format('truetype-variations');
+    src: url('../fonts/Nunito/Nunito-Italic-VariableFont_wght.ttf') format('truetype-variations');
     font-weight: 200 1000;
     font-style: italic;
     font-display: swap;

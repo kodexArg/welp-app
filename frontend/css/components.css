@@ -76,86 +76,61 @@
 
     .button-primary {
         @apply px-6 py-2 rounded-lg font-medium border-none cursor-pointer;
-        background-color: var(--theme-primary);
-        color: var(--theme-surface);
-        font-family: var(--font-ui);
-        @apply uppercase tracking-wide;
-        @apply hover:scale-[1.05] hover:brightness-110;
-        @apply active:scale-95;
-        @apply transition-all duration-300;
+        @apply uppercase tracking-wide font-[var(--font-ui)];
+        @apply bg-[var(--theme-primary)] text-[var(--theme-surface)];
+        @apply button-effects;
     }
 
     .button-secondary {
         @apply px-6 py-2 rounded-lg font-medium border-2 cursor-pointer;
-        background-color: transparent;
-        color: var(--theme-primary);
-        border-color: var(--theme-primary);
-        @apply hover:scale-[1.05] hover:brightness-110;
-        @apply active:scale-95;
-        @apply transition-all duration-300;
+        @apply bg-transparent text-[var(--theme-primary)] border-[var(--theme-primary)];
+        @apply button-effects;
     }
 
     .button-secondary:hover {
-        background-color: var(--theme-primary);
-        color: var(--theme-surface);
+        @apply bg-[var(--theme-primary)] text-[var(--theme-surface)];
     }
     
     .button-success {
         @apply px-6 py-2 rounded-lg font-medium border-none cursor-pointer;
-        background-color: #16a34a;
-        color: var(--theme-surface);
-        @apply hover:scale-[1.05] hover:brightness-110;
-        @apply active:scale-95;
-        @apply transition-all duration-300;
+        @apply bg-green-600 text-[var(--theme-surface)];
+        @apply button-effects;
     }
 
     .button-danger {
         @apply px-6 py-2 rounded-lg font-medium border-none cursor-pointer;
-        background-color: #dc2626;
-        color: var(--theme-surface);
-        @apply hover:scale-[1.05] hover:brightness-110;
-        @apply active:scale-95;
-        @apply transition-all duration-300;
+        @apply bg-red-600 text-[var(--theme-surface)];
+        @apply button-effects;
     }
     
     .button-success[disabled] {
         @apply text-zinc-500 cursor-not-allowed opacity-50;
-        background-color: #6b7280;
+        @apply bg-gray-600;
     }
 
     .button-cancel {
         @apply px-6 py-2 rounded-lg font-medium border-2 cursor-pointer;
-        background-color: transparent;
-        color: var(--theme-accent);
-        border-color: var(--theme-accent);
-        @apply hover:scale-[1.05] hover:brightness-110;
-        @apply active:scale-95;
-        @apply transition-all duration-300;
+        @apply bg-transparent text-[var(--theme-accent)] border-[var(--theme-accent)];
+        @apply button-effects;
     }
 
     .button-cancel:hover {
-        background-color: var(--theme-accent);
-        color: var(--theme-surface);
+        @apply bg-[var(--theme-accent)] text-[var(--theme-surface)];
     }
 
     .button-minimal {
         @apply px-4 py-2 rounded-lg font-medium border-none cursor-pointer;
-        background-color: transparent;
-        color: var(--theme-primary);
-        @apply hover:scale-[1.02];
-        @apply active:scale-98;
-        @apply transition-all duration-200;
-        border: 1px solid transparent;
+        @apply bg-transparent text-[var(--theme-primary)] border border-transparent;
+        @apply button-effects-minimal;
     }
 
     .button-minimal:hover {
-        background-color: var(--theme-primary-light);
-        border-color: var(--theme-border);
+        @apply bg-[var(--theme-primary-light)] border-[var(--theme-border)];
     }
     
     .button-disabled {
         @apply text-zinc-500 cursor-not-allowed opacity-50;
-        background-color: #6b7280;
+        @apply bg-gray-600;
     }
 
     /* ===============================================
@@ -168,23 +143,19 @@
 
     .form-label {
         @apply block text-sm font-medium mb-2;
-        color: var(--theme-text);
-        font-family: var(--font-ui);
-        transition: color 0.3s ease;
+        @apply text-[var(--theme-text)] font-[var(--font-ui)];
+        @apply transition-theme;
     }
 
     .form-input {
         @apply w-full px-3 py-2 border rounded-lg;
-        background-color: var(--theme-surface);
-        color: var(--theme-text);
-        border-color: var(--theme-border);
-        font-family: var(--font-ui);
-        transition: border-color 0.2s ease, background-color 0.3s ease, color 0.3s ease;
+        @apply bg-[var(--theme-surface)] text-[var(--theme-text)] border-[var(--theme-border)];
+        @apply font-[var(--font-ui)];
+        @apply transition-form;
     }
 
     .form-input:focus {
-        @apply outline-none ring-2;
-        border-color: var(--theme-primary);
+        @apply outline-none ring-2 border-[var(--theme-primary)];
         --tw-ring-color: var(--theme-primary-light);
     }
 
@@ -194,36 +165,29 @@
 
     .form-textarea {
         @apply w-full px-3 py-2 border rounded-lg resize-y min-h-[100px];
-        background-color: var(--theme-surface);
-        color: var(--theme-text);
-        border-color: var(--theme-border);
-        font-family: var(--font-ui);
-        transition: border-color 0.2s ease, background-color 0.3s ease, color 0.3s ease;
+        @apply bg-[var(--theme-surface)] text-[var(--theme-text)] border-[var(--theme-border)];
+        @apply font-[var(--font-ui)];
+        @apply transition-form;
     }
 
     .form-textarea:focus {
-        @apply outline-none ring-2;
-        border-color: var(--theme-primary);
+        @apply outline-none ring-2 border-[var(--theme-primary)];
         --tw-ring-color: var(--theme-primary-light);
     }
 
     .form-select {
-        @apply w-full px-3 py-2 border rounded-lg cursor-pointer;
-        background-color: var(--theme-surface);
-        color: var(--theme-text);
-        border-color: var(--theme-border);
-        font-family: var(--font-ui);
-        transition: border-color 0.2s ease, background-color 0.3s ease, color 0.3s ease;
+        @apply w-full px-3 py-2 border rounded-lg cursor-pointer pr-10;
+        @apply bg-[var(--theme-surface)] text-[var(--theme-text)] border-[var(--theme-border)];
+        @apply font-[var(--font-ui)];
+        @apply transition-form;
         background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
         background-position: right 0.5rem center;
         background-repeat: no-repeat;
         background-size: 1.5em 1.5em;
-        padding-right: 2.5rem;
     }
 
     .form-select:focus {
-        @apply outline-none ring-2;
-        border-color: var(--theme-primary);
+        @apply outline-none ring-2 border-[var(--theme-primary)];
         --tw-ring-color: var(--theme-primary-light);
     }
 
@@ -232,9 +196,9 @@
        =============================================== */
 
     .tag {
-        font-family: var(--font-ui);
         @apply text-xs font-medium py-1 px-1 rounded-full leading-none whitespace-nowrap border-2;
-        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        @apply font-[var(--font-ui)];
+        @apply transition-theme;
     }
 
     .tag-udn {
@@ -243,9 +207,7 @@
 
     .tag-sector {
         @apply text-xs font-medium py-1 px-1 rounded-full leading-none whitespace-nowrap border-2;
-        background-color: var(--theme-primary-light);
-        color: var(--theme-text);
-        border-color: var(--theme-primary);
+        @apply bg-[var(--theme-primary-light)] text-[var(--theme-text)] border-[var(--theme-primary)];
     }
 
     .tag-category {
@@ -257,9 +219,7 @@
     }
     
     .tag-pressed {    
-        background-color: var(--theme-primary-light);
-        color: var(--theme-text);
-        border-color: var(--theme-primary);
+        @apply bg-[var(--theme-primary-light)] text-[var(--theme-text)] border-[var(--theme-primary)];
     }
 
     /* ===============================================
@@ -378,33 +338,26 @@
 
     .card {
         @apply rounded-lg shadow-md;
-        background-color: var(--theme-surface);
-        border: 1px solid var(--theme-border);
-        transition: all 0.2s ease;
-    }
-
-    .card:hover {
-        @apply shadow-lg transform translate-y-[-2px];
+        @apply bg-[var(--theme-surface)] border border-[var(--theme-border)];
+        @apply card-hover-lift;
     }
 
     .card-header {
-        @apply px-6 py-4;
-        border-bottom: 1px solid var(--theme-border);
-        color: var(--theme-text);
-        transition: border-color 0.3s ease, color 0.3s ease;
+        @apply px-6 py-4 border-b;
+        @apply border-[var(--theme-border)] text-[var(--theme-text)];
+        @apply transition-theme;
     }
 
     .card-body {
         @apply px-6 py-4;
-        color: var(--theme-text-secondary);
-        transition: color 0.3s ease;
+        @apply text-[var(--theme-text-secondary)];
+        @apply transition-theme;
     }
 
     .card-footer {
-        @apply px-6 py-4;
-        border-top: 1px solid var(--theme-border);
-        background-color: var(--theme-primary-light);
-        transition: border-color 0.3s ease, background-color 0.3s ease;
+        @apply px-6 py-4 border-t;
+        @apply border-[var(--theme-border)] bg-[var(--theme-primary-light)];
+        @apply transition-theme;
     }
 
     /* ===============================================
@@ -413,13 +366,11 @@
 
     .alert {
         @apply px-4 py-3 rounded-lg border-l-4 mb-4;
-        font-family: var(--font-ui);
+        @apply font-[var(--font-ui)];
     }
 
     .alert-info {
-        background-color: var(--theme-primary-light);
-        border-color: var(--theme-primary);
-        color: var(--theme-text);
+        @apply bg-[var(--theme-primary-light)] border-[var(--theme-primary)] text-[var(--theme-text)];
     }
 
     .alert-success {
@@ -440,14 +391,8 @@
 
     .app-card {
         @apply rounded-lg shadow-md overflow-hidden;
-        background-color: var(--theme-surface);
-        border: 1px solid var(--theme-border);
-        transition: all 0.3s ease;
-    }
-
-    .app-card:hover {
-        @apply shadow-lg;
-        transform: scale(1.02);
+        @apply bg-[var(--theme-surface)] border border-[var(--theme-border)];
+        @apply app-hover-scale;
     }
 
     .app-card-link {
@@ -463,9 +408,7 @@
 
     .app-icon {
         @apply flex items-center justify-center text-white text-2xl pl-3;
-        width: 5rem;
-        height: 5rem;
-        min-width: 5rem;
+        @apply w-20 h-20 min-w-20;
         background: linear-gradient(135deg, var(--theme-primary), var(--theme-primary-dark));
     }
 
@@ -499,39 +442,37 @@
 
     .app-title {
         @apply font-semibold text-lg mb-1;
-        color: var(--theme-text);
-        font-family: var(--font-ui);
-        transition: color 0.3s ease;
+        @apply text-[var(--theme-text)] font-[var(--font-ui)];
+        @apply transition-theme;
     }
 
     .app-card:hover .app-title.dev {
-        color: #8b5cf6;
+        @apply text-violet-600;
     }
 
     .app-card:hover .app-title.welp-desk {
-        color: #3b82f6;
+        @apply text-blue-600;
     }
 
     .app-card:hover .app-title.welp-pay {
-        color: #10b981;
+        @apply text-emerald-600;
     }
 
     .app-card:hover .app-title.profile {
-        color: #64748b;
+        @apply text-slate-600;
     }
 
     .app-card:hover .app-title.admin {
-        color: #f97316;
+        @apply text-orange-600;
     }
 
     .app-card:hover .app-title.login {
-        color: #64748b;
+        @apply text-slate-600;
     }
 
     .app-description {
-        color: var(--theme-text-secondary);
-        font-family: var(--font-p);
-        transition: color 0.3s ease;
+        @apply text-[var(--theme-text-secondary)] font-[var(--font-p)];
+        @apply transition-theme;
     }
 
     .app-badge {

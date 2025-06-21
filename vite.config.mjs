@@ -22,9 +22,7 @@ export default defineConfig({
     },
   },
   plugins: [
-    tailwindcss({
-      config: './tailwind.config.js'
-    }),
+    tailwindcss(),
     
     // vite-plugin-static-copy: Copia archivos estáticos durante el build
     // 

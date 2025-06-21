@@ -1,3 +1,68 @@
+/* ======================================================================
+   UTILIDADES DE TRANSICIÓN - @utility para uso con @apply
+   ====================================================================== */
+
+/* Transiciones básicas reutilizables */
+@utility transition-theme {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+@utility transition-form {
+    transition: border-color 0.2s ease, background-color 0.3s ease, color 0.3s ease;
+}
+
+@utility transition-interactive {
+    transition: all 0.2s ease;
+}
+
+/* Delays de animación */
+@utility animate-delay-100 {
+    animation-delay: 100ms;
+}
+
+@utility animate-delay-200 {
+    animation-delay: 200ms;
+}
+
+@utility animate-delay-300 {
+    animation-delay: 300ms;
+}
+
+@utility animate-delay-500 {
+    animation-delay: 500ms;
+}
+
+@utility animate-delay-1000 {
+    animation-delay: 1000ms;
+}
+
+/* Efectos hover comunes */
+@utility button-effects {
+    @apply hover:scale-[1.05] hover:brightness-110;
+    @apply active:scale-95;
+    @apply transition-all duration-300;
+}
+
+@utility button-effects-minimal {
+    @apply hover:scale-[1.02];
+    @apply active:scale-98;
+    @apply transition-all duration-200;
+}
+
+@utility card-hover-lift {
+    @apply hover:shadow-lg hover:-translate-y-0.5;
+    @apply transition-all duration-200;
+}
+
+@utility app-hover-scale {
+    @apply hover:scale-[1.02];
+    @apply transition-all duration-300;
+}
+
+/* ======================================================================
+   KEYFRAMES Y CLASES COMPLEJAS - @layer components
+   ====================================================================== */
+
 @layer components {
     
     /* ======================================================================
@@ -176,36 +241,7 @@
     }
     
     /* ======================================================================
-       4. SISTEMA DE DELAYS - ANIMACIONES SECUENCIALES
-       ====================================================================== */
-    
-    /* Delay muy corto para elementos relacionados */
-    .animate-delay-100 {
-        animation-delay: 100ms;
-    }
-    
-    /* Delay corto para secuencias de tarjetas */
-    .animate-delay-200 {
-        animation-delay: 200ms;
-    }
-    
-    /* Delay medio para elementos secundarios */
-    .animate-delay-300 {
-        animation-delay: 300ms;
-    }
-    
-    /* Delay largo para elementos de menor prioridad */
-    .animate-delay-500 {
-        animation-delay: 500ms;
-    }
-    
-    /* Delay muy largo para elementos de fondo */
-    .animate-delay-1000 {
-        animation-delay: 1000ms;
-    }
-    
-    /* ======================================================================
-       5. ESTADOS INICIALES - PREPARACIÓN PARA ANIMACIONES
+       4. ESTADOS INICIALES - PREPARACIÓN PARA ANIMACIONES
        ====================================================================== */
     
     /* Estado inicial genérico para elementos que se van a animar */
@@ -229,7 +265,7 @@
     }
     
     /* ======================================================================
-       6. ANIMACIONES SCROLL-TRIGGERED - APARICIÓN AL HACER SCROLL
+       5. ANIMACIONES SCROLL-TRIGGERED - APARICIÓN AL HACER SCROLL
        ====================================================================== */
     
     /* Estado inicial para elementos que aparecen al hacer scroll */
@@ -246,7 +282,7 @@
     }
     
     /* ======================================================================
-       7. TRANSICIONES SUAVES - CAMBIOS DE ESTADO
+       6. TRANSICIONES SUAVES - CAMBIOS DE ESTADO (LEGACY)
        ====================================================================== */
     
     /* Transición universal suave para todos los cambios */
@@ -270,7 +306,7 @@
     }
     
     /* ======================================================================
-       8. EFECTOS HOVER - INTERACCIONES CON EL MOUSE
+       7. EFECTOS HOVER - INTERACCIONES CON EL MOUSE
        ====================================================================== */
     
     /* Elevación sutil con sombra al pasar el mouse */
@@ -290,7 +326,7 @@
     }
     
     /* ======================================================================
-       9. ACCESIBILIDAD - RESPETO A PREFERENCIAS DE USUARIO
+       8. ACCESIBILIDAD - RESPETO A PREFERENCIAS DE USUARIO
        ====================================================================== */
     
     /* 

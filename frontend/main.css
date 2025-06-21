@@ -17,7 +17,30 @@
   --font-list: 'Inter', sans-serif;
 }
 
-@import "./variables.css";
-@import "./base.css";
-@import "./components.css";
-@import "./animations.css";
+/* ==========================================================================
+   IMPORTS DE ARCHIVOS CSS MODULARES
+   ========================================================================== */
+
+/* Variables CSS: colores, espaciado, tipografía base */
+@import "./css/variables.css";
+
+/* Animaciones y transiciones: @utility para @apply + @layer components para complejas */
+@import "./css/animations.css";
+
+/* Estilos base: elementos HTML, reset personalizado */
+@import "./css/base.css";
+
+/* Componentes: clases reutilizables de UI */
+@import "./css/components.css";
+
+/* ==========================================================================
+   VERIFICACIÓN TAILWIND 4
+   ========================================================================== */
+
+/* 
+ * Las siguientes utilidades están disponibles para @apply:
+ * - transition-theme, transition-form, transition-interactive
+ * - animate-delay-100, animate-delay-200, etc.
+ * - button-effects, button-effects-minimal
+ * - card-hover-lift, app-hover-scale
+ */
