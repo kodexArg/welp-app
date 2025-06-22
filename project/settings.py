@@ -68,7 +68,7 @@ INSTALLED_APPS = [
     'django_vite',
     'storages',
     'welp_desk',
-    'welp_pay',
+    'pay_flow',
 ]
 
 # === MIDDLEWARE ===

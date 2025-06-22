@@ -8,7 +8,7 @@ urlpatterns = [
     path('', index, name='index'),
     path('core/', include('core.urls')),
     path('welp-desk/', include('welp_desk.urls')),
-    path('welp-pay/', include('welp_pay.urls')),
+    path('pay-flow/', include('pay_flow.urls')),
     path('admin/', admin.site.urls),
 ]
 
