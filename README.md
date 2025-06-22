@@ -243,13 +243,13 @@ Se requieren los siguientes secretos en AWS Secrets Manager:
 <summary>Ver Tests</summary>
 
 <pre>
-1. Configuración (tests/test_config.py)
-   ├── test_secret_key
-   ├── test_database_config
-   ├── test_aws_config
-   ├── test_security_settings
-   ├── test_installed_apps
-   └── test_middleware
+1. Configuración (tests/test_timezone_config.py)
+   ├── test_timezone_environment_variable_exists
+   ├── test_timezone_is_valid_zoneinfo
+   ├── test_apprunner_yaml_contains_timezone
+   ├── test_apprunner_timezone_is_valid
+   ├── test_settings_and_apprunner_timezone_match
+   └── test_timezone_is_argentina_mendoza
 
 2. Modelos (core/tests/test_models.py)
    ├── test_create_user
@@ -262,11 +262,10 @@ Se requieren los siguientes secretos en AWS Secrets Manager:
    ├── test_db_health_check_success
    └── test_db_health_check_failure
 
-4. Integración (tests/test_startup.py)
-   ├── test_environment_configuration
-   ├── test_database_integration
-   ├── test_aws_integration
-   └── test_security_integration
+4. Integración
+   ├── tests/test_ping_secret.py::test_ping_secret
+   ├── tests/test_db.py::test_database_connection
+   └── tests/test_s3.py::test_s3_write_and_read
 </pre>
 </details>
 
