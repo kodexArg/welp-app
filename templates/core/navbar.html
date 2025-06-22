@@ -8,7 +8,7 @@
         {% if user.is_authenticated %}
             {% nav_link "welp_desk:index" "fa fa-headset" "WelpDesk" current_view=request.resolver_match.view_name %}
             {% separator %}
-            {% nav_link "pay_flow:index" "fa fa-user-check" "PayFlow" current_view=request.resolver_match.view_name %}
+            {% nav_link "welp_payflow:index" "fa fa-user-check" "Welp Payflow" current_view=request.resolver_match.view_name %}
             {% separator %}
             {% if user.is_staff %}
                 {% nav_link "core:dev" "fa fa-tools" "Dev" current_view=request.resolver_match.view_name %}

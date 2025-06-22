@@ -1,0 +1,31 @@
+{% extends "core/base.html" %}
+
+{% block title %}Home - Welp Payflow{% endblock %}
+
+{% block content %}
+<section>
+    <h1 class="brand-text-override">Welp Payflow</h1>
+    <h2>Página de Inicio</h2>
+    
+    <div class="card">
+        <div class="card-header">
+            <h3>Bienvenido a Welp Payflow</h3>
+            <p>Sistema de gestión de pagos y facturación</p>
+        </div>
+        <div class="card-body">
+            <p>Esta es la página home de <strong class="brand-text-override">Welp Payflow</strong>.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                <a href="{% url 'welp_payflow:index' %}" class="button-primary">
+                    <i class="fa fa-home mr-2"></i>
+                    Ir a Página Principal
+                </a>
+                <a href="{% url 'core:index' %}" class="button-secondary">
+                    <i class="fa fa-arrow-left mr-2"></i>
+                    Volver a Core
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %} 

@@ -17,8 +17,8 @@ def brand_logo(show_text=True, current_namespace=None):
         dict: Contexto para el template
     """
     # Determinar el texto según el namespace
-    if current_namespace and 'pay_flow' in current_namespace:
-        brand_text = 'Pay'
+    if current_namespace and 'welp_payflow' in current_namespace:
+        brand_text = 'Payflow'
     elif current_namespace and 'welp_desk' in current_namespace:
         brand_text = 'Desk'
     else:

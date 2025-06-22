@@ -12,7 +12,7 @@ class ThemeManager {
         this.themes = {
             'slate': { name: 'Default/Core' },
             'sky': { name: 'WelpDesk' },
-            'forest': { name: 'PayFlow' }
+            'forest': { name: 'Welp Payflow' }
         };
         
         this.currentTheme = 'slate';
@@ -54,8 +54,8 @@ class ThemeManager {
         // 2. Desde la URL actual
         const path = window.location.pathname;
         
-        if (path.startsWith('/pay-flow/')) {
-            return 'pay_flow';
+        if (path.startsWith('/welp-payflow/')) {
+            return 'welp_payflow';
         } else if (path.startsWith('/welp-desk/')) {
             return 'welp_desk';
         }
@@ -65,7 +65,7 @@ class ThemeManager {
 
     getThemeFromNamespace(namespace) {
         const themeMap = {
-            'pay_flow': 'forest',
+            'welp_payflow': 'forest',
             'welp_desk': 'sky',
             'core': 'slate'
         };

@@ -420,7 +420,7 @@
         background: linear-gradient(135deg, #3b82f6, #1d4ed8);
     }
 
-    .app-icon.pay-flow {
+    .app-icon.welp-payflow {
         background: linear-gradient(135deg, #10b981, #047857);
     }
 
@@ -454,7 +454,7 @@
         @apply text-blue-600;
     }
 
-    .app-card:hover .app-title.pay-flow {
+    .app-card:hover .app-title.welp-payflow {
         @apply text-emerald-600;
     }
 
