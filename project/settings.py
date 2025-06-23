@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_htmx',
     'django_vite',
+    'django_extensions',
     'storages',
     'welp_desk',
     'welp_payflow',
