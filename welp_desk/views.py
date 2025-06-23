@@ -10,12 +10,10 @@ from .forms import TicketCreationForm
 
 
 def index(request):
-    """Vista index (página principal) para Welp Desk"""
     return render(request, 'welp_desk/index.html')
 
 
 def list_dev(request):
-    """Vista para listar tickets con sus mensajes y attachments de forma verbosa"""
     context = {
         'tickets': Ticket.objects.all().select_related(
             'udn', 'sector', 'issue_category', 'issue'
@@ -34,9 +32,6 @@ class CreateTicketView(LoginRequiredMixin, FormView):
     
     def form_valid(self, form):
         try:
-            # Se utiliza una transacción atómica para asegurar que la creación del ticket,
-            # el mensaje inicial y los archivos adjuntos se realicen como una única operación indivisible.
-            # Si ocurre un error en cualquier paso, todos los cambios se revierten automáticamente.
             with transaction.atomic():
                 ticket = Ticket.objects.create(
                     udn=form.cleaned_data['udn'],
@@ -52,7 +47,6 @@ class CreateTicketView(LoginRequiredMixin, FormView):
                     body=form.cleaned_data['body']
                 )
                 
-                # Procesar archivos adjuntos
                 files = self.request.FILES.getlist('attachments')
                 for file in files:
                     if file.size <= 52428800:  # 50MB

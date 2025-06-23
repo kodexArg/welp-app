@@ -1,46 +1,118 @@
-STATUS_MAX_LENGTH = 12
-TICKET_STATUS_CHOICES = [
-    ('open', 'Abierto'),
-    ('feedback', 'Comentado'),
-    ('solved', 'Solucionado'),
-    ('authorized', 'Autorizado'),
-    ('rejected', 'Rechazado'),  
-    ('closed', 'Cerrado'),
+STATUS_MAX_LENGTH = 20
+
+DESK_STATUSES = {
+    'open': {
+        'label': 'Abierto',
+        'color': '#dc2626',
+        'icon': '🔴',
+        'description': 'Ticket abierto, esperando asignación',
+        'is_active': True,
+        'is_final': False,
+        'transitions': ['comment', 'in_progress', 'solved', 'closed'],
+        'requires_comment': False,
+    },
+    'comment': {
+        'label': 'Comentado',
+        'color': '#2563eb',
+        'icon': '💬',
+        'description': 'Ticket con comentarios del usuario o técnico',
+        'is_active': True,
+        'is_final': False,
+        'transitions': ['in_progress', 'solved', 'closed'],
+        'requires_comment': False,
+    },
+    'in_progress': {
+        'label': 'En Progreso',
+        'color': '#f59e0b',
+        'icon': '🟡',
+        'description': 'Ticket en progreso, siendo trabajado',
+        'is_active': True,
+        'is_final': False,
+        'transitions': ['comment', 'solved', 'authorized', 'closed'],
+        'requires_comment': True,
+    },
+    'solved': {
+        'label': 'Solucionado',
+        'color': '#16a34a',
+        'icon': '🟢',
+        'description': 'Ticket solucionado, esperando autorización',
+        'is_active': True,
+        'is_final': False,
+        'transitions': ['authorized', 'rejected', 'closed'],
+        'requires_comment': True,
+    },
+    'authorized': {
+        'label': 'Autorizado',
+        'color': '#8b5cf6',
+        'icon': '🟣',
+        'description': 'Solución autorizada, ticket cerrado automáticamente',
+        'is_active': False,
+        'is_final': True,
+        'transitions': [],
+        'requires_comment': False,
+    },
+    'rejected': {
+        'label': 'Rechazado',
+        'color': '#e11d48',
+        'icon': '🔴',
+        'description': 'Solución rechazada, requiere revisión',
+        'is_active': True,
+        'is_final': False,
+        'transitions': ['comment', 'in_progress', 'closed'],
+        'requires_comment': True,
+    },
+    'closed': {
+        'label': 'Cerrado',
+        'color': '#6b7280',
+        'icon': '⚫',
+        'description': 'Ticket cerrado manualmente',
+        'is_active': False,
+        'is_final': True,
+        'transitions': [],
+        'requires_comment': False,
+    },
+}
+
+DESK_PERMISSIONS = [
+    'can_read',
+    'can_comment',
+    'can_solve',
+    'can_authorize',
+    'can_open',
+    'can_close',
 ]
 
-VALID_TICKET_STATUSES = [choice[0] for choice in TICKET_STATUS_CHOICES]
-TICKET_STATUS_LABELS = dict(TICKET_STATUS_CHOICES)
-TICKET_STATUS_COLORS = {
-    'open': '#dc2626',      # rojo (casi naranja)
-    'feedback': '#2563eb',  # azul
-    'solved': '#16a34a',    # verde
-    'authorized': '#22c55e', # verde claro
-    'rejected': '#eab308',  # naranja (casi amarillo)
-    'closed': '#6b7280'     # gris
-}
-
-TICKET_STATUS_TRANSITIONS = {
-    'open': ['feedback', 'solved', 'closed'],
-    'feedback': ['solved', 'closed'],
-    'solved': ['authorized', 'rejected', 'closed'],
-    'authorized': ['closed'],
-    'rejected': ['feedback', 'solved'],
-    'closed': [],  # Estado final
-}
-
-ACTIVE_STATUSES = ['open', 'feedback', 'solved', 'rejected']
-FINAL_STATUSES = ['authorized', 'closed']
-
-def is_valid_status(status):
-    """Valida estados según TICKET_STATUS_CHOICES"""
-    return status in VALID_TICKET_STATUSES
-
-def can_transition_to(current_status, new_status):
-    """Verifica transiciones válidas según business rules"""
-    if not is_valid_status(current_status) or not is_valid_status(new_status):
-        return False
-    return new_status in TICKET_STATUS_TRANSITIONS.get(current_status, [])
-
-def get_available_transitions(current_status):
-    """Estados disponibles desde estado actual"""
-    return TICKET_STATUS_TRANSITIONS.get(current_status, []) 
+DESK_ROLE_PERMISSIONS = {
+    'end_user': {
+        'can_read': True,
+        'can_comment': False,
+        'can_solve': False,
+        'can_authorize': False,
+        'can_open': True,
+        'can_close': False,
+    },
+    'technician': {
+        'can_read': True,
+        'can_comment': True,
+        'can_solve': True,
+        'can_authorize': False,
+        'can_open': True,
+        'can_close': False,
+    },
+    'supervisor': {
+        'can_read': True,
+        'can_comment': True,
+        'can_solve': False,
+        'can_authorize': True,
+        'can_open': True,
+        'can_close': True,
+    },
+    'admin': {
+        'can_read': True,
+        'can_comment': True,
+        'can_solve': True,
+        'can_authorize': True,
+        'can_open': True,
+        'can_close': True,
+    },
+} 

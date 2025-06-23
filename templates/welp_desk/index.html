@@ -1,6 +1,6 @@
 {% extends "core/base.html" %}
 
-{% block title %}Welp Desk - Welp App{% endblock %}
+{% block title %}Welp Desk{% endblock %}
 
 {% block content %}
 <section>
@@ -16,27 +16,14 @@
             </a>
             <a href="{% url 'welp_desk:list-dev' %}" class="button-secondary">
                 <i class="fa fa-list mr-2"></i>
-                Ver Datos
+                Ver Tickets
             </a>
         </div>
     </div>
     
     <div class="card">
-        <div class="card-header">
-            <h3>Tema Sky Activo</h3>
-            <p>Esta página usa automáticamente el tema Sky (azul/naranja)</p>
-        </div>
         <div class="card-body">
-            <p>Esta es la página principal de <strong class="brand-text-override">Welp Desk</strong>, el sistema de gestión de tickets y soporte al cliente.</p>
-            
-            <h3>Características del Tema Sky:</h3>
-            <ul class="list-disc pl-6 space-y-2">
-                <li><strong>Color primario:</strong> Azul profundo (Sky-800)</li>
-                <li><strong>Color de acento:</strong> Naranja tierra</li>
-                <li><strong>Navbar:</strong> Fondo azul oscuro</li>
-                <li><strong>Scrollbar:</strong> Tonos azules</li>
-                <li><strong>Títulos:</strong> Jerarquía en azules</li>
-            </ul>
+            <p>Sistema de gestión de tickets y soporte al cliente.</p>
         </div>
     </div>
     
@@ -51,7 +38,7 @@
         </a>
         <a href="{% url 'core:dev' %}" class="button-secondary">
             <i class="fa fa-tools mr-2"></i>
-            Ver Demo Completo
+            Ver Demo
         </a>
     </div>
 </section>

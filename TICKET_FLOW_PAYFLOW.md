@@ -43,8 +43,8 @@ UDN → Sector (PERMISOS AQUÍ)
 3. **🟢 Budgeted** - Presupuestos adjuntados, esperando autorización de pago
 4. **🟡 Rejected** - Presupuestos rechazados, requieren revisión
 5. **🔶 Payment Authorized** - Pago autorizado, esperando proceso de facturación
-6. **💳 Processing Payment** - Procesando pago/facturación
-7. **🚚 Shipping** - En proceso de envío/entrega
+6. **💰 Processing Payment** - Procesando pago/facturación
+7. **📦 Shipping** - En proceso de envío/entrega
 8. **⚫ Closed** - Solicitud finalizada
 
 ## 🔀 Transiciones de Estado

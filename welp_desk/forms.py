@@ -4,7 +4,7 @@ from .models import UDN, Sector, IssueCategory, Issue
 
 
 class TicketCreationForm(forms.Form):
-    """Formulario para crear tickets. La validación de permisos se maneja en la vista."""
+    """Formulario para crear tickets."""
     
     udn = forms.ModelChoiceField(queryset=UDN.objects.all(), label="UDN")
     sector = forms.ModelChoiceField(queryset=Sector.objects.all(), label="Sector")
@@ -13,7 +13,6 @@ class TicketCreationForm(forms.Form):
     body = forms.CharField(widget=forms.Textarea, required=False, label="Descripción")
     
     def clean(self):
-        """Validación de coherencia entre modelos relacionados"""
         cleaned_data = super().clean()
         udn = cleaned_data.get('udn')
         sector = cleaned_data.get('sector')
@@ -42,6 +41,6 @@ class AttachmentForm(forms.Form):
     def clean_file(self):
         file = self.cleaned_data.get('file')
         if file:
-            if file.size > 52428800:
+            if file.size > 52428800:  # 50MB
                 raise forms.ValidationError("El archivo no puede superar los 50MB.")
         return file

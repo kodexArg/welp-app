@@ -79,14 +79,15 @@ Incluye:
 
 **Funciones Utilitarias Python:**
 ```python
-from welp_desk.constants import (
-    is_valid_status, can_transition_to, 
-    get_available_transitions, ACTIVE_STATUSES
-)
+from welp_desk.constants import DESK_STATUSES
+from welp_desk.utils import get_available_desk_transitions
 
-# Validación de estados
-is_valid_status('open')  # True
-can_transition_to('solved', 'authorized')  # True
+# Acceso directo a estados
+DESK_STATUSES['open']['label']  # 'Abierto'
+DESK_STATUSES['open']['color']  # '#dc2626'
+
+# Transiciones disponibles
+get_available_desk_transitions('solved')  # ['authorized', 'rejected', 'closed']
 
 # Métodos del modelo Ticket
 ticket.can_transition_to_status('closed')  # Boolean

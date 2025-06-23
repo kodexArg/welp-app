@@ -2,18 +2,11 @@ from django.db import models
 from django.db.models import Q
 from django.urls import reverse
 from django.utils import timezone
-from .constants import (
-    TICKET_STATUS_CHOICES, 
-    STATUS_MAX_LENGTH,
-    can_transition_to,
-    get_available_transitions, 
-    ACTIVE_STATUSES,
-    FINAL_STATUSES
-)
+from .constants import DESK_STATUSES, STATUS_MAX_LENGTH
+from .utils import get_available_desk_transitions, get_permissions_for_role_type
 
 
 class UDN(models.Model):
-    """Divisiones principales: sucursales, departamentos, etc."""
     name = models.CharField(max_length=255, verbose_name="Nombre")
 
     class Meta:
@@ -25,7 +18,6 @@ class UDN(models.Model):
 
 
 class Sector(models.Model):
-    """Áreas funcionales dentro de UDNs. Relación M2M permite sectores transversales."""
     udn = models.ManyToManyField(UDN, related_name="sectors", verbose_name="UDNs")
     name = models.CharField(max_length=255, verbose_name="Nombre")
 
@@ -38,7 +30,6 @@ class Sector(models.Model):
 
 
 class IssueCategory(models.Model):
-    """Categorías específicas por sector (ej: TI->Hardware, RRHH->Vacaciones)"""
     name = models.CharField(max_length=255, verbose_name="Nombre")
     sector = models.ManyToManyField("Sector", related_name="issue_categories", verbose_name="Sectores")
 
@@ -51,7 +42,6 @@ class IssueCategory(models.Model):
 
 
 class Issue(models.Model):
-    """Incidencias específicas dentro de categorías. display_name para UX customizable."""
     issue_category = models.ForeignKey(IssueCategory, on_delete=models.CASCADE, related_name="issues", verbose_name="Categoría")
     name = models.CharField(max_length=255, verbose_name="Nombre")
     display_name = models.CharField(max_length=255, verbose_name="Nombre a Mostrar", blank=True, null=True)
@@ -66,7 +56,6 @@ class Issue(models.Model):
 
 
 class Roles(models.Model):
-    """Sistema de permisos granular por UDN/Sector/Categoría. Superusuarios bypass automático."""
     user = models.ForeignKey('core.User', on_delete=models.CASCADE, related_name='welp_roles')
     udn = models.ForeignKey(UDN, on_delete=models.CASCADE)
     sector = models.ForeignKey(Sector, on_delete=models.CASCADE, null=True, blank=True)
@@ -85,10 +74,12 @@ class Roles(models.Model):
         unique_together = ['user', 'udn', 'sector', 'issue_category']
     
     def __str__(self):
-        parts = [self.user.username, self.udn.name]
+        parts = [self.user.username]
+        if self.udn:
+            parts.append(self.udn.name)
         if self.sector:
             parts.append(self.sector.name)
-        if self.issue_category:
+        if hasattr(self, 'issue_category') and self.issue_category:
             parts.append(self.issue_category.name)
         
         permissions = []
@@ -101,10 +92,27 @@ class Roles(models.Model):
         
         perm_str = f"[{'/'.join(permissions)}]" if permissions else "[Sin permisos]"
         return f"{' - '.join(parts)} {perm_str}"
+    
+    def set_permissions_from_role_type(self, role_type):
+        permissions = get_permissions_for_role_type(role_type)
+        for perm, value in permissions.items():
+            setattr(self, perm, value)
+    
+    def get_role_type(self):
+        if self.can_authorize and self.can_close:
+            return 'admin'
+        elif self.can_solve and self.can_comment:
+            if self.can_authorize:
+                return 'supervisor'
+            else:
+                return 'technician'
+        elif self.can_read and self.can_open:
+            return 'end_user'
+        else:
+            return 'custom'
 
 
 class TicketManager(models.Manager):
-    """Filtrado automático de tickets por roles. Superusuarios ven todo."""
     
     def get_queryset(self, user=None):
         queryset = super().get_queryset()
@@ -119,7 +127,7 @@ class TicketManager(models.Manager):
                 role_filter = Q(udn=role.udn)
                 if role.sector:
                     role_filter &= Q(sector=role.sector)
-                if role.issue_category:
+                if hasattr(role, 'issue_category') and role.issue_category:
                     role_filter &= Q(issue_category=role.issue_category)
                 ticket_filters |= role_filter
             
@@ -150,42 +158,37 @@ class Ticket(models.Model):
 
     @property
     def created_by(self):
-        """Usuario del primer mensaje"""
         first_message = self.messages.order_by('created_on').first()
         return first_message.user if first_message else None
 
     @property
     def status(self):
-        """Estado del último mensaje"""
         last_message = self.messages.order_by('-created_on').first()
-        return last_message.status if last_message else None
+        return last_message.status if last_message else 'open'
 
     def can_transition_to_status(self, new_status):
-        """Valida transiciones de estado según business rules"""
         current_status = self.status
         if not current_status:
             return new_status == 'open'
-        return can_transition_to(current_status, new_status)
+        available_transitions = DESK_STATUSES.get(current_status, {}).get('transitions', [])
+        return new_status in available_transitions
     
     def get_available_status_transitions(self):
-        """Estados disponibles desde estado actual"""
         current_status = self.status
-        return get_available_transitions(current_status) if current_status else ['open']
+        return get_available_desk_transitions(current_status) if current_status else ['open']
     
     @property
     def is_active(self):
-        """True si ticket no está en estado final"""
-        return self.status in ACTIVE_STATUSES if self.status else True
+        return DESK_STATUSES.get(self.status, {}).get('is_active', True) if self.status else True
     
     @property
     def is_final(self):
-        """True si ticket está en estado final"""
-        return self.status in FINAL_STATUSES if self.status else False
+        return DESK_STATUSES.get(self.status, {}).get('is_final', False) if self.status else False
 
 
 class Message(models.Model):
     ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE, related_name="messages", verbose_name="Ticket")
-    status = models.CharField(max_length=STATUS_MAX_LENGTH, choices=TICKET_STATUS_CHOICES, default='open', verbose_name="Estado")
+    status = models.CharField(max_length=STATUS_MAX_LENGTH, choices=[(key, value['label']) for key, value in DESK_STATUSES.items()], default='open', verbose_name="Estado")
     reported_on = models.DateTimeField(null=True, blank=True, verbose_name="Fecha Reportada")
     created_on = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de Creación")
     user = models.ForeignKey('core.User', on_delete=models.SET_NULL, null=True, blank=True, related_name="welp_messages", verbose_name="Usuario")
@@ -210,31 +213,25 @@ class Message(models.Model):
 
 
 def attachment_upload_path(instance, filename):
-    """Genera ruta de upload organizada: attachments/YYYY/MM/DD/ticket_ID_hash.ext"""
     import os
     import hashlib
     from datetime import datetime
     
-    # Obtener fecha actual
     now = datetime.now()
     date_path = f"{now.year}/{now.month:02d}/{now.day:02d}"
     
-    # Obtener ID del ticket
     ticket_id = instance.message.ticket.id if instance.message else "unknown"
     
-    # Generar hash único + timestamp
     extension = os.path.splitext(filename)[1]
     hash_input = f"{ticket_id}_{now.strftime('%Y%m%d_%H%M%S')}"
     file_hash = hashlib.md5(hash_input.encode()).hexdigest()[:8]
     
-    # Nombre final: ticket_ID_hash.ext
-    new_filename = f"ticket_{ticket_id}_{file_hash}{extension}"
+    new_filename = f"desk_ticket_{ticket_id}_{file_hash}{extension}"
     
     return f"attachments/{date_path}/{new_filename}"
 
 
 class Attachment(models.Model):
-    """Archivos adjuntos internos de mensajes"""
     file = models.FileField(upload_to=attachment_upload_path, verbose_name="Archivo")
     message = models.ForeignKey(Message, on_delete=models.CASCADE, related_name="attachments", verbose_name="Mensaje")
 

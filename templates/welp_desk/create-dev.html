@@ -15,7 +15,7 @@
                     <label for="{{ form.udn.id_for_label }}" class="form-label">{{ form.udn.label }}</label>
                     {{ form.udn }}
                     {% for error in form.udn.errors %}
-                        <div class="alert alert-error" id="{{ form.udn.id_for_label }}_error">{{ error }}</div>
+                        <div class="alert alert-error">{{ error }}</div>
                     {% endfor %}
                 </div>
                 
@@ -23,7 +23,7 @@
                     <label for="{{ form.sector.id_for_label }}" class="form-label">{{ form.sector.label }}</label>
                     {{ form.sector }}
                     {% for error in form.sector.errors %}
-                        <div class="alert alert-error" id="{{ form.sector.id_for_label }}_error">{{ error }}</div>
+                        <div class="alert alert-error">{{ error }}</div>
                     {% endfor %}
                 </div>
                 
@@ -31,7 +31,7 @@
                     <label for="{{ form.issue_category.id_for_label }}" class="form-label">{{ form.issue_category.label }}</label>
                     {{ form.issue_category }}
                     {% for error in form.issue_category.errors %}
-                        <div class="alert alert-error" id="{{ form.issue_category.id_for_label }}_error">{{ error }}</div>
+                        <div class="alert alert-error">{{ error }}</div>
                     {% endfor %}
                 </div>
                 
@@ -39,7 +39,7 @@
                     <label for="{{ form.issue.id_for_label }}" class="form-label">{{ form.issue.label }}</label>
                     {{ form.issue }}
                     {% for error in form.issue.errors %}
-                        <div class="alert alert-error" id="{{ form.issue.id_for_label }}_error">{{ error }}</div>
+                        <div class="alert alert-error">{{ error }}</div>
                     {% endfor %}
                 </div>
                 
@@ -47,14 +47,14 @@
                     <label for="{{ form.body.id_for_label }}" class="form-label">{{ form.body.label }}</label>
                     {{ form.body }}
                     {% for error in form.body.errors %}
-                        <div class="alert alert-error" id="{{ form.body.id_for_label }}_error">{{ error }}</div>
+                        <div class="alert alert-error">{{ error }}</div>
                     {% endfor %}
                 </div>
                 
                 <div class="form-group">
                     <label class="form-label">Archivos Adjuntos</label>
                     <input type="file" name="attachments" multiple class="form-input" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.txt" id="attachments-input">
-                    <small class="text-gray-600">Máximo 50MB por archivo. Formatos: PDF, JPG, PNG, DOC, DOCX, TXT</small>
+                    <small class="text-gray-600">Máximo 50MB por archivo</small>
                     <div id="selected-files" class="mt-2 space-y-1"></div>
                 </div>
                 
@@ -92,17 +92,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 const fileInfo = document.createElement('div');
                 fileInfo.className = 'flex items-center space-x-2';
                 
-                const icon = document.createElement('i');
-                if (file.type.startsWith('image/')) {
-                    icon.className = 'fa fa-image text-green-600';
-                } else if (file.type === 'application/pdf') {
-                    icon.className = 'fa fa-file-pdf text-red-600';
-                } else if (file.type.includes('document') || file.type.includes('word')) {
-                    icon.className = 'fa fa-file-word text-blue-600';
-                } else {
-                    icon.className = 'fa fa-file text-gray-600';
-                }
-                
                 const fileName = document.createElement('span');
                 fileName.textContent = file.name;
                 
@@ -110,15 +99,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 fileSize.className = 'text-gray-500';
                 fileSize.textContent = `(${(file.size / 1024 / 1024).toFixed(2)} MB)`;
                 
-                fileInfo.appendChild(icon);
                 fileInfo.appendChild(fileName);
                 fileInfo.appendChild(fileSize);
                 
-                // Validación de tamaño
-                if (file.size > 52428800) { // 50MB
+                if (file.size > 52428800) {
                     const warning = document.createElement('span');
                     warning.className = 'text-red-600 text-xs';
-                    warning.textContent = '⚠️ Archivo muy grande';
+                    warning.textContent = '⚠️ Muy grande';
                     fileDiv.appendChild(warning);
                     fileDiv.className += ' border-red-300 bg-red-50';
                 }

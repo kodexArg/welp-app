@@ -1,0 +1,1 @@
+# Core Constants - Archivo simplificado sin funciones de utilidad 

@@ -1,6 +1,7 @@
 from django import template
 from django.urls import reverse
-from welp_desk.constants import TICKET_STATUS_LABELS
+from welp_desk.constants import DESK_STATUSES
+from welp_payflow.constants import PAYFLOW_STATUSES
 
 register = template.Library()
 
@@ -127,20 +128,28 @@ def button(text, variant='primary', href=None, icon=None, onclick=None, type='bu
     }
 
 @register.inclusion_tag('components/core/status-badge.html')
-def status_badge(status, label=None, variant=None):
+def status_badge(status, label=None, variant=None, system='desk'):
     """
     Componente de badge de estado para tickets
     
     Args:
-        status (str): Estado del ticket (open, feedback, solved, authorized, rejected, closed)
+        status (str): Estado del ticket
         label (str): Etiqueta personalizada (opcional)
         variant (str): Variante de estilo (solid, outline) (opcional)
+        system (str): Sistema de origen ('desk' o 'payflow')
     
     Returns:
         dict: Contexto para el template
     """
+    # Seleccionar las etiquetas según el sistema
+    if system == 'payflow':
+        status_labels = {key: value['label'] for key, value in PAYFLOW_STATUSES.items()}
+    else:
+        status_labels = {key: value['label'] for key, value in DESK_STATUSES.items()}
+    
     return {
         'status': status,
-        'label': label or TICKET_STATUS_LABELS.get(status, status.title() if status else 'Sin Estado'),
+        'label': label or status_labels.get(status, status.title() if status else 'Sin Estado'),
         'variant': variant,
+        'system': system,
     }

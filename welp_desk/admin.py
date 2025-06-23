@@ -1,247 +1,222 @@
 from django.contrib import admin
 from django.utils.html import format_html
 from .models import UDN, Sector, IssueCategory, Issue, Roles, Ticket, Message, Attachment
-from .constants import TICKET_STATUS_COLORS
+from .constants import DESK_STATUSES
 
-
-class WelpDeskAdminConfig:
-    """Organiza admin en categorías: Permisos/Usuarios, Categorías y Tablas de Hecho"""
-    pass
-
-
-# === PERMISOS Y USUARIOS ===
 
 @admin.register(Roles)
-class UserPermissions(admin.ModelAdmin):
-    """Sistema granular de permisos por UDN/Sector/Categoría"""
-    list_display = ['user', 'udn', 'sector', 'issue_category', 'permissions_summary']
-    list_filter = ['udn', 'sector', 'issue_category', 'can_read', 'can_comment', 'can_solve', 'can_authorize', 'can_open', 'can_close']
-    search_fields = ['user__username', 'user__first_name', 'user__last_name', 'udn__name', 'sector__name', 'issue_category__name']
-    ordering = ['user__username', 'udn__name']
+class RolesAdmin(admin.ModelAdmin):
+    list_display = ('user', 'udn', 'sector', 'issue_category', 'permissions_summary', 'role_type')
+    list_filter = ('udn', 'sector', 'issue_category', 'can_read', 'can_authorize', 'can_solve')
+    search_fields = ('user__username', 'user__first_name', 'user__last_name')
     autocomplete_fields = ['user']
+    ordering = ('user__username',)
     
     fieldsets = (
         ('Usuario y Contexto', {
-            'fields': ('user', 'udn', 'sector', 'issue_category'),
+            'fields': ('user', 'udn', 'sector', 'issue_category')
         }),
-        ('Permisos de Lectura', {
-            'fields': ('can_read',),
-        }),
-        ('Permisos de Interacción', {
-            'fields': ('can_comment', 'can_solve'),
-        }),
-        ('Permisos de Gestión', {
-            'fields': ('can_authorize', 'can_open', 'can_close'),
+        ('Permisos', {
+            'fields': ('can_read', 'can_comment', 'can_solve', 'can_authorize', 'can_open', 'can_close'),
+            'classes': ('wide',)
         }),
     )
     
     def permissions_summary(self, obj):
-        """Resumen visual de permisos activos con colores"""
-        perms = []
-        if obj.can_read: perms.append('<span style="color: green;">✓ Leer</span>')
-        if obj.can_comment: perms.append('<span style="color: blue;">✓ Comentar</span>')
-        if obj.can_solve: perms.append('<span style="color: orange;">✓ Solucionar</span>')
-        if obj.can_authorize: perms.append('<span style="color: purple;">✓ Autorizar</span>')
-        if obj.can_open: perms.append('<span style="color: teal;">✓ Abrir</span>')
-        if obj.can_close: perms.append('<span style="color: red;">✓ Cerrar</span>')
-        
-        if not perms:
-            return '<span style="color: gray;">Sin permisos</span>'
-        
-        return format_html(' | '.join(perms))
-    permissions_summary.short_description = 'Permisos Activos'
+        permissions = []
+        if obj.can_read: permissions.append("👁️ Leer")
+        if obj.can_comment: permissions.append("💬 Comentar")
+        if obj.can_solve: permissions.append("🔧 Solucionar")
+        if obj.can_authorize: permissions.append("✅ Autorizar")
+        if obj.can_open: permissions.append("🆕 Abrir")
+        if obj.can_close: permissions.append("🔒 Cerrar")
+        return " | ".join(permissions) if permissions else "Sin permisos"
+    permissions_summary.short_description = "Permisos"
     
-    def get_queryset(self, request):
-        """Optimiza consultas con select_related para evitar N+1"""
-        return super().get_queryset(request).select_related('user', 'udn', 'sector', 'issue_category')
+    def role_type(self, obj):
+        if obj.can_authorize and obj.can_close:
+            return "👔 Supervisor/Admin"
+        elif obj.can_solve and obj.can_comment:
+            return "🔧 Técnico"
+        elif obj.can_read and obj.can_open:
+            return "👤 Usuario Final"
+        else:
+            return "🔧 Personalizado"
+    role_type.short_description = "Tipo de Rol"
 
-
-# === CATEGORÍAS ===
 
 @admin.register(UDN)
 class UDNAdmin(admin.ModelAdmin):
-    """Gestión de Unidades de Negocio (nivel organizacional más alto)"""
-    list_display = ['name', 'sectors_count']
-    search_fields = ['name']
-    ordering = ['name']
+    list_display = ('name', 'sector_count')
+    search_fields = ('name',)
+    ordering = ('name',)
     
-    def sectors_count(self, obj):
-        """Cantidad de sectores asociados"""
+    def sector_count(self, obj):
         return obj.sectors.count()
-    sectors_count.short_description = 'Sectores'
+    sector_count.short_description = "Sectores"
 
 
 @admin.register(Sector)
 class SectorAdmin(admin.ModelAdmin):
-    """Gestión de Sectores (áreas funcionales como TI, RRHH, Finanzas)"""
-    list_display = ['name', 'udns_list', 'categories_count']
-    list_filter = ['udn']
-    search_fields = ['name']
-    filter_horizontal = ['udn']
-    ordering = ['name']
+    list_display = ('name', 'udn_list', 'category_count')
+    list_filter = ('udn',)
+    search_fields = ('name',)
+    filter_horizontal = ('udn',)
+    ordering = ('name',)
     
-    def udns_list(self, obj):
-        """UDN asociadas (máximo 3 para legibilidad)"""
-        return ", ".join([udn.name for udn in obj.udn.all()[:3]])
-    udns_list.short_description = 'UDNs'
+    def udn_list(self, obj):
+        return ", ".join([udn.name for udn in obj.udn.all()])
+    udn_list.short_description = "UDNs"
     
-    def categories_count(self, obj):
-        """Cantidad de categorías de incidencias"""
+    def category_count(self, obj):
         return obj.issue_categories.count()
-    categories_count.short_description = 'Categorías'
+    category_count.short_description = "Categorías"
 
 
 @admin.register(IssueCategory)
 class IssueCategoryAdmin(admin.ModelAdmin):
-    """Gestión de Categorías de Incidencias (tipos de problemas por sector)"""
-    list_display = ['name', 'sectors_list', 'issues_count']
-    list_filter = ['sector']
-    search_fields = ['name']
-    filter_horizontal = ['sector']
-    ordering = ['name']
+    list_display = ('name', 'sector_list', 'issue_count')
+    list_filter = ('sector',)
+    search_fields = ('name',)
+    filter_horizontal = ('sector',)
+    ordering = ('name',)
     
-    def sectors_list(self, obj):
-        """Sectores asociados (máximo 3)"""
-        return ", ".join([sector.name for sector in obj.sector.all()[:3]])
-    sectors_list.short_description = 'Sectores'
+    def sector_list(self, obj):
+        return ", ".join([sector.name for sector in obj.sector.all()])
+    sector_list.short_description = "Sectores"
     
-    def issues_count(self, obj):
-        """Cantidad de incidencias específicas"""
+    def issue_count(self, obj):
         return obj.issues.count()
-    issues_count.short_description = 'Incidencias'
+    issue_count.short_description = "Incidencias"
 
 
 @admin.register(Issue)
 class IssueAdmin(admin.ModelAdmin):
-    """Gestión de Incidencias Específicas (problemas concretos reportables)"""
-    list_display = ['name', 'display_name', 'issue_category', 'tickets_count']
-    list_filter = ['issue_category', 'issue_category__sector']
-    search_fields = ['name', 'display_name', 'description']
-    ordering = ['name']
+    list_display = ('name', 'display_name', 'issue_category', 'ticket_count')
+    list_filter = ('issue_category', 'issue_category__sector')
+    search_fields = ('name', 'display_name', 'description')
+    ordering = ('name',)
     
-    def tickets_count(self, obj):
-        """Cantidad de tickets creados para esta incidencia"""
+    fieldsets = (
+        ('Información Básica', {
+            'fields': ('name', 'display_name', 'description')
+        }),
+        ('Categoría', {
+            'fields': ('issue_category',)
+        }),
+    )
+    
+    def ticket_count(self, obj):
         return obj.ticket_set.count()
-    tickets_count.short_description = 'Tickets'
-
-
-# === TABLAS DE HECHO ===
-
-class MessageInline(admin.TabularInline):
-    """Gestión inline de mensajes dentro de tickets"""
-    model = Message
-    extra = 0
-    fields = ['user', 'status', 'body', 'reported_on']
-    readonly_fields = ['created_on']
-    ordering = ['created_on']
+    ticket_count.short_description = "Tickets"
 
 
 class AttachmentInline(admin.TabularInline):
-    """Gestión inline de archivos adjuntos"""
     model = Attachment
     extra = 0
-    fields = ['file']
+    readonly_fields = ('file',)
+
+
+class MessageInline(admin.StackedInline):
+    model = Message
+    extra = 0
+    readonly_fields = ('created_on', 'reported_on')
+    inlines = [AttachmentInline]
 
 
 @admin.register(Ticket)
 class TicketAdmin(admin.ModelAdmin):
-    """Estado y creador se calculan desde mensajes asociados"""
-    list_display = ['id', 'issue', 'udn', 'sector', 'status_display', 'ticket_state', 'created_by_display', 'messages_count']
-    list_filter = ['udn', 'sector', 'issue_category', 'messages__status']
-    search_fields = ['issue__name', 'udn__name', 'sector__name', 'messages__body']
-    ordering = ['-id']
+    list_display = ('id', 'issue', 'udn', 'sector', 'issue_category', 'status_badge', 'created_by', 'created_on')
+    list_filter = ('udn', 'sector', 'issue_category', 'messages__created_on')
+    search_fields = ('issue__name', 'issue__display_name')
+    readonly_fields = ('created_by', 'status', 'is_active', 'is_final')
     inlines = [MessageInline]
+    date_hierarchy = 'messages__created_on'
+    ordering = ('-id',)
     
     fieldsets = (
-        ('Información del Ticket', {
-            'fields': ('udn', 'sector', 'issue_category', 'issue'),
+        ('Información Básica', {
+            'fields': ('issue',)
+        }),
+        ('Clasificación', {
+            'fields': ('udn', 'sector', 'issue_category')
+        }),
+        ('Estado del Sistema', {
+            'fields': ('created_by', 'status', 'is_active', 'is_final'),
+            'classes': ('collapse',)
         }),
     )
     
-    def status_display(self, obj):
-        """Estado actual con color: rojo=abierto, azul=feedback, verde=solucionado, verde claro=autorizado, amarillo=rechazado, gris=cerrado"""
+    def status_badge(self, obj):
         status = obj.status
-        if not status:
-            return '<span style="color: gray;">Sin estado</span>'
-        
-        colors = TICKET_STATUS_COLORS
-        color = colors.get(status, 'gray')
-        return format_html(f'<span style="color: {color};">● {status.title()}</span>')
-    status_display.short_description = 'Estado'
+        color = DESK_STATUSES.get(status, {}).get('color', '#6b7280')
+        return format_html(
+            '<span style="background-color: {}; color: white; padding: 2px 8px; border-radius: 4px; font-size: 11px;">{}</span>',
+            color,
+            status.upper() if status else 'OPEN'
+        )
+    status_badge.short_description = "Estado"
     
-    def ticket_state(self, obj):
-        """Activo, Finalizado o Pendiente según propiedades del ticket"""
-        if obj.is_final:
-            return format_html('<span style="color: #6b7280;">🔒 Finalizado</span>')
-        elif obj.is_active:
-            return format_html('<span style="color: #16a34a;">🔄 Activo</span>')
-        else:
-            return format_html('<span style="color: #eab308;">⚠️ Pendiente</span>')
-    ticket_state.short_description = 'Estado del Ticket'
-    
-    def created_by_display(self, obj):
-        """Usuario que escribió el primer mensaje"""
-        created_by = obj.created_by
-        return created_by.username if created_by else 'Sin usuario'
-    created_by_display.short_description = 'Creado por'
-    
-    def messages_count(self, obj):
-        """Cantidad total de mensajes en la conversación"""
-        return obj.messages.count()
-    messages_count.short_description = 'Mensajes'
-    
-    def get_queryset(self, request):
-        """Optimiza consultas para evitar N+1 (select_related + prefetch_related)"""
-        return super().get_queryset(request).select_related(
-            'udn', 'sector', 'issue_category', 'issue'
-        ).prefetch_related('messages__user')
+    def created_on(self, obj):
+        first_message = obj.messages.order_by('created_on').first()
+        return first_message.created_on if first_message else '—'
+    created_on.short_description = "Fecha de Creación"
 
 
 @admin.register(Message)
 class MessageAdmin(admin.ModelAdmin):
-    """Cada mensaje define el estado del ticket"""
-    list_display = ['ticket', 'user', 'status', 'created_on', 'has_attachments']
-    list_filter = ['status', 'created_on']
-    search_fields = ['ticket__issue__name', 'user__username', 'body']
-    ordering = ['-created_on']
+    list_display = ('id', 'ticket', 'user', 'status_badge', 'created_on', 'has_attachments')
+    list_filter = ('status', 'created_on')
+    search_fields = ('ticket__issue__name', 'user__username', 'body')
+    readonly_fields = ('created_on', 'reported_on')
     inlines = [AttachmentInline]
-    readonly_fields = ['created_on']
+    date_hierarchy = 'created_on'
+    ordering = ('-created_on',)
+    
+    def status_badge(self, obj):
+        color = DESK_STATUSES.get(obj.status, {}).get('color', '#6b7280')
+        return format_html(
+            '<span style="background-color: {}; color: white; padding: 2px 8px; border-radius: 4px; font-size: 11px;">{}</span>',
+            color,
+            obj.status.upper()
+        )
+    status_badge.short_description = "Estado"
     
     def has_attachments(self, obj):
-        """Indicador visual de archivos adjuntos"""
         count = obj.attachments.count()
         if count > 0:
-            return format_html(f'<span style="color: green;">📎 {count}</span>')
+            return format_html('📎 {} archivo(s)', count)
         return '—'
-    has_attachments.short_description = 'Adjuntos'
+    has_attachments.short_description = "Adjuntos"
 
 
 @admin.register(Attachment)
 class AttachmentAdmin(admin.ModelAdmin):
-    """Archivos adjuntos internos de mensajes"""
-    list_display = ['id', 'file_name', 'message', 'file_size']
-    list_filter = ['message__ticket__udn']
-    search_fields = ['message__ticket__issue__name']
-    ordering = ['-id']
+    list_display = ('id', 'message', 'file_name', 'file_size')
+    list_filter = ('message__created_on',)
+    search_fields = ('file', 'message__ticket__issue__name')
+    readonly_fields = ('file_name', 'file_size')
+    date_hierarchy = 'message__created_on'
+    ordering = ('-message__created_on',)
     
     def file_name(self, obj):
-        """Nombre del archivo en el sistema"""
-        return obj.file.name
-    file_name.short_description = 'Archivo'
+        return obj.file.name.split('/')[-1] if obj.file else '—'
+    file_name.short_description = "Nombre del Archivo"
     
     def file_size(self, obj):
-        """Tamaño del archivo en unidades legibles (B, KB, MB)"""
-        try:
-            size = obj.file.size
-            if size < 1024:
-                return f'{size} B'
-            elif size < 1024 * 1024:
-                return f'{size / 1024:.1f} KB'
-            else:
-                return f'{size / (1024 * 1024):.1f} MB'
-        except:
-            return 'N/A'
-    file_size.short_description = 'Tamaño'
+        if obj.file:
+            try:
+                size = obj.file.size
+                if size < 1024:
+                    return f"{size} B"
+                elif size < 1024 * 1024:
+                    return f"{size / 1024:.1f} KB"
+                else:
+                    return f"{size / (1024 * 1024):.1f} MB"
+            except:
+                return "—"
+        return "—"
+    file_size.short_description = "Tamaño"
 
 
 admin.site.site_header = 'Welp Desk - Administración'
