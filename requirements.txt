@@ -17,3 +17,4 @@ Pillow
 PyYAML
 django-extensions
 ipython
+djangorestframework

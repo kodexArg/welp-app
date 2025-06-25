@@ -9,6 +9,7 @@ urlpatterns = [
     path('core/', include('core.urls')),
     path('welp-desk/', include('welp_desk.urls')),
     path('welp-payflow/', include('welp_payflow.urls')),
+    path('api/', include('api.urls')),
     path('admin/', admin.site.urls),
 ]
 

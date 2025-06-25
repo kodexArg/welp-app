@@ -64,10 +64,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.sessions',
     'django.contrib.staticfiles',
+    'rest_framework',
     'django_htmx',
     'django_vite',
     'django_extensions',
     'storages',
+    'api',
     'welp_desk',
     'welp_payflow',
 ]
