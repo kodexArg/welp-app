@@ -164,7 +164,7 @@ class Ticket(models.Model):
     @property
     def status(self):
         last_message = self.messages.order_by('-created_on').first()
-        return last_message.status if last_message else 'open'
+        return last_message.status if last_message else None
 
     def can_transition_to_status(self, new_status):
         current_status = self.status
