@@ -63,8 +63,8 @@ run:
     - name: SECRET_KEY
       value-from: "arn:aws:secretsmanager:us-east-1:789650504128:secret:django-secret-3cNpZN:SECRET_KEY::"
     - name: DB_USERNAME
-      value-from: "arn:aws:secretsmanager:us-east-1:789650504128:secret:rds!db-b2e1ff83-1545-4806-bd37-df9fd2a3de95:username::"
+      value-from: "arn:aws:secretsmanager:us-east-1:789650504128:secret:rds!db-b2e1ff83-1545-4806-bd37-df9fd2a3de95-SR96y6:username::"
     - name: DB_PASSWORD
-      value-from: "arn:aws:secretsmanager:us-east-1:789650504128:secret:rds!db-b2e1ff83-1545-4806-bd37-df9fd2a3de95:password::"
+      value-from: "arn:aws:secretsmanager:us-east-1:789650504128:secret:rds!db-b2e1ff83-1545-4806-bd37-df9fd2a3de95-SR96y6:password::"
     - name: PING
       value-from: "arn:aws:secretsmanager:us-east-1:789650504128:secret:pingping/secret-VcQsw5"
