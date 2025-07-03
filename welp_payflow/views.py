@@ -30,6 +30,11 @@ class CreateTicketView(LoginRequiredMixin, FormView):
     form_class = PayflowTicketCreationForm
     success_url = reverse_lazy('welp_payflow:list')
     
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+    
     def form_valid(self, form):
         try:
             with transaction.atomic():
@@ -41,7 +46,7 @@ class CreateTicketView(LoginRequiredMixin, FormView):
                     estimated_amount=form.cleaned_data.get('estimated_amount')
                 )
                 
-                message = Message.objects.create(
+                first_message = Message.objects.create(
                     ticket=ticket,
                     status='open',
                     user=self.request.user,
@@ -50,10 +55,10 @@ class CreateTicketView(LoginRequiredMixin, FormView):
                 
                 files = self.request.FILES.getlist('attachments')
                 for file in files:
-                    if file.size <= 52428800:  # 50MB
+                    if file.size <= 52428800:
                         Attachment.objects.create(
                             file=file,
-                            message=message
+                            message=first_message
                         )
                 
                 messages.success(self.request, f'Solicitud #{ticket.id} creada exitosamente')

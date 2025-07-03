@@ -1,6 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from .models import UDN, Sector, AccountingCategory
+from .models import UDN, Sector, AccountingCategory, Roles
 
 
 class PayflowTicketCreationForm(forms.Form):
@@ -10,6 +10,31 @@ class PayflowTicketCreationForm(forms.Form):
     title = forms.CharField(max_length=255, label="Título de la Solicitud")
     description = forms.CharField(widget=forms.Textarea, label="Descripción", help_text="Esta descripción se convertirá en el primer mensaje del ticket")
     estimated_amount = forms.DecimalField(max_digits=12, decimal_places=2, required=False, label="Monto Estimado (opcional)")
+    
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+        
+        if user and user.is_authenticated:
+            user_roles = Roles.objects.filter(user=user, can_open=True)
+            
+            if user_roles.exists():
+                user_udns = UDN.objects.filter(
+                    id__in=user_roles.values_list('udn__id', flat=True)
+                ).distinct()
+                user_sectors = Sector.objects.filter(
+                    id__in=user_roles.values_list('sector__id', flat=True)
+                ).distinct()
+                
+                if user_udns.exists():
+                    self.fields['udn'].queryset = user_udns
+                    if user_udns.count() == 1:
+                        self.fields['udn'].initial = user_udns.first()
+                
+                if user_sectors.exists():
+                    self.fields['sector'].queryset = user_sectors
+                    if user_sectors.count() == 1:
+                        self.fields['sector'].initial = user_sectors.first()
     
     def clean(self):
         cleaned_data = super().clean()
