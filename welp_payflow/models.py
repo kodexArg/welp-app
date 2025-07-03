@@ -31,6 +31,7 @@ class Sector(models.Model):
 
 class AccountingCategory(models.Model):
     name = models.CharField(max_length=255, verbose_name="Nombre")
+    description = models.TextField(blank=True, null=True, verbose_name="Descripción")
     sector = models.ManyToManyField("Sector", related_name="accounting_categories", verbose_name="Sectores")
 
     class Meta:

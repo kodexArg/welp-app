@@ -1,0 +1,73 @@
+UDNs:
+  - name: "KM 1151"
+  - name: "Las Bóvedas"
+  - name: "Parador"
+  - name: "Espejo"
+  - name: "VW"
+  - name: "KCBD"
+
+Sectors:
+  - name: "Administración"
+    udns:
+      - "KM 1151"
+      - "Las Bóvedas"
+      - "Espejo"
+      - "VW"
+  - name: "Operaciones"
+    udns:
+      - "KM 1151"
+      - "Las Bóvedas"
+      - "KCBD"
+  - name: "Parrilla"
+    udns:
+      - "Parador"
+  - name: "Local KCBD"
+    udns:
+      - "Parador"
+  - name: "Locales Comerciales"
+    udns:
+      - "Parador"
+  - name: "Mantenimiento"
+    udns:
+      - "Parador"
+      - "Espejo"
+  - name: "Patio de Comidas"
+    udns:
+      - "Parador"
+  - name: "Sistemas"
+    udns:
+      - "Espejo"
+  - name: "Contabilidad y Pagos"
+    udns:
+      - "Espejo"
+  - name: "Compras"
+    udns:
+      - "Espejo"
+  - name: "Campo"
+    udns:
+      - "VW"
+  - name: "Residencia Vila"
+    udns:
+      - "VW"
+
+AccountingCategories:
+  - name: "Insumos"
+    description: "Consumibles y materiales de uso diario"
+  - name: "Equipos IT"
+    description: "Hardware TI, servidores, terminales, POS, etc"
+  - name: "Sistemas"
+    description: "Licencias, SaaS, upgrades y renovaciones de software"
+  - name: "Mantenimiento"
+    description: "Servicios y repuestos para mantener instalaciones/equipos"
+  - name: "Obras"
+    description: "Reformas o ampliaciones de infraestructura"
+  - name: "Seguridad & CCTV"
+    description: "Cámaras, alarmas, control de acceso, extintores"
+  - name: "Vehículos"
+    description: "Service, repuestos, seguros, combustible interno"
+  - name: "Herramientas"
+    description: "Maquinaria y herramientas no-TI"
+  - name: "Señalética"
+    description: "Carteles, señalización, branding físico"
+  - name: "Telefonía"
+    description: "Teléfonos fijos, IP, móviles corporativos" 
