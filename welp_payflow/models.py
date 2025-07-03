@@ -133,7 +133,6 @@ class Ticket(models.Model):
     accounting_category = models.ForeignKey(AccountingCategory, on_delete=models.CASCADE, verbose_name="Categoría Contable")
     
     title = models.CharField(max_length=255, verbose_name="Título de la Solicitud")
-    description = models.TextField(verbose_name="Descripción", blank=True, null=True)
     estimated_amount = models.DecimalField(max_digits=12, decimal_places=2, verbose_name="Monto Estimado", null=True, blank=True)
     
     created_on = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de Creación")

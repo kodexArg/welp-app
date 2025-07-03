@@ -9,7 +9,7 @@ alwaysApply: true
 
 ### Sistema Operativo: Windows PowerShell
 - **Sistema**: Windows PowerShell - NO usar comandos bash/linux
-- **Script recomendado**: `@scripts/dev.ps1` para desarrollo local
+- **Script recomendado**: `@scripts/dev.ps1` (Windows) o `@scripts/dev.sh` para desarrollo local
 - **Base de datos**: PostgreSQL local en puerto 5432
 
 ### ¿Por qué usar scripts/dev.ps1?

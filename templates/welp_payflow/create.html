@@ -1,0 +1,99 @@
+{% extends "core/base.html" %}
+
+{% block title %}Crear Solicitud - Welp Payflow{% endblock %}
+
+{% block content %}
+<section>
+    <h1>Crear Nueva Solicitud</h1>
+    <h2>Welp Payflow</h2>
+    
+    <div class="card">
+        <div class="card-header">
+            <h3>Nueva Solicitud de Pago</h3>
+            <p>Complete los campos requeridos</p>
+        </div>
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label class="form-label">{{ form.udn.label }}</label>
+                    {{ form.udn }}
+                    {% if form.udn.errors %}
+                        <div class="text-red-600">{{ form.udn.errors }}</div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">{{ form.sector.label }}</label>
+                    {{ form.sector }}
+                    {% if form.sector.errors %}
+                        <div class="text-red-600">{{ form.sector.errors }}</div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">{{ form.accounting_category.label }}</label>
+                    {{ form.accounting_category }}
+                    {% if form.accounting_category.errors %}
+                        <div class="text-red-600">{{ form.accounting_category.errors }}</div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">{{ form.title.label }}</label>
+                    {{ form.title }}
+                    {% if form.title.errors %}
+                        <div class="text-red-600">{{ form.title.errors }}</div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">{{ form.description.label }}</label>
+                    {{ form.description }}
+                    {% if form.description.help_text %}
+                        <small>{{ form.description.help_text }}</small>
+                    {% endif %}
+                    {% if form.description.errors %}
+                        <div class="text-red-600">{{ form.description.errors }}</div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">{{ form.estimated_amount.label }}</label>
+                    {{ form.estimated_amount }}
+                    {% if form.estimated_amount.errors %}
+                        <div class="text-red-600">{{ form.estimated_amount.errors }}</div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Archivos Adjuntos</label>
+                    <input type="file" name="attachments" multiple class="form-input">
+                    <small>Máximo 50MB por archivo</small>
+                </div>
+                
+                {% if form.non_field_errors %}
+                    <div class="alert alert-error">
+                        {{ form.non_field_errors }}
+                    </div>
+                {% endif %}
+            </form>
+        </div>
+        <div class="card-footer">
+            <button type="submit" form="id_form" class="button-primary">
+                <i class="fa fa-save"></i>
+                Crear Solicitud
+            </button>
+            <a href="{% url 'welp_payflow:index' %}" class="button-cancel">
+                <i class="fa fa-times"></i>
+                Cancelar
+            </a>
+        </div>
+    </div>
+</section>
+
+<script>
+document.querySelector('form').id = 'id_form';
+</script>
+{% endblock %} 

@@ -50,7 +50,7 @@ db.sqlite3
 # .cursor/
 
 # Node.js
-node_modules/
+**/node_modules/
 /static/dist/
 npm-debug.log*
 yarn-debug.log*

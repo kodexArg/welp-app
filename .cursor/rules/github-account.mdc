@@ -6,8 +6,8 @@ alwaysApply: false
 # Project Repository Information
 
 - **Owner**: `kodexArg`
-- **Repository**: `dj-apprunner-template`
-- **URL**: https://github.com/kodexArg/dj-apprunner-template/
+- **Repository**: `welp-app`
+- **URL**: https://github.com/kodexArg/welp-app/
 
 **IMPORTANTE**: No tienes permitido realizar push a 'main' ni 'prod'
 No tienes permitido realizar commits a 'main', excepto que se especifique
