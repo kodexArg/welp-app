@@ -89,6 +89,9 @@ document.addEventListener('DOMContentLoaded', function() {
         estimated_amount: document.querySelector('input[name="estimated_amount"]')
     };
     
+    /**
+     * Toggles component visibility and enables/disables its form controls
+     */
     function toggleComponent(componentId, enable) {
         const component = document.getElementById(componentId);
         if (!component) return;
@@ -99,6 +102,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
+    /**
+     * Fetches select field options from the API with optional parameters
+     */
     async function loadSelectOptions(fieldType, params = {}) {
         try {
             const url = new URL(`{% url 'welp_payflow:select-options' 'FIELD_TYPE' %}`.replace('FIELD_TYPE', fieldType), window.location.origin);
@@ -119,6 +125,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
+    /**
+     * Updates a select field with new option elements
+     */
     function updateSelectField(field, options) {
         if (!field) return;
         
@@ -131,6 +140,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
+    /**
+     * Handles UDN field changes and updates dependent sector options
+     */
     async function handleUdnChange() {
         const udnValue = fields.udn?.value;
         
@@ -147,10 +159,16 @@ document.addEventListener('DOMContentLoaded', function() {
         evaluateComponents();
     }
     
+    /**
+     * Handles sector field changes and triggers component evaluation
+     */
     async function handleSectorChange() {
         evaluateComponents();
     }
     
+    /**
+     * Evaluates which form components should be active based on field values
+     */
     function evaluateComponents() {
         let activeIndex = -1;
         
@@ -169,11 +187,17 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
+    /**
+     * Checks if all required fields are filled and enables/disables submit button
+     */
     function checkSubmitButton() {
         const required = [fields.title?.value.trim(), fields.description?.value.trim(), fields.estimated_amount?.value];
         document.getElementById('submit-button').disabled = !required.every(Boolean);
     }
     
+    /**
+     * Clears all form fields and resets to initial state
+     */
     async function clearForm() {
         Object.values(fields).forEach(field => {
             if (!field) return;
@@ -187,6 +211,9 @@ document.addEventListener('DOMContentLoaded', function() {
         checkSubmitButton();
     }
     
+    /**
+     * Loads initial options for all select fields from the API
+     */
     async function loadInitialOptions() {
         const udnOptions = await loadSelectOptions('udn');
         updateSelectField(fields.udn, udnOptions);
@@ -197,6 +224,9 @@ document.addEventListener('DOMContentLoaded', function() {
         updateSelectField(fields.accounting_category, accountingOptions);
     }
     
+    /**
+     * Initializes the form with options, event listeners, and initial state
+     */
     async function initializeForm() {
         await loadInitialOptions();
         
