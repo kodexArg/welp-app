@@ -99,6 +99,58 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
+    async function loadSelectOptions(fieldType, params = {}) {
+        try {
+            const url = new URL(`{% url 'welp_payflow:select-options' 'FIELD_TYPE' %}`.replace('FIELD_TYPE', fieldType), window.location.origin);
+            Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
+            
+            const response = await fetch(url);
+            const data = await response.json();
+            
+            if (data.error) {
+                console.error('Error loading options:', data.error);
+                return [];
+            }
+            
+            return data.options || [];
+        } catch (error) {
+            console.error('Error fetching options:', error);
+            return [];
+        }
+    }
+    
+    function updateSelectField(field, options) {
+        if (!field) return;
+        
+        field.innerHTML = '';
+        options.forEach(option => {
+            const optionElement = document.createElement('option');
+            optionElement.value = option.value;
+            optionElement.textContent = option.text;
+            field.appendChild(optionElement);
+        });
+    }
+    
+    async function handleUdnChange() {
+        const udnValue = fields.udn?.value;
+        
+        if (udnValue) {
+            const sectorOptions = await loadSelectOptions('sector', { udn_id: udnValue });
+            updateSelectField(fields.sector, sectorOptions);
+        } else {
+            updateSelectField(fields.sector, [{ value: '', text: '--- Seleccionar Sector ---' }]);
+        }
+        
+        fields.sector.value = '';
+        fields.accounting_category.value = '';
+        
+        evaluateComponents();
+    }
+    
+    async function handleSectorChange() {
+        evaluateComponents();
+    }
+    
     function evaluateComponents() {
         let activeIndex = -1;
         
@@ -122,31 +174,50 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('submit-button').disabled = !required.every(Boolean);
     }
     
-    function clearForm() {
+    async function clearForm() {
         Object.values(fields).forEach(field => {
             if (!field) return;
             field.value = field.tagName === 'SELECT' ? (field.selectedIndex = 0, '') : '';
         });
+        
+        await loadInitialOptions();
+        
         components.forEach(id => toggleComponent(id, false));
         toggleComponent(components[0], true);
         checkSubmitButton();
     }
     
-    components.forEach(id => toggleComponent(id, false));
-    toggleComponent(components[0], true);
+    async function loadInitialOptions() {
+        const udnOptions = await loadSelectOptions('udn');
+        updateSelectField(fields.udn, udnOptions);
+        
+        updateSelectField(fields.sector, [{ value: '', text: '--- Seleccionar Sector ---' }]);
+        
+        const accountingOptions = await loadSelectOptions('accounting');
+        updateSelectField(fields.accounting_category, accountingOptions);
+    }
     
-    ['udn', 'sector', 'accounting_category'].forEach(name => {
-        fields[name]?.addEventListener('change', evaluateComponents);
-    });
+    async function initializeForm() {
+        await loadInitialOptions();
+        
+        components.forEach(id => toggleComponent(id, false));
+        toggleComponent(components[0], true);
+        
+        fields.udn?.addEventListener('change', handleUdnChange);
+        fields.sector?.addEventListener('change', handleSectorChange);
+        fields.accounting_category?.addEventListener('change', evaluateComponents);
+        
+        ['title', 'description', 'estimated_amount'].forEach(name => {
+            fields[name]?.addEventListener('input', checkSubmitButton);
+        });
+        
+        document.getElementById('clear-button')?.addEventListener('click', clearForm);
+        
+        evaluateComponents();
+        checkSubmitButton();
+    }
     
-    ['title', 'description', 'estimated_amount'].forEach(name => {
-        fields[name]?.addEventListener('input', checkSubmitButton);
-    });
-    
-    document.getElementById('clear-button')?.addEventListener('click', clearForm);
-    
-    evaluateComponents();
-    checkSubmitButton();
+    initializeForm();
 });
 </script>
 {% endblock %} 

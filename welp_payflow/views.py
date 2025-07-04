@@ -4,6 +4,8 @@ from django.views.generic import FormView
 from django.contrib import messages
 from django.db import transaction
 from django.urls import reverse_lazy
+from django.http import JsonResponse
+from django.views import View
 
 from .models import Ticket, Message, Attachment, UDN, Sector, AccountingCategory, Roles
 from .forms import PayflowTicketCreationForm
@@ -23,6 +25,52 @@ def list_tickets(request):
         ).order_by('-id'),
     }
     return render(request, 'welp_payflow/list.html', context)
+
+
+class SelectOptionsView(LoginRequiredMixin, View):
+    """Vista genérica para obtener opciones de select fields con dependencias"""
+    
+    def get(self, request, field_type):
+        try:
+            if field_type == 'udn':
+                return self._get_udn_options(request)
+            elif field_type == 'sector':
+                return self._get_sector_options(request)
+            elif field_type == 'accounting':
+                return self._get_accounting_options(request)
+            else:
+                return JsonResponse({'error': 'Tipo de campo no válido'}, status=400)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+    
+    def _get_udn_options(self, request):
+        """Obtiene todas las opciones de UDN (sin filtros por ahora)"""
+        udns = UDN.objects.all().values('id', 'name')
+        options = [{'value': '', 'text': '--- Seleccionar UDN ---'}]
+        options.extend([{'value': udn['id'], 'text': udn['name']} for udn in udns])
+        return JsonResponse({'options': options})
+    
+    def _get_sector_options(self, request):
+        """Obtiene opciones de Sector filtradas por UDN"""
+        udn_id = request.GET.get('udn_id')
+        options = [{'value': '', 'text': '--- Seleccionar Sector ---'}]
+        
+        if udn_id:
+            try:
+                udn = UDN.objects.get(id=udn_id)
+                sectors = udn.payflow_sectors.all().values('id', 'name')
+                options.extend([{'value': sector['id'], 'text': sector['name']} for sector in sectors])
+            except UDN.DoesNotExist:
+                pass
+        
+        return JsonResponse({'options': options})
+    
+    def _get_accounting_options(self, request):
+        """Obtiene todas las opciones de Categoría Contable (sin filtros por ahora)"""
+        categories = AccountingCategory.objects.all().values('id', 'name')
+        options = [{'value': '', 'text': '--- Seleccionar Categoría ---'}]
+        options.extend([{'value': cat['id'], 'text': cat['name']} for cat in categories])
+        return JsonResponse({'options': options})
 
 
 class CreateTicketView(LoginRequiredMixin, FormView):
