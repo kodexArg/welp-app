@@ -1,9 +1,3 @@
----
-description: Estándares para documentación automática en welp-app
-globs: ["README.md", "docs/**/*", "templates/core/home.html", "**/*.py", "**/*.html"]
-alwaysApply: true
----
-
 # Documentation - Documentation Standards
 
 # Automatic README Maintenance
@@ -26,6 +20,20 @@ Cursor DEBE actualizar README.md y templates/core/home.html INMEDIATAMENTE cuand
 - Modelos modificados: actualizar Características de la Aplicación
 - Templates creados: actualizar estado de completitud
 - Components agregados: actualizar Sistema de Componentes
+
+# Technical Documentation Maintenance
+Cursor DEBE actualizar archivos de documentación técnica INMEDIATAMENTE cuando detecte:
+
+# Cambios en Sistema de Tickets
+- Modelos Issue/Ticket modificados: actualizar TICKET_FLOW.md y documentos específicos
+- Estados de tickets agregados/modificados: actualizar diagramas de transición
+- Permisos/roles modificados: actualizar matrices de permisos en documentos
+- Nuevas aplicaciones welp_*: crear nuevo TICKET_FLOW_[APP].md siguiendo estructura existente
+
+# Cambios en Funcionalidad Core
+- Nuevos flows implementados: actualizar casos de uso y ejemplos
+- Cambios en herencia de permisos: actualizar secciones de configuración
+- Modificaciones UDN/Sector/Category: actualizar datos reales en documentación
 
 # Protocolo de Actualización
 - PASO 1: Identificar archivo modificado, determinar sección que necesita cambios, evaluar criticidad
