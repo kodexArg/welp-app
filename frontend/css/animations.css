@@ -282,30 +282,6 @@
     }
     
     /* ======================================================================
-       6. TRANSICIONES SUAVES - CAMBIOS DE ESTADO (LEGACY)
-       ====================================================================== */
-    
-    /* Transición universal suave para todos los cambios */
-    .transition-all {
-        transition: all 300ms ease;
-    }
-    
-    /* Transición específica para cambios de color */
-    .transition-colors {
-        transition: color 300ms ease, background-color 300ms ease, border-color 300ms ease;
-    }
-    
-    /* Transición específica para transformaciones */
-    .transition-transform {
-        transition: transform 300ms ease;
-    }
-    
-    /* Transición específica para cambios de opacidad */
-    .transition-opacity {
-        transition: opacity 300ms ease;
-    }
-    
-    /* ======================================================================
        7. EFECTOS HOVER - INTERACCIONES CON EL MOUSE
        ====================================================================== */
     

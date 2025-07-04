@@ -535,4 +535,39 @@
     .theme-badge.forest {
         @apply bg-green-100 text-green-700;
     }
+
+    /* ===============================================
+       TREEMAP SIMPLIFICADO
+       =============================================== */
+
+    .treemap-toggle-button, .treemap-clear-button {
+        @apply py-2 px-3 border font-bold text-xs uppercase cursor-pointer;
+        @apply bg-[var(--theme-surface)] border-[var(--theme-border)] text-[var(--theme-text-secondary)];
+        @apply hover:bg-[var(--theme-primary-light)] hover:text-[var(--theme-text)];
+        flex: 1 1 100px;
+        min-width: var(--treemap-min-width, 100px);
+    }
+
+    .treemap-toggle-button.active {
+        @apply bg-[var(--theme-primary-dark)] border-[var(--theme-primary-dark)] text-white;
+    }
+
+    .treemap-clear-button {
+        @apply order-first flex-none w-10 min-w-10 max-w-10 text-sm;
+    }
+
+    .treemap-clear-button.highlighted {
+        @apply border-[var(--theme-accent)];
+    }
+
+
+    
+    .select-field .treemap-container {
+        @apply p-4 rounded-lg min-h-[120px] bg-transparent;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 7px;
+        --treemap-cols: 3;
+    }
+
 } 

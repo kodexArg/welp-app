@@ -83,7 +83,7 @@
     /* ⚠️ IMPORTANTE: No modificar esta variable - Fuente de marca para Welp Desk */
     --font-brand: 'Grandstander-local', 'Grandstander', 'Comic Sans MS', 'Marker Felt', cursive;
     --font-p: 'Inter', sans-serif;
-    --font-ui: 'Roboto Condensed', sans-serif;
+    --font-ui: 'Roboto Condensed', 'Arial Narrow', 'Liberation Sans Narrow', sans-serif;
     --font-mono: 'Roboto Mono', monospace;
     --font-title: 'Nunito', sans-serif;
 
