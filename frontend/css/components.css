@@ -537,19 +537,147 @@
     }
 
     /* ===============================================
-       TREEMAP SIMPLIFICADO
+       WELP PAYFLOW COMPONENTS
        =============================================== */
 
-    .treemap-toggle-button, .treemap-clear-button {
+    /* PayFlow Actions Grid */
+    .payflow-actions {
+        @apply grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto my-16;
+    }
+    
+    .payflow-action {
+        @apply flex flex-col items-center justify-center p-12 rounded-xl;
+        @apply bg-[var(--theme-surface)] border-2 border-[var(--theme-border)];
+        @apply text-center no-underline shadow-lg;
+        @apply transition-all duration-300;
+        @apply hover:scale-[1.02] hover:shadow-xl;
+        @apply min-h-[180px];
+    }
+    
+    .payflow-action.primary {
+        @apply border-[var(--theme-primary)] text-[var(--theme-primary)];
+        @apply hover:bg-[var(--theme-primary)] hover:text-[var(--theme-surface)];
+    }
+    
+    .payflow-action.secondary {
+        @apply border-[var(--theme-accent)] text-[var(--theme-accent)];
+        @apply hover:bg-[var(--theme-accent)] hover:text-[var(--theme-surface)];
+    }
+    
+    .payflow-action i {
+        @apply text-6xl mb-4;
+    }
+    
+    .payflow-action span {
+        @apply text-2xl font-semibold font-[var(--font-ui)];
+    }
+    
+    .payflow-back {
+        @apply text-center mt-12;
+    }
+    
+    .back-link {
+        @apply text-[var(--theme-text-secondary)] hover:text-[var(--theme-primary)];
+        @apply transition-colors duration-200 no-underline;
+        @apply font-[var(--font-ui)];
+    }
+    
+    .back-link i {
+        @apply mr-2;
+    }
+
+    /* PayFlow Form Components */
+    .form-component {
+        @apply opacity-[0.1] pointer-events-none;
+        @apply transition-opacity duration-300 ease-in-out;
+    }
+
+    .form-component.active {
+        @apply opacity-100 pointer-events-auto;
+    }
+
+    .form-component.active .select-field {
+        @apply opacity-100 pointer-events-auto;
+    }
+
+    /* Select Fields Body Component */
+    .select-fields-body {
+        @apply bg-[var(--theme-surface)] rounded-lg border border-[var(--theme-border)] shadow-sm;
+        @apply p-6 space-y-6;
+        @apply transition-theme;
+    }
+    
+    .select-fields-body .form-group {
+        @apply space-y-2;
+    }
+    
+    .select-fields-body label {
+        @apply block text-sm font-medium;
+        @apply text-[var(--theme-text)] font-[var(--font-ui)];
+        @apply transition-theme;
+    }
+    
+    .select-fields-body input,
+    .select-fields-body textarea {
+        @apply w-full px-3 py-2 border rounded-md;
+        @apply bg-[var(--theme-surface)] text-[var(--theme-text)] border-[var(--theme-border)];
+        @apply focus:outline-none focus:ring-2 focus:border-[var(--theme-primary)];
+        @apply transition-form;
+        --tw-ring-color: var(--theme-primary-light);
+    }
+    
+    .select-fields-body textarea {
+        @apply min-h-[100px] resize-y;
+    }
+    
+    .select-fields-body input[type="file"] {
+        @apply file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0;
+        @apply file:text-sm file:font-medium file:cursor-pointer;
+        @apply file:bg-[var(--theme-primary-light)] file:text-[var(--theme-text)];
+        @apply hover:file:bg-[var(--theme-primary)] hover:file:text-[var(--theme-surface)];
+        @apply file:transition-theme;
+    }
+
+    /* Select Field Component */
+    .select-field {
+        @apply w-full;
+    }
+
+    .select-field-container {
+        @apply bg-[var(--theme-surface)] border border-[var(--theme-border)] rounded-lg;
+        @apply transition-theme;
+    }
+
+    .select-field .loading-state {
+        @apply flex items-center justify-center p-8 text-[var(--theme-text-secondary)];
+        @apply font-[var(--font-ui)];
+    }
+
+    .select-field .help-text {
+        @apply text-xs text-[var(--theme-text-secondary)] mt-1;
+        @apply font-[var(--font-ui)];
+    }
+
+    /* ===============================================
+       TREEMAP COMPONENT STYLES - WELP PAYFLOW
+       =============================================== */
+
+    .treemap-container {
+        @apply flex flex-wrap gap-2 p-4 min-h-[120px];
+        @apply bg-transparent;
+    }
+
+    .treemap-toggle-button,
+    .treemap-clear-button {
         @apply py-2 px-3 border font-bold text-xs uppercase cursor-pointer;
         @apply bg-[var(--theme-surface)] border-[var(--theme-border)] text-[var(--theme-text-secondary)];
         @apply hover:bg-[var(--theme-primary-light)] hover:text-[var(--theme-text)];
-        flex: 1 1 100px;
-        min-width: var(--treemap-min-width, 100px);
+        @apply transition-theme;
+        @apply flex-1 min-w-[100px];
     }
 
     .treemap-toggle-button.active {
-        @apply bg-[var(--theme-primary-dark)] border-[var(--theme-primary-dark)] text-white;
+        @apply bg-[var(--theme-primary-dark)] border-[var(--theme-primary-dark)] text-[var(--theme-surface)];
     }
 
     .treemap-clear-button {
@@ -560,14 +688,17 @@
         @apply border-[var(--theme-accent)];
     }
 
+    /* Button sizing classes for treemap optimization - Mobile first */
+    .treemap-toggle-button.short {
+        @apply basis-20 sm:basis-24;
+    }
 
-    
-    .select-field .treemap-container {
-        @apply p-4 rounded-lg min-h-[120px] bg-transparent;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 7px;
-        --treemap-cols: 3;
+    .treemap-toggle-button.medium {
+        @apply basis-28 sm:basis-32;
+    }
+
+    .treemap-toggle-button.long {
+        @apply basis-36 sm:basis-40;
     }
 
 } 

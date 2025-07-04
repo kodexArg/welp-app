@@ -18,6 +18,10 @@ export default defineConfig({
         main: 'frontend/main.js',
         styles: 'frontend/main.css',
         favicon: 'frontend/favicon.ico',
+        // Welp Payflow JavaScript modules
+        'payflow-config': 'frontend/js/payflow-config.js',
+        'select-field-treemap': 'frontend/js/select-field-treemap.js',
+        'payflow-create-form': 'frontend/js/payflow-create-form.js',
       },
     },
   },

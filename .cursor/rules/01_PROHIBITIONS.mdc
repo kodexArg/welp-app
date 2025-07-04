@@ -8,6 +8,9 @@ alwaysApply: true
 
 REGLA CRÍTICA: alwaysApply = true
 
+# Prohibiciones de ejecución
+- NUNCA por ningún motivo inicies el servidor en DESARROLLO ni en PRODUCCIÓN
+
 # Prohibiciones de Código
 - NUNCA comentar código innecesariamente. 
 - NUNCA usar CSS inline con style="" o CSS embebido sin @apply
