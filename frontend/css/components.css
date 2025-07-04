@@ -81,6 +81,13 @@
         @apply button-effects;
     }
 
+    .button-primary:disabled {
+        @apply opacity-50 cursor-not-allowed;
+        @apply hover:scale-100 hover:brightness-100;
+        @apply active:scale-100;
+        @apply transition-none;
+    }
+
     .button-secondary {
         @apply px-6 py-2 rounded-lg font-medium border-2 cursor-pointer;
         @apply bg-transparent text-[var(--theme-primary)] border-[var(--theme-primary)];
@@ -90,6 +97,14 @@
     .button-secondary:hover {
         @apply bg-[var(--theme-primary)] text-[var(--theme-surface)];
     }
+
+    .button-secondary:disabled {
+        @apply opacity-50 cursor-not-allowed;
+        @apply hover:scale-100 hover:brightness-100;
+        @apply active:scale-100;
+        @apply transition-none;
+        @apply hover:bg-transparent hover:text-[var(--theme-primary)];
+    }
     
     .button-success {
         @apply px-6 py-2 rounded-lg font-medium border-none cursor-pointer;
@@ -97,10 +112,24 @@
         @apply button-effects;
     }
 
+    .button-success:disabled {
+        @apply opacity-50 cursor-not-allowed;
+        @apply hover:scale-100 hover:brightness-100;
+        @apply active:scale-100;
+        @apply transition-none;
+    }
+
     .button-danger {
         @apply px-6 py-2 rounded-lg font-medium border-none cursor-pointer;
         @apply bg-red-600 text-[var(--theme-surface)];
         @apply button-effects;
+    }
+
+    .button-danger:disabled {
+        @apply opacity-50 cursor-not-allowed;
+        @apply hover:scale-100 hover:brightness-100;
+        @apply active:scale-100;
+        @apply transition-none;
     }
     
     .button-success[disabled] {
@@ -118,6 +147,14 @@
         @apply bg-[var(--theme-accent)] text-[var(--theme-surface)];
     }
 
+    .button-cancel:disabled {
+        @apply opacity-50 cursor-not-allowed;
+        @apply hover:scale-100 hover:brightness-100;
+        @apply active:scale-100;
+        @apply transition-none;
+        @apply hover:bg-transparent hover:text-[var(--theme-accent)];
+    }
+
     .button-minimal {
         @apply px-4 py-2 rounded-lg font-medium border-none cursor-pointer;
         @apply bg-transparent text-[var(--theme-primary)] border border-transparent;
@@ -126,6 +163,14 @@
 
     .button-minimal:hover {
         @apply bg-[var(--theme-primary-light)] border-[var(--theme-border)];
+    }
+
+    .button-minimal:disabled {
+        @apply opacity-50 cursor-not-allowed;
+        @apply hover:scale-100;
+        @apply active:scale-100;
+        @apply transition-none;
+        @apply hover:bg-transparent hover:border-transparent;
     }
     
     .button-disabled {

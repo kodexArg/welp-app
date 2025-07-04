@@ -4,33 +4,55 @@
 {% block title %}Crear Solicitud - Welp Payflow{% endblock %}
 
 {% block content %}
+<style>
+.form-component {
+    opacity: 0.1;
+    pointer-events: none;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.form-component.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.button-primary:disabled,
+.button-secondary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+    transition: none !important;
+}
+
+.button-primary:disabled:hover,
+.button-secondary:disabled:hover {
+    transform: none !important;
+    filter: none !important;
+}
+</style>
+
 <section>
     <h2>Crear Nueva Solicitud</h2>
     
     <form method="post" enctype="multipart/form-data" id="payflow-form">
         {% csrf_token %}
         
-        <!-- Componente UDN -->
-        <div id="component-udn">
+        <div id="component-udn" class="form-component">
             {% select_field form.udn %}
         </div>
         
-        <!-- Componente Sector -->
-        <div id="component-sector">
+        <div id="component-sector" class="form-component">
             {% select_field form.sector %}
         </div>
         
-        <!-- Componente Categoría Contable -->
-        <div id="component-accounting">
+        <div id="component-accounting" class="form-component">
             {% select_field form.accounting_category %}
         </div>
         
-        <!-- Componente Campos del Formulario -->
-        <div id="component-fields-body">
+        <div id="component-fields-body" class="form-component">
             {% select_fields_body form %}
         </div>
         
-        <!-- Errores generales del formulario -->
         {% if form.non_field_errors %}
             <article>
                 <div class="text-status-open">
@@ -39,12 +61,14 @@
             </article>
         {% endif %}
         
-        <!-- Bloque de Botones -->
         <div id="component-buttons" class="flex flex-col sm:flex-row gap-4 justify-center">
             <a href="{% url 'welp_payflow:index' %}" class="button-secondary">
                 Volver
             </a>
-            <button type="submit" form="payflow-form" class="button-primary">
+            <button type="button" class="button-secondary" id="clear-button">
+                Limpiar
+            </button>
+            <button type="submit" form="payflow-form" class="button-primary" id="submit-button" disabled>
                 Crear Solicitud
             </button>
         </div>
@@ -55,77 +79,74 @@
 {% block scripts %}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Array de IDs de componentes en orden de activación
-    const componentIds = [
-        'component-udn',
-        'component-sector', 
-        'component-accounting',
-        'component-fields-body',
-        'component-buttons'
-    ];
+    const components = ['component-udn', 'component-sector', 'component-accounting', 'component-fields-body'];
+    const fields = {
+        udn: document.querySelector('select[name="udn"]'),
+        sector: document.querySelector('select[name="sector"]'),
+        accounting_category: document.querySelector('select[name="accounting_category"]'),
+        title: document.querySelector('input[name="title"]'),
+        description: document.querySelector('textarea[name="description"]'),
+        estimated_amount: document.querySelector('input[name="estimated_amount"]')
+    };
     
-    // Función para aplicar estado deshabilitado
-    function disableComponent(componentId) {
+    function toggleComponent(componentId, enable) {
         const component = document.getElementById(componentId);
-        if (component) {
-            component.style.opacity = '0.1';
-            component.style.pointerEvents = 'none';
-            component.style.transition = 'opacity 0.3s ease-in-out';
-            
-            // Deshabilitar inputs dentro del componente
-            const inputs = component.querySelectorAll('input, textarea, select, button, a');
-            inputs.forEach(function(input) {
-                if (input.tagName === 'INPUT' || input.tagName === 'TEXTAREA' || input.tagName === 'SELECT' || input.tagName === 'BUTTON') {
-                    input.disabled = true;
-                }
-                if (input.tagName === 'A') {
-                    input.style.pointerEvents = 'none';
-                }
-            });
-        }
+        if (!component) return;
+        
+        component.classList.toggle('active', enable);
+        component.querySelectorAll('input, textarea, select').forEach(input => {
+            input.disabled = !enable;
+        });
     }
     
-    // Función para habilitar componente
-    function enableComponent(componentId) {
-        const component = document.getElementById(componentId);
-        if (component) {
-            component.style.opacity = '1';
-            component.style.pointerEvents = 'auto';
-            
-            // Habilitar inputs dentro del componente
-            const inputs = component.querySelectorAll('input, textarea, select, button, a');
-            inputs.forEach(function(input) {
-                if (input.tagName === 'INPUT' || input.tagName === 'TEXTAREA' || input.tagName === 'SELECT' || input.tagName === 'BUTTON') {
-                    input.disabled = false;
+    function evaluateComponents() {
+        let activeIndex = -1;
+        
+        if (fields.udn?.value) {
+            activeIndex = 0;
+            if (fields.sector?.value) {
+                activeIndex = 1;
+                if (fields.accounting_category?.value) {
+                    activeIndex = 2;
                 }
-                if (input.tagName === 'A') {
-                    input.style.pointerEvents = 'auto';
-                }
-            });
+            }
         }
+        
+        components.forEach((id, index) => {
+            toggleComponent(id, index <= activeIndex + 1);
+        });
     }
     
-    // Aplicar estado inicial deshabilitado a todos los componentes
-    componentIds.forEach(function(componentId) {
-        disableComponent(componentId);
+    function checkSubmitButton() {
+        const required = [fields.title?.value.trim(), fields.description?.value.trim(), fields.estimated_amount?.value];
+        document.getElementById('submit-button').disabled = !required.every(Boolean);
+    }
+    
+    function clearForm() {
+        Object.values(fields).forEach(field => {
+            if (!field) return;
+            field.value = field.tagName === 'SELECT' ? (field.selectedIndex = 0, '') : '';
+        });
+        components.forEach(id => toggleComponent(id, false));
+        toggleComponent(components[0], true);
+        checkSubmitButton();
+    }
+    
+    components.forEach(id => toggleComponent(id, false));
+    toggleComponent(components[0], true);
+    
+    ['udn', 'sector', 'accounting_category'].forEach(name => {
+        fields[name]?.addEventListener('change', evaluateComponents);
     });
     
-    // Función para activar componentes progresivamente
-    function activateComponent(index) {
-        if (index < componentIds.length) {
-            enableComponent(componentIds[index]);
-            
-            // Activar siguiente componente después de 200ms
-            setTimeout(function() {
-                activateComponent(index + 1);
-            }, 200);
-        }
-    }
+    ['title', 'description', 'estimated_amount'].forEach(name => {
+        fields[name]?.addEventListener('input', checkSubmitButton);
+    });
     
-    // Iniciar activación después de 500ms
-    setTimeout(function() {
-        activateComponent(0);
-    }, 500);
+    document.getElementById('clear-button')?.addEventListener('click', clearForm);
+    
+    evaluateComponents();
+    checkSubmitButton();
 });
 </script>
 {% endblock %} 

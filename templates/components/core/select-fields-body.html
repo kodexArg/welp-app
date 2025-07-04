@@ -3,7 +3,6 @@
 <!-- HTML PRIMERO - Contenedor principal del componente -->
 <article class="select-fields-body">
     <div class="space-y-6">
-        <!-- Título -->
         <div id="component-title" class="form-group">
             <label>{{ form.title.label }}</label>
             <input type="text" name="{{ form.title.name }}" value="{{ form.title.value|default:'' }}">
@@ -12,7 +11,6 @@
             {% endif %}
         </div>
         
-        <!-- Descripción -->
         <div id="component-description" class="form-group">
             <label>{{ form.description.label }}</label>
             <textarea name="{{ form.description.name }}">{{ form.description.value|default:'' }}</textarea>
@@ -21,7 +19,6 @@
             {% endif %}
         </div>
         
-        <!-- Monto -->
         <div id="component-amount" class="form-group">
             <label>{{ form.estimated_amount.label }}</label>
             <input type="number" name="{{ form.estimated_amount.name }}" value="{{ form.estimated_amount.value|default:'' }}" step="0.01">
@@ -30,7 +27,6 @@
             {% endif %}
         </div>
         
-        <!-- Adjuntos -->
         <div id="component-attachments" class="form-group">
             <label>Archivos Adjuntos</label>
             <input type="file" name="attachments" multiple>
@@ -38,3 +34,39 @@
     </div>
 </article>
 
+<style>
+@layer components {
+    .select-fields-body {
+        @apply bg-white rounded-lg border border-gray-200 shadow-sm;
+        @apply p-6 space-y-6;
+        opacity: 0.1;
+        pointer-events: none;
+        transition: opacity 0.3s ease-in-out;
+    }
+    
+    .select-fields-body .form-group {
+        @apply space-y-2;
+    }
+    
+    .select-fields-body label {
+        @apply block text-sm font-medium text-gray-700;
+    }
+    
+    .select-fields-body input,
+    .select-fields-body textarea {
+        @apply w-full px-3 py-2 border border-gray-300 rounded-md;
+        @apply focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent;
+        @apply transition-colors duration-200;
+    }
+    
+    .select-fields-body textarea {
+        @apply min-h-[100px] resize-vertical;
+    }
+    
+    .select-fields-body input[type="file"] {
+        @apply file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0;
+        @apply file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700;
+        @apply hover:file:bg-blue-100 file:cursor-pointer;
+    }
+}
+</style>
