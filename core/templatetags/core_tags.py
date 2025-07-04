@@ -153,3 +153,35 @@ def status_badge(status, label=None, variant=None, system='desk'):
         'variant': variant,
         'system': system,
     }
+
+@register.inclusion_tag('components/core/select-field.html')
+def select_field(field, help_text=None):
+    """
+    Componente de campo de selección minimalista
+    
+    Args:
+        field (forms.Field): Campo de formulario Django
+        help_text (str): Texto de ayuda adicional
+    
+    Returns:
+        dict: Contexto para el template
+    """
+    return {
+        'field': field,
+        'help_text': help_text,
+    }
+
+@register.inclusion_tag('components/core/select-fields-body.html')
+def select_fields_body(form):
+    """
+    Componente de cuerpo de campos de formulario con título, descripción, monto y archivos
+    
+    Args:
+        form (forms.Form): Formulario Django con los campos necesarios
+    
+    Returns:
+        dict: Contexto para el template
+    """
+    return {
+        'form': form,
+    }

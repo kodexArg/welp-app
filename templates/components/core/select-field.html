@@ -1,0 +1,26 @@
+<!-- templates/components/core/select-field.html -->
+
+<!-- 1. HTML PRIMERO - Siempre en <div> con clase del nombre del componente -->
+<div class="select-field">
+    <article class="select-field-container">
+        <div class="form-group">
+            <label class="form-label">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+                <div class="text-status-open">
+                    <i class="fa fa-exclamation-circle"></i>
+                    {{ field.errors }}
+                </div>
+            {% endif %}
+            {% if help_text %}
+                <small class="help-text">
+                    <i class="fa fa-info-circle"></i>
+                    {{ help_text }}
+                </small>
+            {% endif %}
+        </div>
+    </article>
+</div>
+
+<!-- 2. CSS SEGUNDO - Solo si es necesario, usar @apply con clases de /frontend -->
+

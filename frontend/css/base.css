@@ -134,7 +134,7 @@
     }
 
     article {
-        @apply mb-7 rounded-lg p-4 shadow-md overflow-hidden;
+        @apply mb-8 rounded-lg px-12 pt-5 pb-2 shadow-md overflow-hidden;
         @apply bg-[var(--theme-surface)] border border-[var(--theme-border)];
         @apply transition-theme;
     }

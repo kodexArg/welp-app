@@ -1,145 +1,131 @@
 {% extends "core/base.html" %}
+{% load core_tags %}
 
 {% block title %}Crear Solicitud - Welp Payflow{% endblock %}
 
 {% block content %}
 <section>
-    <h1>Crear Nueva Solicitud</h1>
-    <h2>Welp Payflow</h2>
+    <h2>Crear Nueva Solicitud</h2>
     
     <form method="post" enctype="multipart/form-data" id="payflow-form">
         {% csrf_token %}
         
-        <!-- Bloque UDN -->
-        <article class="card">
-            <div class="card-header">
-                <h3><i class="fa fa-building"></i> Unidad de Negocio</h3>
-                <p>Selecciona la UDN correspondiente a tu solicitud</p>
-            </div>
-            <div class="card-body">
-                <div class="form-group">
-                    <label class="form-label">{{ form.udn.label }}</label>
-                    {{ form.udn }}
-                    {% if form.udn.errors %}
-                        <div class="text-status-open">{{ form.udn.errors }}</div>
-                    {% endif %}
-                </div>
-            </div>
-        </article>
+        <!-- Componente UDN -->
+        <div id="component-udn">
+            {% select_field form.udn %}
+        </div>
         
-        <!-- Bloque Sector -->
-        <article class="card">
-            <div class="card-header">
-                <h3><i class="fa fa-layer-group"></i> Sector</h3>
-                <p>Especifica el sector dentro de la UDN</p>
-            </div>
-            <div class="card-body">
-                <div class="form-group">
-                    <label class="form-label">{{ form.sector.label }}</label>
-                    {{ form.sector }}
-                    {% if form.sector.errors %}
-                        <div class="text-status-open">{{ form.sector.errors }}</div>
-                    {% endif %}
-                </div>
-            </div>
-        </article>
+        <!-- Componente Sector -->
+        <div id="component-sector">
+            {% select_field form.sector %}
+        </div>
         
-        <!-- Bloque Categoría Contable -->
-        <article class="card">
-            <div class="card-header">
-                <h3><i class="fa fa-tags"></i> Categoría Contable</h3>
-                <p>Clasifica el tipo de gasto para la contabilidad</p>
-            </div>
-            <div class="card-body">
-                <div class="form-group">
-                    <label class="form-label">{{ form.accounting_category.label }}</label>
-                    {{ form.accounting_category }}
-                    {% if form.accounting_category.errors %}
-                        <div class="text-status-open">{{ form.accounting_category.errors }}</div>
-                    {% endif %}
-                </div>
-            </div>
-        </article>
+        <!-- Componente Categoría Contable -->
+        <div id="component-accounting">
+            {% select_field form.accounting_category %}
+        </div>
         
-        <!-- Bloque Cuerpo -->
-        <article class="card">
-            <div class="card-header">
-                <h3><i class="fa fa-edit"></i> Detalles de la Solicitud</h3>
-                <p>Completa la información específica de tu solicitud</p>
-            </div>
-            <div class="card-body">
-                <div class="form-group">
-                    <label class="form-label">{{ form.title.label }}</label>
-                    {{ form.title }}
-                    {% if form.title.errors %}
-                        <div class="text-status-open">{{ form.title.errors }}</div>
-                    {% endif %}
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">{{ form.description.label }}</label>
-                    {{ form.description }}
-                    {% if form.description.help_text %}
-                        <small>{{ form.description.help_text }}</small>
-                    {% endif %}
-                    {% if form.description.errors %}
-                        <div class="text-status-open">{{ form.description.errors }}</div>
-                    {% endif %}
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">{{ form.estimated_amount.label }}</label>
-                    {{ form.estimated_amount }}
-                    {% if form.estimated_amount.errors %}
-                        <div class="text-status-open">{{ form.estimated_amount.errors }}</div>
-                    {% endif %}
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label">
-                        <i class="fa fa-paperclip"></i>
-                        Archivos Adjuntos
-                    </label>
-                    <input type="file" name="attachments" multiple class="form-input">
-                    <small class="text-gray-600">
-                        <i class="fa fa-info-circle"></i>
-                        Máximo 50MB por archivo. Formatos permitidos: PDF, DOC, DOCX, XLS, XLSX, JPG, PNG
-                    </small>
-                </div>
-            </div>
-        </article>
+        <!-- Componente Campos del Formulario -->
+        <div id="component-fields-body">
+            {% select_fields_body form %}
+        </div>
         
         <!-- Errores generales del formulario -->
         {% if form.non_field_errors %}
-            <article class="card">
-                <div class="card-body">
-                    <div class="alert alert-error">
-                        <i class="fa fa-exclamation-triangle"></i>
-                        {{ form.non_field_errors }}
-                    </div>
+            <article>
+                <div class="text-status-open">
+                    {{ form.non_field_errors }}
                 </div>
             </article>
         {% endif %}
         
         <!-- Bloque de Botones -->
-        <article class="card">
-            <div class="card-body">
-                <div class="flex flex-col sm:flex-row gap-4 justify-end">
-                    <a href="{% url 'welp_payflow:index' %}" class="button-secondary">
-                        <i class="fa fa-arrow-left"></i>
-                        Volver
-                    </a>
-                    <a href="{% url 'welp_payflow:list' %}" class="button-minimal">
-                        <i class="fa fa-list"></i>
-                        Ver Solicitudes
-                    </a>
-                    <button type="submit" form="payflow-form" class="button-primary">
-                        <i class="fa fa-check"></i>
-                        Crear Solicitud
-                    </button>
-                </div>
-            </div>
-        </article>
+        <div id="component-buttons" class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="{% url 'welp_payflow:index' %}" class="button-secondary">
+                Volver
+            </a>
+            <button type="submit" form="payflow-form" class="button-primary">
+                Crear Solicitud
+            </button>
+        </div>
     </form>
 </section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Array de IDs de componentes en orden de activación
+    const componentIds = [
+        'component-udn',
+        'component-sector', 
+        'component-accounting',
+        'component-fields-body',
+        'component-buttons'
+    ];
+    
+    // Función para aplicar estado deshabilitado
+    function disableComponent(componentId) {
+        const component = document.getElementById(componentId);
+        if (component) {
+            component.style.opacity = '0.1';
+            component.style.pointerEvents = 'none';
+            component.style.transition = 'opacity 0.3s ease-in-out';
+            
+            // Deshabilitar inputs dentro del componente
+            const inputs = component.querySelectorAll('input, textarea, select, button, a');
+            inputs.forEach(function(input) {
+                if (input.tagName === 'INPUT' || input.tagName === 'TEXTAREA' || input.tagName === 'SELECT' || input.tagName === 'BUTTON') {
+                    input.disabled = true;
+                }
+                if (input.tagName === 'A') {
+                    input.style.pointerEvents = 'none';
+                }
+            });
+        }
+    }
+    
+    // Función para habilitar componente
+    function enableComponent(componentId) {
+        const component = document.getElementById(componentId);
+        if (component) {
+            component.style.opacity = '1';
+            component.style.pointerEvents = 'auto';
+            
+            // Habilitar inputs dentro del componente
+            const inputs = component.querySelectorAll('input, textarea, select, button, a');
+            inputs.forEach(function(input) {
+                if (input.tagName === 'INPUT' || input.tagName === 'TEXTAREA' || input.tagName === 'SELECT' || input.tagName === 'BUTTON') {
+                    input.disabled = false;
+                }
+                if (input.tagName === 'A') {
+                    input.style.pointerEvents = 'auto';
+                }
+            });
+        }
+    }
+    
+    // Aplicar estado inicial deshabilitado a todos los componentes
+    componentIds.forEach(function(componentId) {
+        disableComponent(componentId);
+    });
+    
+    // Función para activar componentes progresivamente
+    function activateComponent(index) {
+        if (index < componentIds.length) {
+            enableComponent(componentIds[index]);
+            
+            // Activar siguiente componente después de 200ms
+            setTimeout(function() {
+                activateComponent(index + 1);
+            }, 200);
+        }
+    }
+    
+    // Iniciar activación después de 500ms
+    setTimeout(function() {
+        activateComponent(0);
+    }, 500);
+});
+</script>
 {% endblock %} 

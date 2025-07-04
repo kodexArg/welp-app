@@ -1,0 +1,40 @@
+<!-- templates/components/core/select-fields-body.html -->
+
+<!-- HTML PRIMERO - Contenedor principal del componente -->
+<article class="select-fields-body">
+    <div class="space-y-6">
+        <!-- Título -->
+        <div id="component-title" class="form-group">
+            <label>{{ form.title.label }}</label>
+            <input type="text" name="{{ form.title.name }}" value="{{ form.title.value|default:'' }}">
+            {% if form.title.errors %}
+                <div class="text-status-open">{{ form.title.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <!-- Descripción -->
+        <div id="component-description" class="form-group">
+            <label>{{ form.description.label }}</label>
+            <textarea name="{{ form.description.name }}">{{ form.description.value|default:'' }}</textarea>
+            {% if form.description.errors %}
+                <div class="text-status-open">{{ form.description.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <!-- Monto -->
+        <div id="component-amount" class="form-group">
+            <label>{{ form.estimated_amount.label }}</label>
+            <input type="number" name="{{ form.estimated_amount.name }}" value="{{ form.estimated_amount.value|default:'' }}" step="0.01">
+            {% if form.estimated_amount.errors %}
+                <div class="text-status-open">{{ form.estimated_amount.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <!-- Adjuntos -->
+        <div id="component-attachments" class="form-group">
+            <label>Archivos Adjuntos</label>
+            <input type="file" name="attachments" multiple>
+        </div>
+    </div>
+</article>
+
