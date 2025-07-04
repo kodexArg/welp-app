@@ -1,0 +1,78 @@
+---
+description: Estándares para Django 5 y Python en welp-app
+globs: ["**/*.py", "requirements.txt", "settings/**/*", "*/models.py", "*/views.py", "*/forms.py", "*/services.py", "*/utils.py", "*/constants.py"]
+alwaysApply: false
+---
+
+# Django Core - Django 5 y Python Standards
+
+# Estándares Django 5
+- Seguir estrictamente las recomendaciones oficiales de Django 5.0
+- Best practices de Django aplicadas sin excepciones
+- Security guidelines de Django implementadas por defecto
+
+# Configuración Obligatoria
+- Settings: Un solo archivo project/settings.py (considerado de solo lectura)
+- Environment variables: Solo .env para desarrollo, ARN secrets en producción
+- Database: PostgreSQL con connection pooling
+
+# ⚠️ MODIFICACIONES A SETTINGS.PY
+- settings.py se considera de SOLO LECTURA para desarrollo normal
+- NUNCA modificar settings.py sin autorización explícita del usuario
+- ANTES de cualquier cambio en settings.py SIEMPRE consultar explícitamente
+- Preferir variables de entorno antes que modificar settings.py
+
+# Estructura de Aplicaciones Obligatoria
+- models.py: Solo modelos, sin lógica de negocio
+- forms.py: Formularios Django con validación
+- views.py: Solo coordinación, delegar a services/
+- services.py: Lógica de negocio completa
+- utils.py: Funciones auxiliares específicas de la aplicación
+- constants.py: SOLO imports de variables de entorno (no constantes hardcodeadas)
+- urls.py: Routing clean y RESTful
+- admin.py: Interface administrativa
+- migrations/: Solo automáticas desde CI
+
+# Gestión de Constantes y Variables de Entorno
+- TODAS las constantes van en variables de entorno definidas en apprunner.yaml
+- constants.py solo importa desde os.environ o django.conf.settings
+- NUNCA definir constantes directamente en código Python
+- Desarrollo: usar .env local para testing
+- Producción: usar secrets ARN en apprunner.yaml
+
+# Ejemplo de constants.py Correcto
+```python
+# app_name/constants.py
+import os
+from django.conf import settings
+
+# CORRECTO: Import desde environment
+DEFAULT_TIMEOUT = int(os.environ.get('DEFAULT_TIMEOUT', '300'))
+API_BASE_URL = settings.API_BASE_URL
+MAX_RETRIES = int(os.environ.get('MAX_RETRIES', '3'))
+
+# INCORRECTO: Nunca hacer esto
+# DEFAULT_TIMEOUT = 300  # ❌ Constante hardcodeada
+```
+
+# Utils por Aplicación
+- Cada aplicación mantiene su utils.py independiente
+- utils.py contiene funciones auxiliares específicas del dominio de esa aplicación
+- NUNCA crear utils globales compartidos entre aplicaciones
+- Si necesitas compartir utils, crear aplicación core/ o common/
+- Funciones en utils.py deben ser puras y testeable unitariamente
+
+# Migration Strategy
+- NUNCA aplicar migraciones manualmente en producción
+- Desarrollo: makemigrations local, commit migrations
+- Staging: migrate --plan antes de deployment (automático)
+- Producción: Migrations automáticas via AppRunner
+
+# Testing Requirements
+- Unit tests: Services layer 95% coverage mínimo
+- Integration tests: Critical user flows covered
+- Utils functions: 100% coverage (son funciones puras)
+
+# Referencias
+- Django 5.0 Release Notes: https://docs.djangoproject.com/en/5.0/releases/5.0/
+- Django Best Practices: https://django-best-practices.readthedocs.io/ 

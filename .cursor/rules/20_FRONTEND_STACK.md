@@ -1,0 +1,42 @@
+---
+description: Estándares para Tailwind 4 y Vite en welp-app
+globs: ["frontend/**/*", "tailwind.config.js", "vite.config.js", "package.json", "**/*.css", "postcss.config.js"]
+alwaysApply: false
+---
+
+# Frontend Stack - Tailwind 4 y Vite Standards
+
+# Tailwind 4 Design System
+- Version: Tailwind CSS v4.0+ exclusivamente
+- Config: tailwind.config.js con design tokens centralizados
+- Prefijos: Usar tw- para custom utilities cuando sea necesario
+- Purging: Automático via Vite, sin clases no utilizadas en build
+
+# Convenciones de Clases
+- Utilities first: Preferir clases Tailwind directas en HTML
+- Component CSS: Solo usar @apply dentro de @layer components
+- Mobile first: Base styles para móvil, sm:, md:, lg: para desktop
+- Touch targets: Mínimo 44px para elementos interactivos
+
+# Vite Build Configuration
+- Build optimization: rollupOptions con manualChunks para vendor
+- Chunk size: Máximo 250KB por chunk, warnings como errores en CI
+- Static files: Via Django collectstatic, no assets en Git
+- Development: Vite dev server en puerto 5173
+- Production: Assets compilados en dist/ via GitHub Actions
+- Cache busting: Hashes automáticos en filenames
+
+# Performance Standards
+- Bundle size: Máximo 250KB por chunk
+- CSS size: Máximo 50KB CSS final después de purge
+- Load time: First Contentful Paint menor a 1.5s
+- Source maps: Habilitados en desarrollo, deshabilitados en producción
+
+# Development Workflow
+- Hot reload: Cambios en templates recargan automáticamente
+- CSS compilation: PostCSS + Tailwind automático via Vite
+- Asset optimization: Automático en build de producción
+
+# Referencias
+- Tailwind CSS v4.0: https://tailwindcss.com/blog/tailwindcss-v4
+- Vite Build Optimization: https://vitejs.dev/guide/build.html 

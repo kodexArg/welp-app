@@ -1,0 +1,11 @@
+---
+description: Reglas básicas para despliegue con AWS AppRunner  
+globs: ["apprunner.yaml", ".github/workflows/**/*"]  
+alwaysApply: false
+---
+
+# AppRunner Deployment
+
+- La rama de producción es `prod`: cualquier _push_ a `prod` activara el workflow de despliega en AWS AppRunner.  
+- Build de Vite en AppRunner: el propio servicio ejecuta el paso `npm run build` (ver `build.commands` en `apprunner.yaml`
+- NUNCA edites `apprunner.yaml` sin pedido explícito del usuario

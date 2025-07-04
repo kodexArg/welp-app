@@ -1,37 +1,79 @@
 {% extends "core/base.html" %}
 
-{% block title %}Home - Welp Payflow{% endblock %}
+{% block title %}Welp Payflow{% endblock %}
+
+{% block styles %}
+<style>
+@layer components {
+    .payflow-actions {
+        @apply grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto my-16;
+    }
+    
+    .payflow-action {
+        @apply flex flex-col items-center justify-center p-12 rounded-xl;
+        @apply bg-[var(--theme-surface)] border-2 border-[var(--theme-border)];
+        @apply text-center no-underline shadow-lg;
+        @apply transition-all duration-300;
+        @apply hover:scale-[1.02] hover:shadow-xl;
+        min-height: 180px;
+    }
+    
+    .payflow-action.primary {
+        @apply border-[var(--theme-primary)] text-[var(--theme-primary)];
+        @apply hover:bg-[var(--theme-primary)] hover:text-[var(--theme-surface)];
+    }
+    
+    .payflow-action.secondary {
+        @apply border-[var(--theme-accent)] text-[var(--theme-accent)];
+        @apply hover:bg-[var(--theme-accent)] hover:text-[var(--theme-surface)];
+    }
+    
+    .payflow-action i {
+        @apply text-6xl mb-4;
+    }
+    
+    .payflow-action span {
+        @apply text-2xl font-semibold font-[var(--font-ui)];
+    }
+    
+    .payflow-back {
+        @apply text-center mt-12;
+    }
+    
+    .back-link {
+        @apply text-[var(--theme-text-secondary)] hover:text-[var(--theme-primary)];
+        @apply transition-colors duration-200 no-underline;
+        @apply font-[var(--font-ui)];
+    }
+    
+    .back-link i {
+        @apply mr-2;
+    }
+}
+</style>
+{% endblock %}
 
 {% block content %}
 <section>
     <h1 class="brand-text-override">Welp Payflow</h1>
-    <h2>Sistema de Gestión de Pagos</h2>
     
-    <div class="card">
-        <div class="card-header">
-            <h3>Bienvenido a Welp Payflow</h3>
-            <p>Gestiona tus solicitudes de compras y pagos de manera eficiente</p>
-        </div>
-        <div class="card-body">
-            <p>Utiliza este sistema para crear nuevas solicitudes de pago o revisar el estado de las existentes.</p>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-                <a href="{% url 'welp_payflow:create' %}" class="button-primary">
-                    <i class="fa fa-plus-circle"></i>
-                    Crear Nueva Solicitud
-                </a>
-                <a href="{% url 'welp_payflow:list' %}" class="button-secondary">
-                    <i class="fa fa-list"></i>
-                    Ver Solicitudes
-                </a>
-            </div>
-        </div>
-        <div class="card-footer">
-            <a href="{% url 'core:index' %}" class="button-minimal">
-                <i class="fa fa-arrow-left"></i>
-                Volver al Inicio
-            </a>
-        </div>
+    <div class="payflow-actions">
+        <a href="{% url 'welp_payflow:create' %}" class="payflow-action primary">
+            <i class="fa fa-plus-circle"></i>
+            <span>Nueva Solicitud</span>
+        </a>
+        
+        <a href="{% url 'welp_payflow:list' %}" class="payflow-action secondary">
+            <i class="fa fa-list"></i>
+            <span>Ver Solicitudes</span>
+        </a>
+    </div>
+    
+    <div class="payflow-back">
+        <a href="{% url 'core:index' %}" class="back-link">
+            <i class="fa fa-arrow-left"></i>
+            Inicio
+        </a>
     </div>
 </section>
 {% endblock %} 
