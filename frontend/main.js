@@ -54,9 +54,9 @@ class ThemeManager {
         // 2. Desde la URL actual
         const path = window.location.pathname;
         
-        if (path.startsWith('/welp-payflow/')) {
+        if (path.startsWith('/payflow/')) {
             return 'welp_payflow';
-        } else if (path.startsWith('/welp-desk/')) {
+        } else if (path.startsWith('/desk/')) {
             return 'welp_desk';
         }
         

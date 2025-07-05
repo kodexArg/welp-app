@@ -2,13 +2,11 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from core.views.home import index
 
 urlpatterns = [
-    path('', index, name='index'),
-    path('core/', include('core.urls')),
-    path('welp-desk/', include('welp_desk.urls')),
-    path('welp-payflow/', include('welp_payflow.urls')),
+    path('', include('core.urls')),
+    path('desk/', include('welp_desk.urls')),
+    path('payflow/', include('welp_payflow.urls')),
     path('api/', include('api.urls')),
     path('admin/', admin.site.urls),
 ]
