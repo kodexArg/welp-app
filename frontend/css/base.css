@@ -3,9 +3,12 @@
     /* Estilos base del layout */
     body {
         @apply flex md:flex-col justify-center font-sans;
-        @apply w-screen overflow-y-auto overflow-x-hidden;
+        @apply w-screen overflow-x-hidden;
         @apply bg-[var(--theme-background)] text-[var(--theme-text)];
         @apply transition-theme;
+        /* Solución robusta: Fuerza scrollbar siempre visible */
+        overflow-y: scroll;
+        scrollbar-gutter: stable;
     }
 
     header {
