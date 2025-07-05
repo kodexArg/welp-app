@@ -1,0 +1,62 @@
+@layer components {
+
+    .brand-logo-link {
+        font-variation-settings: 'wght' 700;
+        font-feature-settings: 'liga' 1;
+    }
+
+    @keyframes brief-glow {
+        0%, 4%, 100% {
+            filter: brightness(1) drop-shadow(0 0 0 white);
+        }
+        1% {
+            filter: brightness(1.7) drop-shadow(0 0 18px white);
+        }
+    }
+
+    .icon-glow {
+        animation: brief-glow 30s ease-in-out infinite;
+    }
+
+    .icon-glow.hover-effect {
+        filter: brightness(1.2) drop-shadow(0 0 18px white);
+    }
+
+    .brand-icon-main.theme-change {
+        transform: scale(0.99);
+        transition: transform 50ms ease;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .icon-glow {
+            @apply animate-none;
+        }
+    }
+
+    .theme-navbar {
+        background-color: var(--navbar-bg);
+        transition: background-color 0.3s ease;
+    }
+    
+    .theme-navbar a {
+        color: var(--navbar-link-text);
+        transition: color 0.3s ease;
+    }
+    
+    .theme-navbar a:hover {
+        color: var(--navbar-link-hover) !important;
+    }
+    
+    .theme-navbar a.active {
+        color: var(--navbar-link-active) !important;
+    }
+    
+    .theme-navbar .brand-text {
+        color: var(--navbar-brand-text) !important;
+    }
+    
+    .theme-navbar .brand-accent {
+        color: var(--navbar-brand-accent) !important;
+    }
+
+}
