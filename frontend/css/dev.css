@@ -6,27 +6,23 @@
 
     .section-title {
         @apply text-xl font-medium mb-6;
-        color: var(--theme-text-secondary);
-        font-family: var(--font-ui);
+        @apply text-[var(--theme-text-secondary)] font-[var(--font-ui)];
     }
 
     .hierarchy-flow {
         @apply flex flex-wrap items-center justify-center gap-3 p-6 rounded-lg;
-        background-color: var(--theme-primary-light);
-        border: 1px solid var(--theme-border);
+        @apply bg-[var(--theme-primary-light)] border border-[var(--theme-border)];
     }
 
     .flow-item {
         @apply px-4 py-2 rounded-md font-medium;
-        background-color: var(--theme-surface);
-        color: var(--theme-text);
-        border: 1px solid var(--theme-border);
-        font-family: var(--font-ui);
+        @apply bg-[var(--theme-surface)] text-[var(--theme-text)] border border-[var(--theme-border)];
+        @apply font-[var(--font-ui)];
     }
 
     .flow-arrow {
         @apply text-lg font-bold;
-        color: var(--theme-text-secondary);
+        @apply text-[var(--theme-text-secondary)];
     }
 
     @media (max-width: 640px) {
@@ -53,19 +49,14 @@
 
     .workflow-section-title {
         @apply text-lg font-semibold mb-4 text-center;
-        color: var(--theme-text);
-        font-family: var(--font-ui);
-        padding-bottom: 8px;
-        border-bottom: 2px solid var(--theme-primary-light);
+        @apply text-[var(--theme-text)] font-[var(--font-ui)];
+        @apply pb-2 border-b-2 border-[var(--theme-primary-light)];
     }
 
     .workflow-step {
         @apply bg-white border border-gray-200 rounded-lg p-4 shadow-sm;
-        transition: box-shadow 0.2s ease-in-out;
-    }
-
-    .workflow-step:hover {
-        @apply shadow-md;
+        @apply hover:shadow-md;
+        @apply transition-shadow duration-200 ease-in-out;
     }
 
     .decision-step {
@@ -78,7 +69,7 @@
 
     .step-header {
         @apply font-semibold text-gray-900 mb-2;
-        font-family: var(--font-ui);
+        @apply font-[var(--font-ui)];
     }
 
     .actor-row {
@@ -87,10 +78,8 @@
 
     .actor-tag {
         @apply text-xs font-medium py-1 px-3 rounded-full border;
-        background-color: var(--theme-primary-light);
-        color: var(--theme-primary);
-        border-color: var(--theme-primary);
-        font-family: var(--font-ui);
+        @apply bg-[var(--theme-primary-light)] text-[var(--theme-primary)] border-[var(--theme-primary)];
+        @apply font-[var(--font-ui)];
     }
 
     .attachment-note {
@@ -107,7 +96,7 @@
 
     .decision-btn {
         @apply text-xs font-medium py-2 px-3 rounded-md border text-center;
-        font-family: var(--font-ui);
+        @apply font-[var(--font-ui)];
     }
 
     .decision-btn.approve {
@@ -128,12 +117,12 @@
 
     .task-item {
         @apply text-sm text-gray-600 py-1;
-        font-family: var(--font-ui);
+        @apply font-[var(--font-ui)];
     }
 
     .waiting-note {
         @apply text-sm text-gray-600 mt-2;
-        font-family: var(--font-ui);
+        @apply font-[var(--font-ui)];
     }
 
     .transversal-note {
@@ -142,12 +131,12 @@
 
     .transversal-note h4 {
         @apply font-semibold text-green-800 mb-2;
-        font-family: var(--font-ui);
+        @apply font-[var(--font-ui)];
     }
 
     .transversal-note p {
         @apply text-sm text-green-700;
-        font-family: var(--font-ui);
+        @apply font-[var(--font-ui)];
     }
 
     .tag-container {
@@ -156,40 +145,29 @@
 
     .tag-udn:hover {
         @apply bg-yellow-200 border-amber-400 cursor-pointer;
-        transform: translateY(-1px);
+        @apply -translate-y-px;
     }
 
     .tag-sector:hover {
-        background-color: var(--theme-primary);
-        color: var(--theme-surface);
-        @apply cursor-pointer;
-        transform: translateY(-1px);
+        @apply bg-[var(--theme-primary)] text-[var(--theme-surface)];
+        @apply cursor-pointer -translate-y-px;
     }
 
     .tag-category:hover {
         @apply bg-purple-200 border-purple-400 cursor-pointer;
-        transform: translateY(-1px);
+        @apply -translate-y-px;
     }
 
     .tag-sector-mini {
         @apply py-1 px-2 rounded-full border;
-        background-color: var(--theme-primary-light);
-        color: var(--theme-primary);
-        border-color: var(--theme-primary);
-        font-family: var(--font-ui);
-        font-size: 10px;
-        font-weight: 500;
-        opacity: 0.8;
+        @apply bg-[var(--theme-primary-light)] text-[var(--theme-primary)] border-[var(--theme-primary)];
+        @apply font-[var(--font-ui)] text-[10px] font-medium opacity-80;
     }
 
     .tag-udn-mini {
         @apply py-1 px-2 rounded-full border;
-        background-color: #fef3c7;
-        color: #d97706;
-        border-color: #fcd34d;
-        font-family: var(--font-ui);
-        font-size: 10px;
-        font-weight: 500;
+        @apply bg-yellow-100 text-amber-600 border-yellow-300;
+        @apply font-[var(--font-ui)] text-[10px] font-medium;
     }
 
     .category-list {
@@ -206,8 +184,7 @@
 
     .category-separator {
         @apply h-px my-4;
-        background-color: var(--theme-border);
-        opacity: 0.3;
+        @apply bg-[var(--theme-border)] opacity-30;
     }
 
     .sector-list {
@@ -224,8 +201,7 @@
 
     .sector-separator {
         @apply h-px my-4;
-        background-color: var(--theme-border);
-        opacity: 0.5;
+        @apply bg-[var(--theme-border)] opacity-50;
     }
 
     .dev-nav-container {
@@ -318,12 +294,14 @@
     }
 
     .dev-content-area.wl-dev-htmx-content {
-        @apply opacity-0 transform translate-y-2;
+        opacity: 0 !important;
+        transform: translateY(8px) !important;
+        transition: all 300ms ease-out !important;
     }
 
-    .dev-content-area.wl-dev-htmx-content.htmx-added {
-        @apply opacity-100 transform translate-y-0;
-        @apply transition-all duration-300 ease-out;
+    .dev-content-area.wl-dev-htmx-content.htmx-settling {
+        opacity: 1 !important;
+        transform: translateY(0) !important;
     }
 
     .dev-content-placeholder {

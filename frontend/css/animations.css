@@ -54,9 +54,7 @@
     @apply transition-all duration-300;
 }
 
-@utility dev-content-transition {
-    @apply transition-all duration-300 ease-out;
-}
+
 
 @utility dev-content-slide {
     @apply overflow-hidden;
@@ -348,14 +346,7 @@
         animation: wl-dev-fade-in 350ms ease-out forwards;
     }
 
-    .wl-dev-htmx-content {
-        @apply opacity-0 transform translate-y-2;
-        @apply transition-all duration-300 ease-out;
-    }
 
-    .wl-dev-htmx-content.htmx-settling {
-        @apply opacity-100 transform translate-y-0;
-    }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -363,9 +354,5 @@
     .wl-dev-slide-up,
     .wl-dev-fade-in {
         animation-duration: 0.01ms !important;
-    }
-    
-    .wl-dev-htmx-content {
-        transition-duration: 0.01ms !important;
     }
 } 

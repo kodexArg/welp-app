@@ -10,6 +10,7 @@ REGLA CRÍTICA: alwaysApply = true
 
 # Prohibiciones de ejecución
 - NUNCA por ningún motivo inicies el servidor en DESARROLLO ni en PRODUCCIÓN
+- NUNCA intentes hacer un build del proyecto (no tiene sentido, esto se hace en AppRunner en AWS no aquí)
 
 # Prohibiciones de Código
 - NUNCA comentar código innecesariamente. 

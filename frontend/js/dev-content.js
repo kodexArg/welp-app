@@ -1,34 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
-    document.addEventListener('htmx:afterSwap', function(event) {
-        const target = event.target;
-        
-        if (target.classList.contains('wl-dev-htmx-content')) {
-            target.classList.add('wl-dev-fade-in');
-            target.setAttribute('data-content-loaded', 'true');
-            
-            setTimeout(() => {
-                target.classList.remove('wl-dev-fade-in');
-            }, 350);
-        }
-    });
-    
-    document.addEventListener('htmx:beforeRequest', function(event) {
-        const target = event.target;
-        
-        if (target.classList.contains('dev-content-area')) {
-            target.innerHTML = '<div class="loading-content"><i class="fa fa-spinner fa-spin mr-2"></i>Cargando...</div>';
-        }
-    });
-    
-    document.addEventListener('htmx:responseError', function(event) {
-        const target = event.target;
-        
-        if (target.classList.contains('dev-content-area')) {
-            target.innerHTML = '<div class="error-content">Error al cargar el contenido</div>';
-        }
-    });
-});
-
+// Definir funciones globales INMEDIATAMENTE para que HTMX las encuentre
 window.hasContentLoaded = function(button) {
     const targetId = button.dataset.content;
     const container = document.getElementById(targetId);
@@ -64,6 +34,12 @@ function closeDevContent(button, container) {
     container.classList.remove('expanded');
     container.classList.add('wl-dev-slide-up');
     
+    // Remover clases de visibilidad del contenido
+    const contentArea = container.querySelector('.dev-content-area');
+    if (contentArea) {
+        contentArea.classList.remove('htmx-settling');
+    }
+    
     setTimeout(() => {
         container.classList.add('hidden');
         container.classList.remove('wl-dev-slide-up');
@@ -75,6 +51,12 @@ function openDevContent(button, container) {
     button.setAttribute('aria-expanded', 'true');
     container.classList.remove('hidden');
     container.classList.add('wl-dev-slide-down');
+    
+    // Si el contenido ya está cargado, asegurar que sea visible
+    const contentArea = container.querySelector('.dev-content-area');
+    if (contentArea && contentArea.hasAttribute('data-content-loaded')) {
+        contentArea.classList.add('htmx-settling');
+    }
     
     setTimeout(() => {
         container.classList.add('expanded');
@@ -88,6 +70,12 @@ function closeAllDevContainers() {
         b.setAttribute('aria-expanded', 'false');
     });
     document.querySelectorAll('.dev-content-container.expanded').forEach(c => {
+        // Remover clases de visibilidad del contenido
+        const contentArea = c.querySelector('.dev-content-area');
+        if (contentArea) {
+            contentArea.classList.remove('htmx-settling');
+        }
+        
         c.classList.remove('expanded');
         c.classList.add('wl-dev-slide-up');
         setTimeout(() => {
@@ -95,4 +83,39 @@ function closeAllDevContainers() {
             c.classList.remove('wl-dev-slide-up');
         }, 280);
     });
-} 
+}
+
+// Configurar event listeners cuando el DOM esté listo
+document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('htmx:afterSwap', function(event) {
+        const target = event.target;
+        
+        if (target.classList.contains('wl-dev-htmx-content')) {
+            target.setAttribute('data-content-loaded', 'true');
+            
+            // Aplicar las clases de visibilidad inmediatamente
+            target.classList.add('htmx-settling');
+            target.classList.add('wl-dev-fade-in');
+            
+            setTimeout(() => {
+                target.classList.remove('wl-dev-fade-in');
+            }, 350);
+        }
+    });
+    
+    document.addEventListener('htmx:beforeRequest', function(event) {
+        const target = event.target;
+        
+        if (target.classList.contains('dev-content-area')) {
+            target.innerHTML = '<div class="loading-content"><i class="fa fa-spinner fa-spin mr-2"></i>Cargando...</div>';
+        }
+    });
+    
+    document.addEventListener('htmx:responseError', function(event) {
+        const target = event.target;
+        
+        if (target.classList.contains('dev-content-area')) {
+            target.innerHTML = '<div class="error-content">Error al cargar el contenido</div>';
+        }
+    });
+}); 
