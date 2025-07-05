@@ -6,7 +6,6 @@
             <input type="hidden" name="{{ field.name }}" id="id_{{ field.name }}" value="{{ field.value|default:'' }}">
             
             <div class="treemap-container" id="treemap-{{ field.name }}">
-                <!-- Initial options from Django form -->
                 {% if field.field.queryset %}
                     <script type="application/json" id="initial-options-{{ field.name }}">
                     [

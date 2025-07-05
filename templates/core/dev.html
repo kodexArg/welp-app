@@ -8,147 +8,172 @@
         <div class="dev-nav-item">
             <button 
                 data-content="content-udns"
-                data-url="{% url 'core:dev_udns' %}"
+                hx-get="{% url 'core:dev_udns' %}"
+                hx-target="#content-udns .dev-content-area"
+                hx-swap="innerHTML"
+                hx-trigger="click[!hasContentLoaded(this)]"
                 class="dev-nav-button"
-                onclick="toggleContent(this)">
-                <div class="dev-nav-icon">
-                    <i class="fa fa-map-marker-alt"></i>
+                aria-expanded="false"
+                onclick="toggleDevContent(this)">
+                <div class="dev-nav-main">
+                    <div class="dev-nav-icon">
+                        <i class="fa fa-map-marker-alt"></i>
+                    </div>
+                    <div class="dev-nav-content">
+                        <div class="dev-nav-title">UDNs</div>
+                        <div class="dev-nav-description">Ubicaciones y centros de operación</div>
+                    </div>
                 </div>
-                <div class="dev-nav-content">
-                    <div class="dev-nav-title">UDNs</div>
-                    <div class="dev-nav-description">Ubicaciones y centros de operación</div>
+                <div class="dev-nav-toggle">
+                    <i class="fa fa-chevron-down transition-transform duration-300"></i>
                 </div>
             </button>
-            <div id="content-udns" class="dev-content-container hidden">
-                <div class="dev-content-area"></div>
+            <div id="content-udns" class="dev-content-container hidden dev-content-slide">
+                <div class="dev-content-area wl-dev-htmx-content dev-content-transition"></div>
             </div>
         </div>
 
         <div class="dev-nav-item">
             <button 
                 data-content="content-sectors"
-                data-url="{% url 'core:dev_sectors' %}"
+                hx-get="{% url 'core:dev_sectors' %}"
+                hx-target="#content-sectors .dev-content-area"
+                hx-swap="innerHTML"
+                hx-trigger="click[!hasContentLoaded(this)]"
                 class="dev-nav-button"
-                onclick="toggleContent(this)">
-                <div class="dev-nav-icon">
-                    <i class="fa fa-building"></i>
+                aria-expanded="false"
+                onclick="toggleDevContent(this)">
+                <div class="dev-nav-main">
+                    <div class="dev-nav-icon">
+                        <i class="fa fa-building"></i>
+                    </div>
+                    <div class="dev-nav-content">
+                        <div class="dev-nav-title">Sectores</div>
+                        <div class="dev-nav-description">Áreas funcionales por ubicación</div>
+                    </div>
                 </div>
-                <div class="dev-nav-content">
-                    <div class="dev-nav-title">Sectores</div>
-                    <div class="dev-nav-description">Áreas funcionales por ubicación</div>
+                <div class="dev-nav-toggle">
+                    <i class="fa fa-chevron-down transition-transform duration-300"></i>
                 </div>
             </button>
-            <div id="content-sectors" class="dev-content-container hidden">
-                <div class="dev-content-area"></div>
+            <div id="content-sectors" class="dev-content-container hidden dev-content-slide">
+                <div class="dev-content-area wl-dev-htmx-content dev-content-transition"></div>
             </div>
         </div>
 
         <div class="dev-nav-item">
             <button 
                 data-content="content-desk-categories"
-                data-url="{% url 'core:dev_desk_categories' %}"
+                hx-get="{% url 'core:dev_desk_categories' %}"
+                hx-target="#content-desk-categories .dev-content-area"
+                hx-swap="innerHTML"
+                hx-trigger="click[!hasContentLoaded(this)]"
                 class="dev-nav-button"
-                onclick="toggleContent(this)">
-                <div class="dev-nav-icon">
-                    <i class="fa fa-wrench"></i>
+                aria-expanded="false"
+                onclick="toggleDevContent(this)">
+                <div class="dev-nav-main">
+                    <div class="dev-nav-icon">
+                        <i class="fa fa-wrench"></i>
+                    </div>
+                    <div class="dev-nav-content">
+                        <div class="dev-nav-title">Categorías Welp Desk</div>
+                        <div class="dev-nav-description">Tipos de incidencias y soporte técnico</div>
+                    </div>
                 </div>
-                <div class="dev-nav-content">
-                    <div class="dev-nav-title">Categorías Welp Desk</div>
-                    <div class="dev-nav-description">Tipos de incidencias y soporte técnico</div>
+                <div class="dev-nav-toggle">
+                    <i class="fa fa-chevron-down transition-transform duration-300"></i>
                 </div>
             </button>
-            <div id="content-desk-categories" class="dev-content-container hidden">
-                <div class="dev-content-area"></div>
+            <div id="content-desk-categories" class="dev-content-container hidden dev-content-slide">
+                <div class="dev-content-area wl-dev-htmx-content dev-content-transition"></div>
             </div>
         </div>
 
         <div class="dev-nav-item">
             <button 
                 data-content="content-payflow-categories"
-                data-url="{% url 'core:dev_payflow_categories' %}"
+                hx-get="{% url 'core:dev_payflow_categories' %}"
+                hx-target="#content-payflow-categories .dev-content-area"
+                hx-swap="innerHTML"
+                hx-trigger="click[!hasContentLoaded(this)]"
                 class="dev-nav-button"
-                onclick="toggleContent(this)">
-                <div class="dev-nav-icon">
-                    <i class="fa fa-calculator"></i>
+                aria-expanded="false"
+                onclick="toggleDevContent(this)">
+                <div class="dev-nav-main">
+                    <div class="dev-nav-icon">
+                        <i class="fa fa-calculator"></i>
+                    </div>
+                    <div class="dev-nav-content">
+                        <div class="dev-nav-title">Categorías Welp Payflow</div>
+                        <div class="dev-nav-description">Categorías contables y presupuestarias</div>
+                    </div>
                 </div>
-                <div class="dev-nav-content">
-                    <div class="dev-nav-title">Categorías Welp Payflow</div>
-                    <div class="dev-nav-description">Categorías contables y presupuestarias</div>
+                <div class="dev-nav-toggle">
+                    <i class="fa fa-chevron-down transition-transform duration-300"></i>
                 </div>
             </button>
-            <div id="content-payflow-categories" class="dev-content-container hidden">
-                <div class="dev-content-area"></div>
+            <div id="content-payflow-categories" class="dev-content-container hidden dev-content-slide">
+                <div class="dev-content-area wl-dev-htmx-content dev-content-transition"></div>
             </div>
         </div>
 
         <div class="dev-nav-item">
             <button 
                 data-content="content-hierarchy"
-                data-url="{% url 'core:dev_hierarchy' %}"
+                hx-get="{% url 'core:dev_hierarchy' %}"
+                hx-target="#content-hierarchy .dev-content-area"
+                hx-swap="innerHTML"
+                hx-trigger="click[!hasContentLoaded(this)]"
                 class="dev-nav-button"
-                onclick="toggleContent(this)">
-                <div class="dev-nav-icon">
-                    <i class="fa fa-sitemap"></i>
+                aria-expanded="false"
+                onclick="toggleDevContent(this)">
+                <div class="dev-nav-main">
+                    <div class="dev-nav-icon">
+                        <i class="fa fa-sitemap"></i>
+                    </div>
+                    <div class="dev-nav-content">
+                        <div class="dev-nav-title">Jerarquía</div>
+                        <div class="dev-nav-description">Estructura organizacional del sistema</div>
+                    </div>
                 </div>
-                <div class="dev-nav-content">
-                    <div class="dev-nav-title">Jerarquía</div>
-                    <div class="dev-nav-description">Estructura organizacional del sistema</div>
+                <div class="dev-nav-toggle">
+                    <i class="fa fa-chevron-down transition-transform duration-300"></i>
                 </div>
             </button>
-            <div id="content-hierarchy" class="dev-content-container hidden">
-                <div class="dev-content-area"></div>
+            <div id="content-hierarchy" class="dev-content-container hidden dev-content-slide">
+                <div class="dev-content-area wl-dev-htmx-content dev-content-transition"></div>
             </div>
         </div>
 
         <div class="dev-nav-item">
             <button 
                 data-content="content-purchase-workflow"
-                data-url="{% url 'core:dev_purchase_workflow' %}"
+                hx-get="{% url 'core:dev_purchase_workflow' %}"
+                hx-target="#content-purchase-workflow .dev-content-area"
+                hx-swap="innerHTML"
+                hx-trigger="click[!hasContentLoaded(this)]"
                 class="dev-nav-button"
-                onclick="toggleContent(this)">
-                <div class="dev-nav-icon">
-                    <i class="fa fa-shopping-cart"></i>
+                aria-expanded="false"
+                onclick="toggleDevContent(this)">
+                <div class="dev-nav-main">
+                    <div class="dev-nav-icon">
+                        <i class="fa fa-shopping-cart"></i>
+                    </div>
+                    <div class="dev-nav-content">
+                        <div class="dev-nav-title">Workflow de Compras</div>
+                        <div class="dev-nav-description">Proceso completo de adquisiciones</div>
+                    </div>
                 </div>
-                <div class="dev-nav-content">
-                    <div class="dev-nav-title">Workflow de Compras</div>
-                    <div class="dev-nav-description">Proceso completo de adquisiciones</div>
+                <div class="dev-nav-toggle">
+                    <i class="fa fa-chevron-down transition-transform duration-300"></i>
                 </div>
             </button>
-            <div id="content-purchase-workflow" class="dev-content-container hidden">
-                <div class="dev-content-area"></div>
+            <div id="content-purchase-workflow" class="dev-content-container hidden dev-content-slide">
+                <div class="dev-content-area wl-dev-htmx-content dev-content-transition"></div>
             </div>
         </div>
     </div>
 </section>
 
-<script>
-async function toggleContent(button){
-  const targetId=button.dataset.content;
-  const container=document.getElementById(targetId);
-  const area=container.querySelector('.dev-content-area');
-  const url=button.dataset.url;
-  const isVisible=!container.classList.contains('hidden');
-  if(isVisible){
-    button.classList.remove('active');
-    container.classList.add('hidden');
-    container.classList.remove('expanded');
-    return;
-  }
-  // hide others
-  document.querySelectorAll('.dev-nav-button.active').forEach(b=>b.classList.remove('active'));
-  document.querySelectorAll('.dev-content-container.expanded').forEach(c=>{c.classList.add('hidden');c.classList.remove('expanded');});
-  // show current
-  button.classList.add('active');
-  container.classList.remove('hidden');
-  container.classList.add('expanded');
-  if(!area.innerHTML.trim()){
-     try{
-       const res=await fetch(url);
-       area.innerHTML=await res.text();
-     }catch(e){
-       area.innerHTML='<div class="text-red-500 text-center py-8">Error al cargar el contenido</div>';
-     }
-  }
-}
-</script>
+
 {% endblock %} 

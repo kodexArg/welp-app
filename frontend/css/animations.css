@@ -1,4 +1,3 @@
-
 @utility transition-theme {
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
@@ -53,6 +52,22 @@
 @utility app-hover-scale {
     @apply hover:scale-[1.02];
     @apply transition-all duration-300;
+}
+
+@utility dev-content-transition {
+    @apply transition-all duration-300 ease-out;
+}
+
+@utility dev-content-slide {
+    @apply overflow-hidden;
+}
+
+@utility loading-content {
+    @apply flex items-center justify-center p-8 text-slate-500;
+}
+
+@utility error-content {
+    @apply flex items-center justify-center p-8 text-red-500 font-medium;
 }
 
 
@@ -275,5 +290,82 @@
             animation-iteration-count: 1 !important;
             transition-duration: 0.01ms !important;
         }
+    }
+}
+
+
+
+@keyframes wl-dev-slide-down {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+        max-height: 0;
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+        max-height: 2000px;
+    }
+}
+
+@keyframes wl-dev-slide-up {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+        max-height: 2000px;
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-10px);
+        max-height: 0;
+    }
+}
+
+@keyframes wl-dev-fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@layer components {
+    .wl-dev-slide-down {
+        @apply opacity-0 overflow-hidden;
+        animation: wl-dev-slide-down 450ms ease-out forwards;
+    }
+
+    .wl-dev-slide-up {
+        @apply overflow-hidden;
+        animation: wl-dev-slide-up 280ms ease-in forwards;
+    }
+
+    .wl-dev-fade-in {
+        @apply opacity-0;
+        animation: wl-dev-fade-in 350ms ease-out forwards;
+    }
+
+    .wl-dev-htmx-content {
+        @apply opacity-0 transform translate-y-2;
+        @apply transition-all duration-300 ease-out;
+    }
+
+    .wl-dev-htmx-content.htmx-settling {
+        @apply opacity-100 transform translate-y-0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .wl-dev-slide-down,
+    .wl-dev-slide-up,
+    .wl-dev-fade-in {
+        animation-duration: 0.01ms !important;
+    }
+    
+    .wl-dev-htmx-content {
+        transition-duration: 0.01ms !important;
     }
 } 

@@ -26,10 +26,20 @@
     </div>
     
     <div class="text-center mt-12">
-        <a href="{% url 'core:index' %}" class="button-minimal">
-            <i class="fa fa-arrow-left mr-2"></i>
-            Volver al Inicio
-        </a>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-3xl mx-auto">
+            <a href="{% url 'core:index' %}" class="button-minimal">
+                <i class="fa fa-home mr-2"></i>
+                Ir a Core
+            </a>
+            <a href="{% url 'welp_desk:index' %}" class="button-minimal">
+                <i class="fa fa-wrench mr-2"></i>
+                Ir a Welp Desk
+            </a>
+            <a href="{% url 'core:dev' %}" class="button-minimal">
+                <i class="fa fa-tools mr-2"></i>
+                Ver Demo
+            </a>
+        </div>
     </div>
 </section>
 {% endblock %} 

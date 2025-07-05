@@ -917,7 +917,7 @@
         @apply w-full p-6 rounded-lg border-2 cursor-pointer;
         @apply bg-[var(--theme-surface)] border-[var(--theme-border)] text-[var(--theme-text)];
         @apply transition-all duration-300 ease-in-out;
-        @apply flex items-center gap-4;
+        @apply flex items-center gap-4 justify-between;
     }
 
     .dev-nav-button.active {
@@ -934,6 +934,10 @@
 
     .dev-nav-button.active .dev-nav-description {
         @apply text-[var(--theme-surface)];
+    }
+
+    .dev-nav-main {
+        @apply flex items-center gap-4 flex-1;
     }
 
     .dev-nav-content {
@@ -959,34 +963,50 @@
         @apply transition-all duration-300;
     }
 
+    .dev-nav-toggle {
+        @apply flex items-center justify-center w-8 h-8;
+        @apply text-[var(--theme-text-secondary)];
+        @apply transition-all duration-300;
+    }
+
+    .dev-nav-button.active .dev-nav-toggle {
+        @apply text-[var(--theme-surface)];
+    }
+
+    .dev-nav-button.active .dev-nav-toggle i {
+        @apply rotate-180;
+    }
+
     .dev-content-container {
-        @apply transition-all duration-500 ease-in-out;
-        max-height: 0;
-        opacity: 0;
-        margin-top: 0;
-        visibility: hidden;
-        overflow: hidden;
+        @apply dev-content-slide mt-0;
     }
 
     .dev-content-container.expanded {
-        max-height: 2000px;
-        opacity: 1;
         @apply mt-4;
-        visibility: visible;
     }
 
     .dev-content-container.hidden {
-        display: none;
+        @apply hidden;
     }
+
+
 
     .dev-content-area {
         @apply transition-theme;
     }
 
     .dev-content-area:not(:empty) {
-        @apply p-6 rounded-lg;
+        @apply p-6 rounded-lg shadow-sm;
         @apply bg-[var(--theme-surface)] border border-[var(--theme-border)];
-        @apply shadow-sm;
+    }
+
+    .dev-content-area.wl-dev-htmx-content {
+        @apply opacity-0 transform translate-y-2;
+    }
+
+    .dev-content-area.wl-dev-htmx-content.htmx-added {
+        @apply opacity-100 transform translate-y-0;
+        @apply transition-all duration-300 ease-out;
     }
 
     .dev-content-placeholder {
