@@ -15,13 +15,10 @@ class S3ReadWriteTest(TestCase):
         key = f'test/{uuid4()}.txt'
         content = b'prueba-s3'
 
-        # Escritura
         s3.put_object(Bucket=bucket, Key=key, Body=content)
 
-        # Lectura
         obj = s3.get_object(Bucket=bucket, Key=key)
         data = obj['Body'].read()
         self.assertEqual(data, content)
 
-        # Limpieza
         s3.delete_object(Bucket=bucket, Key=key) 

@@ -1,4 +1,3 @@
-// Definir funciones globales INMEDIATAMENTE para que HTMX las encuentre
 window.hasContentLoaded = function(button) {
     const targetId = button.dataset.content;
     const container = document.getElementById(targetId);
@@ -90,7 +89,6 @@ function closeAllDevContainers() {
     });
 }
 
-// Configurar event listeners cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', function() {
     document.addEventListener('htmx:afterSwap', function(event) {
         const target = event.target;
