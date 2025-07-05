@@ -17,7 +17,6 @@ def brand_logo(show_text=True, current_namespace=None):
     Returns:
         dict: Contexto para el template
     """
-    # Determinar el texto según el namespace
     if current_namespace and 'welp_payflow' in current_namespace:
         brand_text = 'Payflow'
     elif current_namespace and 'welp_desk' in current_namespace:
@@ -48,10 +47,8 @@ def nav_link(link, icon, label, current_view=None, always_show_label=False):
     """
     is_active = False
     if current_view:
-        # Comparación exacta
         if current_view == link:
             is_active = True
-        # Caso especial: URL raíz (/) mapea a 'index' pero el enlace es 'core:index'
         elif current_view == 'index' and link == 'core:index':
             is_active = True
     
@@ -141,7 +138,6 @@ def status_badge(status, label=None, variant=None, system='desk'):
     Returns:
         dict: Contexto para el template
     """
-    # Seleccionar las etiquetas según el sistema
     if system == 'payflow':
         status_labels = {key: value['label'] for key, value in PAYFLOW_STATUSES.items()}
     else:

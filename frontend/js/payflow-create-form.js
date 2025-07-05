@@ -1,9 +1,3 @@
-/**
- * PayFlow Create Form Component
- * Welp Payflow - Form logic for creating payment requests
- * 
- * Cumple con las reglas 20_FRONTEND_STACK y 30_COMPONENT_ARCHITECTURE
- */
 
 import { FORM_CONFIG } from './payflow-config.js';
 
@@ -18,9 +12,6 @@ document.addEventListener('DOMContentLoaded', function() {
         estimated_amount: document.querySelector('input[name="estimated_amount"]')
     };
     
-    /**
-     * Gets field value (supports both traditional fields and treemap components)
-     */
     function getFieldValue(fieldName) {
         const field = fields[fieldName];
         if (!field) return '';
@@ -33,9 +24,6 @@ document.addEventListener('DOMContentLoaded', function() {
         return field.value || '';
     }
     
-    /**
-     * Sets field value (supports both traditional fields and treemap components)
-     */
     function setFieldValue(fieldName, value) {
         const field = fields[fieldName];
         if (!field) return;
@@ -48,9 +36,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    /**
-     * Toggles component visibility and enables/disables its form controls
-     */
     function toggleComponent(componentId, enable) {
         const component = document.getElementById(componentId);
         if (!component) return;
@@ -60,7 +45,6 @@ document.addEventListener('DOMContentLoaded', function() {
             input.disabled = !enable;
         });
         
-        // Handle treemap components
         const fieldName = componentId.replace('component-', '');
         const treemapApi = window[`selectField_${fieldName}`];
         if (treemapApi) {
@@ -68,9 +52,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    /**
-     * Fetches select field options from the API with optional parameters
-     */
     async function loadSelectOptions(fieldType, params = {}) {
         try {
             const baseUrl = document.querySelector('[data-select-options-url]')?.dataset.selectOptionsUrl;
@@ -97,9 +78,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    /**
-     * Updates a select field with new option elements (supports both select and treemap)
-     */
     function updateSelectField(field, options) {
         if (!field) return;
         
@@ -107,10 +85,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const treemapApi = window[`selectField_${fieldName}`];
         
         if (treemapApi) {
-            // Use treemap component API
             treemapApi.updateOptions(options);
         } else {
-            // Fallback to traditional select
             field.innerHTML = '';
             options.forEach(option => {
                 const optionElement = document.createElement('option');
@@ -121,9 +97,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    /**
-     * Handles UDN field changes and updates dependent sector options
-     */
     async function handleUdnChange() {
         const udnValue = getFieldValue('udn');
         
@@ -140,16 +113,10 @@ document.addEventListener('DOMContentLoaded', function() {
         evaluateComponents();
     }
     
-    /**
-     * Handles sector field changes and triggers component evaluation
-     */
     async function handleSectorChange() {
         evaluateComponents();
     }
     
-    /**
-     * Evaluates which form components should be active based on field values
-     */
     function evaluateComponents() {
         let activeIndex = -1;
         
@@ -168,9 +135,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    /**
-     * Checks if all required fields are filled and enables/disables submit button
-     */
     function checkSubmitButton() {
         const required = [
             getFieldValue('udn'),
@@ -186,20 +150,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    /**
-     * Clears all form fields and resets to initial state
-     */
     async function clearForm() {
-        // Clear all fields using the unified approach
         Object.keys(fields).forEach(fieldName => {
             const field = fields[fieldName];
             if (!field) return;
             
-            // Use setFieldValue for select fields (udn, sector, accounting_category)
             if (['udn', 'sector', 'accounting_category'].includes(fieldName)) {
                 setFieldValue(fieldName, '');
             } else {
-                // Traditional fields (title, description, estimated_amount)
                 field.value = '';
             }
         });
@@ -211,11 +169,7 @@ document.addEventListener('DOMContentLoaded', function() {
         checkSubmitButton();
     }
     
-    /**
-     * Loads initial options for all select fields from the API
-     */
     async function loadInitialOptions() {
-        // Show loading states for treemap components
         ['udn', 'sector', 'accounting_category'].forEach(fieldName => {
             const treemapApi = window[`selectField_${fieldName}`];
             if (treemapApi) {
@@ -236,9 +190,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    /**
-     * Waits for treemap components to be ready
-     */
     function waitForTreemapComponents() {
         return new Promise((resolve) => {
             let attempts = 0;
@@ -261,22 +212,15 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    /**
-     * Initializes the form with options, event listeners, and initial state
-     */
     async function initializeForm() {
-        // Wait for treemap components to be ready
         await waitForTreemapComponents();
         
         await loadInitialOptions();
         
-        // Disable all components first
         components.forEach(id => toggleComponent(id, false));
         
-        // Force enable the first component (UDN)
         toggleComponent(components[0], true);
         
-        // Set up event listeners
         fields.udn?.addEventListener('change', handleUdnChange);
         fields.sector?.addEventListener('change', handleSectorChange);
         fields.accounting_category?.addEventListener('change', evaluateComponents);

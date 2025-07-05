@@ -33,7 +33,6 @@ import django
 import logging
 from django.db import transaction
 
-# Configurar logging
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
@@ -43,11 +42,9 @@ logger = logging.getLogger(__name__)
 
 def setup_django():
     """Configura Django para poder usar los modelos"""
-    # Asegurarse que el script se ejecuta desde el directorio correcto
     project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     sys.path.append(project_root)
     
-    # Configurar Django
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'project.settings')
     django.setup()
 
@@ -75,26 +72,23 @@ def create_users_and_roles(data):
     
     try:
         with transaction.atomic():
-            # Limpiar datos existentes de usuarios y roles
             logger.info("Limpiando usuarios y roles existentes...")
             Roles.objects.all().delete()
-            User.objects.filter(is_superuser=False).delete()  # Solo usuarios normales
+            User.objects.filter(is_superuser=False).delete()
             
             users_created = 0
             roles_created = 0
             
-            # Crear mapas de UDN y Sectores para referencia rápida
             udns_map = {udn.name: udn for udn in UDN.objects.all()}
             sectors_map = {sector.name: sector for sector in Sector.objects.all()}
             
             logger.info("\nCreando usuarios y roles...")
             
             for user_data in data.get('usuarios', []):
-                # Crear usuario
                 username = user_data['username']
                 user = User.objects.create_user(
                     username=username,
-                    password=username,  # Contraseña inicial = username
+                    password=username,
                     first_name=user_data['nombre'],
                     last_name=user_data['apellido'],
                     email=user_data['email']
@@ -102,13 +96,11 @@ def create_users_and_roles(data):
                 users_created += 1
                 logger.info(f"  ✓ Usuario creado: {username} ({user_data['nombre']} {user_data['apellido']})")
                 
-                # Crear roles para este usuario
                 for role_data in user_data.get('roles', []):
                     udn_name = role_data['udn']
                     sector_name = role_data['sector']
                     permissions_str = role_data['permissions']
                     
-                    # Validar que UDN y Sector existan
                     if udn_name not in udns_map:
                         logger.warning(f"    ⚠️  UDN '{udn_name}' no encontrada, saltando rol")
                         continue
@@ -117,7 +109,6 @@ def create_users_and_roles(data):
                         logger.warning(f"    ⚠️  Sector '{sector_name}' no encontrado, saltando rol")
                         continue
                     
-                    # Crear rol con permisos
                     permissions = parse_permissions(permissions_str)
                     role = Roles.objects.create(
                         user=user,
@@ -127,17 +118,15 @@ def create_users_and_roles(data):
                     )
                     roles_created += 1
                     
-                    perm_list = [k[4:].upper()[0] for k, v in permissions.items() if v]  # can_read -> R
+                    perm_list = [k[4:].upper()[0] for k, v in permissions.items() if v]
                     logger.info(f"    → Rol: {udn_name} - {sector_name} [{'/'.join(perm_list)}]")
             
-            # Resumen final
             logger.info("\nResumen de la inicialización de usuarios:")
             logger.info(f"  ✓ Usuarios creados: {users_created}")
             logger.info(f"  ✓ Roles creados: {roles_created}")
             logger.info(f"  ✓ Total usuarios en sistema: {User.objects.count()}")
             logger.info(f"  ✓ Total roles en sistema: {Roles.objects.count()}")
             
-            # Verificar que UDNs y Sectores existen
             missing_udns = set()
             missing_sectors = set()
             for user_data in data.get('usuarios', []):
@@ -160,10 +149,8 @@ def main():
     """Función principal del script"""
     logger.info("Iniciando script de inicialización de usuarios...")
     
-    # Configurar Django
     setup_django()
     
-    # Cargar datos YAML y crear usuarios/roles
     data = load_yaml_data()
     create_users_and_roles(data)
     

@@ -1,10 +1,8 @@
 import os
 from django.conf import settings
 
-# Longitud máxima de campo status desde environment
 STATUS_MAX_LENGTH = int(os.environ.get('DESK_STATUS_MAX_LENGTH', '20'))
 
-# Configuración de estados desde variables de entorno
 DESK_STATUSES = {
     'open': {
         'label': os.environ.get('DESK_STATUS_OPEN_LABEL', 'Abierto'),
@@ -122,5 +120,4 @@ DESK_ROLE_PERMISSIONS = {
     },
 }
 
-# Límite de tamaño de archivo desde environment (bytes)
-MAX_FILE_SIZE = int(os.environ.get('DESK_MAX_FILE_SIZE', '52428800'))  # Default 50MB 
+MAX_FILE_SIZE = int(os.environ.get('DESK_MAX_FILE_SIZE', '52428800'))
