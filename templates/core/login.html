@@ -16,15 +16,17 @@
                 {% if messages %}
                     <div class="mb-4">
                     {% for message in messages %}
-                        <div class="{% if message.tags == 'error' %}alert-error{% elif message.tags == 'success' %}alert-success{% else %}alert-info{% endif %} text-sm p-3 rounded-md">
-                            {{ message }}
-                        </div>
+                        {% if message.tags == 'error' or message.tags == 'success' %}
+                            <div class="{% if message.tags == 'error' %}alert-error{% elif message.tags == 'success' %}alert-success{% endif %} text-sm p-3 rounded-md">
+                                {{ message }}
+                            </div>
+                        {% endif %}
                     {% endfor %}
                     </div>
                 {% endif %}
                 
                 <div class="form-group">
-                    <label for="username" class="form-label">Usuario</label>
+                    <label for="username" class="form-label">USUARIO</label>
                     <input 
                         id="username" 
                         name="username" 
@@ -38,14 +40,14 @@
                 </div>
 
                 <div class="form-group mb-2">
-                    <label for="password" class="form-label">Contraseña</label>
+                    <label for="password" class="form-label">CONTRASEÑA</label>
                     <input 
                         id="password" 
                         name="password" 
                         type="password" 
                         required 
                         class="form-input"
-                        placeholder="••••••••••"
+                        placeholder="Contraseña"
                     >
                 </div>
             </div>
@@ -57,7 +59,7 @@
                 </a>
                 <button type="submit" class="button-primary">
                     <i class="fa fa-sign-in-alt mr-2"></i>
-                    Iniciar Sesión
+                    INICIAR SESIÓN
                 </button>
             </div>
         </form>
@@ -67,9 +69,39 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.querySelector('form');
-    if (form) {
-        const submitBtn = form.querySelector('button[type="submit"]');
+    const usernameField = document.getElementById('username');
+    const passwordField = document.getElementById('password');
+    const submitBtn = form.querySelector('button[type="submit"]');
+    
+    // Mejorar experiencia del campo usuario
+    if (usernameField && usernameField.value.trim() === '') {
+        // Seleccionar todo el texto cuando se hace clic en el campo vacío
+        usernameField.addEventListener('click', function() {
+            if (this.value.trim() !== '') {
+                this.select();
+            }
+        });
         
+        // Seleccionar todo al recibir foco si tiene contenido
+        usernameField.addEventListener('focus', function() {
+            if (this.value.trim() !== '') {
+                // Pequeño delay para asegurar que la selección funcione
+                setTimeout(() => this.select(), 10);
+            }
+        });
+    }
+    
+    // Mejorar experiencia del campo contraseña
+    passwordField.addEventListener('focus', function() {
+        // Limpiar el campo si es la primera vez que se enfoca
+        if (!this.hasAttribute('data-touched')) {
+            this.value = '';
+            this.setAttribute('data-touched', 'true');
+        }
+    });
+    
+    // Manejo del envío del formulario
+    if (form) {
         form.addEventListener('submit', function() {
             if (submitBtn && !submitBtn.disabled) {
                 submitBtn.disabled = true;
@@ -77,6 +109,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 submitBtn.classList.add('opacity-75', 'cursor-not-allowed');
             }
         });
+    }
+    
+    // Auto-focus en contraseña si usuario ya está lleno
+    if (usernameField && usernameField.value.trim() !== '') {
+        passwordField.focus();
     }
 });
 </script>

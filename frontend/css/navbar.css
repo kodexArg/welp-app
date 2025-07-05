@@ -40,7 +40,7 @@
     
     .theme-navbar a {
         @apply text-[var(--navbar-link-text)];
-        @apply transition-colors duration-300 ease;
+        @apply transition-colors duration-300 ease-linear;
     }
     
     .theme-navbar a:hover {

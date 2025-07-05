@@ -5,8 +5,6 @@
 {% block content %}
 {% if user.is_authenticated %}
     <section class="animate-fade-in">
-        <p class="font-content">Bienvenido, {{ user.get_full_name|default:user.username }}</p>
-
         <div class="animate-slide-in-bottom animate-delay-200 space-y-6 mt-10">
             <h3 class="font-title">Aplicaciones</h3>
             
