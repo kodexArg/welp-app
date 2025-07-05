@@ -1,19 +1,21 @@
 <div class="button">
     {% if href %}
         <a href="{{ href }}" 
-           class="button-{{ variant|default:'primary' }} {{ extra_classes }}"
-           {% if onclick %}onclick="{{ onclick }}"{% endif %}
-           {% if target %}target="{{ target }}"{% endif %}>
-            {% if icon %}<i class="{{ icon }} mr-2"></i>{% endif %}
-            {{ text|default:"Botón" }}
+           class="button-{{ style|default:'primary' }}{% if full_width %} w-full{% endif %}{% if class %} {{ class }}{% endif %}"
+           {% if disabled %}disabled{% endif %}
+           {% if data_action %}data-action="{{ data_action }}"{% endif %}
+           {% if data_target %}data-target="{{ data_target }}"{% endif %}>
+            {% if icon %}<i class="{{ icon }}"></i>{% endif %}
+            {{ text }}
         </a>
     {% else %}
         <button type="{{ type|default:'button' }}" 
-                class="button-{{ variant|default:'primary' }} {{ extra_classes }}"
-                {% if onclick %}onclick="{{ onclick }}"{% endif %}
-                {% if disabled %}disabled{% endif %}>
-            {% if icon %}<i class="{{ icon }} mr-2"></i>{% endif %}
-            {{ text|default:"Botón" }}
+                class="button-{{ style|default:'primary' }}{% if full_width %} w-full{% endif %}{% if class %} {{ class }}{% endif %}"
+                {% if disabled %}disabled{% endif %}
+                {% if data_action %}data-action="{{ data_action }}"{% endif %}
+                {% if data_target %}data-target="{{ data_target }}"{% endif %}>
+            {% if icon %}<i class="{{ icon }}"></i>{% endif %}
+            {{ text }}
         </button>
     {% endif %}
 </div> 

@@ -4,46 +4,31 @@
 
 {% block content %}
 <section>
-    <h1 class="brand-text-override">Welp Payflow</h1>
-    <h2>Sistema de Pagos y Facturación</h2>
-    
-    <div class="card">
-        <div class="card-header">
-            <h3>Tema Forest Activo</h3>
-            <p>Esta página usa automáticamente el tema Forest (verde/naranja)</p>
-        </div>
-        <div class="card-body">
-            <p>Esta es la página principal de <strong class="brand-text-override">Welp Payflow</strong>, el sistema de gestión de pagos y facturación empresarial.</p>
-            
-            <h3>Características del Tema Forest:</h3>
-            <ul class="list-disc pl-6 space-y-2">
-                <li><strong>Color primario:</strong> Verde bosque profundo</li>
-                <li><strong>Color de acento:</strong> Naranja tierra</li>
-                <li><strong>Navbar:</strong> Fondo verde oscuro</li>
-                <li><strong>Scrollbar:</strong> Tonos verdes</li>
-                <li><strong>Títulos:</strong> Jerarquía en verdes</li>
-            </ul>
-        </div>
-        <div class="card-footer">
-            <a href="{% url 'core:index' %}" class="button-secondary">
-                <i class="fa fa-arrow-left mr-2"></i>
-                Volver
-            </a>
-        </div>
+    <div class="text-center mb-12">
+        <h1 class="brand-main-title">Sistema de Pagos y Facturación</h1>
+        <p class="brand-subtitle">Gestión integral de pagos y facturación empresarial</p>
     </div>
     
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-        <a href="{% url 'core:index' %}" class="button-secondary">
-            <i class="fa fa-home mr-2"></i>
-            Ir a Core
+    <div class="app-wide-actions">
+        <a href="{% url 'welp_payflow:create' %}" class="app-wide-button primary">
+            <div class="app-wide-button-content">
+                <i class="fa fa-plus app-wide-button-icon"></i>
+                <span class="app-wide-button-text">Crear Solicitud</span>
+            </div>
         </a>
-        <a href="{% url 'welp_desk:index' %}" class="button-secondary">
-            <i class="fa fa-headset mr-2"></i>
-            Ir a WelpDesk
+        
+        <a href="{% url 'welp_payflow:list' %}" class="app-wide-button secondary">
+            <div class="app-wide-button-content">
+                <i class="fa fa-list app-wide-button-icon"></i>
+                <span class="app-wide-button-text">Ver Solicitudes</span>
+            </div>
         </a>
-        <a href="{% url 'core:dev' %}" class="button-secondary">
-            <i class="fa fa-tools mr-2"></i>
-            Ver Demo Completo
+    </div>
+    
+    <div class="text-center mt-12">
+        <a href="{% url 'core:index' %}" class="button-minimal">
+            <i class="fa fa-arrow-left mr-2"></i>
+            Volver al Inicio
         </a>
     </div>
 </section>

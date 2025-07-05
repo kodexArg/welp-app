@@ -4,83 +4,151 @@
 
 {% block content %}
 <section>
-    <div class="space-y-6 mt-8">
-            <ul class="space-y-2">
-                <li>
-                    <a 
-                        hx-get="{% url 'core:dev_udns' %}"
-                        hx-target="#content"
-                        hx-swap="innerHTML"
-                        href="#"
-                        class="button-minimal flex items-center gap-3 justify-start w-full text-left">
-                        <i class="fa fa-map-marker-alt w-5"></i>
-                        <span>UDNs</span>
-                        <small class="ml-auto text-xs opacity-60">Ubicaciones y centros de operación</small>
-                    </a>
-                </li>
-                <li>
-                    <a 
-                        hx-get="{% url 'core:dev_sectors' %}"
-                        hx-target="#content"
-                        hx-swap="innerHTML"
-                        href="#"
-                        class="button-minimal flex items-center gap-3 justify-start w-full text-left">
-                        <i class="fa fa-building w-5"></i>
-                        <span>Sectores</span>
-                        <small class="ml-auto text-xs opacity-60">Áreas funcionales por ubicación</small>
-                    </a>
-                </li>
-                <li>
-                    <a 
-                        hx-get="{% url 'core:dev_categories' %}"
-                        hx-target="#content"
-                        hx-swap="innerHTML"
-                        href="#"
-                        class="button-minimal flex items-center gap-3 justify-start w-full text-left">
-                        <i class="fa fa-tags w-5"></i>
-                        <span>Categorías</span>
-                        <small class="ml-auto text-xs opacity-60">Tipos de incidencias y tickets</small>
-                    </a>
-                </li>
-                <li>
-                    <a 
-                        hx-get="{% url 'core:dev_hierarchy' %}"
-                        hx-target="#content"
-                        hx-swap="innerHTML"
-                        href="#"
-                        class="button-minimal flex items-center gap-3 justify-start w-full text-left">
-                        <i class="fa fa-sitemap w-5"></i>
-                        <span>Jerarquía</span>
-                        <small class="ml-auto text-xs opacity-60">Estructura organizacional del sistema</small>
-                    </a>
-                </li>
-                <li>
-                    <a 
-                        hx-get="{% url 'core:dev_purchase_workflow' %}"
-                        hx-target="#content"
-                        hx-swap="innerHTML"
-                        href="#"
-                        class="button-minimal flex items-center gap-3 justify-start w-full text-left">
-                        <i class="fa fa-shopping-cart w-5"></i>
-                        <span>Workflow de Compras</span>
-                        <small class="ml-auto text-xs opacity-60">Proceso completo de adquisiciones</small>
-                    </a>
-                </li>
-            </ul>
+    <div class="dev-nav-container">
+        <div class="dev-nav-item">
+            <button 
+                data-content="content-udns"
+                data-url="{% url 'core:dev_udns' %}"
+                class="dev-nav-button"
+                onclick="toggleContent(this)">
+                <div class="dev-nav-icon">
+                    <i class="fa fa-map-marker-alt"></i>
+                </div>
+                <div class="dev-nav-content">
+                    <div class="dev-nav-title">UDNs</div>
+                    <div class="dev-nav-description">Ubicaciones y centros de operación</div>
+                </div>
+            </button>
+            <div id="content-udns" class="dev-content-container hidden">
+                <div class="dev-content-area"></div>
+            </div>
+        </div>
 
-        <div id="content" class="mt-8">
-            <p class="text-gray-500">Selecciona una sección para ver la documentación</p>
+        <div class="dev-nav-item">
+            <button 
+                data-content="content-sectors"
+                data-url="{% url 'core:dev_sectors' %}"
+                class="dev-nav-button"
+                onclick="toggleContent(this)">
+                <div class="dev-nav-icon">
+                    <i class="fa fa-building"></i>
+                </div>
+                <div class="dev-nav-content">
+                    <div class="dev-nav-title">Sectores</div>
+                    <div class="dev-nav-description">Áreas funcionales por ubicación</div>
+                </div>
+            </button>
+            <div id="content-sectors" class="dev-content-container hidden">
+                <div class="dev-content-area"></div>
+            </div>
+        </div>
+
+        <div class="dev-nav-item">
+            <button 
+                data-content="content-desk-categories"
+                data-url="{% url 'core:dev_desk_categories' %}"
+                class="dev-nav-button"
+                onclick="toggleContent(this)">
+                <div class="dev-nav-icon">
+                    <i class="fa fa-wrench"></i>
+                </div>
+                <div class="dev-nav-content">
+                    <div class="dev-nav-title">Categorías Welp Desk</div>
+                    <div class="dev-nav-description">Tipos de incidencias y soporte técnico</div>
+                </div>
+            </button>
+            <div id="content-desk-categories" class="dev-content-container hidden">
+                <div class="dev-content-area"></div>
+            </div>
+        </div>
+
+        <div class="dev-nav-item">
+            <button 
+                data-content="content-payflow-categories"
+                data-url="{% url 'core:dev_payflow_categories' %}"
+                class="dev-nav-button"
+                onclick="toggleContent(this)">
+                <div class="dev-nav-icon">
+                    <i class="fa fa-calculator"></i>
+                </div>
+                <div class="dev-nav-content">
+                    <div class="dev-nav-title">Categorías Welp Payflow</div>
+                    <div class="dev-nav-description">Categorías contables y presupuestarias</div>
+                </div>
+            </button>
+            <div id="content-payflow-categories" class="dev-content-container hidden">
+                <div class="dev-content-area"></div>
+            </div>
+        </div>
+
+        <div class="dev-nav-item">
+            <button 
+                data-content="content-hierarchy"
+                data-url="{% url 'core:dev_hierarchy' %}"
+                class="dev-nav-button"
+                onclick="toggleContent(this)">
+                <div class="dev-nav-icon">
+                    <i class="fa fa-sitemap"></i>
+                </div>
+                <div class="dev-nav-content">
+                    <div class="dev-nav-title">Jerarquía</div>
+                    <div class="dev-nav-description">Estructura organizacional del sistema</div>
+                </div>
+            </button>
+            <div id="content-hierarchy" class="dev-content-container hidden">
+                <div class="dev-content-area"></div>
+            </div>
+        </div>
+
+        <div class="dev-nav-item">
+            <button 
+                data-content="content-purchase-workflow"
+                data-url="{% url 'core:dev_purchase_workflow' %}"
+                class="dev-nav-button"
+                onclick="toggleContent(this)">
+                <div class="dev-nav-icon">
+                    <i class="fa fa-shopping-cart"></i>
+                </div>
+                <div class="dev-nav-content">
+                    <div class="dev-nav-title">Workflow de Compras</div>
+                    <div class="dev-nav-description">Proceso completo de adquisiciones</div>
+                </div>
+            </button>
+            <div id="content-purchase-workflow" class="dev-content-container hidden">
+                <div class="dev-content-area"></div>
+            </div>
         </div>
     </div>
 </section>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Cargar UDNs por defecto
-    const firstLink = document.querySelector('.button-minimal');
-    if (firstLink) {
-        firstLink.click();
-    }
-});
+async function toggleContent(button){
+  const targetId=button.dataset.content;
+  const container=document.getElementById(targetId);
+  const area=container.querySelector('.dev-content-area');
+  const url=button.dataset.url;
+  const isVisible=!container.classList.contains('hidden');
+  if(isVisible){
+    button.classList.remove('active');
+    container.classList.add('hidden');
+    container.classList.remove('expanded');
+    return;
+  }
+  // hide others
+  document.querySelectorAll('.dev-nav-button.active').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.dev-content-container.expanded').forEach(c=>{c.classList.add('hidden');c.classList.remove('expanded');});
+  // show current
+  button.classList.add('active');
+  container.classList.remove('hidden');
+  container.classList.add('expanded');
+  if(!area.innerHTML.trim()){
+     try{
+       const res=await fetch(url);
+       area.innerHTML=await res.text();
+     }catch(e){
+       area.innerHTML='<div class="text-red-500 text-center py-8">Error al cargar el contenido</div>';
+     }
+  }
+}
 </script>
 {% endblock %} 

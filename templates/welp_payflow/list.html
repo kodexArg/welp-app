@@ -4,102 +4,37 @@
 
 {% block content %}
 <section>
-    <h1>Solicitudes de Pago</h1>
-    <h2>Welp Payflow</h2>
-    
-    <div class="card">
-        <div class="card-header">
-            <a href="{% url 'welp_payflow:create' %}" class="button-primary">
-                <i class="fa fa-plus"></i>
-                Nueva Solicitud
-            </a>
-            <a href="{% url 'welp_payflow:index' %}" class="button-minimal">
-                <i class="fa fa-arrow-left"></i>
-                Volver
-            </a>
+    <div class="space-y-6">
+        <div class="flex items-center justify-between">
+            <h3 class="text-lg font-medium">Solicitudes</h3>
+            <a href="{% url 'welp_payflow:create' %}" class="button-primary">Nueva Solicitud</a>
         </div>
         
-        {% if tickets %}
-            <div class="card-body">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Título</th>
-                            <th>UDN</th>
-                            <th>Sector</th>
-                            <th>Categoría</th>
-                            <th>Monto</th>
-                            <th>Estado</th>
-                            <th>Usuario</th>
-                            <th>Fecha</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for ticket in tickets %}
-                            <tr>
-                                <td>{{ ticket.id }}</td>
-                                <td>{{ ticket.title }}</td>
-                                <td>{{ ticket.udn.name }}</td>
-                                <td>{{ ticket.sector.name }}</td>
-                                <td>{{ ticket.accounting_category.name }}</td>
-                                <td>
-                                    {% if ticket.estimated_amount %}
-                                        ${{ ticket.estimated_amount }}
-                                    {% else %}
-                                        —
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    {% if ticket.status %}
-                                        <span class="status status-{{ ticket.status }}">{{ ticket.status|upper }}</span>
-                                    {% else %}
-                                        <span class="status status-open">OPEN</span>
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    {% if ticket.created_by %}
-                                        {{ ticket.created_by.username }}
-                                    {% else %}
-                                        —
-                                    {% endif %}
-                                </td>
-                                <td>{{ ticket.created_on|date:"d/m/Y" }}</td>
-                            </tr>
-                            {% if ticket.messages.all %}
-                                <tr>
-                                    <td colspan="9">
-                                        <small>
-                                            <strong>Último mensaje:</strong>
-                                            {{ ticket.messages.last.body|truncatewords:15 }}
-                                            <em>({{ ticket.messages.last.user.username }})</em>
-                                        </small>
-                                        {% for message in ticket.messages.all %}
-                                            {% for attachment in message.attachments.all %}
-                                                <br><small>
-                                                    <i class="fa fa-paperclip"></i>
-                                                    <a href="{{ attachment.file.url }}" target="_blank">
-                                                        Archivo adjunto
-                                                    </a>
-                                                </small>
-                                            {% endfor %}
-                                        {% endfor %}
-                                    </td>
-                                </tr>
-                            {% endif %}
-                        {% endfor %}
-                    </tbody>
-                </table>
+        <!-- Lista de solicitudes -->
+        <div class="space-y-4">
+            {% for request in requests %}
+            <div class="card">
+                <div class="card-body">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h4 class="font-medium">{{ request.description }}</h4>
+                            <p class="text-sm text-gray-600">
+                                ${{ request.amount }} - {{ request.created_at|date:"d/M/Y" }}
+                            </p>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span class="status status-{{ request.status }}">{{ request.get_status_display }}</span>
+                            <a href="#" class="text-blue-600 hover:text-blue-800">Ver</a>
+                        </div>
+                    </div>
+                </div>
             </div>
-        {% else %}
-            <div class="card-body">
-                <p>No hay solicitudes creadas aún.</p>
-                <a href="{% url 'welp_payflow:create' %}" class="button-primary">
-                    <i class="fa fa-plus"></i>
-                    Crear Primera Solicitud
-                </a>
+            {% empty %}
+            <div class="text-center py-8">
+                <p class="text-gray-500">No hay solicitudes aún</p>
             </div>
-        {% endif %}
+            {% endfor %}
+        </div>
     </div>
 </section>
 {% endblock %} 

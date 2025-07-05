@@ -152,3 +152,10 @@ document.addEventListener('DOMContentLoaded', function() {
         window.themeManager.detectAndApplyTheme();
     }, 50);
 });
+
+// ============================================================================
+// COMPONENTES CORE
+// ============================================================================
+
+// Importar componentes que se necesitan en todas las páginas
+import './js/logout.js'

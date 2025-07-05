@@ -1,6 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from .models import UDN, Sector, AccountingCategory, Roles
+from .models import UDN, Sector, AccountingCategory, Roles, Ticket
+from .constants import MAX_FILE_SIZE
 
 
 class PayflowTicketCreationForm(forms.Form):
@@ -60,6 +61,48 @@ class AttachmentForm(forms.Form):
     def clean_file(self):
         file = self.cleaned_data.get('file')
         if file:
-            if file.size > 52428800:  # 50MB
+            if file.size > MAX_FILE_SIZE:
                 raise forms.ValidationError("El archivo no puede superar los 50MB.")
-        return file 
+        return file
+
+
+class TicketForm(forms.ModelForm):
+    attachments = forms.FileField(
+        required=False, 
+        widget=forms.ClearableFileInput(attrs={'allow_multiple_selected': True}),
+        help_text="Puedes adjuntar múltiples archivos"
+    )
+    
+    class Meta:
+        model = Ticket
+        fields = ['udn', 'sector', 'accounting_category', 'title', 'estimated_amount']
+        widgets = {
+            'udn': forms.Select(attrs={'class': 'form-select'}),
+            'sector': forms.Select(attrs={'class': 'form-select'}),
+            'accounting_category': forms.Select(attrs={'class': 'form-select'}),
+            'title': forms.TextInput(attrs={
+                'placeholder': 'Título de la solicitud'
+            }),
+            'estimated_amount': forms.NumberInput(attrs={
+                'placeholder': '0.00',
+                'step': '0.01',
+                'min': '0'
+            })
+        }
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+        
+        if not self.data:
+            self.fields['sector'].queryset = Sector.objects.none()
+            self.fields['accounting_category'].queryset = AccountingCategory.objects.all()
+
+    def clean_attachments(self):
+        files = self.files.getlist('attachments')
+        
+        for file in files:
+            if file.size > MAX_FILE_SIZE:
+                raise ValidationError(f'El archivo {file.name} es demasiado grande. Máximo permitido: 50MB')
+                
+        return files 

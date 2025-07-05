@@ -4,42 +4,42 @@
 
 {% block content %}
 <section>
-    <div class="mb-6">
-        <div>
-            <h1 class="brand-text-override">Welp Desk</h1>
-            <h2>Sistema de Tickets y Soporte</h2>
-        </div>
-        <div class="flex gap-4 mt-4">
-            <a href="{% url 'welp_desk:ticket-create-dev' %}" class="button-primary">
-                <i class="fa fa-plus mr-2"></i>
-                Crear Ticket
-            </a>
-            <a href="{% url 'welp_desk:list-dev' %}" class="button-secondary">
-                <i class="fa fa-list mr-2"></i>
-                Ver Tickets
-            </a>
-        </div>
+    <div class="text-center mb-12">
+        <h1 class="brand-main-title">Sistema de Tickets y Soporte</h1>
+        <p class="brand-subtitle">Gestión integral de incidencias y soporte al cliente</p>
     </div>
     
-    <div class="card">
-        <div class="card-body">
-            <p>Sistema de gestión de tickets y soporte al cliente.</p>
-        </div>
+    <div class="app-wide-actions">
+        <a href="{% url 'welp_desk:ticket-create-dev' %}" class="app-wide-button primary">
+            <div class="app-wide-button-content">
+                <i class="fa fa-plus app-wide-button-icon"></i>
+                <span class="app-wide-button-text">Crear Ticket</span>
+            </div>
+        </a>
+        
+        <a href="{% url 'welp_desk:list-dev' %}" class="app-wide-button secondary">
+            <div class="app-wide-button-content">
+                <i class="fa fa-list app-wide-button-icon"></i>
+                <span class="app-wide-button-text">Ver Tickets</span>
+            </div>
+        </a>
     </div>
     
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-        <a href="{% url 'core:index' %}" class="button-secondary">
-            <i class="fa fa-home mr-2"></i>
-            Ir a Core
-        </a>
-        <a href="{% url 'welp_payflow:index' %}" class="button-secondary">
-            <i class="fa fa-user-check mr-2"></i>
-            Ir a Welp Payflow
-        </a>
-        <a href="{% url 'core:dev' %}" class="button-secondary">
-            <i class="fa fa-tools mr-2"></i>
-            Ver Demo
-        </a>
+    <div class="text-center mt-12">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-3xl mx-auto">
+            <a href="{% url 'core:index' %}" class="button-minimal">
+                <i class="fa fa-home mr-2"></i>
+                Ir a Core
+            </a>
+            <a href="{% url 'welp_payflow:index' %}" class="button-minimal">
+                <i class="fa fa-user-check mr-2"></i>
+                Ir a Welp Payflow
+            </a>
+            <a href="{% url 'core:dev' %}" class="button-minimal">
+                <i class="fa fa-tools mr-2"></i>
+                Ver Demo
+            </a>
+        </div>
     </div>
 </section>
 {% endblock %}

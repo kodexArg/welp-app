@@ -107,7 +107,7 @@
     }
 
     a:hover {
-        @apply text-[var(--theme-accent)] underline;
+        @apply text-[var(--theme-accent)];
     }
 
     a:active {

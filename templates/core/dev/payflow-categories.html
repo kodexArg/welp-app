@@ -1,0 +1,55 @@
+{% load core_tags %}
+
+<div class="dev-section">
+    <div class="bg-green-50 border border-green-200 rounded-lg p-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="space-y-4">
+                <h3 class="text-base font-medium text-green-800">Categorías Contables</h3>
+                <div class="max-h-72 overflow-y-auto border border-green-200 rounded p-4 bg-white">
+                    <div class="category-list">
+                        {% for category in accounting_categories %}
+                            <div class="category-item">
+                                <div class="flex items-center justify-between">
+                                    <div class="tag tag-category">{{ category.name }}</div>
+                                    <span class="text-xs text-green-600">{{ category.sectors.count }} sector{{ category.sectors.count|pluralize:"es" }}</span>
+                                </div>
+                                <div class="category-sectors">
+                                    {% for sector in category.sectors.all %}
+                                        <div class="tag tag-sector-mini">{{ sector.name }}</div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% if not forloop.last %}
+                                <div class="category-separator"></div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="space-y-4">
+                <h3 class="text-base font-medium text-green-800">Categorías Presupuestarias</h3>
+                <div class="max-h-72 overflow-y-auto border border-green-200 rounded p-4 bg-white">
+                    <div class="category-list">
+                        {% for category in budget_categories %}
+                            <div class="category-item">
+                                <div class="flex items-center justify-between">
+                                    <div class="tag tag-category">{{ category.name }}</div>
+                                    <span class="text-xs text-green-600">{{ category.sectors.count }} sector{{ category.sectors.count|pluralize:"es" }}</span>
+                                </div>
+                                <div class="category-sectors">
+                                    {% for sector in category.sectors.all %}
+                                        <div class="tag tag-sector-mini">{{ sector.name }}</div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% if not forloop.last %}
+                                <div class="category-separator"></div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

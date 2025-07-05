@@ -1,40 +1,26 @@
 @layer components {
     
-    /* ===============================================
-       OPTIMIZACIÓN DE FUENTES - ANTI-FOUC
-       =============================================== */
-    
-    /* ⚠️ IMPORTANTE: No modificar esta definición - Fuente de marca para Welp Desk */
-    /* Definición local de Grandstander para evitar FOUC */
     @font-face {
         font-family: 'Grandstander-local';
         font-style: normal;
         font-weight: 700;
-        font-display: block; /* Evitar FOUC crítico en logo */
+        font-display: block;
         src: local('Grandstander Bold'), local('Grandstander-Bold');
     }
-    
-    /* ===============================================
-       CONTENEDORES Y UTILIDADES GENERALES
-       =============================================== */
     
     .hidden-container {
         @apply hidden;
     }
 
-    /* ⚠️ IMPORTANTE: No modificar esta clase - Fuente de marca para Welp Desk */
     .font-brand {
         font-family: var(--font-brand);
-        /* Anti-FOUC: Mantener espacio consistente */
         min-height: 1.2em;
         line-height: 1.2;
         font-weight: 700;
-        /* Placeholder hasta que cargue Grandstander */
         font-synthesis: none;
         -webkit-font-smoothing: antialiased;
     }
 
-    /* Fuente UI siempre uppercase y condensada */
     .font-ui {
         font-family: var(--font-ui);
         @apply uppercase tracking-wide;
@@ -42,7 +28,6 @@
         -webkit-font-smoothing: antialiased;
     }
 
-    /* Excepción: Fuente brand para textos de marca específicos */
     .brand-text-override {
         font-family: var(--font-brand) !important;
         text-transform: none !important;
@@ -51,7 +36,6 @@
         font-feature-settings: 'liga' 1 !important;
         -webkit-font-smoothing: antialiased;
     }
-
 
     .text-gradient {
         background: linear-gradient(135deg, var(--theme-primary), var(--theme-accent));
@@ -65,10 +49,6 @@
         background: linear-gradient(var(--theme-surface), var(--theme-surface)), linear-gradient(135deg, var(--theme-primary), var(--theme-accent));
         background-clip: padding-box, border-box;
     }
-
-    /* ===============================================
-       SISTEMA DE BOTONES CON VARIABLES DINÁMICAS
-       =============================================== */
     
     .radio-button-group {
         @apply flex flex-wrap w-full gap-x-3 gap-y-1.5;
@@ -178,10 +158,6 @@
         @apply bg-gray-600;
     }
 
-    /* ===============================================
-       FORMULARIOS Y CONTROLES CON VARIABLES DINÁMICAS
-       =============================================== */
-
     .form-group {
         @apply mb-4;
     }
@@ -236,10 +212,6 @@
         --tw-ring-color: var(--theme-primary-light);
     }
 
-    /* ===============================================
-       TAGS Y ETIQUETAS CON VARIABLES DINÁMICAS
-       =============================================== */
-
     .tag {
         @apply text-xs font-medium py-1 px-1 rounded-full leading-none whitespace-nowrap border-2;
         @apply font-[var(--font-ui)];
@@ -267,23 +239,10 @@
         @apply bg-[var(--theme-primary-light)] text-[var(--theme-text)] border-[var(--theme-primary)];
     }
 
-    /* ===============================================
-       STATUS BADGES Y SISTEMA DE COLORES
-       =============================================== */
-
-    /* BADGES BÁSICOS: Fondo suave, ideal para mostrar estado sin distraer */
     .status {
         @apply text-xs font-semibold py-1 px-2 rounded-full uppercase tracking-wide;
     }
 
-    /* Estados individuales con colores específicos por flujo de trabajo:
-       - open (rojo): Requiere atención inmediata
-       - feedback (azul): Conversación en progreso  
-       - solved (verde): Solución propuesta
-       - authorized (verde claro): Solución aprobada
-       - rejected (amarillo): Requiere revisión
-       - closed (gris): Finalizado
-    */
     .status-open {
         @apply bg-red-100 text-red-700;
     }
@@ -308,11 +267,6 @@
         @apply bg-gray-100 text-gray-700;
     }
 
-    /* ===============================================
-       VARIANTES DE STATUS PARA MEJOR CONTRASTE
-       =============================================== */
-
-    /* BADGES SÓLIDOS: Alto contraste, ideal para interfaces oscuras o mayor visibilidad */
     .status-solid {
         @apply text-white font-bold shadow-sm;
     }
@@ -341,11 +295,6 @@
         @apply bg-gray-500 text-white;
     }
 
-    /* ===============================================
-       CLASES UTILITARIAS POR ESTADO
-       =============================================== */
-
-    /* COLORES DE TEXTO: Para aplicar color de estado a cualquier elemento */
     .text-status-open { @apply text-red-700; }
     .text-status-feedback { @apply text-blue-700; }
     .text-status-solved { @apply text-green-700; }
@@ -353,7 +302,6 @@
     .text-status-rejected { @apply text-yellow-700; }
     .text-status-closed { @apply text-gray-700; }
 
-    /* COLORES DE FONDO: Para resaltar secciones según estado */
     .bg-status-open { @apply bg-red-100; }
     .bg-status-feedback { @apply bg-blue-100; }
     .bg-status-solved { @apply bg-green-100; }
@@ -361,7 +309,6 @@
     .bg-status-rejected { @apply bg-yellow-100; }
     .bg-status-closed { @apply bg-gray-100; }
 
-    /* COLORES DE BORDE: Para tarjetas y contenedores */
     .border-status-open { @apply border-red-300; }
     .border-status-feedback { @apply border-blue-300; }
     .border-status-solved { @apply border-green-300; }
@@ -369,17 +316,12 @@
     .border-status-rejected { @apply border-yellow-300; }
     .border-status-closed { @apply border-gray-300; }
 
-    /* EFECTOS HOVER: Para elementos interactivos (botones, links) */
     .hover-status-open:hover { @apply bg-red-50 border-red-400; }
     .hover-status-feedback:hover { @apply bg-blue-50 border-blue-400; }
     .hover-status-solved:hover { @apply bg-green-50 border-green-400; }
     .hover-status-authorized:hover { @apply bg-green-100 border-green-300; }
     .hover-status-rejected:hover { @apply bg-yellow-50 border-yellow-400; }
     .hover-status-closed:hover { @apply bg-gray-50 border-gray-400; }
-
-    /* ===============================================
-       CARDS Y CONTENEDORES CON VARIABLES DINÁMICAS
-       =============================================== */
 
     .card {
         @apply rounded-lg shadow-md;
@@ -405,10 +347,6 @@
         @apply transition-theme;
     }
 
-    /* ===============================================
-       ALERTAS CON VARIABLES DINÁMICAS
-       =============================================== */
-
     .alert {
         @apply px-4 py-3 rounded-lg border-l-4 mb-4;
         @apply font-[var(--font-ui)];
@@ -429,10 +367,6 @@
     .alert-error {
         @apply bg-red-50 border-red-400 text-red-700;
     }
-
-    /* ===============================================
-       APP CARDS - DISEÑO DE APLICACIONES CON BOTONES CUADRADOS
-       =============================================== */
 
     .app-card {
         @apply rounded-lg shadow-md overflow-hidden;
@@ -536,11 +470,6 @@
         @apply bg-green-100 text-green-700;
     }
 
-    /* ===============================================
-       WELP PAYFLOW COMPONENTS
-       =============================================== */
-
-    /* PayFlow Actions Grid */
     .payflow-actions {
         @apply grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto my-16;
     }
@@ -586,7 +515,6 @@
         @apply mr-2;
     }
 
-    /* PayFlow Form Components */
     .form-component {
         @apply opacity-[0.1] pointer-events-none;
         @apply transition-opacity duration-300 ease-in-out;
@@ -600,7 +528,6 @@
         @apply opacity-100 pointer-events-auto;
     }
 
-    /* Select Fields Body Component */
     .select-fields-body {
         @apply bg-[var(--theme-surface)] rounded-lg border border-[var(--theme-border)] shadow-sm;
         @apply p-6 space-y-6;
@@ -638,7 +565,6 @@
         @apply file:transition-theme;
     }
 
-    /* Select Field Component */
     .select-field {
         @apply w-full;
     }
@@ -657,10 +583,6 @@
         @apply text-xs text-[var(--theme-text-secondary)] mt-1;
         @apply font-[var(--font-ui)];
     }
-
-    /* ===============================================
-       TREEMAP COMPONENT STYLES - WELP PAYFLOW
-       =============================================== */
 
     .treemap-container {
         @apply flex flex-wrap gap-2 p-4 min-h-[120px];
@@ -688,7 +610,6 @@
         @apply border-[var(--theme-accent)];
     }
 
-    /* Button sizing classes for treemap optimization - Mobile first */
     .treemap-toggle-button.short {
         @apply basis-20 sm:basis-24;
     }
@@ -699,6 +620,432 @@
 
     .treemap-toggle-button.long {
         @apply basis-36 sm:basis-40;
+    }
+
+    .brand-logo-link {
+        font-variation-settings: 'wght' 700;
+        font-feature-settings: 'liga' 1;
+    }
+
+    @keyframes brief-glow {
+        0%, 4%, 100% {
+            filter: brightness(1) drop-shadow(0 0 0 white);
+        }
+        1% {
+            filter: brightness(1.7) drop-shadow(0 0 18px white);
+        }
+    }
+
+    .icon-glow {
+        animation: brief-glow 30s ease-in-out infinite;
+    }
+
+    .icon-glow.hover-effect {
+        filter: brightness(1.2) drop-shadow(0 0 18px white);
+    }
+
+    .brand-icon-main.theme-change {
+        transform: scale(0.99);
+        transition: transform 50ms ease;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .icon-glow {
+            @apply animate-none;
+        }
+    }
+
+    .theme-navbar {
+        background-color: var(--navbar-bg);
+        transition: background-color 0.3s ease;
+    }
+    
+    .theme-navbar a {
+        color: var(--navbar-link-text);
+        transition: color 0.3s ease;
+    }
+    
+    .theme-navbar a:hover {
+        color: var(--navbar-link-hover) !important;
+    }
+    
+    .theme-navbar a.active {
+        color: var(--navbar-link-active) !important;
+    }
+    
+    .theme-navbar .brand-text {
+        color: var(--navbar-brand-text) !important;
+    }
+    
+    .theme-navbar .brand-accent {
+        color: var(--navbar-brand-accent) !important;
+    }
+
+    .dev-section {
+        @apply mb-12;
+    }
+
+    .section-title {
+        @apply text-xl font-medium mb-6;
+        color: var(--theme-text-secondary);
+        font-family: var(--font-ui);
+    }
+
+    .hierarchy-flow {
+        @apply flex flex-wrap items-center justify-center gap-3 p-6 rounded-lg;
+        background-color: var(--theme-primary-light);
+        border: 1px solid var(--theme-border);
+    }
+
+    .flow-item {
+        @apply px-4 py-2 rounded-md font-medium;
+        background-color: var(--theme-surface);
+        color: var(--theme-text);
+        border: 1px solid var(--theme-border);
+        font-family: var(--font-ui);
+    }
+
+    .flow-arrow {
+        @apply text-lg font-bold;
+        color: var(--theme-text-secondary);
+    }
+
+    @media (max-width: 640px) {
+        .hierarchy-flow {
+            @apply flex-col gap-2;
+        }
+        
+        .flow-arrow {
+            @apply rotate-90;
+        }
+    }
+
+    .component-buttons {
+        @apply flex flex-col sm:flex-row gap-4 justify-center;
+    }
+
+    .workflow-container {
+        @apply space-y-8;
+    }
+
+    .workflow-section {
+        @apply space-y-4;
+    }
+
+    .workflow-section-title {
+        @apply text-lg font-semibold mb-4 text-center;
+        color: var(--theme-text);
+        font-family: var(--font-ui);
+        padding-bottom: 8px;
+        border-bottom: 2px solid var(--theme-primary-light);
+    }
+
+    .workflow-step {
+        @apply bg-white border border-gray-200 rounded-lg p-4 shadow-sm;
+        transition: box-shadow 0.2s ease-in-out;
+    }
+
+    .workflow-step:hover {
+        @apply shadow-md;
+    }
+
+    .decision-step {
+        @apply border-yellow-300 bg-yellow-50;
+    }
+
+    .waiting-step {
+        @apply border-gray-300 bg-gray-50 text-center;
+    }
+
+    .step-header {
+        @apply font-semibold text-gray-900 mb-2;
+        font-family: var(--font-ui);
+    }
+
+    .actor-row {
+        @apply flex flex-wrap gap-2 mb-3;
+    }
+
+    .actor-tag {
+        @apply text-xs font-medium py-1 px-3 rounded-full border;
+        background-color: var(--theme-primary-light);
+        color: var(--theme-primary);
+        border-color: var(--theme-primary);
+        font-family: var(--font-ui);
+    }
+
+    .attachment-note {
+        @apply text-xs text-blue-700 bg-blue-50 border border-blue-200 rounded p-2 mt-2;
+    }
+
+    .attachment-note.required {
+        @apply text-red-700 bg-red-50 border-red-200;
+    }
+
+    .decision-buttons {
+        @apply flex flex-wrap gap-2 mt-3;
+    }
+
+    .decision-btn {
+        @apply text-xs font-medium py-2 px-3 rounded-md border text-center;
+        font-family: var(--font-ui);
+    }
+
+    .decision-btn.approve {
+        @apply bg-green-100 text-green-700 border-green-300;
+    }
+
+    .decision-btn.reject {
+        @apply bg-red-100 text-red-700 border-red-300;
+    }
+
+    .decision-btn.special {
+        @apply bg-indigo-100 text-indigo-700 border-indigo-300;
+    }
+
+    .task-list {
+        @apply mt-3 space-y-1;
+    }
+
+    .task-item {
+        @apply text-sm text-gray-600 py-1;
+        font-family: var(--font-ui);
+    }
+
+    .waiting-note {
+        @apply text-sm text-gray-600 mt-2;
+        font-family: var(--font-ui);
+    }
+
+    .transversal-note {
+        @apply bg-green-50 border border-green-200 rounded-lg p-4 mt-8;
+    }
+
+    .transversal-note h4 {
+        @apply font-semibold text-green-800 mb-2;
+        font-family: var(--font-ui);
+    }
+
+    .transversal-note p {
+        @apply text-sm text-green-700;
+        font-family: var(--font-ui);
+    }
+
+    .tag-container {
+        @apply flex flex-wrap gap-3;
+    }
+
+    .tag-udn:hover {
+        @apply bg-yellow-200 border-amber-400 cursor-pointer;
+        transform: translateY(-1px);
+    }
+
+    .tag-sector:hover {
+        background-color: var(--theme-primary);
+        color: var(--theme-surface);
+        @apply cursor-pointer;
+        transform: translateY(-1px);
+    }
+
+    .tag-category:hover {
+        @apply bg-purple-200 border-purple-400 cursor-pointer;
+        transform: translateY(-1px);
+    }
+
+    .tag-sector-mini {
+        @apply py-1 px-2 rounded-full border;
+        background-color: var(--theme-primary-light);
+        color: var(--theme-primary);
+        border-color: var(--theme-primary);
+        font-family: var(--font-ui);
+        font-size: 10px;
+        font-weight: 500;
+        opacity: 0.8;
+    }
+
+    .tag-udn-mini {
+        @apply py-1 px-2 rounded-full border;
+        background-color: #fef3c7;
+        color: #d97706;
+        border-color: #fcd34d;
+        font-family: var(--font-ui);
+        font-size: 10px;
+        font-weight: 500;
+    }
+
+    .category-list {
+        @apply space-y-0;
+    }
+
+    .category-item {
+        @apply flex flex-col gap-3 py-3;
+    }
+
+    .category-sectors {
+        @apply flex flex-wrap gap-2 pl-8;
+    }
+
+    .category-separator {
+        @apply h-px my-4;
+        background-color: var(--theme-border);
+        opacity: 0.3;
+    }
+
+    .sector-list {
+        @apply space-y-0;
+    }
+
+    .sector-item {
+        @apply flex flex-col gap-3 py-3;
+    }
+
+    .sector-udns {
+        @apply flex flex-wrap gap-2 pl-8 ml-4;
+    }
+
+    .sector-separator {
+        @apply h-px my-4;
+        background-color: var(--theme-border);
+        opacity: 0.5;
+    }
+
+    .dev-nav-container {
+        @apply space-y-3 mt-8;
+    }
+
+    .dev-nav-button {
+        @apply w-full p-6 rounded-lg border-2 cursor-pointer;
+        @apply bg-[var(--theme-surface)] border-[var(--theme-border)] text-[var(--theme-text)];
+        @apply transition-all duration-300 ease-in-out;
+        @apply flex items-center gap-4;
+    }
+
+    .dev-nav-button.active {
+        @apply bg-[var(--theme-primary)] text-[var(--theme-surface)] border-[var(--theme-primary)] shadow-lg;
+    }
+
+    .dev-nav-button.active .dev-nav-icon {
+        @apply bg-[var(--theme-surface)] text-[var(--theme-primary)] scale-110;
+    }
+
+    .dev-nav-button.active .dev-nav-title {
+        @apply text-[var(--theme-surface)] font-semibold;
+    }
+
+    .dev-nav-button.active .dev-nav-description {
+        @apply text-[var(--theme-surface)];
+    }
+
+    .dev-nav-content {
+        @apply flex-1 text-left;
+    }
+
+    .dev-nav-title {
+        @apply text-lg font-medium mb-1;
+        @apply text-[var(--theme-text)] font-[var(--font-ui)];
+        @apply transition-theme;
+    }
+
+    .dev-nav-description {
+        @apply text-sm;
+        @apply text-[var(--theme-text-secondary)] font-[var(--font-p)];
+        @apply transition-theme;
+    }
+
+    .dev-nav-icon {
+        @apply w-12 h-12 flex items-center justify-center rounded-lg;
+        @apply bg-[var(--theme-primary)] text-[var(--theme-surface)];
+        @apply text-2xl;
+        @apply transition-all duration-300;
+    }
+
+    .dev-content-container {
+        @apply transition-all duration-500 ease-in-out;
+        max-height: 0;
+        opacity: 0;
+        margin-top: 0;
+        visibility: hidden;
+        overflow: hidden;
+    }
+
+    .dev-content-container.expanded {
+        max-height: 2000px;
+        opacity: 1;
+        @apply mt-4;
+        visibility: visible;
+    }
+
+    .dev-content-container.hidden {
+        display: none;
+    }
+
+    .dev-content-area {
+        @apply transition-theme;
+    }
+
+    .dev-content-area:not(:empty) {
+        @apply p-6 rounded-lg;
+        @apply bg-[var(--theme-surface)] border border-[var(--theme-border)];
+        @apply shadow-sm;
+    }
+
+    .dev-content-placeholder {
+        @apply text-center py-8;
+        @apply text-[var(--theme-text-secondary)] font-[var(--font-ui)];
+        @apply transition-theme;
+    }
+
+    .app-wide-button {
+        @apply w-full flex items-center justify-center gap-4 py-8 px-6 rounded-lg border-2 cursor-pointer;
+        @apply bg-[var(--theme-surface)] border-[var(--theme-border)] text-[var(--theme-text)];
+        @apply hover:bg-[var(--theme-primary-light)] hover:border-[var(--theme-primary)];
+        @apply transition-all duration-300 ease-in-out;
+        @apply min-h-[120px] max-w-md mx-auto;
+        @apply no-underline;
+        text-decoration: none;
+    }
+
+    .app-wide-button:hover {
+        text-decoration: none;
+    }
+
+    .app-wide-button.primary {
+        @apply bg-[var(--theme-primary)] text-[var(--theme-surface)] border-[var(--theme-primary)];
+        @apply hover:bg-[var(--theme-primary-dark)] hover:border-[var(--theme-primary-dark)];
+    }
+
+    .app-wide-button.secondary {
+        @apply bg-transparent border-[var(--theme-primary)] text-[var(--theme-primary)];
+        @apply hover:bg-[var(--theme-primary)] hover:text-[var(--theme-surface)];
+    }
+
+    .app-wide-button-content {
+        @apply flex flex-col items-center justify-center text-center;
+    }
+
+    .app-wide-button-icon {
+        @apply text-4xl mb-2;
+    }
+
+    .app-wide-button-text {
+        @apply text-lg font-medium font-[var(--font-ui)];
+        @apply transition-theme;
+    }
+
+    .app-wide-actions {
+        @apply grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto my-12;
+    }
+
+    .brand-main-title {
+        @apply text-4xl font-bold mb-8 text-center;
+        @apply font-[var(--font-brand)] text-[var(--theme-primary-dark)];
+        @apply transition-theme;
+    }
+
+    .brand-subtitle {
+        @apply text-center text-lg mb-8;
+        @apply text-[var(--theme-text-secondary)] font-[var(--font-p)];
+        @apply transition-theme;
     }
 
 } 

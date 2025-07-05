@@ -9,7 +9,7 @@ class PingSecretTest(TestCase):
         ping_value = os.environ.get('PING')
         self.assertIsNotNone(ping_value, "Variable de entorno PING no encontrada")
         
-        # Verificar si es JSON
+
         try:
             ping_json = json.loads(ping_value)
             if isinstance(ping_json, dict):

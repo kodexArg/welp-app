@@ -1,8 +1,4 @@
-/* ==========================================================================
-   FUENTES LOCALES - Sistema con Fuentes Variables Optimizado
-   ========================================================================== */
 
-/* Grandstander - Fuente de marca (Solo Bold - Único peso usado) */
 @font-face {
     font-family: 'Grandstander-local';
     src: url('../fonts/Grandstander/static/Grandstander-Bold.ttf') format('truetype');
@@ -11,7 +7,7 @@
     font-display: block;
 }
 
-/* Inter - Fuente principal variable (Reemplaza Noto Sans) */
+
 @font-face {
     font-family: 'Inter';
     src: url('../fonts/Inter/Inter-VariableFont_opsz,wght.ttf') format('truetype-variations');
@@ -30,7 +26,7 @@
     font-optical-sizing: auto;
 }
 
-/* Roboto Condensed - Fuente UI narrow variable (Perfecto para uppercase) */
+
 @font-face {
     font-family: 'Roboto Condensed';
     src: url('../fonts/Roboto_Condensed/RobotoCondensed-VariableFont_wght.ttf') format('truetype-variations');
@@ -39,7 +35,7 @@
     font-display: swap;
 }
 
-/* Roboto Mono - Fuente código (Sin cambios) */
+
 @font-face {
     font-family: 'Roboto Mono';
     src: url('../fonts/Roboto_Mono/static/RobotoMono-Regular.ttf') format('truetype');
@@ -56,7 +52,7 @@
     font-display: swap;
 }
 
-/* Nunito - Fuente títulos variable (Reemplaza Roboto Slab) */
+
 @font-face {
     font-family: 'Nunito';
     src: url('../fonts/Nunito/Nunito-VariableFont_wght.ttf') format('truetype-variations');
@@ -75,26 +71,21 @@
 
 
 
-/* ==========================================================================
-   VARIABLES CSS
-   ========================================================================== */
-
 :root {
-    /* ⚠️ IMPORTANTE: No modificar esta variable - Fuente de marca para Welp Desk */
     --font-brand: 'Grandstander-local', 'Grandstander', 'Comic Sans MS', 'Marker Felt', cursive;
     --font-p: 'Inter', sans-serif;
     --font-ui: 'Roboto Condensed', 'Arial Narrow', 'Liberation Sans Narrow', sans-serif;
     --font-mono: 'Roboto Mono', monospace;
     --font-title: 'Nunito', sans-serif;
 
-    /* Layout */
+
     --header-height: 8vh;
     --aside-width: 16rem;
     --breakpoint-sm: 640px;
     --breakpoint-md: 768px;
     --breakpoint-lg: 1024px;
 
-    /* Paleta earth - Tonos más cálidos y vibrantes */
+
     --color-earth-50: #fdf6ee;
     --color-earth-100: #fae8d6;
     --color-earth-200: #f5d0ad;
@@ -107,7 +98,7 @@
     --color-earth-900: #3b1c08;
     --color-earth-950: #1a0c03;
 
-    /* Paleta sky - Tonos más profundos */
+
     --color-sky-50: #f4fafd;
     --color-sky-100: #e6f1f9;
     --color-sky-200: #cce3f3;
@@ -120,7 +111,7 @@
     --color-sky-900: #0f2332;
     --color-sky-950: #071219;
 
-    /* Paleta forest - Verdes mate naturales */
+
     --color-forest-50: #e8ede8;
     --color-forest-100: #d1dbd1;
     --color-forest-200: #a3b8a3;
@@ -133,68 +124,52 @@
     --color-forest-900: #121e12;
     --color-forest-950: #0a120a;
 
-    /* ====================================================================
-       SISTEMA DE VARIABLES DINÁMICAS DE TEMA
-       ==================================================================== */
 
-    /* Variables dinámicas principales - valores por defecto (slate) */
-    --theme-primary: #64748b; /* slate-500 */
-    --theme-primary-dark: #1e293b; /* slate-800 */
-    --theme-primary-light: #e2e8f0; /* slate-200 */
-    --theme-accent: #f59e0b; /* amber-500 */
-    --theme-background: #f8fafc; /* slate-50 */
+    --theme-primary: #64748b;
+    --theme-primary-dark: #1e293b;
+    --theme-primary-light: #e2e8f0;
+    --theme-accent: #f59e0b;
+    --theme-background: #f8fafc;
     --theme-surface: #ffffff;
-    --theme-text: #0f172a; /* slate-900 */
-    --theme-text-secondary: #334155; /* slate-700 */
-    --theme-border: #e2e8f0; /* slate-200 */
-
-    /* Variables específicas para NAVBAR */
+    --theme-text: #0f172a;
+    --theme-text-secondary: #334155;
+    --theme-border: #e2e8f0;
     --navbar-bg: var(--theme-primary-dark);
-    --navbar-link-text: #94a3b8; /* slate-400 */
-    --navbar-link-hover: #f1f5f9; /* slate-100 */
-    --navbar-link-active: #ffffff; /* white */
-
-    /* Variables específicas para SCROLLBAR */
+    --navbar-link-text: #94a3b8;
+    --navbar-link-hover: #f1f5f9;
+    --navbar-link-active: #ffffff;
     --scrollbar-track: var(--theme-primary-light);
     --scrollbar-thumb: var(--theme-primary-dark);
     --scrollbar-thumb-hover: var(--theme-primary);
     --scrollbar-border: var(--theme-primary-light);
 
-    /* Colores semánticos que ahora usan variables de tema */
+
 }
 
-/* ====================================================================
-   TEMA SLATE (Default/Core)
-   ==================================================================== */
+
 [data-theme="slate"] {
-    --theme-primary: #64748b; /* slate-500 */
-    --theme-primary-dark: #1e293b; /* slate-800 */
-    --theme-primary-light: #e2e8f0; /* slate-200 */
-    --theme-accent: #f59e0b; /* amber-500 */
-    --theme-background: #f8fafc; /* slate-50 */
+    --theme-primary: #64748b;
+    --theme-primary-dark: #1e293b;
+    --theme-primary-light: #e2e8f0;
+    --theme-accent: #f59e0b;
+    --theme-background: #f8fafc;
     --theme-surface: #ffffff;
-    --theme-text: #0f172a; /* slate-900 */
-    --theme-text-secondary: #334155; /* slate-700 */
-    --theme-border: #e2e8f0; /* slate-200 */
-
-    /* Navbar específico para Slate */
-    --navbar-bg: #1e293b; /* slate-800 */
-    --navbar-link-text: #94a3b8; /* slate-400 */
-    --navbar-link-hover: #f1f5f9; /* slate-100 */
+    --theme-text: #0f172a;
+    --theme-text-secondary: #334155;
+    --theme-border: #e2e8f0;
+    --navbar-bg: #1e293b;
+    --navbar-link-text: #94a3b8;
+    --navbar-link-hover: #f1f5f9;
     --navbar-link-active: #ffffff;
-
-    /* Scrollbar específico para Slate */
-    --scrollbar-track: #e2e8f0; /* slate-200 */
-    --scrollbar-thumb: #1e293b; /* slate-800 */
-    --scrollbar-thumb-hover: #475569; /* slate-600 */
-    --scrollbar-border: #e2e8f0; /* slate-200 */
+    --scrollbar-track: #e2e8f0;
+    --scrollbar-thumb: #1e293b;
+    --scrollbar-thumb-hover: #475569;
+    --scrollbar-border: #e2e8f0;
 
 
 }
 
-/* ====================================================================
-   TEMA SKY (WelpDesk)
-   ==================================================================== */
+
 [data-theme="sky"] {
     --theme-primary: var(--color-sky-600);
     --theme-primary-dark: var(--color-sky-700);
@@ -206,13 +181,13 @@
     --theme-text-secondary: var(--color-sky-700);
     --theme-border: var(--color-sky-200);
 
-    /* Navbar específico para Sky */
+
     --navbar-bg: var(--color-sky-800);
     --navbar-link-text: var(--color-sky-300);
     --navbar-link-hover: #ffffff;
     --navbar-link-active: #ffffff;
 
-    /* Scrollbar específico para Sky */
+
     --scrollbar-track: var(--color-sky-200);
     --scrollbar-thumb: var(--color-sky-800);
     --scrollbar-thumb-hover: var(--color-sky-600);
@@ -221,9 +196,7 @@
 
 }
 
-/* ====================================================================
-   TEMA FOREST (Welp Payflow)
-   ==================================================================== */
+
 [data-theme="forest"] {
     --theme-primary: var(--color-forest-600);
     --theme-primary-dark: var(--color-forest-800);
@@ -235,13 +208,13 @@
     --theme-text-secondary: var(--color-forest-700);
     --theme-border: var(--color-forest-200);
 
-    /* Navbar específico para Forest */
+
     --navbar-bg: var(--color-forest-800);
     --navbar-link-text: var(--color-forest-300);
     --navbar-link-hover: #ffffff;
     --navbar-link-active: #ffffff;
 
-    /* Scrollbar específico para Forest */
+
     --scrollbar-track: var(--color-forest-200);
     --scrollbar-thumb: var(--color-forest-800);
     --scrollbar-thumb-hover: var(--color-forest-600);

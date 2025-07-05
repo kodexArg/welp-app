@@ -1,0 +1,37 @@
+<section class="dev-section">
+    <h2 class="section-title">Categorías de Incidencias - Welp Desk</h2>
+    
+    <div class="bg-blue-50 rounded-lg p-4 border border-blue-200">
+        <div class="max-h-96 overflow-y-auto space-y-3 pr-2">
+            {% for category in categories %}
+                <div class="category-item bg-white rounded-lg p-3 border border-blue-200">
+                    <span class="tag tag-category">{{ category.name }}</span>
+                    <div class="category-sectors mt-2">
+                        {% for sector in category.sector.all %}
+                            <span class="tag tag-sector-mini">{{ sector.name }}</span>
+                        {% empty %}
+                            <span class="text-gray-500 text-xs">Sin sectores asignados</span>
+                        {% endfor %}
+                    </div>
+                    
+                    {% if category.issues.exists %}
+                        <div class="mt-2">
+                            <span class="text-xs text-gray-600 font-medium">Issues disponibles:</span>
+                            <div class="flex flex-wrap gap-1 mt-1">
+                                {% for issue in category.issues.all %}
+                                    <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">
+                                        {{ issue.display_name|default:issue.name }}
+                                    </span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            {% empty %}
+                <div class="text-center py-8">
+                    <span class="text-gray-500">No hay categorías de incidencias configuradas</span>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section> 

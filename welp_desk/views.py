@@ -7,6 +7,7 @@ from django.urls import reverse_lazy
 
 from .models import Ticket, Message, Attachment, UDN, Sector, IssueCategory, Issue, Roles
 from .forms import TicketCreationForm
+from .constants import MAX_FILE_SIZE
 
 
 def index(request):
@@ -49,7 +50,7 @@ class CreateTicketView(LoginRequiredMixin, FormView):
                 
                 files = self.request.FILES.getlist('attachments')
                 for file in files:
-                    if file.size <= 52428800:  # 50MB
+                    if file.size <= MAX_FILE_SIZE:
                         Attachment.objects.create(
                             file=file,
                             message=message

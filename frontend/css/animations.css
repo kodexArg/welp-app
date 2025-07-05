@@ -1,8 +1,4 @@
-/* ======================================================================
-   UTILIDADES DE TRANSICIÓN - @utility para uso con @apply
-   ====================================================================== */
 
-/* Transiciones básicas reutilizables */
 @utility transition-theme {
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
@@ -15,7 +11,7 @@
     transition: all 0.2s ease;
 }
 
-/* Delays de animación */
+
 @utility animate-delay-100 {
     animation-delay: 100ms;
 }
@@ -36,7 +32,7 @@
     animation-delay: 1000ms;
 }
 
-/* Efectos hover comunes */
+
 @utility button-effects {
     @apply hover:scale-[1.05] hover:brightness-110;
     @apply active:scale-95;
@@ -59,19 +55,11 @@
     @apply transition-all duration-300;
 }
 
-/* ======================================================================
-   KEYFRAMES Y CLASES COMPLEJAS - @layer components
-   ====================================================================== */
+
 
 @layer components {
     
-    /* ======================================================================
-       1. KEYFRAMES - DEFINICIONES DE ANIMACIONES BASE
-       ====================================================================== */
-    
-    /* --- Animaciones de Opacidad --- */
-    
-    /* Aparición gradual desde transparente a opaco */
+
     @keyframes fadeIn {
         from {
             opacity: 0;
@@ -81,7 +69,7 @@
         }
     }
     
-    /* Desaparición gradual desde opaco a transparente */
+
     @keyframes fadeOut {
         from {
             opacity: 1;
@@ -91,9 +79,7 @@
         }
     }
     
-    /* --- Animaciones de Entrada Deslizante --- */
-    
-    /* Entrada deslizando desde arriba con fade in */
+
     @keyframes slideInFromTop {
         from {
             opacity: 0;
@@ -105,7 +91,7 @@
         }
     }
     
-    /* Entrada deslizando desde abajo con fade in */
+
     @keyframes slideInFromBottom {
         from {
             opacity: 0;
@@ -117,7 +103,7 @@
         }
     }
     
-    /* Entrada deslizando desde la izquierda con fade in */
+
     @keyframes slideInFromLeft {
         from {
             opacity: 0;
@@ -129,7 +115,7 @@
         }
     }
     
-    /* Entrada deslizando desde la derecha con fade in */
+
     @keyframes slideInFromRight {
         from {
             opacity: 0;
@@ -141,9 +127,7 @@
         }
     }
     
-    /* --- Animaciones de Atención --- */
-    
-    /* Efecto de pulsación suave para llamar la atención */
+
     @keyframes pulse {
         0%, 100% {
             opacity: 1;
@@ -153,7 +137,7 @@
         }
     }
     
-    /* Efecto de rebote para elementos interactivos */
+
     @keyframes bounce {
         0%, 20%, 50%, 80%, 100% {
             transform: translateY(0);
@@ -166,90 +150,72 @@
         }
     }
     
-    /* ======================================================================
-       2. APLICACIONES AUTOMÁTICAS - ELEMENTOS ESPECÍFICOS
-       ====================================================================== */
-    
-    /* Artículos aparecen con fade in automático al cargar */
+
     article {
         animation: fadeIn 1000ms ease forwards;
     }
     
-    /* Paginación aparece con fade in lento para no distraer */
+
     #pagination {
         animation: fadeIn 3000ms ease forwards;
     }
     
-    /* ======================================================================
-       3. CLASES UTILITARIAS - ANIMACIONES APLICABLES
-       ====================================================================== */
-    
-    /* --- Variaciones de Fade In --- */
-    
-    /* Fade in rápido (500ms) para elementos secundarios */
+
     .animate-fade-in {
         animation: fadeIn 500ms ease forwards;
     }
     
-    /* Fade in estándar (1000ms) para contenido principal */
+
     .animate-fade-in-slow {
         animation: fadeIn 1000ms ease forwards;
     }
     
-    /* Fade in lento (2000ms) para elementos de fondo */
+
     .animate-fade-in-slower {
         animation: fadeIn 2000ms ease forwards;
     }
     
-    /* Fade out para ocultar elementos */
+
     .animate-fade-out {
         animation: fadeOut 500ms ease forwards;
     }
     
-    /* --- Entradas Deslizantes --- */
-    
-    /* Desliza desde arriba - ideal para headers y notificaciones */
+
     .animate-slide-in-top {
         animation: slideInFromTop 600ms ease forwards;
     }
     
-    /* Desliza desde abajo - ideal para footers y CTAs */
+
     .animate-slide-in-bottom {
         animation: slideInFromBottom 600ms ease forwards;
     }
     
-    /* Desliza desde izquierda - ideal para menús y sidebar */
+
     .animate-slide-in-left {
         animation: slideInFromLeft 600ms ease forwards;
     }
     
-    /* Desliza desde derecha - ideal para paneles y modales */
+
     .animate-slide-in-right {
         animation: slideInFromRight 600ms ease forwards;
     }
     
-    /* --- Animaciones Continuas --- */
-    
-    /* Pulsación infinita para elementos que necesitan atención */
+
     .animate-pulse {
         animation: pulse 2000ms ease-in-out infinite;
     }
     
-    /* Rebote infinito para botones de acción principales */
+
     .animate-bounce {
         animation: bounce 1000ms ease infinite;
     }
     
-    /* ======================================================================
-       4. ESTADOS INICIALES - PREPARACIÓN PARA ANIMACIONES
-       ====================================================================== */
-    
-    /* Estado inicial genérico para elementos que se van a animar */
+
     .animate-on-load {
         opacity: 0;
     }
     
-    /* Estados iniciales para animaciones deslizantes */
+
     .animate-slide-in-top,
     .animate-slide-in-bottom,
     .animate-slide-in-left,
@@ -257,41 +223,33 @@
         opacity: 0;
     }
     
-    /* Estados iniciales para animaciones de fade */
+
     .animate-fade-in,
     .animate-fade-in-slow,
     .animate-fade-in-slower {
         opacity: 0;
     }
     
-    /* ======================================================================
-       5. ANIMACIONES SCROLL-TRIGGERED - APARICIÓN AL HACER SCROLL
-       ====================================================================== */
-    
-    /* Estado inicial para elementos que aparecen al hacer scroll */
+
     .animate-on-scroll {
         opacity: 0;
         transform: translateY(30px);
         transition: all 600ms ease;
     }
     
-    /* Estado activo cuando el elemento entra en el viewport */
+
     .animate-on-scroll.in-view {
         opacity: 1;
         transform: translateY(0);
     }
     
-    /* ======================================================================
-       7. EFECTOS HOVER - INTERACCIONES CON EL MOUSE
-       ====================================================================== */
-    
-    /* Elevación sutil con sombra al pasar el mouse */
+
     .hover-lift:hover {
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
     
-    /* Escalado pronunciado para elementos destacados */
+
     .hover-scale:hover {
         transform: scale(1.05);
     }
