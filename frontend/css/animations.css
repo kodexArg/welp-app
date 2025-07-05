@@ -296,13 +296,21 @@
 @keyframes wl-dev-slide-down {
     from {
         opacity: 0;
-        transform: translateY(-20px);
-        max-height: 0;
+        transform: translateY(-8px);
+        height: 0;
+        padding-top: 0;
+        padding-bottom: 0;
+        margin-top: 0;
+        margin-bottom: 0;
     }
     to {
         opacity: 1;
         transform: translateY(0);
-        max-height: 2000px;
+        height: auto;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+        margin-top: 0;
+        margin-bottom: 0;
     }
 }
 
@@ -310,12 +318,20 @@
     from {
         opacity: 1;
         transform: translateY(0);
-        max-height: 2000px;
+        height: auto;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+        margin-top: 0;
+        margin-bottom: 0;
     }
     to {
         opacity: 0;
-        transform: translateY(-10px);
-        max-height: 0;
+        transform: translateY(-8px);
+        height: 0;
+        padding-top: 0;
+        padding-bottom: 0;
+        margin-top: 0;
+        margin-bottom: 0;
     }
 }
 
@@ -345,8 +361,6 @@
         @apply opacity-0;
         animation: wl-dev-fade-in 350ms ease-out forwards;
     }
-
-
 }
 
 @media (prefers-reduced-motion: reduce) {

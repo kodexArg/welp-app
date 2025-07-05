@@ -273,7 +273,7 @@
     }
 
     .dev-content-container {
-        @apply dev-content-slide mt-0;
+        @apply dev-content-slide mt-0 py-4;
     }
 
     .dev-content-container.expanded {

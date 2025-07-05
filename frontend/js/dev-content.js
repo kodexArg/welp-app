@@ -32,18 +32,18 @@ function closeDevContent(button, container) {
     button.classList.remove('active');
     button.setAttribute('aria-expanded', 'false');
     container.classList.remove('expanded');
-    container.classList.add('wl-dev-slide-up');
     
-    // Remover clases de visibilidad del contenido
     const contentArea = container.querySelector('.dev-content-area');
     if (contentArea) {
         contentArea.classList.remove('htmx-settling');
     }
     
+    container.classList.add('wl-dev-slide-up');
+    
     setTimeout(() => {
         container.classList.add('hidden');
         container.classList.remove('wl-dev-slide-up');
-    }, 280);
+    }, 300);
 }
 
 function openDevContent(button, container) {
@@ -52,15 +52,21 @@ function openDevContent(button, container) {
     container.classList.remove('hidden');
     container.classList.add('wl-dev-slide-down');
     
-    // Si el contenido ya está cargado, asegurar que sea visible
     const contentArea = container.querySelector('.dev-content-area');
     if (contentArea && contentArea.hasAttribute('data-content-loaded')) {
-        contentArea.classList.add('htmx-settling');
+        setTimeout(() => {
+            contentArea.classList.add('htmx-settling');
+        }, 100);
     }
     
     setTimeout(() => {
         container.classList.add('expanded');
         container.classList.remove('wl-dev-slide-down');
+        
+        const contentArea = container.querySelector('.dev-content-area');
+        if (contentArea && contentArea.hasAttribute('data-content-loaded')) {
+            contentArea.classList.add('htmx-settling');
+        }
     }, 450);
 }
 
@@ -70,7 +76,6 @@ function closeAllDevContainers() {
         b.setAttribute('aria-expanded', 'false');
     });
     document.querySelectorAll('.dev-content-container.expanded').forEach(c => {
-        // Remover clases de visibilidad del contenido
         const contentArea = c.querySelector('.dev-content-area');
         if (contentArea) {
             contentArea.classList.remove('htmx-settling');
@@ -81,7 +86,7 @@ function closeAllDevContainers() {
         setTimeout(() => {
             c.classList.add('hidden');
             c.classList.remove('wl-dev-slide-up');
-        }, 280);
+        }, 300);
     });
 }
 
@@ -93,13 +98,19 @@ document.addEventListener('DOMContentLoaded', function() {
         if (target.classList.contains('wl-dev-htmx-content')) {
             target.setAttribute('data-content-loaded', 'true');
             
-            // Aplicar las clases de visibilidad inmediatamente
-            target.classList.add('htmx-settling');
-            target.classList.add('wl-dev-fade-in');
+            const container = target.closest('.dev-content-container');
+            const isExpanding = container && !container.classList.contains('hidden');
             
-            setTimeout(() => {
-                target.classList.remove('wl-dev-fade-in');
-            }, 350);
+            if (isExpanding) {
+                setTimeout(() => {
+                    target.classList.add('htmx-settling');
+                    target.classList.add('wl-dev-fade-in');
+                    
+                    setTimeout(() => {
+                        target.classList.remove('wl-dev-fade-in');
+                    }, 350);
+                }, 150);
+            }
         }
     });
     
