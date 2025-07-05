@@ -11,7 +11,6 @@ import django
 import logging
 from django.db import transaction
 
-# Configurar logging
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
@@ -21,11 +20,9 @@ logger = logging.getLogger(__name__)
 
 def setup_django():
     """Configura Django para poder usar los modelos"""
-    # Asegurarse que el script se ejecuta desde el directorio correcto
     project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     sys.path.append(project_root)
     
-    # Configurar Django
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'project.settings')
     django.setup()
 
@@ -41,13 +38,11 @@ def populate_database(data):
 
     try:
         with transaction.atomic():
-            # Limpiar datos existentes
             logger.info("Limpiando datos existentes de welp_payflow...")
             AccountingCategory.objects.all().delete()
             Sector.objects.all().delete()
             UDN.objects.all().delete()
 
-            # UDNs
             udns_map = {}
             logger.info("\nCreando UDNs de Payflow...")
             for udn_data in data.get('UDNs', []):
@@ -56,7 +51,6 @@ def populate_database(data):
                 udns_map[udn_name] = udn
                 logger.info(f"  ✓ UDN creada: {udn_name}")
 
-            # Sectores
             sectors_map = {}
             logger.info("\nCreando Sectores de Payflow...")
             for sector_data in data.get('Sectors', []):
@@ -64,7 +58,6 @@ def populate_database(data):
                 sector = Sector.objects.create(name=sector_name)
                 sectors_map[sector_name] = sector
                 
-                # Asociar UDNs al sector
                 for udn_name in sector_data.get('udns', []):
                     if udn_name in udns_map:
                         sector.udn.add(udns_map[udn_name])
@@ -72,7 +65,6 @@ def populate_database(data):
                         logger.warning(f"    ⚠️  UDN '{udn_name}' no encontrada para sector '{sector_name}'")
                 logger.info(f"  ✓ Sector creado: {sector_name}")
 
-            # Categorías Contables
             logger.info("\nCreando Categorías Contables...")
             for category_data in data.get('AccountingCategories', []):
                 category_name = category_data['name']
@@ -82,7 +74,6 @@ def populate_database(data):
                     description=category_description
                 )
                 
-                # Hacer que todas las categorías estén disponibles para todos los sectores
                 for sector in sectors_map.values():
                     category.sector.add(sector)
                 
@@ -90,13 +81,11 @@ def populate_database(data):
                 if 'description' in category_data:
                     logger.info(f"    {category_data['description']}")
 
-            # Resumen final
             logger.info("\nResumen de la inicialización de Payflow:")
             logger.info(f"  ✓ UDNs creadas: {UDN.objects.count()}")
             logger.info(f"  ✓ Sectores creados: {Sector.objects.count()}")
             logger.info(f"  ✓ Categorías Contables creadas: {AccountingCategory.objects.count()}")
 
-            # Mostrar relaciones
             logger.info("\nResumen de relaciones:")
             logger.info("UDNs por Sector:")
             for sector in Sector.objects.all():
@@ -114,10 +103,8 @@ def main():
     """Función principal del script"""
     logger.info("Iniciando script de inicialización de base de datos Payflow...")
     
-    # Configurar Django
     setup_django()
     
-    # Cargar datos YAML y poblar base de datos
     data = load_yaml_data()
     populate_database(data)
     

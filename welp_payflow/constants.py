@@ -1,10 +1,8 @@
 import os
 from django.conf import settings
 
-# Longitud máxima de campo status desde environment
 STATUS_MAX_LENGTH = int(os.environ.get('PAYFLOW_STATUS_MAX_LENGTH', '20'))
 
-# Configuración de estados desde variables de entorno
 PAYFLOW_STATUSES = {
     'open': {
         'label': os.environ.get('PAYFLOW_STATUS_OPEN_LABEL', 'Abierto'),
@@ -80,10 +78,8 @@ PAYFLOW_STATUSES = {
     },
 }
 
-# Lista de permisos desde environment
 PAYFLOW_PERMISSIONS = os.environ.get('PAYFLOW_PERMISSIONS', 'can_open,can_comment,can_solve,can_authorize,can_process_payment,can_close').split(',')
 
-# Configuración de roles y permisos desde environment
 PAYFLOW_ROLE_PERMISSIONS = {
     'end_user': {
         'can_open': os.environ.get('PAYFLOW_ROLE_END_USER_OPEN', 'true').lower() == 'true',
@@ -127,17 +123,13 @@ PAYFLOW_ROLE_PERMISSIONS = {
     },
 }
 
-# Límite de tamaño de archivo desde environment (bytes)
 MAX_FILE_SIZE = int(os.environ.get('PAYFLOW_MAX_FILE_SIZE', '52428800'))
 
-# Configuración de URLs y endpoints desde environment
 API_BASE_URL = os.environ.get('PAYFLOW_API_BASE_URL', '/api/payflow/')
 SELECT_OPTIONS_ENDPOINT = os.environ.get('PAYFLOW_SELECT_OPTIONS_ENDPOINT', 'select-options')
 
-# Configuración de formularios desde environment
 FORM_TIMEOUT_SECONDS = int(os.environ.get('PAYFLOW_FORM_TIMEOUT', '300'))
 MAX_UPLOAD_FILES = int(os.environ.get('PAYFLOW_MAX_UPLOAD_FILES', '10'))
 
-# Configuración de treemap desde environment
 TREEMAP_MIN_ITEMS = int(os.environ.get('PAYFLOW_TREEMAP_MIN_ITEMS', '3'))
 TREEMAP_MAX_ITEMS = int(os.environ.get('PAYFLOW_TREEMAP_MAX_ITEMS', '50')) 
