@@ -6,17 +6,48 @@
     
     <div class="flex items-center space-x-1">
         {% if user.is_authenticated %}
-            {% nav_link "welp_desk:index" "fa fa-headset" "WelpDesk" current_view=request.resolver_match.view_name %}
-            {% separator %}
-            {% nav_link "welp_payflow:index" "fa fa-user-check" "Welp Payflow" current_view=request.resolver_match.view_name %}
-            {% separator %}
-            {% if user.is_staff %}
-                {% nav_link "core:dev" "fa fa-tools" "Dev" current_view=request.resolver_match.view_name %}
+            {% comment %} Navbar específico para WelpDesk {% endcomment %}
+            {% if request.resolver_match.namespace == 'welp_desk' %}
+                {% nav_link "welp_desk:ticket-create-dev" "fa fa-plus" "Ticket" current_view=request.resolver_match.view_name %}
                 {% separator %}
+                {% nav_link "welp_desk:list-dev" "fa fa-list" "Ver" current_view=request.resolver_match.view_name %}
+                {% separator %}
+                {% if user.is_staff %}
+                    {% nav_link "core:dev" "fa fa-tools" "Dev" current_view=request.resolver_match.view_name %}
+                    {% separator %}
+                {% endif %}
+                {% nav_link "core:index" "fa fa-home" "Inicio" current_view=request.resolver_match.view_name %}
+                {% separator %}
+                {% logout_link user=user %}
+                
+            {% comment %} Navbar específico para Welp Payflow {% endcomment %}
+            {% elif request.resolver_match.namespace == 'welp_payflow' %}
+                {% nav_link "welp_payflow:create" "fa fa-plus" "Solicitar" current_view=request.resolver_match.view_name %}
+                {% separator %}
+                {% nav_link "welp_payflow:list" "fa fa-list" "Ver" current_view=request.resolver_match.view_name %}
+                {% separator %}
+                {% if user.is_staff %}
+                    {% nav_link "core:dev" "fa fa-tools" "Dev" current_view=request.resolver_match.view_name %}
+                    {% separator %}
+                {% endif %}
+                {% nav_link "core:index" "fa fa-home" "Inicio" current_view=request.resolver_match.view_name %}
+                {% separator %}
+                {% logout_link user=user %}
+                
+            {% comment %} Navbar general (Core o sin namespace específico) {% endcomment %}
+            {% else %}
+                {% nav_link "welp_desk:index" "fa fa-headset" "WelpDesk" current_view=request.resolver_match.view_name %}
+                {% separator %}
+                {% nav_link "welp_payflow:index" "fa fa-user-check" "Welp Payflow" current_view=request.resolver_match.view_name %}
+                {% separator %}
+                {% if user.is_staff %}
+                    {% nav_link "core:dev" "fa fa-tools" "Dev" current_view=request.resolver_match.view_name %}
+                    {% separator %}
+                {% endif %}
+                {% nav_link "core:index" "fa fa-home" "Inicio" current_view=request.resolver_match.view_name %}
+                {% separator %}
+                {% logout_link user=user %}
             {% endif %}
-            {% nav_link "core:index" "fa fa-home" "Inicio" current_view=request.resolver_match.view_name %}
-            {% separator %}
-            {% logout_link user=user %}
         {% else %}
             {% nav_link "core:login" "fa fa-sign-in" "INGRESAR" current_view=request.resolver_match.view_name %}
         {% endif %}
