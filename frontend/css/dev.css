@@ -161,13 +161,13 @@
     .tag-sector-mini {
         @apply py-1 px-2 rounded-full border;
         @apply bg-[var(--theme-primary-light)] text-[var(--theme-primary)] border-[var(--theme-primary)];
-        @apply font-[var(--font-ui)] text-[10px] font-medium opacity-80;
+        @apply font-[var(--font-ui)] text-[10px] opacity-80;
     }
 
     .tag-udn-mini {
         @apply py-1 px-2 rounded-full border;
         @apply bg-yellow-100 text-amber-600 border-yellow-300;
-        @apply font-[var(--font-ui)] text-[10px] font-medium;
+        @apply font-[var(--font-ui)] text-[10px];
     }
 
     .category-list {

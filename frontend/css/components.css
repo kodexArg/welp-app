@@ -493,7 +493,7 @@
     }
     
     .payflow-action span {
-        @apply text-2xl font-semibold font-[var(--font-ui)];
+        @apply text-2xl font-[var(--font-ui)] leading-tight;
     }
     
     .payflow-back {
@@ -653,8 +653,7 @@
     }
 
     .app-wide-button-text {
-        @apply text-lg font-medium font-[var(--font-ui)];
-        @apply transition-theme;
+        @apply text-lg font-ui transition-theme;
     }
 
     .app-wide-actions {
