@@ -1,4 +1,3 @@
-
 import { TREEMAP_CONFIG } from './payflow-config.js';
 
 document.addEventListener('DOMContentLoaded', function() {

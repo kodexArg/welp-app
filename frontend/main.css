@@ -10,6 +10,7 @@
 }
 
 @import "./css/variables.css";
+@import "./css/themes.css";
 @import "./css/animations.css";
 @import "./css/base.css";
 @import "./css/navbar.css";

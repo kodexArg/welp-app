@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', function() {
     const attachmentImages = document.querySelectorAll('.attachment-image');
     

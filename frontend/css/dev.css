@@ -224,7 +224,9 @@
     }
 
     .dev-nav-button.active .dev-nav-icon {
-        @apply bg-surface text-secondary scale-110;
+        background: var(--color-surface);
+        color: var(--color-primary);
+        @apply scale-110;
     }
 
     .dev-nav-button.active .dev-nav-title {
@@ -256,7 +258,8 @@
 
     .dev-nav-icon {
         @apply w-12 h-12 flex items-center justify-center rounded-lg;
-        @apply bg-surface text-secondary;
+        background: var(--color-surface);
+        color: var(--color-primary);
         @apply text-2xl;
         @apply transition-all duration-300;
     }

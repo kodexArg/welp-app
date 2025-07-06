@@ -1,4 +1,3 @@
-
 export const TREEMAP_CONFIG = {
     SHORT_TEXT_THRESHOLD: parseInt(import.meta.env.VITE_TREEMAP_SHORT_THRESHOLD || '8'),
     LONG_TEXT_THRESHOLD: parseInt(import.meta.env.VITE_TREEMAP_LONG_THRESHOLD || '20'),

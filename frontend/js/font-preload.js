@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', function() {
     const fontPreloads = document.querySelectorAll('.font-preload');
     

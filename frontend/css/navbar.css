@@ -27,4 +27,9 @@
             @apply animate-none;
         }
     }
+
+    .group > .flex.items-center {
+        transition-property: color, filter;
+        transition-duration: 200ms;
+    }
 }
