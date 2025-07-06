@@ -1,158 +1,124 @@
----
-alwaysApply: false
----
+## Sistema de reglas — *welp-app* multi-theme con Tailwind 4.1
 
-Comienza la siguiente guía **taxativa y definitiva** para implementar el theme switch usando `data-theme` en **Tailwind CSS 4.1**, con referencias oficiales y ejemplos concretos:
+### 1 · Conceptos esenciales
 
----
-# Referencias importantes:
-@Web https://simonswiss.com/posts/tailwind-v4-multi-theme
-@web https://dev.to/praveen-sripati/how-i-built-a-multi-theme-system-using-new-tailwind-css-v4-react-27j3
-@web https://www.jbukuts.com/posts/theming-tailwind-v4
+* **Tokens de color** se declaran una sola vez con `@theme inline`; Tailwind genera utilidades (`bg-primary`, `text-text`, `bg-bg`, …). ([tailwindcss.com][1], [tailwindcss.com][2])
+* El atributo `data-theme="<nombre>"` en `<html>` decide qué valores toman los tokens (`--primary`, `--secondary`, …) en tiempo real. ([simonswiss.com][3], [dev.to][4])
+* Los componentes usan sólo utilidades semánticas; nunca colores fijos de la paleta (`bg-blue-500`, etc.). ([jbukuts.com][5], [simonswiss.com][3])
 
-## 1. `/frontend/css/themes.css` — declarar variables de tema
+### 2 · Arquitectura de ficheros CSS (`@/frontend/css`)
+
+| Orden | Fichero                                                                 | Propósito                               |
+| ----: | ----------------------------------------------------------------------- | --------------------------------------- |
+|     1 | **themes.css**                                                          | `@theme inline` + paletas de cada theme |
+|     2 | **variables.css**                                                       | Tipografías, breakpoints y tokens extra |
+|   3-7 | `base.css`, `components.css`, `animations.css`, `navbar.css`, `dev.css` | Estilos que consumen los tokens         |
+
+> Mantén este orden en Vite/uv para que las variables existan antes de usarse. ([jbukuts.com][5], [github.com][6])
+
+### 3 · Reescribir **themes.css**
 
 ```css
 @import "tailwindcss";
 
-/* tokens que generarán utilidades como bg-primary, text-secondary, bg-bg, text-text */
+/* 3.1 Tokens que Tailwind convertirá en utilidades */
 @theme inline {
-  --color-primary: var(--primary);
+  --color-primary:   var(--primary);
   --color-secondary: var(--secondary);
-  --color-bg: var(--background);
-  --color-text: var(--text);
+  --color-bg:        var(--background);
+  --color-text:      var(--text);
+  --color-surface:   var(--surface);
+  --color-border:    var(--border);
 }
-```
 
-* `@theme inline` es parte del sistema oficial de Tailwind 4.1 y permite mapear tus variables CSS a utilidades automáticas ([github.com][1], [tailwindcss.com][2]).
-
----
-
-## 2. `/frontend/css/variables.css` — definir valores por theme
-
-```css
+/* 3.2 Theme «app» (defecto) */
 :root {
-  /* theme app (valor por defecto) */
-  --primary: 0 122 204;
-  --secondary: 45 55 72;
-  --background: 17 24 39;
-  --text: 241 245 249;
+  --primary:   26 12 3;
+  --secondary: 59 28 8;
+  --background:253 246 238;
+  --text:      26 12 3;
+  --surface:   250 232 214;
+  --border:    245 208 173;
 }
 
-[data-theme="payflow"] {
-  --primary: 34 197 94;
-  --secondary: 21 128 61;
-  --background: 20 83 45;
-  --text: 240 253 244;
-}
-
+/* 3.3 Theme «desk» */
 [data-theme="desk"] {
-  --primary: 14 165 233;
-  --secondary: 37 99 235;
-  --background: 224 242 254;
-  --text: 15 23 42;
+  --primary:   7 18 25;
+  --secondary: 15 35 50;
+  --background:244 250 253;
+  --text:      7 18 25;
+  --surface:   230 241 249;
+  --border:    204 227 243;
+}
+
+/* 3.4 Theme «payflow» */
+[data-theme="payflow"] {
+  --primary:   10 18 10;
+  --secondary: 18 30 18;
+  --background:232 237 232;
+  --text:      10 18 10;
+  --surface:   209 219 209;
+  --border:    163 184 163;
 }
 ```
 
-* `:root` establece el theme “app” por defecto.
-* Alternativas via `data-theme="payflow"` o `="desk"`, según corresponda.
+*Valores orientativos: ajusta según tu identidad visual* ([simonswiss.com][3], [dev.to][4])
 
----
-
-## 3. HTML / templates — aplicar el theme activo
+### 4 · Plantillas (Django + uv)
 
 ```html
-<html lang="es" data-theme="{{ theme }}">
-  <body class="bg-bg text-text">
-    <button class="bg-primary text-white hover:bg-secondary py-2 px-4 rounded">
-      Acción Principal
-    </button>
-    <div class="p-4 bg-primary text-white">
-      Bloque con estilos del theme activo
-    </div>
+<html lang="es" data-theme="{{ theme|default:'app' }}">
+  <head>
+    {% load vite %}
+    <link rel="stylesheet" href="{% vite_css 'frontend/css/themes.css' %}">
+  </head>
+
+  <body class="bg-bg text-text antialiased">
+    {% block content %}{% endblock %}
   </body>
 </html>
 ```
 
-* `{{ theme }}`: debe ser `'app'`, `'payflow'` o `'desk'`, gestionado por backend (Django/uv/vite) o frontend.
+* `theme` se decide en un middleware (cookie, subdominio o prefijo URL).
 
----
-
-## 4. (Opcional) JavaScript para cambio dinámico
+### 5 · Helper opcional **theme-switch.js**
 
 ```js
-(function(){
-  const params = new URLSearchParams(location.search);
-  const theme = params.get('theme') ||
-                document.cookie.match(/theme=(\w+)/)?.[1] ||
-                'app';
-  document.documentElement.setAttribute('data-theme', theme);
-  document.cookie = `theme=${theme};path=/;max-age=${3600*24*30}`;
+(() => {
+  const qs   = new URLSearchParams(location.search).get('theme');
+  const cke  = document.cookie.match(/theme=(\w+)/)?.[1];
+  const next = qs || cke || 'app';
+  document.documentElement.dataset.theme = next;
+  document.cookie = `theme=${next};path=/;max-age=${60*60*24*30}`;
 })();
 ```
 
-* Detecta theme en URL (`?theme=desk`), cookie, o por defecto usa `app`.
-* Actualiza `data-theme` sin recargar página y persiste en cookie.
+*Ejecútalo antes del bundle principal para evitar parpadeo de estilos.* ([github.com][6], [dev.to][4])
+
+### 6 · Reglas disciplinarias para el equipo
+
+1. **Obligatorio** emplear sólo utilidades semánticas (`bg-primary`, `text-text`, etc.) en componentes compartidos. ([simonswiss.com][3])
+2. **Prohibido** editar `tailwind.config.js`; toda configuración vive ahora en CSS (`@theme`, `@custom-variant` si hiciera falta). ([tailwindcss.com][2])
+3. Añadir un nuevo theme = definir sus variables en `themes.css` y proveer una entrada válida en lógicas de backend/JS.
+4. Para estilos exclusivos de un theme, crea una variante con `@custom-variant theme-<nombre>` y úsala como `theme-desk:border-dashed`. ([github.com][6])
+
+### 7 · Pruebas mínimas
+
+| `data-theme` | Color esperado de `.bg-primary` | Método de prueba      |
+| ------------ | ------------------------------- | --------------------- |
+| `app`        | marrón (#1A0C03 aprox.)         | Ver `.button-primary` |
+| `desk`       | azul oscuro (#071219 aprox.)    | Igual                 |
+| `payflow`    | verde oscuro (#0A120A aprox.)   | Igual                 |
+
+Cambiar el atributo en tiempo real debe actualizar el color sin recarga. ([dev.to][7])
 
 ---
 
-## 5. Referencias oficiales de Tailwind 4.1
+Cumple estrictamente estas reglas para mantener coherencia de diseño y un sistema de temas dinámico, limpio y mantenible en *welp-app* con Tailwind CSS 4.1.
 
-* **Sistema de variables `@theme`**: [https://tailwindcss.com/docs/theme](https://tailwindcss.com/docs/theme) ([github.com][1])
-* **Uso de variantes con `data-theme` (dark mode)**: [https://tailwindcss.com/docs/dark-mode](https://tailwindcss.com/docs/dark-mode) ([tailwindcss.com][3])
-* **Requisitos de `inline` en `@theme` para scopes dinámicos**: discusión oficial ([github.com][4])
-
----
-
-## 6. Ejemplos concretos en **welp-app**
-
-### a) Theme por defecto “app” (data-theme ausente o `app`)
-
-```html
-<html data-theme="app">
-  <div class="bg-primary text-text p-6">
-    Botón azul sobre fondo oscuro
-  </div>
-</html>
-```
-
-### b) Theme “payflow”
-
-```html
-<html data-theme="payflow">
-  <div class="bg-primary text-white p-6">
-    Botón verde sobre fondo verde suave
-  </div>
-</html>
-```
-
-### c) Theme “desk”
-
-```html
-<html data-theme="desk">
-  <div class="bg-primary text-text p-6">
-    Botón celeste sobre fondo celeste claro
-  </div>
-</html>
-```
-
-### d) Cambio en tiempo real via JS
-
-```html
-<html>
-  <body>
-    <button onclick="document.documentElement.setAttribute('data-theme','desk')">
-      Cambiar a desk
-    </button>
-  </body>
-</html>
-```
-
----
-
-Con estas instrucciones claras, sin referencias a otros métodos, tu implementación del theme-switch en **welp-app** será completamente funcional, eficiente y alineada con las prácticas oficiales de Tailwind 4.1.
-
-[1]: https://github.com/tailwindlabs/tailwindcss/discussions/16292?utm_source=chatgpt.com "How to target @theme properties with a data-theme attribute #16292"
-[2]: https://tailwindcss.com/docs/theme?utm_source=chatgpt.com "Theme variables - Core concepts - Tailwind CSS"
-[3]: https://tailwindcss.com/docs/dark-mode?utm_source=chatgpt.com "Dark mode - Core concepts - Tailwind CSS"
-[4]: https://github.com/tailwindlabs/tailwindcss/discussions/15600?utm_source=chatgpt.com "[v4] Best method to use CSS variables for multiple themes? #15600"
+[1]: https://tailwindcss.com/docs/theme "Theme variables - Core concepts - Tailwind CSS"
+[2]: https://tailwindcss.com/blog/tailwindcss-v4 "Tailwind CSS v4.0"
+[3]: https://simonswiss.com/posts/tailwind-v4-multi-theme "Tailwind CSS v4: Multi-Theme Strategy - simonswiss"
+[4]: https://dev.to/praveen-sripati/how-i-built-a-multi-theme-system-using-new-tailwind-css-v4-react-27j3 "How I Built a Multi-Theme System using New Tailwind CSS v4 & React"
+[5]: https://www.jbukuts.com/posts/theming-tailwind-v4 "Theming with TailwindCSS V4 - Jake Bukuts"
+[6]: https://github.com/tailwindlabs/tailwindcss/discussions/15600 "[v4] Best method to use CSS variables for multiple themes? #15600"

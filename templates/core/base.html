@@ -3,7 +3,7 @@
 {% load django_htmx %}
 
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="{{ theme|default:'app' }}">
 
 <head>
     <meta charset="UTF-8">
@@ -16,6 +16,23 @@
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Grandstander:wght@700&display=block"></noscript>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <!-- Theme switch: establece data-theme antes de cargar CSS principal para evitar parpadeos -->
+    <script>
+        (function() {
+            const qsTheme = new URLSearchParams(window.location.search).get('theme');
+            const cookieMatch = document.cookie.match(/(?:^|; )theme=([^;]+)/);
+            const cookieTheme = cookieMatch ? decodeURIComponent(cookieMatch[1]) : null;
+            const path = location.pathname;
+            let inferredTheme = null;
+            if (/^\/desk\//.test(path)) inferredTheme = 'desk';
+            else if (/^\/payflow\//.test(path)) inferredTheme = 'payflow';
+
+            const nextTheme = qsTheme || cookieTheme || inferredTheme || document.documentElement.dataset.theme || 'app';
+            document.documentElement.dataset.theme = nextTheme;
+            document.cookie = `theme=${nextTheme};path=/;max-age=${60*60*24*30}`;
+        })();
+    </script>
     
     <link rel="stylesheet" href="{% vite_asset_url 'frontend/main.css' %}">
     
