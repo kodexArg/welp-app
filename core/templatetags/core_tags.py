@@ -1,33 +1,29 @@
 from django import template
-from django.urls import reverse
+from django.urls import reverse, NoReverseMatch
+from django.utils.safestring import mark_safe
+from django.utils.html import format_html
+
 from welp_desk.constants import DESK_STATUSES
 from welp_payflow.constants import PAYFLOW_STATUSES
+from welp_payflow.utils import get_available_payflow_transitions
 
 register = template.Library()
 
 @register.inclusion_tag('components/core/brand-logo.html')
-def brand_logo(show_text=True, current_namespace=None):
+def brand_logo(show_text=False, current_namespace=None):
     """
-    Componente de logo de marca con animación
+    Componente del logo de la marca
     
     Args:
-        show_text (bool): Si mostrar el texto o solo el ícono
-        current_namespace (str): Namespace actual para determinar el texto
+        show_text (bool): Si mostrar el texto "Welp" junto al logo
+        current_namespace (str): Namespace actual para determinar el color
     
     Returns:
         dict: Contexto para el template
     """
-    if current_namespace and 'welp_payflow' in current_namespace:
-        brand_text = 'Payflow'
-    elif current_namespace and 'welp_desk' in current_namespace:
-        brand_text = 'Desk'
-    else:
-        brand_text = 'App'
-    
     return {
         'show_text': show_text,
-        'home_url': reverse('core:index'),
-        'brand_text': brand_text,
+        'current_namespace': current_namespace,
     }
 
 @register.inclusion_tag('components/core/nav-link.html')
@@ -60,68 +56,93 @@ def nav_link(link, icon, label, current_view=None, always_show_label=False):
         'always_show_label': always_show_label,
     }
 
-@register.inclusion_tag('components/core/logout.html')
-def logout_link(user=None, active=False):
-    """
-    Componente de enlace de logout
-    
-    Args:
-        user (User): Usuario actual
-        active (bool): Si el enlace está activo
-    
-    Returns:
-        dict: Contexto para el template
-    """
-    return {
-        'user': user,
-        'active': active,
-    }
-
 @register.inclusion_tag('components/core/separator.html')
-def separator(custom_classes=""):
+def separator():
     """
-    Componente separador para navbar
+    Componente de separador visual
+    
+    Returns:
+        dict: Contexto para el template
+    """
+    return {}
+
+@register.inclusion_tag('components/core/logout-link.html')
+def logout_link(user):
+    """
+    Componente de enlace de cierre de sesión
     
     Args:
-        custom_classes (str): Clases CSS adicionales
+        user (User): Usuario autenticado
     
     Returns:
         dict: Contexto para el template
     """
     return {
-        'custom_classes': custom_classes,
+        'user': user
     }
 
-
-@register.inclusion_tag('components/core/button.html')
-def button(text, variant='primary', href=None, icon=None, onclick=None, type='button', target=None, disabled=False, extra_classes=""):
+@register.inclusion_tag('components/core/treemap.html')
+def treemap_component(items, field_name, selected_values=None, clear_enabled=True):
     """
-    Componente de botón genérico
+    Componente de mapa de árbol para selección múltiple
     
     Args:
-        text (str): Texto del botón
-        variant (str): Variante del botón (primary, secondary, success, danger, cancel, minimal)
-        href (str): URL si es un enlace
-        icon (str): Clases CSS del ícono
-        onclick (str): Código JavaScript para el evento click
-        type (str): Tipo del botón (button, submit, reset)
-        target (str): Target del enlace (_blank, etc.)
-        disabled (bool): Si el botón está deshabilitado
-        extra_classes (str): Clases CSS adicionales
+        items (list): Lista de items a mostrar
+        field_name (str): Nombre del campo del formulario
+        selected_values (list): Valores seleccionados
+        clear_enabled (bool): Si mostrar el botón de limpiar
+    
+    Returns:
+        dict: Contexto para el template
+    """
+    if selected_values is None:
+        selected_values = []
+    
+    return {
+        'items': items,
+        'field_name': field_name,
+        'selected_values': selected_values,
+        'clear_enabled': clear_enabled,
+    }
+
+@register.inclusion_tag('components/core/loading-spinner.html')
+def loading_spinner(text=None, size='md'):
+    """
+    Componente de spinner de carga
+    
+    Args:
+        text (str): Texto opcional a mostrar
+        size (str): Tamaño del spinner ('sm', 'md', 'lg')
     
     Returns:
         dict: Contexto para el template
     """
     return {
         'text': text,
-        'variant': variant,
-        'href': href,
+        'size': size,
+    }
+
+@register.inclusion_tag('components/core/app-wide-button.html')
+def app_wide_button(url, icon, title, description, variant='primary'):
+    """
+    Componente de botón grande para aplicaciones
+    
+    Args:
+        url (str): URL de destino
+        icon (str): Clases CSS del ícono
+        title (str): Título del botón
+        description (str): Descripción
+        variant (str): Variante de estilo ('primary', 'secondary')
+    
+    Returns:
+        dict: Contexto para el template
+    """
+    return {
+        'url': url,
         'icon': icon,
-        'onclick': onclick,
-        'type': type,
-        'target': target,
-        'disabled': disabled,
-        'extra_classes': extra_classes,
+        'title': title,
+        'description': description,
+        'variant': variant,
     }
 
 @register.inclusion_tag('components/core/status-badge.html')
@@ -150,34 +171,19 @@ def status_badge(status, label=None, variant=None, system='desk'):
         'system': system,
     }
 
-@register.inclusion_tag('components/core/select-field.html')
-def select_field(field, help_text=None):
+@register.inclusion_tag('components/core/theme-selector.html')
+def theme_selector(show_text=False, style='button'):
     """
-    Componente de campo de selección minimalista
+    Componente de selector de tema multi-theme
     
     Args:
-        field (forms.Field): Campo de formulario Django
-        help_text (str): Texto de ayuda adicional
+        show_text (bool): Si mostrar el texto del tema junto al ícono
+        style (str): Estilo del selector ('button', 'dropdown')
     
     Returns:
         dict: Contexto para el template
     """
     return {
-        'field': field,
-        'help_text': help_text,
-    }
-
-@register.inclusion_tag('components/core/select-fields-body.html')
-def select_fields_body(form):
-    """
-    Componente de cuerpo de campos de formulario con título, descripción, monto y archivos
-    
-    Args:
-        form (forms.Form): Formulario Django con los campos necesarios
-    
-    Returns:
-        dict: Contexto para el template
-    """
-    return {
-        'form': form,
+        'show_text': show_text,
+        'style': style,
     }

@@ -1,16 +1,16 @@
-<div class="brand-logo flex items-center h-full">
-    <a href="{{ home_url }}" 
-       class="brand-logo-link flex pt-2 items-center justify-center h-full font-brand font-bold text-3xl tracking-wide text-white/95 hover:text-white no-underline transition-all duration-300 hover:brightness-105">
-        {% if show_text %}
-            <span class="brand-text hidden min-[30rem]:inline mr-0.5 text-white/95 hover:text-white transition-colors duration-300">Welp</span>
-        {% endif %}
-        <div class="relative">
-            <i class="brand-icon-glow absolute left-0 top-0 text-4xl fa fa-headset translate-x-[-0.5] translate-y-[0.5] opacity-50 text-white"></i>
-            <i class="brand-icon-glow absolute left-0 top-0 text-4xl fa fa-headset translate-x-[-0.5] translate-y-[0.5] opacity-20 text-white"></i>
-            <i class="brand-icon-main relative text-4xl fa fa-headset translate-x-[-0.5] translate-y-[-0.5] icon-glow drop-shadow-sm text-white"></i>
-        </div>
-        {% if show_text %}
-            <span class="brand-text hidden min-[30rem]:inline ml-0.5 text-white/95 hover:text-white transition-colors duration-300">{{ brand_text }}</span>
-        {% endif %}
-    </a>
-</div> 
+<!-- Componente de logo de la marca -->
+<a href="{% url 'core:index' %}" class="brand-logo-link flex items-center text-white no-underline">
+    <i class="fa fa-headset text-2xl mr-2 icon-glow"></i>
+    
+    {% if show_text %}
+        <span class="font-brand text-2xl font-bold hidden sm:inline">
+            {% if current_namespace == 'welp_desk' %}
+                Welp<span class="text-blue-200">Desk</span>
+            {% elif current_namespace == 'welp_payflow' %}
+                Welp<span class="text-green-200">Payflow</span>
+            {% else %}
+                Welp<span class="text-yellow-200">App</span>
+            {% endif %}
+        </span>
+    {% endif %}
+</a> 

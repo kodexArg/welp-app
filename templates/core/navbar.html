@@ -18,11 +18,13 @@
                 {% endif %}
                 {% nav_link "core:index" "fa fa-home" "Inicio" current_view=request.resolver_match.view_name %}
                 {% separator %}
+                {% theme_selector show_text=False %}
+                {% separator %}
                 {% logout_link user=user %}
                 
             {% comment %} Navbar específico para Welp Payflow {% endcomment %}
             {% elif request.resolver_match.namespace == 'welp_payflow' %}
-                {% nav_link "welp_payflow:create" "fa fa-plus" "Solicitar" current_view=request.resolver_match.view_name %}
+                {% nav_link "welp_payflow:create" "fa fa-plus" "Crear" current_view=request.resolver_match.view_name %}
                 {% separator %}
                 {% nav_link "welp_payflow:list" "fa fa-list" "Ver" current_view=request.resolver_match.view_name %}
                 {% separator %}
@@ -32,24 +34,31 @@
                 {% endif %}
                 {% nav_link "core:index" "fa fa-home" "Inicio" current_view=request.resolver_match.view_name %}
                 {% separator %}
+                {% theme_selector show_text=False %}
+                {% separator %}
                 {% logout_link user=user %}
                 
-            {% comment %} Navbar general (Core o sin namespace específico) {% endcomment %}
-            {% else %}
-                {% nav_link "welp_desk:index" "fa fa-headset" "WelpDesk" current_view=request.resolver_match.view_name %}
-                {% separator %}
-                {% nav_link "welp_payflow:index" "fa fa-user-check" "Welp Payflow" current_view=request.resolver_match.view_name %}
-                {% separator %}
-                {% if user.is_staff %}
-                    {% nav_link "core:dev" "fa fa-tools" "Dev" current_view=request.resolver_match.view_name %}
-                    {% separator %}
-                {% endif %}
+            {% comment %} Navbar específico para Dev {% endcomment %}
+            {% elif request.resolver_match.view_name == 'core:dev' %}
                 {% nav_link "core:index" "fa fa-home" "Inicio" current_view=request.resolver_match.view_name %}
+                {% separator %}
+                {% theme_selector show_text=False %}
+                {% separator %}
+                {% logout_link user=user %}
+                
+            {% comment %} Navbar general {% endcomment %}
+            {% else %}
+                {% nav_link "core:index" "fa fa-home" "Inicio" current_view=request.resolver_match.view_name %}
+                {% separator %}
+                {% theme_selector show_text=False %}
                 {% separator %}
                 {% logout_link user=user %}
             {% endif %}
         {% else %}
-            {% nav_link "core:login" "fa fa-sign-in" "INGRESAR" current_view=request.resolver_match.view_name %}
+            {% nav_link "core:login" "fa fa-sign-in-alt" "Ingresar" current_view=request.resolver_match.view_name %}
+            {% separator %}
+            {% theme_selector show_text=False %}
         {% endif %}
     </div>
+    
 </nav> 

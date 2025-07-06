@@ -1,0 +1,27 @@
+<!-- Componente de selector de tema -->
+<div class="theme-selector relative">
+    <!-- Botón toggle para cambiar entre temas -->
+    <button 
+        type="button"
+        class="theme-toggle-button"
+        data-theme-toggle
+        title="Cambiar tema (Ctrl+Shift+T)"
+    >
+        <span class="theme-icon">🔥</span>
+        {% if show_text %}
+            <span class="theme-text ml-2">Abyss</span>
+        {% endif %}
+    </button>
+    
+    <!-- Dropdown selector alternativo (oculto por defecto) -->
+    {% if style == 'dropdown' %}
+    <div class="theme-dropdown" data-theme-selector>
+        <select class="form-select text-sm">
+            <option value="default">🔥 Abyss</option>
+            <option value="desk">🌊 Desk</option>
+            <option value="payflow">🌿 Payflow</option>
+            <option value="dark">🌙 Dark</option>
+        </select>
+    </div>
+    {% endif %}
+</div> 

@@ -1,0 +1,10 @@
+<!-- Componente de enlace de cierre de sesión -->
+<form method="post" action="{% url 'core:logout' %}" class="inline">
+    {% csrf_token %}
+    <button type="submit" 
+            class="px-3 py-2 text-sm font-medium text-white hover:text-gray-200 transition-colors duration-200 flex items-center"
+            title="Cerrar sesión">
+        <i class="fa fa-sign-out-alt mr-2 md:mr-1"></i>
+        <span class="hidden md:inline">Salir</span>
+    </button>
+</form> 

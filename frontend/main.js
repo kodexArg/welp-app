@@ -21,3 +21,4 @@ document.addEventListener('DOMContentLoaded', function() {
 // Importar componentes que se necesitan en todas las páginas
 import './js/logout.js'
 import './js/dev-content.js'
+import './js/theme-selector.js'

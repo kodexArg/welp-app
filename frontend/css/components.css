@@ -657,4 +657,51 @@
         @apply text-primary font-[var(--font-p)];
     }
 
+    /* ======================================================================
+       COMPONENTE THEME SELECTOR
+       ====================================================================== */
+    
+    .theme-selector {
+        @apply relative;
+    }
+
+    .theme-toggle-button {
+        @apply bg-transparent text-white border border-transparent;
+        @apply hover:bg-white hover:bg-opacity-20 hover:border-white hover:border-opacity-30;
+        @apply transition-all duration-200;
+        @apply flex items-center px-3 py-2 rounded-md font-medium text-sm;
+    }
+
+    .theme-toggle-button:hover {
+        @apply text-white;
+    }
+
+    .theme-toggle-button[data-current-theme="desk"] {
+        @apply text-blue-100;
+    }
+
+    .theme-toggle-button[data-current-theme="payflow"] {
+        @apply text-green-100;
+    }
+
+    .theme-toggle-button[data-current-theme="dark"] {
+        @apply text-gray-100;
+    }
+
+    .theme-dropdown {
+        @apply absolute right-0 top-full mt-2 w-48 z-50;
+        @apply bg-white border border-border rounded-md shadow-lg;
+    }
+
+    .theme-dropdown select {
+        @apply w-full bg-transparent border-none text-text;
+        @apply focus:outline-none focus:ring-0;
+    }
+
+    @media (max-width: 640px) {
+        .theme-text {
+            @apply hidden;
+        }
+    }
+
 } 
