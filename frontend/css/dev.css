@@ -6,23 +6,23 @@
 
     .section-title {
         @apply text-xl font-medium mb-6;
-        @apply text-[var(--theme-text-secondary)] font-[var(--font-ui)];
+        @apply text-text font-[var(--font-ui)];
     }
 
     .hierarchy-flow {
         @apply flex flex-wrap items-center justify-center gap-3 p-6 rounded-lg;
-        @apply bg-[var(--theme-primary-light)] border border-[var(--theme-border)];
+        @apply bg-surface border border-border;
     }
 
     .flow-item {
         @apply px-4 py-2 rounded-md font-medium;
-        @apply bg-[var(--theme-surface)] text-[var(--theme-text)] border border-[var(--theme-border)];
+        @apply bg-white text-text border border-border;
         @apply font-[var(--font-ui)];
     }
 
     .flow-arrow {
         @apply text-lg font-bold;
-        @apply text-[var(--theme-text-secondary)];
+        @apply text-primary;
     }
 
     @media (max-width: 640px) {
@@ -49,8 +49,8 @@
 
     .workflow-section-title {
         @apply text-lg font-semibold mb-4 text-center;
-        @apply text-[var(--theme-text)] font-[var(--font-ui)];
-        @apply pb-2 border-b-2 border-[var(--theme-primary-light)];
+        @apply text-text font-[var(--font-ui)];
+        @apply pb-2 border-b-2 border-border;
     }
 
     .workflow-step {
@@ -78,7 +78,7 @@
 
     .actor-tag {
         @apply text-xs font-medium py-1 px-3 rounded-full border;
-        @apply bg-[var(--theme-primary-light)] text-[var(--theme-primary)] border-[var(--theme-primary)];
+        @apply bg-surface text-primary border-primary;
         @apply font-[var(--font-ui)];
     }
 
@@ -144,12 +144,12 @@
     }
 
     .tag-udn:hover {
-        @apply bg-yellow-200 border-amber-400 cursor-pointer;
+        @apply bg-yellow-200 border-accent cursor-pointer;
         @apply -translate-y-px;
     }
 
     .tag-sector:hover {
-        @apply bg-[var(--theme-primary)] text-[var(--theme-surface)];
+        @apply bg-primary text-white;
         @apply cursor-pointer -translate-y-px;
     }
 
@@ -160,13 +160,13 @@
 
     .tag-sector-mini {
         @apply py-1 px-2 rounded-full border;
-        @apply bg-[var(--theme-primary-light)] text-[var(--theme-primary)] border-[var(--theme-primary)];
+        @apply bg-surface text-primary border-primary;
         @apply font-[var(--font-ui)] text-[10px] opacity-80;
     }
 
     .tag-udn-mini {
         @apply py-1 px-2 rounded-full border;
-        @apply bg-yellow-100 text-amber-600 border-yellow-300;
+        @apply bg-yellow-100 text-accent border-yellow-300;
         @apply font-[var(--font-ui)] text-[10px];
     }
 
@@ -184,7 +184,7 @@
 
     .category-separator {
         @apply h-px my-4;
-        @apply bg-[var(--theme-border)] opacity-30;
+        @apply bg-border opacity-30;
     }
 
     .sector-list {
@@ -201,7 +201,7 @@
 
     .sector-separator {
         @apply h-px my-4;
-        @apply bg-[var(--theme-border)] opacity-50;
+        @apply bg-border opacity-50;
     }
 
     .dev-nav-container {
@@ -210,25 +210,29 @@
 
     .dev-nav-button {
         @apply w-full p-6 rounded-lg border-2 cursor-pointer;
-        @apply bg-[var(--theme-surface)] border-[var(--theme-border)] text-[var(--theme-text)];
+        @apply bg-white text-text border border-border text-primary;
         @apply transition-all duration-300 ease-in-out;
         @apply flex items-center gap-4 justify-between;
     }
 
+    .dev-nav-button:hover {
+        @apply bg-bg border-border shadow-sm;
+    }
+
     .dev-nav-button.active {
-        @apply bg-[var(--theme-primary)] text-[var(--theme-surface)] border-[var(--theme-primary)] shadow-lg;
+        @apply bg-secondary text-white border-secondary shadow-lg;
     }
 
     .dev-nav-button.active .dev-nav-icon {
-        @apply bg-[var(--theme-surface)] text-[var(--theme-primary)] scale-110;
+        @apply bg-surface text-secondary scale-110;
     }
 
     .dev-nav-button.active .dev-nav-title {
-        @apply text-[var(--theme-surface)] font-semibold;
+        @apply text-white font-semibold;
     }
 
     .dev-nav-button.active .dev-nav-description {
-        @apply text-[var(--theme-surface)];
+        @apply text-white;
     }
 
     .dev-nav-main {
@@ -241,31 +245,30 @@
 
     .dev-nav-title {
         @apply text-lg font-medium mb-1;
-        @apply text-[var(--theme-text)] font-[var(--font-ui)];
-        @apply transition-theme;
+        @apply text-text font-[var(--font-ui)];
+        @apply pb-2 border-b-2 border-border;
     }
 
     .dev-nav-description {
         @apply text-sm;
-        @apply text-[var(--theme-text-secondary)] font-[var(--font-p)];
-        @apply transition-theme;
+        @apply text-primary font-[var(--font-p)];
     }
 
     .dev-nav-icon {
         @apply w-12 h-12 flex items-center justify-center rounded-lg;
-        @apply bg-[var(--theme-primary)] text-[var(--theme-surface)];
+        @apply bg-surface text-secondary;
         @apply text-2xl;
         @apply transition-all duration-300;
     }
 
     .dev-nav-toggle {
         @apply flex items-center justify-center w-8 h-8;
-        @apply text-[var(--theme-text-secondary)];
+        @apply text-primary;
         @apply transition-all duration-300;
     }
 
     .dev-nav-button.active .dev-nav-toggle {
-        @apply text-[var(--theme-surface)];
+        @apply text-white;
     }
 
     .dev-nav-button.active .dev-nav-toggle i {
@@ -285,12 +288,11 @@
     }
 
     .dev-content-area {
-        @apply transition-theme;
     }
 
     .dev-content-area:not(:empty) {
         @apply p-6 rounded-lg shadow-sm;
-        @apply bg-[var(--theme-surface)] border border-[var(--theme-border)];
+        @apply bg-white border border-border;
     }
 
     .dev-content-area.wl-dev-htmx-content {
@@ -306,8 +308,7 @@
 
     .dev-content-placeholder {
         @apply text-center py-8;
-        @apply text-[var(--theme-text-secondary)] font-[var(--font-ui)];
-        @apply transition-theme;
+        @apply text-primary font-[var(--font-ui)];
     }
 
 }

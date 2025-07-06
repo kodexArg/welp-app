@@ -22,41 +22,9 @@
         filter: brightness(1.2) drop-shadow(0 0 18px white);
     }
 
-    .brand-icon-main.theme-change {
-        transform: scale(0.99);
-        transition: transform 50ms ease;
-    }
-
     @media (prefers-reduced-motion: reduce) {
         .icon-glow {
             @apply animate-none;
         }
     }
-
-    .theme-navbar {
-        @apply bg-[var(--navbar-bg)];
-        @apply transition-theme;
-    }
-    
-    .theme-navbar a {
-        @apply text-[var(--navbar-link-text)];
-        @apply transition-colors duration-300 ease-linear;
-    }
-    
-    .theme-navbar a:hover {
-        @apply text-[var(--navbar-link-hover)];
-    }
-    
-    .theme-navbar a.active {
-        @apply text-[var(--navbar-link-active)];
-    }
-    
-    .theme-navbar .brand-text {
-        @apply text-[var(--navbar-brand-text)];
-    }
-    
-    .theme-navbar .brand-accent {
-        @apply text-[var(--navbar-brand-accent)];
-    }
-
 }

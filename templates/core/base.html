@@ -28,7 +28,7 @@
     {% block styles %}{% endblock %}
 </head>
 
-<body data-namespace="{{ request.resolver_match.namespace|default:'core' }}">
+<body>
     <header>
         {% block header %}
             {% include "core/navbar.html" %}

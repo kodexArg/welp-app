@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', function() {
     const brandLogos = document.querySelectorAll('.brand-logo');
     
@@ -13,15 +12,5 @@ document.addEventListener('DOMContentLoaded', function() {
                 iconElement.classList.remove('hover-effect');
             });
         }
-    });
-    
-    document.addEventListener('themeChanged', function(event) {
-        const brandIcons = document.querySelectorAll('.brand-icon-main');
-        brandIcons.forEach(icon => {
-            icon.classList.add('theme-change');
-            setTimeout(() => {
-                icon.classList.remove('theme-change');
-            }, 50);
-        });
     });
 }); 

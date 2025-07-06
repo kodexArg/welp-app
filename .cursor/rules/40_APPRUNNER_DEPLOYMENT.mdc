@@ -1,9 +1,7 @@
 ---
-description: Reglas básicas para despliegue con AWS AppRunner  
-globs: ["apprunner.yaml", ".github/workflows/**/*"]  
+description: Reglas básicas para despliegue con AWS AppRunner
 alwaysApply: false
 ---
-
 # AppRunner Deployment
 
 - La rama de producción es `prod`: cualquier _push_ a `prod` activara el workflow de despliega en AWS AppRunner.  

@@ -35,7 +35,7 @@
     }
 
     .text-gradient {
-        background: linear-gradient(135deg, var(--theme-primary), var(--theme-accent));
+        background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -43,7 +43,7 @@
 
     .border-gradient {
         @apply border-2 border-transparent;
-        background: linear-gradient(var(--theme-surface), var(--theme-surface)), linear-gradient(135deg, var(--theme-primary), var(--theme-accent));
+        background: linear-gradient(white, white), linear-gradient(135deg, var(--color-primary), var(--color-accent));
         background-clip: padding-box, border-box;
     }
     
@@ -54,7 +54,7 @@
     .button-primary {
         @apply px-6 py-2 rounded-lg font-medium border-none cursor-pointer;
         @apply uppercase tracking-wide font-[var(--font-ui)];
-        @apply bg-[var(--theme-primary)] text-[var(--theme-surface)];
+        @apply bg-primary text-white;
         @apply button-effects;
     }
 
@@ -67,12 +67,12 @@
 
     .button-secondary {
         @apply px-6 py-2 rounded-lg font-medium border-2 cursor-pointer;
-        @apply bg-transparent text-[var(--theme-primary)] border-[var(--theme-primary)];
+        @apply bg-transparent text-primary border-primary;
         @apply button-effects;
     }
 
     .button-secondary:hover {
-        @apply bg-[var(--theme-primary)] text-[var(--theme-surface)];
+        @apply bg-primary text-white;
     }
 
     .button-secondary:disabled {
@@ -80,12 +80,12 @@
         @apply hover:scale-100 hover:brightness-100;
         @apply active:scale-100;
         @apply transition-none;
-        @apply hover:bg-transparent hover:text-[var(--theme-primary)];
+        @apply hover:bg-transparent hover:text-primary;
     }
     
     .button-success {
         @apply px-6 py-2 rounded-lg font-medium border-none cursor-pointer;
-        @apply bg-green-600 text-[var(--theme-surface)];
+        @apply bg-green-600 text-white;
         @apply button-effects;
     }
 
@@ -98,7 +98,7 @@
 
     .button-danger {
         @apply px-6 py-2 rounded-lg font-medium border-none cursor-pointer;
-        @apply bg-red-600 text-[var(--theme-surface)];
+        @apply bg-red-600 text-white;
         @apply button-effects;
     }
 
@@ -116,12 +116,12 @@
 
     .button-cancel {
         @apply px-6 py-2 rounded-lg font-medium border-2 cursor-pointer;
-        @apply bg-transparent text-[var(--theme-accent)] border-[var(--theme-accent)];
+        @apply bg-transparent text-accent border-accent;
         @apply button-effects;
     }
 
     .button-cancel:hover {
-        @apply bg-[var(--theme-accent)] text-[var(--theme-surface)];
+        @apply bg-accent text-white;
     }
 
     .button-cancel:disabled {
@@ -129,17 +129,17 @@
         @apply hover:scale-100 hover:brightness-100;
         @apply active:scale-100;
         @apply transition-none;
-        @apply hover:bg-transparent hover:text-[var(--theme-accent)];
+        @apply hover:bg-transparent hover:text-accent;
     }
 
     .button-minimal {
         @apply px-4 py-2 rounded-lg font-medium border-none cursor-pointer;
-        @apply bg-transparent text-[var(--theme-primary)] border border-transparent;
+        @apply bg-transparent text-primary border border-transparent;
         @apply button-effects-minimal;
     }
 
     .button-minimal:hover {
-        @apply bg-[var(--theme-primary-light)] border-[var(--theme-border)];
+        @apply bg-surface border-border;
     }
 
     .button-minimal:disabled {
@@ -161,20 +161,19 @@
 
     .form-label {
         @apply block text-sm font-medium mb-2;
-        @apply text-[var(--theme-text)] font-[var(--font-ui)];
-        @apply transition-theme;
+        @apply text-text font-[var(--font-ui)];
     }
 
     .form-input {
         @apply w-full px-3 py-2 border rounded-lg;
-        @apply bg-[var(--theme-surface)] text-[var(--theme-text)] border-[var(--theme-border)];
+        @apply bg-white text-text border-border;
         @apply font-[var(--font-ui)];
-        @apply transition-form;
+        @apply transition-all duration-200;
     }
 
     .form-input:focus {
-        @apply outline-none ring-2 border-[var(--theme-primary)];
-        --tw-ring-color: var(--theme-primary-light);
+        @apply outline-none ring-2 border-primary;
+        --tw-ring-color: rgb(226 232 240);
     }
 
     .form-input:invalid {
@@ -183,21 +182,21 @@
 
     .form-textarea {
         @apply w-full px-3 py-2 border rounded-lg resize-y min-h-[100px];
-        @apply bg-[var(--theme-surface)] text-[var(--theme-text)] border-[var(--theme-border)];
+        @apply bg-white text-text border-border;
         @apply font-[var(--font-ui)];
-        @apply transition-form;
+        @apply transition-all duration-200;
     }
 
     .form-textarea:focus {
-        @apply outline-none ring-2 border-[var(--theme-primary)];
-        --tw-ring-color: var(--theme-primary-light);
+        @apply outline-none ring-2 border-primary;
+        --tw-ring-color: rgb(226 232 240);
     }
 
     .form-select {
         @apply w-full px-3 py-2 border rounded-lg cursor-pointer pr-10;
-        @apply bg-[var(--theme-surface)] text-[var(--theme-text)] border-[var(--theme-border)];
+        @apply bg-white text-text border-border;
         @apply font-[var(--font-ui)];
-        @apply transition-form;
+        @apply transition-all duration-200;
         background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
         background-position: right 0.5rem center;
         background-repeat: no-repeat;
@@ -205,23 +204,22 @@
     }
 
     .form-select:focus {
-        @apply outline-none ring-2 border-[var(--theme-primary)];
-        --tw-ring-color: var(--theme-primary-light);
+        @apply outline-none ring-2 border-primary;
+        --tw-ring-color: rgb(226 232 240);
     }
 
     .tag {
         @apply text-xs font-medium py-1 px-1 rounded-full leading-none whitespace-nowrap border-2;
         @apply font-[var(--font-ui)];
-        @apply transition-theme;
     }
 
     .tag-udn {
-        @apply bg-yellow-100 text-amber-600 border-amber-300;
+        @apply bg-yellow-100 text-accent border-accent;
     }
 
     .tag-sector {
         @apply text-xs font-medium py-1 px-1 rounded-full leading-none whitespace-nowrap border-2;
-        @apply bg-[var(--theme-primary-light)] text-[var(--theme-text)] border-[var(--theme-primary)];
+        @apply bg-surface text-text border-primary;
     }
 
     .tag-category {
@@ -233,7 +231,7 @@
     }
     
     .tag-pressed {    
-        @apply bg-[var(--theme-primary-light)] text-[var(--theme-text)] border-[var(--theme-primary)];
+        @apply bg-surface text-text border-primary;
     }
 
     .status {
@@ -322,26 +320,24 @@
 
     .card {
         @apply rounded-lg shadow-md;
-        @apply bg-[var(--theme-surface)] border border-[var(--theme-border)];
+        @apply bg-white border border-border;
         @apply card-hover-lift;
     }
 
     .card-header {
         @apply px-6 py-4 border-b;
-        @apply border-[var(--theme-border)] text-[var(--theme-text)];
-        @apply transition-theme;
+        @apply border-border text-text;
     }
 
     .card-body {
         @apply px-6 py-4;
-        @apply text-[var(--theme-text-secondary)];
-        @apply transition-theme;
+        @apply text-primary;
     }
 
     .card-footer {
         @apply px-6 py-4 border-t;
-        @apply border-[var(--theme-border)] bg-[var(--theme-primary-light)];
-        @apply transition-theme;
+        @apply border-border bg-surface;
+
     }
 
     .alert {
@@ -350,7 +346,7 @@
     }
 
     .alert-info {
-        @apply bg-[var(--theme-primary-light)] border-[var(--theme-primary)] text-[var(--theme-text)];
+        @apply bg-surface border-primary text-text;
     }
 
     .alert-success {
@@ -367,7 +363,7 @@
 
     .app-card {
         @apply rounded-lg shadow-md overflow-hidden;
-        @apply bg-[var(--theme-surface)] border border-[var(--theme-border)];
+        @apply bg-white border border-border;
         @apply app-hover-scale;
     }
 
@@ -383,7 +379,7 @@
     .app-icon {
         @apply flex items-center justify-center text-white text-2xl pl-3;
         @apply w-20 h-20 min-w-20;
-        background: linear-gradient(135deg, var(--theme-primary), var(--theme-primary-dark));
+        background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
     }
 
     .app-icon.dev {
@@ -399,7 +395,7 @@
     }
 
     .app-icon.profile {
-        background: linear-gradient(135deg, #64748b, #334155);
+        background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
     }
 
     .app-icon.admin {
@@ -407,7 +403,7 @@
     }
 
     .app-icon.login {
-        background: linear-gradient(135deg, #64748b, #334155);
+        background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
     }
 
     .app-content {
@@ -416,8 +412,7 @@
 
     .app-title {
         @apply font-semibold text-lg mb-1;
-        @apply text-[var(--theme-text)] font-[var(--font-ui)];
-        @apply transition-theme;
+        @apply text-text font-[var(--font-ui)];
     }
 
     .app-card:hover .app-title.dev {
@@ -433,7 +428,7 @@
     }
 
     .app-card:hover .app-title.profile {
-        @apply text-slate-600;
+        @apply text-primary;
     }
 
     .app-card:hover .app-title.admin {
@@ -441,12 +436,11 @@
     }
 
     .app-card:hover .app-title.login {
-        @apply text-slate-600;
+        @apply text-primary;
     }
 
     .app-description {
-        @apply text-[var(--theme-text-secondary)] font-[var(--font-p)];
-        @apply transition-theme;
+        @apply text-primary font-[var(--font-p)];
     }
 
     .app-badge {
@@ -457,11 +451,11 @@
         @apply px-2 py-1 text-xs rounded-full;
     }
 
-    .theme-badge.sky {
+    .theme-badge.desk {
         @apply bg-blue-100 text-blue-700;
     }
 
-    .theme-badge.forest {
+    .theme-badge.payflow {
         @apply bg-green-100 text-green-700;
     }
 
@@ -471,7 +465,7 @@
     
     .payflow-action {
         @apply flex flex-col items-center justify-center p-12 rounded-xl;
-        @apply bg-[var(--theme-surface)] border-2 border-[var(--theme-border)];
+        @apply bg-white border-2 border-border;
         @apply text-center no-underline shadow-lg;
         @apply transition-all duration-300;
         @apply hover:scale-[1.02] hover:shadow-xl;
@@ -479,13 +473,13 @@
     }
     
     .payflow-action.primary {
-        @apply border-[var(--theme-primary)] text-[var(--theme-primary)];
-        @apply hover:bg-[var(--theme-primary)] hover:text-[var(--theme-surface)];
+        @apply border-primary text-primary;
+        @apply hover:bg-primary hover:text-white;
     }
     
     .payflow-action.secondary {
-        @apply border-[var(--theme-accent)] text-[var(--theme-accent)];
-        @apply hover:bg-[var(--theme-accent)] hover:text-[var(--theme-surface)];
+        @apply border-accent text-accent;
+        @apply hover:bg-accent hover:text-white;
     }
     
     .payflow-action i {
@@ -501,7 +495,7 @@
     }
     
     .back-link {
-        @apply text-[var(--theme-text-secondary)] hover:text-[var(--theme-primary)];
+        @apply text-primary hover:text-secondary;
         @apply transition-colors duration-200 no-underline;
         @apply font-[var(--font-ui)];
     }
@@ -524,9 +518,8 @@
     }
 
     .select-fields-body {
-        @apply bg-[var(--theme-surface)] rounded-lg border border-[var(--theme-border)] shadow-sm;
+        @apply bg-white rounded-lg border border-border shadow-sm;
         @apply p-6 space-y-6;
-        @apply transition-theme;
     }
     
     .select-fields-body .form-group {
@@ -535,17 +528,16 @@
     
     .select-fields-body label {
         @apply block text-sm font-medium;
-        @apply text-[var(--theme-text)] font-[var(--font-ui)];
-        @apply transition-theme;
+        @apply text-text font-[var(--font-ui)];
     }
     
     .select-fields-body input,
     .select-fields-body textarea {
         @apply w-full px-3 py-2 border rounded-md;
-        @apply bg-[var(--theme-surface)] text-[var(--theme-text)] border-[var(--theme-border)];
-        @apply focus:outline-none focus:ring-2 focus:border-[var(--theme-primary)];
-        @apply transition-form;
-        --tw-ring-color: var(--theme-primary-light);
+        @apply bg-white text-text border-border;
+        @apply focus:outline-none focus:ring-2 focus:border-primary;
+        @apply transition-all duration-200;
+        --tw-ring-color: rgb(226 232 240);
     }
     
     .select-fields-body textarea {
@@ -555,9 +547,9 @@
     .select-fields-body input[type="file"] {
         @apply file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0;
         @apply file:text-sm file:font-medium file:cursor-pointer;
-        @apply file:bg-[var(--theme-primary-light)] file:text-[var(--theme-text)];
-        @apply hover:file:bg-[var(--theme-primary)] hover:file:text-[var(--theme-surface)];
-        @apply file:transition-theme;
+        @apply file:bg-surface file:text-text;
+        @apply hover:file:bg-primary hover:file:text-white;
+        @apply file:transition-all file:duration-200;
     }
 
     .select-field {
@@ -565,17 +557,16 @@
     }
 
     .select-field-container {
-        @apply bg-[var(--theme-surface)] border border-[var(--theme-border)] rounded-lg;
-        @apply transition-theme;
+        @apply bg-white border border-border rounded-lg;
     }
 
     .select-field .loading-state {
-        @apply flex items-center justify-center p-8 text-[var(--theme-text-secondary)];
+        @apply flex items-center justify-center p-8 text-primary;
         @apply font-[var(--font-ui)];
     }
 
     .select-field .help-text {
-        @apply text-xs text-[var(--theme-text-secondary)] mt-1;
+        @apply text-xs text-primary mt-1;
         @apply font-[var(--font-ui)];
     }
 
@@ -587,14 +578,14 @@
     .treemap-toggle-button,
     .treemap-clear-button {
         @apply py-2 px-3 border font-bold text-xs uppercase cursor-pointer;
-        @apply bg-[var(--theme-surface)] border-[var(--theme-border)] text-[var(--theme-text-secondary)];
-        @apply hover:bg-[var(--theme-primary-light)] hover:text-[var(--theme-text)];
-        @apply transition-theme;
+        @apply bg-white border-border text-primary;
+        @apply hover:bg-surface hover:text-text;
+        @apply transition-all duration-200;
         @apply flex-1 min-w-[100px];
     }
 
     .treemap-toggle-button.active {
-        @apply bg-[var(--theme-primary-dark)] border-[var(--theme-primary-dark)] text-[var(--theme-surface)];
+        @apply bg-primary border-primary text-white;
     }
 
     .treemap-clear-button {
@@ -602,7 +593,7 @@
     }
 
     .treemap-clear-button.highlighted {
-        @apply border-[var(--theme-accent)];
+        @apply border-accent;
     }
 
     .treemap-toggle-button.short {
@@ -617,14 +608,10 @@
         @apply basis-36 sm:basis-40;
     }
 
-
-
-
-
     .app-wide-button {
         @apply w-full flex items-center justify-center gap-4 py-8 px-6 rounded-lg border-2 cursor-pointer;
-        @apply bg-[var(--theme-surface)] border-[var(--theme-border)] text-[var(--theme-text)];
-        @apply hover:bg-[var(--theme-primary-light)] hover:border-[var(--theme-primary)];
+        @apply bg-white border-border text-text;
+        @apply hover:bg-surface hover:border-primary;
         @apply transition-all duration-300 ease-in-out;
         @apply min-h-[120px] max-w-md mx-auto;
         @apply no-underline;
@@ -635,13 +622,13 @@
     }
 
     .app-wide-button.primary {
-        @apply bg-[var(--theme-primary)] text-[var(--theme-surface)] border-[var(--theme-primary)];
-        @apply hover:bg-[var(--theme-primary-dark)] hover:border-[var(--theme-primary-dark)];
+        @apply bg-primary text-white border-primary;
+        @apply hover:bg-secondary hover:border-secondary;
     }
 
     .app-wide-button.secondary {
-        @apply bg-transparent border-[var(--theme-primary)] text-[var(--theme-primary)];
-        @apply hover:bg-[var(--theme-primary)] hover:text-[var(--theme-surface)];
+        @apply bg-transparent border-primary text-primary;
+        @apply hover:bg-primary hover:text-white;
     }
 
     .app-wide-button-content {
@@ -653,7 +640,7 @@
     }
 
     .app-wide-button-text {
-        @apply text-lg font-ui transition-theme;
+        @apply text-lg font-ui;
     }
 
     .app-wide-actions {
@@ -662,14 +649,12 @@
 
     .brand-main-title {
         @apply text-4xl font-bold mb-8 text-center;
-        @apply font-[var(--font-brand)] text-[var(--theme-primary-dark)];
-        @apply transition-theme;
+        @apply font-[var(--font-brand)] text-primary;
     }
 
     .brand-subtitle {
         @apply text-center text-lg mb-8;
-        @apply text-[var(--theme-text-secondary)] font-[var(--font-p)];
-        @apply transition-theme;
+        @apply text-primary font-[var(--font-p)];
     }
 
 } 

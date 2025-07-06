@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-bg: var(--background);
+  --color-text: var(--text);
+  --color-accent: var(--accent);
+  --color-surface: var(--surface);
+  --color-border: var(--border);
+}
+
+:root {
+  --primary: 26 12 3;
+  --secondary: 59 28 8;
+  --background: 253 246 238;
+  --text: 26 12 3;
+  --accent: 226 123 44;
+  --surface: 250 232 214;
+  --border: 245 208 173;
+}
+
+[data-theme="desk"] {
+  --primary: 7 18 25;
+  --secondary: 15 35 50;
+  --background: 244 250 253;
+  --text: 7 18 25;
+  --accent: 226 123 44;
+  --surface: 230 241 249;
+  --border: 204 227 243;
+}
+
+[data-theme="payflow"] {
+  --primary: 10 18 10;
+  --secondary: 18 30 18;
+  --background: 232 237 232;
+  --text: 10 18 10;
+  --accent: 226 123 44;
+  --surface: 209 219 209;
+  --border: 163 184 163;
+}

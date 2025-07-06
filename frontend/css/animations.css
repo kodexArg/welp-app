@@ -1,7 +1,3 @@
-@utility transition-theme {
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-}
-
 @utility transition-form {
     transition: border-color 0.2s ease, background-color 0.3s ease, color 0.3s ease;
 }
@@ -9,7 +5,6 @@
 @utility transition-interactive {
     transition: all 0.2s ease;
 }
-
 
 @utility animate-delay-100 {
     animation-delay: 100ms;
@@ -30,7 +25,6 @@
 @utility animate-delay-1000 {
     animation-delay: 1000ms;
 }
-
 
 @utility button-effects {
     @apply hover:scale-[1.05] hover:brightness-110;
@@ -54,21 +48,17 @@
     @apply transition-all duration-300;
 }
 
-
-
 @utility dev-content-slide {
     @apply overflow-hidden;
 }
 
 @utility loading-content {
-    @apply flex items-center justify-center p-8 text-slate-500;
+    @apply flex items-center justify-center p-8 text-primary;
 }
 
 @utility error-content {
     @apply flex items-center justify-center p-8 text-red-500 font-medium;
 }
-
-
 
 @layer components {
     
@@ -267,7 +257,7 @@
         transform: scale(1.05);
     }
     
-    /* Escalado sutil para elementos secundarios */
+    
     .hover-scale-sm:hover {
         transform: scale(1.02);
     }
@@ -290,8 +280,6 @@
         }
     }
 }
-
-
 
 @keyframes wl-dev-slide-down {
     from {
