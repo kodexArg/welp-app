@@ -1,78 +1,85 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #1a0c03;
-  --color-secondary: #3b1c08;
-  --color-bg: #fdf6ee;
-  --color-text: #1a0c03;
-  --color-accent: #e27b2c;
-  --color-surface: #fae8d6;
-  --color-border: #f5d0ad;
+  --color-primary: var(--color-abyss-300);
+  --color-secondary: var(--color-abyss-400);
+  --color-bg: var(--color-abyss-300);
+  --color-text: var(--color-abyss-200);
+  --color-accent: var(--color-abyss-500);
+  --color-surface: var(--color-abyss-500);
+  --color-border: var(--color-abyss-500);
 }
 
 @layer base {
   :root {
-    --primary: 26 12 3;
-    --secondary: 59 28 8;
-    --background: 253 246 238;
-    --text: 26 12 3;
-    --accent: 226 123 44;
-    --surface: 250 232 214;
-    --border: 245 208 173;
+    --primary: var(--color-abyss-500);
+    --secondary: var(--color-abyss-400);
+    --background: var(--color-abyss-600);
+    --text: var(--color-abyss-200);
+    --accent: var(--color-abyss-500);
+    --surface: var(--color-abyss-800);
+    --border: var(--color-abyss-700);
+    --color-primary: var(--color-abyss-500);
+    --color-secondary: var(--color-abyss-400);
+    --color-bg: var(--color-abyss-600);
+    --color-text: var(--color-abyss-200);
+    --color-accent: var(--color-abyss-500);
+    --color-surface: var(--color-abyss-800);
+    --color-border: var(--color-abyss-700);
   }
 
   [data-theme="desk"] {
-    --primary: 7 18 25;
-    --secondary: 15 35 50;
-    --background: 244 250 253;
-    --text: 7 18 25;
-    --accent: 226 123 44;
-    --surface: 230 241 249;
-    --border: 204 227 243;
-    
-    --color-primary: #071219;
-    --color-secondary: #0f2332;
-    --color-bg: #f4fafd;
-    --color-text: #071219;
-    --color-accent: #e27b2c;
-    --color-surface: #e6f1f9;
-    --color-border: #cce3f3;
+    --primary: var(--color-sky-500);
+    --secondary: var(--color-sky-400);
+    --background: var(--color-sky-600);
+    --text: var(--color-sky-200);
+    --accent: var(--color-sky-500);
+    --surface: var(--color-sky-900);
+    --border: var(--color-sky-800);
+
+    --color-primary: var(--color-sky-500);
+    --color-secondary: var(--color-sky-400);
+    --color-bg: var(--color-sky-600);
+    --color-text: var(--color-sky-200);
+    --color-accent: var(--color-sky-500);
+    --color-surface: var(--color-sky-900);
+    --color-border: var(--color-sky-800);
   }
 
   [data-theme="payflow"] {
-    --primary: 10 18 10;
-    --secondary: 18 30 18;
-    --background: 232 237 232;
-    --text: 10 18 10;
-    --accent: 226 123 44;
-    --surface: 209 219 209;
-    --border: 163 184 163;
-    
-    --color-primary: #0a120a;
-    --color-secondary: #121e12;
-    --color-bg: #e8ede8;
-    --color-text: #0a120a;
-    --color-accent: #e27b2c;
-    --color-surface: #d1dbd1;
-    --color-border: #a3b8a3;
+    --primary: var(--color-forest-500);
+    --secondary: var(--color-forest-400);
+    --background: var(--color-forest-300);
+    --text: var(--color-forest-200);
+    --accent: var(--color-forest-500);
+    --surface: var(--color-forest-300);
+    --border: var(--color-forest-800);
+
+    --color-primary: var(--color-forest-500);
+    --color-secondary: var(--color-forest-400);
+    --color-bg: var(--color-forest-300);
+    --color-text: var(--color-forest-200);
+    --color-accent: var(--color-forest-500);
+    --color-surface: var(--color-forest-900);
+    --color-border: var(--color-forest-800);
   }
 
   /* Tema oscuro adicional */
   [data-theme="dark"] {
-    --primary: 226 232 240;
-    --secondary: 203 213 225;
-    --background: 15 23 42;
-    --text: 248 250 252;
-    --accent: 226 123 44;
-    --surface: 30 41 59;
-    --border: 51 65 85;
-    
-    --color-primary: #e2e8f0;
-    --color-secondary: #cbd5e1;
-    --color-bg: #0f172a;
-    --color-text: #f8fafc;
-    --color-accent: #e27b2c;
-    --color-surface: #1e293b;
-    --color-border: #334155;
+    --primary: var(--color-sky-500);
+    --secondary: var(--color-sky-400);
+    --background: var(--color-sky-700);
+    --text: var(--color-sky-100);
+    --accent: var(--color-abyss-500);
+    --surface: var(--color-sky-800);
+    --border: var(--color-sky-700);
+
+    --color-primary: var(--color-sky-500);
+    --color-secondary: var(--color-sky-400);
+    --color-bg: var(--color-sky-700);
+    --color-text: var(--color-sky-100);
+    --color-accent: var(--color-abyss-500);
+    --color-surface: var(--color-sky-800);
+    --color-border: var(--color-sky-700);
   }
 }
