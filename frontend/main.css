@@ -9,6 +9,7 @@
   --font-list: 'Inter', sans-serif;
 }
 
+@import "./css/themes.css";
 @import "./css/variables.css";
 @import "./css/animations.css";
 @import "./css/base.css";
