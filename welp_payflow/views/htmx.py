@@ -50,6 +50,21 @@ def htmx_accounting_category(request, sector):
 
 
 @login_required(login_url='login')
+def htmx_fields_body(request, accounting_category):
+    """Devuelve los campos de detalle (Body) una vez seleccionada la categoría contable"""
+    from ..forms import PayflowTicketCreationForm
+
+    form = PayflowTicketCreationForm()
+    return render(
+        request,
+        'welp_payflow/partials/create/fields-body.html',
+        {
+            'form': form,
+        }
+    )
+
+
+@login_required(login_url='login')
 def htmx_confirm_close_ticket(request, ticket_id):
     """Muestra el modal de confirmación para cerrar un ticket"""
     ticket = get_object_or_404(Ticket, id=ticket_id)

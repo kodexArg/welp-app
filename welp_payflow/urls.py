@@ -7,6 +7,7 @@ from .views.htmx import (
     htmx_accounting_category,
     htmx_list_content,
     htmx_confirm_close_ticket,
+    htmx_fields_body,
 )
 
 app_name = 'welp_payflow'
@@ -22,6 +23,7 @@ urlpatterns += [
     path('htmx/create/udn/', htmx_udn, name='htmx-udn'),
     path('htmx/create/sector/<int:udn>/', htmx_sector, name='htmx-sector'),
     path('htmx/create/accounting-category/<int:sector>/', htmx_accounting_category, name='htmx-accounting-category'),
+    path('htmx/create/fields-body/<int:accounting_category>/', htmx_fields_body, name='htmx-fields-body'),
 ]
 
 # URLs para operaciones HTMX adicionales

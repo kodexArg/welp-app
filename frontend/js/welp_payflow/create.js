@@ -1,5 +1,3 @@
-import '../payflow-create-form.js';
-
 document.addEventListener('DOMContentLoaded', () => {
     const sections = ['sector-container', 'accounting-category-container', 'fields-body-container'];
 
