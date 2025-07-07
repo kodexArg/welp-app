@@ -8,10 +8,6 @@
         src: local('Grandstander Bold'), local('Grandstander-Bold');
     }
     
-    .hidden-container {
-        @apply hidden;
-    }
-
     .font-brand {
         @apply font-bold min-h-[1.2em] leading-[1.2];
         font-family: var(--font-brand);
@@ -35,20 +31,34 @@
     }
 
     .text-gradient {
-        background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+        @apply bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-accent)] bg-clip-text text-transparent;
     }
 
-    .border-gradient {
-        @apply border-2 border-transparent;
-        background: linear-gradient(white, white), linear-gradient(135deg, var(--color-primary), var(--color-accent));
-        background-clip: padding-box, border-box;
-    }
-    
     .radio-button-group {
         @apply flex flex-wrap w-full gap-x-3 gap-y-1.5;
+    }
+
+    /* Asegura que cada contenedor de botón radio ocupe el mismo ancho dentro del grupo */
+    .radio-button-group > div {
+        @apply flex flex-1;
+    }
+
+    /* Estilos base para las etiquetas de los radio buttons */
+    .radio-button {
+        @apply inline-flex items-center justify-center w-full select-none;
+        @apply px-5 py-3 rounded border font-semibold font-[var(--font-ui)];
+        @apply uppercase whitespace-nowrap tracking-wider text-lg;
+        background: var(--color-surface, #f3f4f6);
+        color: var(--color-text, #64748b);
+        border-color: var(--color-border, #cbd5e1);
+        @apply shadow-md transition-all duration-200 cursor-pointer;
+        @apply hover:shadow-lg hover:scale-[1.03] hover:brightness-90;
+        @apply active:scale-95;
+    }
+    .radio-button.peer-checked, .peer:checked + .radio-button {
+        background: var(--color-primary, #166534);
+        color: #fff;
+        border-color: var(--color-primary, #166534);
     }
 
     .button-primary {
@@ -69,6 +79,10 @@
         @apply px-6 py-2 rounded-lg font-medium border-2 cursor-pointer;
         @apply bg-transparent text-primary border-primary;
         @apply button-effects;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
     }
 
     .button-secondary:hover {
@@ -96,19 +110,6 @@
         @apply transition-none;
     }
 
-    .button-danger {
-        @apply px-6 py-2 rounded-lg font-medium border-none cursor-pointer;
-        @apply bg-red-600 text-white;
-        @apply button-effects;
-    }
-
-    .button-danger:disabled {
-        @apply opacity-50 cursor-not-allowed;
-        @apply hover:scale-100 hover:brightness-100;
-        @apply active:scale-100;
-        @apply transition-none;
-    }
-    
     .button-success[disabled] {
         @apply text-zinc-500 cursor-not-allowed opacity-50;
         @apply bg-gray-600;
@@ -149,11 +150,6 @@
         @apply transition-none;
         @apply hover:bg-transparent hover:border-transparent;
     }
-    
-    .button-disabled {
-        @apply text-zinc-500 cursor-not-allowed opacity-50;
-        @apply bg-gray-600;
-    }
 
     .form-group {
         @apply mb-4;
@@ -180,32 +176,12 @@
         @apply border-red-500;
     }
 
-    .form-textarea {
-        @apply w-full px-3 py-2 border rounded-lg resize-y min-h-[100px];
-        @apply bg-white text-text border-border;
-        @apply font-[var(--font-ui)];
-        @apply transition-all duration-200;
-    }
-
-    .form-textarea:focus {
-        @apply outline-none ring-2 border-primary;
-        --tw-ring-color: rgb(226 232 240);
-    }
-
     .form-select {
         @apply w-full px-3 py-2 border rounded-lg cursor-pointer pr-10;
         @apply bg-white text-text border-border;
         @apply font-[var(--font-ui)];
         @apply transition-all duration-200;
-        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
-        background-position: right 0.5rem center;
-        background-repeat: no-repeat;
-        background-size: 1.5em 1.5em;
-    }
-
-    .form-select:focus {
-        @apply outline-none ring-2 border-primary;
-        --tw-ring-color: rgb(226 232 240);
+        /* El ícono de flecha debe agregarse en el template con un elemento SVG, no en el CSS */
     }
 
     .tag {
@@ -262,34 +238,6 @@
         @apply bg-gray-100 text-gray-700;
     }
 
-    .status-solid {
-        @apply text-white font-bold shadow-sm;
-    }
-
-    .status-solid.status-open {
-        @apply bg-red-600 text-white;
-    }
-
-    .status-solid.status-feedback {
-        @apply bg-blue-600 text-white;
-    }
-
-    .status-solid.status-solved {
-        @apply bg-green-600 text-white;
-    }
-
-    .status-solid.status-authorized {
-        @apply bg-green-500 text-white;
-    }
-
-    .status-solid.status-rejected {
-        @apply bg-yellow-500 text-black;
-    }
-
-    .status-solid.status-closed {
-        @apply bg-gray-500 text-white;
-    }
-
     .text-status-open { @apply text-red-700; }
     .text-status-feedback { @apply text-blue-700; }
     .text-status-solved { @apply text-green-700; }
@@ -303,20 +251,6 @@
     .bg-status-authorized { @apply bg-green-50; }
     .bg-status-rejected { @apply bg-yellow-100; }
     .bg-status-closed { @apply bg-gray-100; }
-
-    .border-status-open { @apply border-red-300; }
-    .border-status-feedback { @apply border-blue-300; }
-    .border-status-solved { @apply border-green-300; }
-    .border-status-authorized { @apply border-green-200; }
-    .border-status-rejected { @apply border-yellow-300; }
-    .border-status-closed { @apply border-gray-300; }
-
-    .hover-status-open:hover { @apply bg-red-50 border-red-400; }
-    .hover-status-feedback:hover { @apply bg-blue-50 border-blue-400; }
-    .hover-status-solved:hover { @apply bg-green-50 border-green-400; }
-    .hover-status-authorized:hover { @apply bg-green-100 border-green-300; }
-    .hover-status-rejected:hover { @apply bg-yellow-50 border-yellow-400; }
-    .hover-status-closed:hover { @apply bg-gray-50 border-gray-400; }
 
     .card {
         @apply rounded-lg shadow-md;
@@ -345,16 +279,8 @@
         @apply font-[var(--font-ui)];
     }
 
-    .alert-info {
-        @apply bg-surface border-primary text-text;
-    }
-
     .alert-success {
         @apply bg-green-50 border-green-400 text-green-700;
-    }
-
-    .alert-warning {
-        @apply bg-yellow-50 border-yellow-400 text-yellow-700;
     }
 
     .alert-error {
@@ -379,31 +305,30 @@
     .app-icon {
         @apply flex items-center justify-center text-white text-2xl pl-3;
         @apply w-20 h-20 min-w-20;
-        background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
     }
 
     .app-icon.dev {
-        background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+        @apply bg-gradient-to-br from-violet-500 to-violet-900;
     }
 
     .app-icon.welp-desk {
-        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        @apply bg-gradient-to-br from-blue-500 to-blue-900;
     }
 
     .app-icon.welp-payflow {
-        background: linear-gradient(135deg, #10b981, #047857);
+        @apply bg-gradient-to-br from-emerald-500 to-emerald-900;
     }
 
     .app-icon.profile {
-        background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+        @apply bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-secondary)];
     }
 
     .app-icon.admin {
-        background: linear-gradient(135deg, #f97316, #c2410c);
+        @apply bg-gradient-to-br from-orange-400 to-orange-800;
     }
 
     .app-icon.login {
-        background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+        @apply bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-secondary)];
     }
 
     .app-content {
@@ -445,68 +370,6 @@
 
     .app-badge {
         @apply inline-flex items-center gap-3;
-    }
-
-    .theme-badge {
-        @apply px-2 py-1 text-xs rounded-full;
-    }
-
-    .payflow-actions {
-        @apply grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto my-16;
-    }
-    
-    .payflow-action {
-        @apply flex flex-col items-center justify-center p-12 rounded-xl;
-        @apply bg-white border-2 border-border;
-        @apply text-center no-underline shadow-lg;
-        @apply transition-all duration-300;
-        @apply hover:scale-[1.02] hover:shadow-xl;
-        @apply min-h-[180px];
-    }
-    
-    .payflow-action.primary {
-        @apply border-primary text-primary;
-        @apply hover:bg-primary hover:text-white;
-    }
-    
-    .payflow-action.secondary {
-        @apply border-accent text-accent;
-        @apply hover:bg-accent hover:text-white;
-    }
-    
-    .payflow-action i {
-        @apply text-6xl mb-4;
-    }
-    
-    .payflow-action span {
-        @apply text-2xl font-[var(--font-ui)] leading-tight;
-    }
-    
-    .payflow-back {
-        @apply text-center mt-12;
-    }
-    
-    .back-link {
-        @apply text-primary hover:text-secondary;
-        @apply transition-colors duration-200 no-underline;
-        @apply font-[var(--font-ui)];
-    }
-    
-    .back-link i {
-        @apply mr-2;
-    }
-
-    .form-component {
-        @apply opacity-[0.1] pointer-events-none;
-        @apply transition-opacity duration-300 ease-in-out;
-    }
-
-    .form-component.active {
-        @apply opacity-100 pointer-events-auto;
-    }
-
-    .form-component.active .select-field {
-        @apply opacity-100 pointer-events-auto;
     }
 
     .select-fields-body {

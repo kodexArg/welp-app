@@ -1,6 +1,7 @@
 @layer components {
 
     .brand-logo-link {
+        @apply font-bold;
         font-variation-settings: 'wght' 700;
         font-feature-settings: 'liga' 1;
     }
@@ -15,11 +16,12 @@
     }
 
     .icon-glow {
+        @apply animate-none;
         animation: brief-glow 30s ease-in-out infinite;
     }
 
     .icon-glow.hover-effect {
-        filter: brightness(1.2) drop-shadow(0 0 18px white);
+        @apply brightness-110 drop-shadow-lg;
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -29,7 +31,6 @@
     }
 
     .group > .flex.items-center {
-        transition-property: color, filter;
-        transition-duration: 200ms;
+        @apply transition-colors duration-200;
     }
 }

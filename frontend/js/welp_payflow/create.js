@@ -7,7 +7,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         for (let i = startIndex; i < sections.length; i++) {
             const el = document.getElementById(sections[i]);
-            if (el) el.innerHTML = '';
+            if (el) {
+                el.innerHTML = '';
+                el.style.display = 'none';
+            }
         }
     }
 
@@ -31,4 +34,16 @@ document.addEventListener('DOMContentLoaded', () => {
     if (resetBtn) {
         resetBtn.addEventListener('click', () => window.location.reload());
     }
+
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+            if (mutation.target.innerHTML.trim() !== '') {
+                mutation.target.style.display = '';
+            }
+        });
+    });
+    sections.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) observer.observe(el, { childList: true });
+    });
 }); 
