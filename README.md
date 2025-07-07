@@ -275,3 +275,12 @@ Se requieren los siguientes secretos en AWS Secrets Manager:
 ## Licencia
 
 Este proyecto está licenciado bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para más detalles.
+
+## welp_payflow
+
+Las vistas de welp_payflow están organizadas en el submódulo `welp_payflow/views/`:
+- `views.py`: vistas principales (home, list, create)
+- `htmx.py`: vistas HTMX (por implementar)
+- `others.py`: vistas auxiliares (SelectOptionsView, etc.)
+
+Actualizar imports y rutas según esta estructura.

@@ -5,52 +5,44 @@
 {% block title %}Crear Solicitud - Welp Payflow{% endblock %}
 
 {% block content %}
-<section data-select-options-url="{% url 'welp_payflow:select-options' 'FIELD_TYPE' %}">
+<section>
     <h2>Crear Nueva Solicitud</h2>
-    
-    <form method="post" enctype="multipart/form-data" id="payflow-form">
+
+    <form method="post" enctype="multipart/form-data" hx-target="this" hx-swap="outerHTML" id="payflow-form">
         {% csrf_token %}
-        
-        <div id="component-udn" class="form-component active">
-            {% select_field form.udn %}
+
+        <div id="udn-container"
+             hx-get="{% url 'welp_payflow:htmx-udn' %}"
+             hx-target="#udn-container"
+             hx-swap="outerHTML"
+             hx-trigger="load">
         </div>
-        
-        <div id="component-sector" class="form-component">
-            {% select_field form.sector %}
-        </div>
-        
-        <div id="component-accounting" class="form-component">
-            {% select_field form.accounting_category %}
-        </div>
-        
-        <div id="component-fields-body" class="form-component">
+
+        <div id="sector-container"></div>
+
+        <div id="accounting-category-container"></div>
+
+        <div id="fields-body-container">
             {% select_fields_body form %}
         </div>
-        
+
         {% if form.non_field_errors %}
-            <article>
-                <div class="text-status-open">
-                    {{ form.non_field_errors }}
-                </div>
-            </article>
+        <article>
+            <div class="text-status-open">
+                {{ form.non_field_errors }}
+            </div>
+        </article>
         {% endif %}
-        
-        <div id="component-buttons" class="component-buttons">
-            <a href="{% url 'welp_payflow:index' %}" class="button-secondary">
-                Volver
-            </a>
-            <button type="button" class="button-secondary" id="clear-button">
-                Limpiar
-            </button>
-            <button type="submit" form="payflow-form" class="button-primary" id="submit-button" disabled>
-                Crear Solicitud
-            </button>
+
+        <div class="component-buttons">
+            <a href="{% url 'welp_payflow:index' %}" class="button-secondary">Volver</a>
+            <button type="button" class="button-secondary" id="reset-form-btn">Limpiar</button>
+            <button type="submit" form="payflow-form" class="button-primary">Crear Solicitud</button>
         </div>
     </form>
 </section>
 {% endblock %}
 
 {% block scripts %}
-{% vite_asset 'frontend/js/select-field-treemap.js' %}
-{% vite_asset 'frontend/js/payflow-create-form.js' %}
+    {% vite_asset 'frontend/js/welp_payflow/create.js' %}
 {% endblock %} 

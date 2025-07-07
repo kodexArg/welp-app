@@ -25,8 +25,11 @@
         </div>
         
         <div id="component-attachments" class="form-group">
-            <label>Archivos Adjuntos</label>
-            <input type="file" name="attachments" multiple>
+            <label>{{ form.attachments.label }}</label>
+            {{ form.attachments }}
+            {% if form.attachments.errors %}
+                <div class="text-status-open">{{ form.attachments.errors }}</div>
+            {% endif %}
         </div>
     </div>
 </article>

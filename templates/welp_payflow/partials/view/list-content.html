@@ -1,0 +1,46 @@
+{% for ticket in tickets %}
+    <div hx-get="{% url 'ticket-item' ticket.id %}"
+         hx-trigger="load"
+         hx-swap="outerHTML"
+         hx-target="this"
+         class="htmx-indicator">
+    </div>
+{% endfor %}
+
+{% if page_obj.has_other_pages %}
+<div id="pagination" class="flex flex-row justify-center items-center w-full gap-x-2">
+    {% if page_obj.has_previous %}
+        {% component "button"
+            label="Primera"
+            color="button-secondary"
+            icon="fa fa-angle-double-left"
+            action="?page=1{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}"
+            target="#list-container" / %}
+        {% component "button"
+            label="Anterior"
+            color="button-secondary"
+            icon="fa fa-angle-left"
+            action="?page={{ page_obj.previous_page_number }}{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}"
+            target="#list-container" / %}
+    {% endif %}
+
+    <span class="text-gray-700">
+        <span>Página</span> <span> {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+    </span>
+
+    {% if page_obj.has_next %}
+        {% component "button"
+            label="Siguiente"
+            color="button-secondary"
+            icon="fa fa-angle-right"
+            action="?page={{ page_obj.next_page_number }}{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}"
+            target="#list-container" / %}
+        {% component "button"
+            label="Última"
+            color="button-secondary"
+            icon="fa fa-angle-double-right"
+            action="?page={{ page_obj.paginator.num_pages }}{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}"
+            target="#list-container" / %}
+    {% endif %}
+</div>
+{% endif %}
