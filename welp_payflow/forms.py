@@ -54,15 +54,12 @@ class PayflowTicketCreationForm(forms.Form):
             'required': 'Este campo es obligatorio.',
         }
     )
-    estimated_amount = forms.DecimalField(
-        max_digits=12, 
-        decimal_places=2, 
-        required=False, 
+    estimated_amount = forms.IntegerField(
+        required=False,
         label="Monto Estimado (opcional)",
         error_messages={
             'invalid': 'Ingrese un número válido.',
-            'max_digits': 'Monto demasiado grande.',
-            'max_decimal_places': 'Máximo 2 decimales.',
+            'max_value': 'Monto demasiado grande.',
             'min_value': 'No puede ser negativo.'
         }
     )
@@ -106,12 +103,8 @@ class PayflowTicketCreationForm(forms.Form):
 
     def clean_title(self):
         title = self.cleaned_data.get('title', '').strip()
-        if title and len(title) < 10:
-            raise ValidationError('Mínimo 10 caracteres.')
         return title
 
     def clean_description(self):
         description = self.cleaned_data.get('description', '').strip()
-        if description and len(description) < 20:
-            raise ValidationError('Mínimo 20 caracteres.')
         return description 

@@ -19,19 +19,17 @@
 
         <div id="fields-body-container"></div>
 
-        {% if form.non_field_errors %}
-        <article>
-            <div class="text-status-open">
-                {{ form.non_field_errors }}
-            </div>
-        </article>
-        {% endif %}
 
         <div class="component-buttons">
-            <a href="{% url 'welp_payflow:index' %}" class="button-secondary">Volver</a>
             <button type="button" class="button-secondary" id="reset-form-btn">Limpiar</button>
             <button type="submit" form="payflow-form" class="button-primary">Crear Solicitud</button>
         </div>
+        
+        {% if form.non_field_errors %}
+        <div class="component-buttons mx-auto mt-4">
+            {{ form.non_field_errors }}
+        </div>
+        {% endif %}
     </form>
 </section>
 {% endblock %}

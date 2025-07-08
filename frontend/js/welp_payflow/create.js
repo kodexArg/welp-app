@@ -52,13 +52,16 @@ document.addEventListener('DOMContentLoaded', () => {
         clearContainers(1);
     }
     
+    function reloadPage() {
+        window.location.reload();
+    }
+    
     // Reset button
     const resetButton = document.getElementById('reset-form-btn');
     if (resetButton) {
         resetButton.addEventListener('click', function(e) {
             e.preventDefault();
-            resetAll();
-            htmx.ajax('GET', '/payflow/htmx/create/udn/', '#udn-container');
+            reloadPage();
         });
     }
     
