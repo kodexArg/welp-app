@@ -1,20 +1,5 @@
 @layer components {
     
-    @font-face {
-        font-family: 'Grandstander-local';
-        font-style: normal;
-        font-weight: 700;
-        font-display: block;
-        src: local('Grandstander Bold'), local('Grandstander-Bold');
-    }
-    
-    .font-brand {
-        @apply font-bold min-h-[1.2em] leading-[1.2];
-        font-family: var(--font-brand);
-        font-synthesis: none;
-        -webkit-font-smoothing: antialiased;
-    }
-
     .font-ui {
         @apply uppercase tracking-wide;
         font-family: var(--font-ui);
@@ -22,16 +7,15 @@
         -webkit-font-smoothing: antialiased;
     }
 
-    .brand-text-override {
-        @apply font-bold tracking-[0.025em];
-        font-family: var(--font-brand) !important;
-        text-transform: none !important;
-        font-feature-settings: 'liga' 1 !important;
-        -webkit-font-smoothing: antialiased;
-    }
-
     .text-gradient {
         @apply bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-accent)] bg-clip-text text-transparent;
+    }
+
+    .title-gradient {
+        background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
     }
 
     .radio-button-group {
@@ -46,19 +30,19 @@
     /* Estilos base para las etiquetas de los radio buttons */
     .radio-button {
         @apply inline-flex items-center justify-center w-full select-none;
-        @apply px-5 py-3 rounded border font-semibold font-[var(--font-ui)];
+        @apply px-5 py-3 rounded border font-semibold font-ui;
         @apply uppercase whitespace-nowrap tracking-wider text-lg;
-        background: var(--color-surface, #f3f4f6);
-        color: var(--color-text, #64748b);
-        border-color: var(--color-border, #cbd5e1);
+        background: var(--color-surface);
+        color: var(--color-text);
+        border-color: var(--color-border);
         @apply shadow-md transition-all duration-200 cursor-pointer;
         @apply hover:shadow-lg hover:scale-[1.03] hover:brightness-90;
         @apply active:scale-95;
     }
     .radio-button.peer-checked, .peer:checked + .radio-button {
-        background: var(--color-primary, #166534);
-        color: #fff;
-        border-color: var(--color-primary, #166534);
+        background: var(--color-primary);
+        color: var(--color-light);
+        border-color: var(--color-primary);
     }
 
     .button-primary {
@@ -499,16 +483,6 @@
 
     .app-wide-actions {
         @apply grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto my-12;
-    }
-
-    .brand-main-title {
-        @apply text-4xl font-bold mb-8 text-center;
-        @apply font-[var(--font-brand)] text-primary;
-    }
-
-    .brand-subtitle {
-        @apply text-center text-lg mb-8;
-        @apply text-primary font-[var(--font-p)];
     }
 
     @media (max-width: 640px) {

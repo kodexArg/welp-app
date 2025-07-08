@@ -1,11 +1,7 @@
-<a href="#" class="logout-link group relative inline-flex items-center justify-center">
-    <div class="logout-container relative transition-all duration-300 ease-in-out">
-        {% if show_text %}
-            <span class="logout-text group-hover:text-[var(--theme-text)] transition-colors duration-300">
-                {{ text }}
-            </span>
-        {% endif %}
-        <i class="logout-icon fa fa-sign-out-alt ml-2 text-[var(--theme-text-secondary)] group-hover:text-[var(--theme-text)] transition-colors duration-300"></i>
+<a href="#" onclick="event.preventDefault();document.getElementById('logout-form').submit();" class="group relative inline-flex items-center justify-center px-1.5 py-1 font-ui transition-colors duration-200 no-underline">
+    <div class="flex items-center text-[var(--navbar-link-text)] group-hover:text-[var(--navbar-link-hover)] transition-colors duration-200">
+        <i class="text-xl sm:text-2xl md:text-xl fa fa-sign-out-alt align-middle"></i>
+        <span class="ml-1.5 text-xl font-semibold align-middle tracking-wide">Salir</span>
     </div>
 </a>
 
