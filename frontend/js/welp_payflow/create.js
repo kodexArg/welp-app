@@ -1,49 +1,61 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const sections = ['sector-container', 'accounting-category-container', 'fields-body-container'];
-
-    function resetAfter(id) {
-        const startIndex = sections.indexOf(id);
-        if (startIndex === -1) return;
-
-        for (let i = startIndex; i < sections.length; i++) {
-            const el = document.getElementById(sections[i]);
-            if (el) {
-                el.innerHTML = '';
-                el.style.display = 'none';
-            }
-        }
-    }
-
-    document.addEventListener('click', (e) => {
-        if (e.target.matches('input[type="radio"]')) {
-            switch (e.target.name) {
-                case 'udn':
-                    resetAfter('sector-container');
-                    break;
-                case 'sector':
-                    resetAfter('accounting-category-container');
-                    break;
-                case 'accounting_category':
-                    resetAfter('fields-body-container');
-                    break;
-            }
-        }
-    });
-
-    const resetBtn = document.getElementById('reset-form-btn');
-    if (resetBtn) {
-        resetBtn.addEventListener('click', () => window.location.reload());
-    }
-
-    const observer = new MutationObserver((mutations) => {
-        mutations.forEach((mutation) => {
-            if (mutation.target.innerHTML.trim() !== '') {
-                mutation.target.style.display = '';
+    
+    const containers = ['udn-container', 'sector-container', 'accounting-category-container', 'fields-body-container'];
+    
+    function hideFrom(id = 0) {
+        containers.forEach((containerId, index) => {
+            if (index > id) {
+                document.getElementById(containerId).style.display = 'none';
             }
         });
+    }
+    
+    function clearFrom(id = 0) {
+        containers.forEach((containerId, index) => {
+            if (index >= id) {
+                const container = document.getElementById(containerId);
+                const radios = container.querySelectorAll('input[type="radio"]');
+                radios.forEach(radio => {
+                    radio.checked = false;
+                });
+            }
+        });
+    }
+
+    function showExact(id = 0) {
+        console.log(`Contenedor: ${containers[id]}`);
+        document.getElementById(containers[id]).style.display = '';
+    }
+    
+    function showUdn() {
+        const udnContainer = document.getElementById('udn-container');
+        udnContainer.style.display = '';
+        
+        const loadUrl = udnContainer.getAttribute('data-url');
+        if (loadUrl) {
+            fetch(loadUrl)
+                .then(response => response.text())
+                .then(html => {
+                    udnContainer.innerHTML = html;
+                });
+        }
+    }
+    
+    // Al iniciar: ocultar TODO, limpiar TODO, visibilizar UDN
+    hideFrom();
+    clearFrom();
+    showUdn();
+    
+    // Al hacer click: detectar contenedor y mostrarlo en messagebox
+    document.addEventListener('click', (e) => {
+        if (e.target && e.target.matches('input[type="radio"]')) {
+            const containerId = e.target.closest('[id$="-container"]')?.id;
+            const containerIndex = containers.indexOf(containerId);
+            
+            clearFrom(containerIndex + 1);
+            hideFrom(containerIndex + 1);
+            showExact(containerIndex + 1);
+        }
     });
-    sections.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) observer.observe(el, { childList: true });
-    });
-}); 
+    
+});

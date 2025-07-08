@@ -82,7 +82,6 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 100%;
     }
 
     .button-secondary:hover {
@@ -510,6 +509,12 @@
     .brand-subtitle {
         @apply text-center text-lg mb-8;
         @apply text-primary font-[var(--font-p)];
+    }
+
+    @media (max-width: 640px) {
+        .button-secondary {
+            width: 100%;
+        }
     }
 
 } 
