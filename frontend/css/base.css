@@ -15,7 +15,7 @@
 
     nav {
         @apply flex items-center justify-between w-full h-full px-3 py-1;
-        @apply bg-navbar-bg;
+        @apply bg-[var(--navbar-bg)] text-[var(--navbar-text)];
     }
 
     main {
@@ -31,19 +31,19 @@
 
     body::-webkit-scrollbar {
         @apply w-4;
-        background: var(--color-navbar-bg);
+        background: var(--navbar-bg);
         -webkit-appearance: none;
     }
 
     body::-webkit-scrollbar-track {
-        background: var(--color-navbar-bg);
+        background: var(--navbar-bg);
         margin-top: var(--header-height);
     }
 
     body::-webkit-scrollbar-thumb {
         @apply rounded-full border-4;
         background: var(--color-primary);
-        border-color: var(--color-navbar-bg);
+        border-color: var(--navbar-bg);
     }
 
     body::-webkit-scrollbar-thumb:hover {

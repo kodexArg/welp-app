@@ -2,13 +2,14 @@
 
 @theme {
   --color-primary: var(--color-forest-700);
-  --color-secondary: var(--color-forest-100);
+  --color-secondary: var(--color-forest-600);
   --color-bg: var(--color-forest-50);
-  --color-navbar-bg: var(--color-forest-400);
   --color-text: var(--color-forest-400);
   --color-accent: var(--color-earth-400);
   --color-surface: var(--color-forest-100);
   --color-border: var(--color-forest-300);
+  
+
 
   /* Tipografía */
   --font-brand: 'Grandstander-local', 'Grandstander', 'Comic Sans MS', 'Marker Felt', cursive;
