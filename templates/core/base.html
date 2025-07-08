@@ -1,6 +1,7 @@
 {% load static %}
 {% load django_vite %}
 {% load django_htmx %}
+{% load core_tags %}
 
 <!DOCTYPE html>
 <html lang="es">
@@ -35,6 +36,10 @@
         {% endblock %}
     </header>
 
+    <div hx-get="{% url 'core:notifications' %}" hx-trigger="load" hx-target="this" hx-swap="outerHTML">
+        {% notifications %}
+    </div>
+
     <aside>
         {% block aside %}{% endblock %}
     </aside>
@@ -51,5 +56,4 @@
     
     {% block scripts %}{% endblock %}
 </body>
-
 </html> 
