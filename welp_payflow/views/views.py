@@ -1,9 +1,9 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import FormView
 from django.contrib import messages
 from django.db import transaction
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 
 from ..models import Ticket, Message, Attachment
 from ..forms import PayflowTicketCreationForm
@@ -25,10 +25,18 @@ def list_tickets(request):
     return render(request, 'welp_payflow/list.html', context)
 
 
+def success_view(request, ticket_id):
+    """Vista para mostrar el éxito de creación de ticket"""
+    ticket = get_object_or_404(Ticket, id=ticket_id)
+    context = {
+        'ticket': ticket,
+    }
+    return render(request, 'welp_payflow/success.html', context)
+
+
 class CreateTicketView(LoginRequiredMixin, FormView):
     template_name = 'welp_payflow/create.html'
     form_class = PayflowTicketCreationForm
-    success_url = reverse_lazy('welp_payflow:list')
     
     def get_form_kwargs(self):
         return super().get_form_kwargs()
@@ -61,8 +69,9 @@ class CreateTicketView(LoginRequiredMixin, FormView):
                 
                 messages.success(self.request, f'Solicitud #{ticket.id} creada exitosamente')
                 
+                # Redirigir a la página de éxito con el ID del ticket
+                return redirect('welp_payflow:success', ticket_id=ticket.id)
+                
         except Exception as e:
             messages.error(self.request, 'Error al crear la solicitud')
-            return self.form_invalid(form)
-        
-        return super().form_valid(form) 
+            return self.form_invalid(form) 
