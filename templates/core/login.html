@@ -13,17 +13,6 @@
             </div>
     
             <div class="card-body">
-                {% if messages %}
-                    <div class="mb-4">
-                    {% for message in messages %}
-                        {% if message.tags == 'error' or message.tags == 'success' %}
-                            <div class="{% if message.tags == 'error' %}alert-error{% elif message.tags == 'success' %}alert-success{% endif %} text-sm p-3 rounded-md">
-                                {{ message }}
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-                    </div>
-                {% endif %}
                 
                 <div class="form-group">
                     <label for="username" class="form-label">USUARIO</label>

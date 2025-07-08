@@ -1,0 +1,18 @@
+{% if messages %}
+<div id="notification-container" class="fixed top-[var(--header-height)] left-0 right-0 z-20 flex justify-center">
+    <div class="w-[var(--breakpoint-md)] max-w-[var(--breakpoint-md)]">
+    {% for message in messages %}
+        <div class="notification alert flex justify-between items-start {% if semaforo == 'forest' %}bg-forest-200 border-forest-200 text-forest-700{% elif semaforo == 'earth' %}bg-earth-200 border-earth-200 text-earth-700{% else %}bg-sky-200 border-sky-200 text-sky-700{% endif %}" data-duration="20">
+            <span>{{ message }}</span>
+            <button type="button" class="notification-close ml-2 flex items-center">
+                <i class="fa fa-times"></i>
+                <span class="notification-countdown ml-1 text-xs"></span>
+            </button>
+        </div>
+    {% endfor %}
+    </div>
+</div>
+{% else %}
+<div id="notification-container"></div>
+{% endif %}
+
