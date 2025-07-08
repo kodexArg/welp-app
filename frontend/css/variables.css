@@ -64,52 +64,43 @@
     font-display: swap;
 }
 
+/* Paleta EARTH (antes abyss) - invertida para seguir la lógica Tailwind */
 :root {
-    --font-brand: 'Grandstander-local', 'Grandstander', 'Comic Sans MS', 'Marker Felt', cursive;
-    --font-p: 'Inter', sans-serif;
-    --font-ui: 'Roboto Condensed', 'Arial Narrow', 'Liberation Sans Narrow', sans-serif;
-    --font-mono: 'Roboto Mono', monospace;
-    --font-title: 'Nunito', sans-serif;
+    --color-earth-50: #fae8d6;
+    --color-earth-100: #f5d0ad;
+    --color-earth-200: #f0b17d;
+    --color-earth-300: #eb9651;
+    --color-earth-400: #e27b2c;
+    --color-earth-500: #c45e1d;
+    --color-earth-600: #954616;
+    --color-earth-700: #68310f;
+    --color-earth-800: #3b1c08;
+    --color-earth-900: #1a0c03;
+    --color-earth-950: #120802;
 
-    --header-height: 8vh;
-    --aside-width: 16rem;
-    --breakpoint-sm: 640px;
-    --breakpoint-md: 768px;
-    --breakpoint-lg: 1024px;
+    /* Paleta SKY - invertida */
+    --color-sky-50: #e6f1f9;
+    --color-sky-100: #cce3f3;
+    --color-sky-200: #a9d1ea;
+    --color-sky-300: #83bddf;
+    --color-sky-400: #5ca8d6;
+    --color-sky-500: #3d88be;
+    --color-sky-600: #2e6996;
+    --color-sky-700: #1f4764;
+    --color-sky-800: #0f2332;
+    --color-sky-900: #071219;
+    --color-sky-950: #03090f;
 
-    --color-abyss-50: #1a0c03;
-    --color-abyss-100: #3b1c08;
-    --color-abyss-200: #68310f;
-    --color-abyss-300: #954616;
-    --color-abyss-400: #c45e1d;
-    --color-abyss-500: #e27b2c;
-    --color-abyss-600: #eb9651;
-    --color-abyss-700: #f0b17d;
-    --color-abyss-800: #f5d0ad;
-    --color-abyss-900: #fae8d6;
-    --color-abyss-950: #fdf6ee;
-
-    --color-sky-50: #071219;
-    --color-sky-100: #0f2332;
-    --color-sky-200: #1f4764;
-    --color-sky-300: #2e6996;
-    --color-sky-400: #3d88be;
-    --color-sky-500: #5ca8d6;
-    --color-sky-600: #83bddf;
-    --color-sky-700: #a9d1ea;
-    --color-sky-800: #cce3f3;
-    --color-sky-900: #e6f1f9;
-    --color-sky-950: #f4fafd;
-
-    --color-forest-50: #0a120a;
-    --color-forest-100: #121e12;
-    --color-forest-200: #1a291a;
-    --color-forest-300: #243824;
-    --color-forest-400: #304c30;
+    /* Paleta FOREST - invertida */
+    --color-forest-50: #e8ede8;
+    --color-forest-100: #d1dbd1;
+    --color-forest-200: #a3b8a3;
+    --color-forest-300: #759575;
+    --color-forest-400: #4a724a;
     --color-forest-500: #3d5f3d;
-    --color-forest-600: #4a724a;
-    --color-forest-700: #759575;
-    --color-forest-800: #a3b8a3;
-    --color-forest-900: #d1dbd1;
-    --color-forest-950: #e8ede8;
+    --color-forest-600: #304c30;
+    --color-forest-700: #243824;
+    --color-forest-800: #1a291a;
+    --color-forest-900: #121e12;
+    --color-forest-950: #0a120a;
 } 

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!-- Componente de enlace de navegación -->
 <a href="{% url link %}" 
    class="nav-link px-4 py-2 text-sm font-medium transition-all duration-300 flex items-center rounded-lg
@@ -10,4 +11,32 @@
     {% else %}
         <span class="hidden md:inline font-medium">{{ label }}</span>
     {% endif %}
+=======
+<a href="{% url link %}" class="group relative inline-flex items-center justify-center 
+          px-1.5 py-1 
+          font-ui 
+          transition-colors duration-200 
+          no-underline">
+    <div class="flex items-center 
+                text-[var(--navbar-link-text)] 
+                group-hover:text-[var(--navbar-link-hover)] 
+                transition-colors duration-200
+                {% if active %}
+                    !text-[var(--navbar-link-active)] 
+                    translate-x-[-0.05rem] translate-y-[0.05rem]
+                {% endif %}">
+        {% if label != 'WelpDesk' and label != 'Welp Payflow' %}
+        <i class="text-xl sm:text-2xl md:text-xl
+                  {{ icon }} 
+                  align-middle
+                  "></i>
+        {% endif %}
+        <span class="ml-1.5 text-xl font-semibold align-middle
+                     {% if label == 'WelpDesk' or label == 'Welp Payflow' %}hidden md:inline{% endif %}
+                     tracking-wide
+                     {% if label == 'WelpDesk' or label == 'Welp Payflow' %}brand-text-override{% endif %}">
+            {{ label }}
+        </span>
+    </div>
+>>>>>>> main
 </a> 

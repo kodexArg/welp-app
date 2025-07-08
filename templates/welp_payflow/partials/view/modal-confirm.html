@@ -1,0 +1,112 @@
+<!-- Modal de confirmación con Tailwind -->
+<div id="modal-{{ ticket.id }}" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+  <div class="w-full max-w-md bg-white rounded-lg shadow-xl transform transition-all p-6 mx-4 items-center justify-center">
+    <!-- Encabezado del modal -->
+    <div class="mb-4">
+      <h3 class="text-lg font-semibold text-gray-800">Cerrar Ticket</h3>
+    </div>
+    
+    <!-- Contenido del modal -->
+    <div class="mb-6">
+      <p class="text-gray-600">¿Está seguro que desea cerrar este ticket?</p>
+    </div>
+    
+    <!-- Botones de acción -->
+    <div class="flex gap-6 items-center justify-end">
+      <form method="post" action="{% url 'close-ticket' ticket.id %}">
+        {% csrf_token %}
+        {% if request.GET.from == 'detail' %}
+          <!-- Si viene de la vista detallada, redirigir a la lista tras el cierre -->
+          <button 
+            class="button-success"
+            data-action="confirm"
+            hx-post="{% url 'close-ticket' ticket.id %}"
+            hx-push-url="{% url 'ticket-list' %}"
+            hx-redirect="{% url 'ticket-list' %}"
+            hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+            <i class="fa fa-check mr-1"></i>Confirmar
+          </button>
+        {% else %}
+          <!-- Si viene de la lista, actualizar el ticket en la página -->
+          <button 
+            class="button-success"
+            data-action="confirm"
+            hx-post="{% url 'close-ticket' ticket.id %}"
+            hx-target="#ticket-{{ ticket.id }}"
+            hx-swap="outerHTML"
+            hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+            <i class="fa fa-check mr-1"></i>Confirmar
+          </button>
+        {% endif %}
+      </form>
+
+      <button 
+        class="button-cancel"
+        data-action="cancel">
+        <i class="fa fa-times mr-1"></i>Cancelar
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    const modalId = "modal-{{ ticket.id }}";
+    const modal = document.getElementById(modalId);
+    
+    // Bloquear scroll
+    document.body.style.overflow = 'hidden';
+    
+    // Función para cerrar el modal
+    function closeModal() {
+      if (modal) {
+        modal.remove();
+        document.body.style.overflow = 'auto';
+        document.removeEventListener('keydown', handleEscKey);
+        document.body.removeEventListener('htmx:afterRequest', handleAfterRequest);
+      }
+    }
+    
+    // Manejador de tecla ESC
+    function handleEscKey(e) {
+      if (e.key === 'Escape') closeModal();
+    }
+    
+    // Manejador para eventos HTMX completados
+    function handleAfterRequest(evt) {
+      {% if request.GET.from == 'detail' %}
+        // Si viene de la vista detallada, redirigir a la lista de tickets
+        if (evt.detail.successful) {
+          window.location.href = "{% url 'ticket-list' %}";
+        }
+      {% else %}
+        // En otros casos, solo cerrar el modal
+        setTimeout(closeModal, 200);
+      {% endif %}
+    }
+    
+    // Eventos de clic en el modal
+    modal.addEventListener('click', function(e) {
+      // Cerrar al hacer clic en el fondo (fuera del contenido del modal)
+      if (e.target === modal) {
+        closeModal();
+      }
+      
+      // Cerrar al hacer clic en el botón cancelar
+      if (e.target.closest('[data-action="cancel"]')) {
+        closeModal();
+      }
+      
+      // Actualizar estado del botón confirmar cuando se hace clic
+      if (e.target.closest('[data-action="confirm"]')) {
+        const confirmBtn = e.target.closest('[data-action="confirm"]');
+        confirmBtn.disabled = true;
+        confirmBtn.innerHTML = '<i class="fa fa-circle-notch fa-spin mr-1"></i>Procesando...';
+      }
+    });
+    
+    // Registrar eventos
+    document.addEventListener('keydown', handleEscKey);
+    document.body.addEventListener('htmx:afterRequest', handleAfterRequest);
+  })();
+</script>

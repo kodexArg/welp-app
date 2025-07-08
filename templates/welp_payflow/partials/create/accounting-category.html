@@ -1,0 +1,18 @@
+{% load payflow_tags %}
+
+{% if categories.count > 1 %}
+    <article id="accounting-category-container">
+        <label>Categoría Contable:</label>
+        <div class="radio-button-group">
+            {% for category in categories %}
+                {% radio_button target='accounting_category' id=category.pk label=category.name next_target='fields-body' %}
+            {% endfor %}
+        </div>
+    </article>
+{% elif categories.count == 1 %}
+    {% with categories|first as category %}
+        <input type="hidden" name="accounting_category" value="{{ category.pk }}" />
+    {% endwith %}
+{% else %}
+    <p>No hay categorías contables disponibles para el sector seleccionado.</p>
+{% endif %} 

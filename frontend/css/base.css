@@ -15,7 +15,7 @@
 
     nav {
         @apply flex items-center justify-between w-full h-full px-3 py-1;
-        @apply bg-primary;
+        @apply bg-[var(--navbar-bg)] text-[var(--navbar-text)];
     }
 
     main {
@@ -31,21 +31,23 @@
 
     body::-webkit-scrollbar {
         @apply w-4;
-        @apply bg-secondary;
+        background: var(--navbar-bg);
         -webkit-appearance: none;
     }
 
     body::-webkit-scrollbar-track {
-        @apply bg-surface mt-[var(--header-height)];
+        background: var(--navbar-bg);
+        margin-top: var(--header-height);
     }
 
     body::-webkit-scrollbar-thumb {
-        @apply rounded-full border-2;
-        @apply bg-secondary border-surface;
+        @apply rounded-full border-4;
+        background: var(--color-primary);
+        border-color: var(--navbar-bg);
     }
 
     body::-webkit-scrollbar-thumb:hover {
-        @apply bg-primary;
+        background: var(--color-accent);
     }
 
     h2, h3, h4 {
@@ -187,12 +189,5 @@
     pre {
         @apply p-3 mb-4 rounded overflow-x-auto;
         @apply bg-primary text-white;
-    }
-
-    .text-gradient {
-        background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
     }
 } 

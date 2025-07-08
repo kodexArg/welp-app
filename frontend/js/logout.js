@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', function() {
     const logoutLinks = document.querySelectorAll('.logout-link');
     

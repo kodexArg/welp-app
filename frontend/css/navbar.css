@@ -1,6 +1,18 @@
+@theme {
+    /* Navbar */
+    --navbar-bg: var(--color-forest-600);
+    --navbar-text: var(--color-forest-50);
+    --navbar-active: var(--color-forest-50);
+    --navbar-hover: var(--color-forest-50);
+    --navbar-link-text: var(--color-forest-50);
+    --navbar-link-hover: var(--color-forest-100);
+    --navbar-link-active: white;
+}
+
 @layer components {
 
     .brand-logo-link {
+        @apply font-bold;
         font-variation-settings: 'wght' 700;
         font-feature-settings: 'liga' 1;
     }
@@ -15,16 +27,21 @@
     }
 
     .icon-glow {
+        @apply animate-none;
         animation: brief-glow 30s ease-in-out infinite;
     }
 
     .icon-glow.hover-effect {
-        filter: brightness(1.2) drop-shadow(0 0 18px white);
+        @apply brightness-110 drop-shadow-lg;
     }
 
     @media (prefers-reduced-motion: reduce) {
         .icon-glow {
             @apply animate-none;
         }
+    }
+
+    .group > .flex.items-center {
+        @apply transition-colors duration-200;
     }
 }

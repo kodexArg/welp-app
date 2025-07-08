@@ -1,0 +1,24 @@
+{% load payflow_tags %}
+
+{% if sectors.count > 1 %}
+    <article id="sector-container">
+        <label>Sector:</label>
+        <div class="radio-button-group">
+            {% for sector in sectors %}
+                {% radio_button target='sector' id=sector.pk label=sector.name next_target='accounting-category' %}
+            {% endfor %}
+        </div>
+    </article>
+{% elif sectors.count == 1 %}
+    {% with sectors|first as sector %}
+        <input type="hidden" name="sector" value="{{ sector.pk }}" />
+        <div
+            hx-get="{% url 'htmx-accounting-category' sector=sector.pk %}"
+            hx-target="#accounting-category-container"
+            hx-swap="outerHTML"
+            hx-trigger="load"
+        ></div>
+    {% endwith %}
+{% else %}
+     <p>No hay sectores disponibles para la UDN seleccionada.</p>
+{% endif %}

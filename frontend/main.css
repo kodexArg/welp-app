@@ -1,4 +1,11 @@
 @import "tailwindcss";
+@import "./css/variables.css";
+@import "./css/navbar.css";
+@import "./css/themes.css";
+@import "./css/animations.css";
+@import "./css/base.css";
+@import "./css/components.css";
+@import "./css/dev.css";
 
 @theme {
   --font-brand: 'Grandstander-local', 'Grandstander', 'Comic Sans MS', 'Marker Felt', cursive;
@@ -9,6 +16,7 @@
   --font-list: 'Inter', sans-serif;
 }
 
+<<<<<<< HEAD
 @import "./css/variables.css";
 @import "./css/themes.css";
 @import "./css/base.css";
@@ -16,6 +24,8 @@
 @import "./css/components.css";
 @import "./css/animations.css";
 @import "./css/dev.css";
+=======
+>>>>>>> main
 
 /* 
  * Utilidades @utility disponibles para @apply:
