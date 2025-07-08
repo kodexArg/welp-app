@@ -1,39 +1,135 @@
 {% extends "core/base.html" %}
 
-{% block title %}Solicitudes - Welp Payflow{% endblock %}
+{% block title %}Solicitudes - Welp Payflow (Modo Desarrollo){% endblock %}
 
 {% block content %}
 <section>
     <div class="space-y-6">
         <div class="flex items-center justify-between">
-            <h3 class="text-lg font-medium">Solicitudes</h3>
+            <div>
+                <h3 class="text-lg font-medium text-red-600">🚧 MODO DESARROLLO - Lista Completa de Tickets</h3>
+                <p class="text-sm text-gray-600">Vista detallada de todos los modelos para desarrollo</p>
+            </div>
             <a href="{% url 'welp_payflow:create' %}" class="button-primary">Nueva Solicitud</a>
         </div>
         
-        <!-- Lista de solicitudes -->
-        <div class="space-y-4">
-            {% for request in requests %}
-            <div class="card">
-                <div class="card-body">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <h4 class="font-medium">{{ request.description }}</h4>
-                            <p class="text-sm text-gray-600">
-                                ${{ request.amount }} - {{ request.created_at|date:"d/M/Y" }}
-                            </p>
+        <!-- Lista completa de tickets -->
+        <div class="space-y-8">
+            {% for ticket in tickets %}
+            <div class="border-2 border-red-200 bg-gray-50 p-6 rounded-lg">
+                <!-- Información del Ticket -->
+                <div class="bg-white p-4 rounded border-l-4 border-blue-500 mb-4">
+                    <h4 class="text-lg font-bold text-blue-700 mb-3">📋 TICKET #{{ ticket.id }}</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                        <div><strong>Título:</strong> {{ ticket.title }}</div>
+                        <div><strong>Estado Actual:</strong> 
+                            <span class="px-2 py-1 rounded text-white" style="background-color: {{ ticket.status|default:'#dc2626' }}">
+                                {{ ticket.status|default:'open'|upper }}
+                            </span>
                         </div>
-                        <div class="flex items-center space-x-2">
-                            <span class="status status-{{ request.status }}">{{ request.get_status_display }}</span>
-                            <a href="#" class="text-blue-600 hover:text-blue-800">Ver</a>
+                        <div><strong>UDN:</strong> {{ ticket.udn.name }}</div>
+                        <div><strong>Sector:</strong> {{ ticket.sector.name }}</div>
+                        <div><strong>Categoría Contable:</strong> {{ ticket.accounting_category.name }}</div>
+                        <div><strong>Monto Estimado:</strong> 
+                            {% if ticket.estimated_amount %}${{ ticket.estimated_amount }}{% else %}No especificado{% endif %}
                         </div>
+                        <div><strong>Fecha Creación:</strong> {{ ticket.created_on|date:"d/M/Y H:i" }}</div>
+                        <div><strong>Creado Por:</strong> 
+                            {% if ticket.created_by %}{{ ticket.created_by.username }} ({{ ticket.created_by.first_name }} {{ ticket.created_by.last_name }}){% else %}N/A{% endif %}
+                        </div>
+                        <div><strong>¿Activo?:</strong> {{ ticket.is_active|yesno:"Sí,No" }}</div>
+                        <div><strong>¿Final?:</strong> {{ ticket.is_final|yesno:"Sí,No" }}</div>
                     </div>
+                </div>
+
+                <!-- Mensajes del Ticket -->
+                <div class="space-y-3">
+                    <h5 class="text-md font-semibold text-green-700 mb-2">💬 MENSAJES ({{ ticket.messages.count }} total)</h5>
+                    {% for message in ticket.messages.all %}
+                    <div class="bg-white p-4 rounded border-l-4 border-green-500 ml-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm mb-3">
+                            <div><strong>Mensaje ID:</strong> {{ message.id }}</div>
+                            <div><strong>Estado en este mensaje:</strong> 
+                                <span class="px-2 py-1 rounded text-white text-xs" style="background-color: {{ message.status|default:'#dc2626' }}">
+                                    {{ message.status|upper }}
+                                </span>
+                            </div>
+                            <div><strong>Usuario:</strong> 
+                                {% if message.user %}{{ message.user.username }} ({{ message.user.first_name }} {{ message.user.last_name }}){% else %}Usuario eliminado{% endif %}
+                            </div>
+                            <div><strong>Fecha Creación:</strong> {{ message.created_on|date:"d/M/Y H:i:s" }}</div>
+                            <div><strong>Fecha Reportada:</strong> 
+                                {% if message.reported_on %}{{ message.reported_on|date:"d/M/Y H:i:s" }}{% else %}N/A{% endif %}
+                            </div>
+                            <div><strong>Adjuntos:</strong> {{ message.attachments.count }} archivo(s)</div>
+                        </div>
+                        
+                        <!-- Cuerpo del mensaje -->
+                        <div class="mb-3">
+                            <strong>Contenido del mensaje:</strong>
+                            <div class="bg-gray-100 p-3 rounded mt-1 whitespace-pre-wrap">{{ message.body|default:"(Sin contenido)" }}</div>
+                        </div>
+
+                        <!-- Adjuntos del mensaje -->
+                        {% if message.attachments.exists %}
+                        <div class="border-t pt-3">
+                            <strong class="text-purple-700">📎 ADJUNTOS:</strong>
+                            <div class="ml-4 mt-2 space-y-2">
+                                {% for attachment in message.attachments.all %}
+                                <div class="bg-purple-50 p-2 rounded text-sm">
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                                        <div><strong>Archivo ID:</strong> {{ attachment.id }}</div>
+                                        <div><strong>Tipo:</strong> {{ attachment.get_attachment_type_display }}</div>
+                                        <div><strong>Archivo:</strong> 
+                                            <a href="{{ attachment.file.url }}" target="_blank" class="text-blue-600 hover:underline">
+                                                {{ attachment.file.name|slice:"50:" }}{% if attachment.file.name|length > 50 %}...{% endif %}
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% empty %}
+                    <div class="bg-yellow-50 p-3 rounded ml-4 text-sm text-yellow-700">
+                        ⚠️ Este ticket no tiene mensajes (situación anómala)
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Información adicional de debug -->
+                <div class="bg-gray-100 p-3 rounded mt-4 text-xs text-gray-600">
+                    <strong>🔧 DEBUG INFO:</strong>
+                    Transiciones disponibles: {{ ticket.get_available_status_transitions|join:", " }} | 
+                    URL absoluta: {{ ticket.get_absolute_url }} | 
+                    URL cerrar: {{ ticket.get_close_url }}
                 </div>
             </div>
             {% empty %}
-            <div class="text-center py-8">
-                <p class="text-gray-500">No hay solicitudes aún</p>
+            <div class="text-center py-12 bg-yellow-50 rounded-lg border-2 border-yellow-200">
+                <h4 class="text-lg font-semibold text-yellow-700 mb-2">📝 No hay tickets en el sistema</h4>
+                <p class="text-yellow-600 mb-4">Crea tu primera solicitud para comenzar</p>
+                <a href="{% url 'welp_payflow:create' %}" class="inline-block bg-yellow-600 text-white px-4 py-2 rounded hover:bg-yellow-700">
+                    Crear Primera Solicitud
+                </a>
             </div>
             {% endfor %}
+        </div>
+
+        <!-- Estadísticas de desarrollo -->
+        <div class="bg-blue-50 p-4 rounded-lg border border-blue-200 mt-8">
+            <h4 class="font-semibold text-blue-700 mb-2">📊 ESTADÍSTICAS DE DESARROLLO</h4>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-sm">
+                <div><strong>Total Tickets:</strong> {{ tickets.count }}</div>
+                <div><strong>Total Mensajes:</strong> 
+                    {% widthratio tickets|length 1 1 as total_messages %}
+                    {% for ticket in tickets %}{{ ticket.messages.count|add:total_messages }}{% endfor %}
+                </div>
+                <div><strong>Vista generada:</strong> {{ "now"|date:"d/M/Y H:i:s" }}</div>
+                <div><strong>Usuario actual:</strong> {{ request.user.username }}</div>
+            </div>
         </div>
     </div>
 </section>

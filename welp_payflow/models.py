@@ -148,7 +148,7 @@ class Ticket(models.Model):
         return f"{self.title} - {self.udn.name}"
 
     def get_absolute_url(self):
-        return reverse('welp_payflow:ticket-view', kwargs={'ticket_id': self.id})
+        return reverse('welp_payflow:list')
 
     def get_close_url(self):
         return reverse('welp_payflow:htmx-confirm-close', kwargs={'ticket_id': self.id})
