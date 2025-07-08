@@ -26,17 +26,54 @@ class MultipleFileInput(forms.ClearableFileInput):
 
 
 class PayflowTicketCreationForm(forms.Form):
-    udn = forms.ModelChoiceField(queryset=UDN.objects.all(), label="UDN")
-    sector = forms.ModelChoiceField(queryset=Sector.objects.all(), label="Sector")
-    accounting_category = forms.ModelChoiceField(queryset=AccountingCategory.objects.all(), label="Categoría Contable")
-    title = forms.CharField(max_length=255, label="Título de la Solicitud")
-    description = forms.CharField(widget=forms.Textarea, label="Descripción", help_text="Esta descripción se convertirá en el primer mensaje del ticket")
-    estimated_amount = forms.DecimalField(max_digits=12, decimal_places=2, required=False, label="Monto Estimado (opcional)")
+    udn = forms.ModelChoiceField(
+        queryset=UDN.objects.all(), 
+        label="UDN"
+    )
+    sector = forms.ModelChoiceField(
+        queryset=Sector.objects.all(), 
+        label="Sector"
+    )
+    accounting_category = forms.ModelChoiceField(
+        queryset=AccountingCategory.objects.all(), 
+        label="Categoría Contable"
+    )
+    title = forms.CharField(
+        max_length=255, 
+        label="Título de la Solicitud",
+        error_messages={
+            'required': 'Este campo es obligatorio.',
+            'max_length': 'Máximo 255 caracteres.'
+        }
+    )
+    description = forms.CharField(
+        widget=forms.Textarea, 
+        label="Descripción",
+        help_text="Esta descripción se convertirá en el primer mensaje del ticket",
+        error_messages={
+            'required': 'Este campo es obligatorio.',
+        }
+    )
+    estimated_amount = forms.DecimalField(
+        max_digits=12, 
+        decimal_places=2, 
+        required=False, 
+        label="Monto Estimado (opcional)",
+        error_messages={
+            'invalid': 'Ingrese un número válido.',
+            'max_digits': 'Monto demasiado grande.',
+            'max_decimal_places': 'Máximo 2 decimales.',
+            'min_value': 'No puede ser negativo.'
+        }
+    )
     
     attachments = forms.FileField(
         required=False,
         widget=MultipleFileInput(attrs={'multiple': True}),
-        label="Archivos Adjuntos"
+        label="Archivos Adjuntos",
+        error_messages={
+            'invalid': 'Archivo no válido.'
+        }
     )
     
     def __init__(self, *args, **kwargs):
@@ -64,5 +101,17 @@ class PayflowTicketCreationForm(forms.Form):
         files = self.files.getlist('attachments')
         for file in files:
             if file.size > MAX_FILE_SIZE:
-                raise ValidationError(f'El archivo {file.name} es demasiado grande. Máximo permitido: 50MB')
-        return files 
+                raise ValidationError(f'Archivo {file.name} demasiado grande. Máximo: 50MB')
+        return files
+
+    def clean_title(self):
+        title = self.cleaned_data.get('title', '').strip()
+        if title and len(title) < 10:
+            raise ValidationError('Mínimo 10 caracteres.')
+        return title
+
+    def clean_description(self):
+        description = self.cleaned_data.get('description', '').strip()
+        if description and len(description) < 20:
+            raise ValidationError('Mínimo 20 caracteres.')
+        return description 

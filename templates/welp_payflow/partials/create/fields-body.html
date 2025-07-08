@@ -1,31 +1,34 @@
 <article class="select-fields-body" id="fields-body-container">
     <div class="space-y-6">
         <div id="component-title" class="form-group">
-            <label>{{ form.title.label }}</label>
-            <input type="text" name="{{ form.title.name }}" value="{{ form.title.value|default:'' }}">
+            {{ form.title.label_tag }}
+            {{ form.title }}
             {% if form.title.errors %}
-                <div class="text-status-open">{{ form.title.errors }}</div>
+                {{ form.title.errors }}
             {% endif %}
         </div>
         <div id="component-description" class="form-group">
-            <label>{{ form.description.label }}</label>
-            <textarea name="{{ form.description.name }}">{{ form.description.value|default:'' }}</textarea>
+            {{ form.description.label_tag }}
+            {{ form.description }}
+            {% if form.description.help_text %}
+                <small>{{ form.description.help_text }}</small>
+            {% endif %}
             {% if form.description.errors %}
-                <div class="text-status-open">{{ form.description.errors }}</div>
+                {{ form.description.errors }}
             {% endif %}
         </div>
         <div id="component-amount" class="form-group">
-            <label>{{ form.estimated_amount.label }}</label>
-            <input type="number" name="{{ form.estimated_amount.name }}" value="{{ form.estimated_amount.value|default:'' }}" step="0.01">
+            {{ form.estimated_amount.label_tag }}
+            {{ form.estimated_amount }}
             {% if form.estimated_amount.errors %}
-                <div class="text-status-open">{{ form.estimated_amount.errors }}</div>
+                {{ form.estimated_amount.errors }}
             {% endif %}
         </div>
         <div id="component-attachments" class="form-group">
-            <label>{{ form.attachments.label }}</label>
+            {{ form.attachments.label_tag }}
             {{ form.attachments }}
             {% if form.attachments.errors %}
-                <div class="text-status-open">{{ form.attachments.errors }}</div>
+                {{ form.attachments.errors }}
             {% endif %}
         </div>
     </div>

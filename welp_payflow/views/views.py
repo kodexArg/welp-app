@@ -4,6 +4,7 @@ from django.views.generic import FormView
 from django.contrib import messages
 from django.db import transaction
 from django.urls import reverse_lazy, reverse
+from django.http import HttpResponse
 
 from ..models import Ticket, Message, Attachment
 from ..forms import PayflowTicketCreationForm
@@ -26,7 +27,6 @@ def list_tickets(request):
 
 
 def success_view(request, ticket_id):
-    """Vista para mostrar el éxito de creación de ticket"""
     ticket = get_object_or_404(Ticket, id=ticket_id)
     context = {
         'ticket': ticket,
@@ -40,6 +40,20 @@ class CreateTicketView(LoginRequiredMixin, FormView):
     
     def get_form_kwargs(self):
         return super().get_form_kwargs()
+    
+    def form_invalid(self, form):
+        for field, errors in form.errors.items():
+            field_name = form.fields[field].label if field in form.fields else 'Error'
+            for error in errors:
+                messages.error(self.request, f'{field_name}: {error}')
+        
+        for error in form.non_field_errors():
+            messages.error(self.request, error)
+        
+        if self.request.headers.get('HX-Request'):
+            return render(self.request, self.template_name, {'form': form})
+        
+        return super().form_invalid(form)
     
     def form_valid(self, form):
         try:
@@ -69,7 +83,11 @@ class CreateTicketView(LoginRequiredMixin, FormView):
                 
                 messages.success(self.request, f'Solicitud #{ticket.id} creada exitosamente')
                 
-                # Redirigir a la página de éxito con el ID del ticket
+                if self.request.headers.get('HX-Request'):
+                    response = HttpResponse()
+                    response['HX-Redirect'] = reverse('welp_payflow:success', kwargs={'ticket_id': ticket.id})
+                    return response
+                
                 return redirect('welp_payflow:success', ticket_id=ticket.id)
                 
         except Exception as e:
