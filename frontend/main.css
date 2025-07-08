@@ -7,17 +7,7 @@
 @import "./css/components.css";
 @import "./css/dev.css";
 
-@theme {
-  --font-brand: 'Grandstander-local', 'Grandstander', 'Comic Sans MS', 'Marker Felt', cursive;
-  --font-p: 'Inter', sans-serif;
-  --font-ui: 'Roboto Condensed', 'Arial Narrow', 'Liberation Sans Narrow', sans-serif;
-  --font-mono: 'Roboto Mono', monospace;
-  --font-title: 'Nunito', sans-serif;
-  --font-list: 'Inter', sans-serif;
-}
-
-
-/* 
+/*
  * Utilidades @utility disponibles para @apply:
  * - transition-theme, transition-form, transition-interactive
  * - animate-delay-100, animate-delay-200, animate-delay-300, animate-delay-500, animate-delay-1000

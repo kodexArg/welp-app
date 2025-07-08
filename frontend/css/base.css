@@ -50,6 +50,7 @@
         background: var(--color-accent);
     }
 
+
     h2, h3, h4 {
         @apply font-bold leading-tight mb-4 text-center;
         @apply font-title;
@@ -76,12 +77,6 @@
         @apply text-primary;
     }
 
-    .title-gradient {
-        background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
 
     p {
         @apply mb-3;
