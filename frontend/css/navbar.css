@@ -1,6 +1,6 @@
 @theme {
     /* Navbar */
-    --navbar-bg: var(--color-forest-300);
+    --navbar-bg: var(--color-forest-600);
     --navbar-text: var(--color-forest-50);
     --navbar-active: var(--color-forest-50);
     --navbar-hover: var(--color-forest-50);
