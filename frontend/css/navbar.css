@@ -6,7 +6,7 @@
     --navbar-hover: var(--color-forest-50);
     --navbar-link-text: var(--color-forest-50);
     --navbar-link-hover: var(--color-forest-100);
-    --navbar-link-active: white;
+    --navbar-link-active: var(--color-light);
 }
 
 @layer components {
@@ -15,6 +15,21 @@
         @apply font-bold;
         font-variation-settings: 'wght' 700;
         font-feature-settings: 'liga' 1;
+    }
+
+    .font-brand {
+        @apply font-bold min-h-[1.2em] leading-[1.2];
+        font-family: var(--font-brand);
+        font-synthesis: none;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    .brand-text-override {
+        @apply font-bold tracking-[0.025em];
+        font-family: var(--font-brand) !important;
+        text-transform: none !important;
+        font-feature-settings: 'liga' 1 !important;
+        -webkit-font-smoothing: antialiased;
     }
 
     @keyframes brief-glow {
@@ -43,5 +58,16 @@
 
     .group > .flex.items-center {
         @apply transition-colors duration-200;
+    }
+
+
+    .brand-main-title {
+        @apply text-4xl font-bold mb-8 text-center;
+        @apply font-[var(--font-brand)] text-primary;
+    }
+
+    .brand-subtitle {
+        @apply text-center text-lg mb-8;
+        @apply text-primary font-[var(--font-p)];
     }
 }
