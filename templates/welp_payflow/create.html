@@ -11,7 +11,7 @@
     <form method="post" enctype="multipart/form-data" hx-target="this" hx-swap="outerHTML" id="payflow-form">
         {% csrf_token %}
 
-        <div id="udn-container" data-url="{% url 'welp_payflow:htmx-udn' %}"></div>
+        <div id="udn-container"></div>
 
         <div id="sector-container"></div>
 

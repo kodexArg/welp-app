@@ -1,5 +1,7 @@
 {% load payflow_tags %}
 
+<h1>Seleccionar UDN</h1>
+
 {% if udns.count > 1 %}
     <article id="udn-container">
         <label>UDN:</label>
@@ -11,15 +13,20 @@
     </article>
 {% elif udns.count == 1 %}
     {% with udns|first as udn %}
-        <input type="hidden" name="udn" value="{{ udn.pk }}" />
-        <div
-            hx-get="{% url 'htmx-sector' udn=udn.pk %}"
-            hx-target="#sector-container"
-            hx-swap="outerHTML"
-            hx-trigger="load"
-        ></div>
+        <article id="udn-container">
+            <label>UDN:</label>
+            <p class="selected-value">{{ udn.name }} (seleccionada automáticamente)</p>
+            <input type="hidden" name="udn" value="{{ udn.pk }}" />
+            <div
+                hx-get="{% url 'welp_payflow:htmx-sector' udn=udn.pk %}"
+                hx-target="#sector-container"
+                hx-swap="outerHTML"
+                hx-trigger="load"
+            ></div>
+        </article>
     {% endwith %}
 {% else %}
-    <p class="no-udns-message">No tienes UDNs asignadas.</p>
+    <article id="udn-container">
+        <p class="no-udns-message">No tienes UDNs asignadas.</p>
+    </article>
 {% endif %}
-

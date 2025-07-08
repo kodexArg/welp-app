@@ -11,8 +11,20 @@
     </article>
 {% elif categories.count == 1 %}
     {% with categories|first as category %}
-        <input type="hidden" name="accounting_category" value="{{ category.pk }}" />
+        <article id="accounting-category-container">
+            <label>Categoría Contable:</label>
+            <p class="selected-value">{{ category.name }} (seleccionada automáticamente)</p>
+            <input type="hidden" name="accounting_category" value="{{ category.pk }}" />
+            <div
+                hx-get="{% url 'welp_payflow:htmx-fields-body' accounting_category=category.pk %}"
+                hx-target="#fields-body-container"
+                hx-swap="outerHTML"
+                hx-trigger="load"
+            ></div>
+        </article>
     {% endwith %}
 {% else %}
-    <p>No hay categorías contables disponibles para el sector seleccionado.</p>
+    <article id="accounting-category-container">
+        <p>No hay categorías contables disponibles para el sector seleccionado.</p>
+    </article>
 {% endif %} 
