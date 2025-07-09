@@ -182,18 +182,4 @@ def select_fields_body(form):
         'form': form,    }
 
 
-@register.inclusion_tag('components/core/notifications.html', takes_context=True)
-def notifications(context, semaforo='sky'):
-    """Componente para mostrar notificaciones globales.
 
-    Args:
-        context (dict): Contexto del template.
-        semaforo (str): Color base: ``sky`` (por defecto), ``forest`` o ``earth``.
-
-    Returns:
-        dict: Contexto para el componente.
-    """
-    return {
-        'messages': context.get('messages'),
-        'semaforo': semaforo,
-    }
