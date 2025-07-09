@@ -10,7 +10,7 @@
         <i class="fa fa-check-circle text-green-700 text-2xl mb-2"></i>
         <p class="text-green-700 font-medium font-ui mb-2">Solicitud registrada correctamente</p>
         <p class="text-sm text-green-600 font-ui">
-            Redirigiendo en <span id="countdown" class="font-bold">10</span> segundos
+            Redirigiendo en <span id="countdown" data-seconds="10" data-url="{% url 'welp_payflow:list' %}" class="font-bold">10</span> segundos
         </p>
     </div>
 
@@ -25,21 +25,5 @@
 </section>
 {% endblock %}
 
-{% block scripts %}
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        let seconds = 10;
-        const countdownElement = document.getElementById('countdown');
-        
-        const interval = setInterval(function() {
-            seconds--;
-            countdownElement.textContent = seconds;
-            
-            if (seconds <= 0) {
-                clearInterval(interval);
-                window.location.href = "{% url 'welp_payflow:list' %}";
-            }
-        }, 1000);
-    });
-</script>
-{% endblock %} 
+{% block scripts %}    {% vite_asset 'frontend/js/welp_payflow/success.js' %}
+{% endblock %}

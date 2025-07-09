@@ -14,11 +14,3 @@ document.addEventListener('DOMContentLoaded', function() {
     }));
 });
 
-// ============================================================================
-// COMPONENTES CORE
-// ============================================================================
-
-// Importar componentes que se necesitan en todas las páginas
-import './js/logout.js'
-import './js/dev-content.js'
-
