@@ -1,28 +1,76 @@
 {% load core_tags %}
 
-<article>
-    {% ticket_header ticket %}
-    
-    <div>
-        <h5>💬 Mensajes ({{ ticket.messages.count }} total)</h5>
-        {% for message in ticket.messages.all %}
-            {% ticket_message message %}
-        {% empty %}
-            <div class="alert alert-error">
-                ⚠️ Este ticket no tiene mensajes (situación anómala)
+{% comment %}
+Ticket Container - Soporta dos modos:
+- expandible: Para vista de lista (default)
+- expandido: Para vista de detalle (sin interactividad)
+{% endcomment %}
+
+{% if expandido %}
+    <!-- Modo expandido para vista de detalle -->
+    <article class="ticket-container-detail">
+        <div class="ticket-summary-detail">
+            <div class="ticket-title-detail">
+                {{ ticket.title }}
             </div>
-        {% endfor %}
-    </div>
-    
-    {% ticket_actions ticket %}
-</article> 
-
-<style>
-    article {
-        @apply bg-red p-6 rounded border-l-4 border-blue-500 ml-4 max-w-2xl mx-auto;
-    }
-
-    article h5 {
-        @apply text-lg font-semibold text-blue-700 mb-2;
-    }
-</style>
+            <div class="ticket-info">
+                <span class="tags-ticket-udn">{{ ticket.udn.name }}</span>
+                <span class="tags-ticket-sector">{{ ticket.sector.name }}</span>
+                <span class="tags-ticket-category">{{ ticket.accounting_category.name }}</span>
+                <span class="status status-{{ ticket.status|default:'open' }}">
+                    <i class="ticket-status-icon"></i>
+                    {{ ticket.get_status_display|default:'Abierto' }}
+                </span>
+            </div>
+        </div>
+        
+        <div class="ticket-details-detail">
+            <div class="ticket-details-content">
+                {% for message in ticket.messages.all %}
+                    {% ticket_message message %}
+                {% empty %}
+                    <div class="ticket-no-messages">
+                        ⚠️ Este ticket no tiene mensajes
+                    </div>
+                {% endfor %}
+                
+                {% ticket_actions ticket %}
+            </div>
+        </div>
+    </article>
+{% else %}
+    <!-- Modo expandible para vista de lista -->
+    <article class="ticket-container">
+        <details>
+            <summary class="ticket-summary">
+                <div class="ticket-title">
+                    <i class="ticket-caret"></i>
+                    {{ ticket.title }}
+                </div>
+                <div class="ticket-info">
+                    <span class="tags-ticket-udn">{{ ticket.udn.name }}</span>
+                    <span class="tags-ticket-sector">{{ ticket.sector.name }}</span>
+                    <span class="tags-ticket-category">{{ ticket.accounting_category.name }}</span>
+                    <span class="status status-{{ ticket.status|default:'open' }}">
+                        <i class="ticket-status-icon"></i>
+                        {{ ticket.get_status_display|default:'Abierto' }}
+                    </span>
+                </div>
+            </summary>
+            
+            <div class="ticket-details">
+                <div class="ticket-details-content">
+                    {% for message in ticket.messages.all %}
+                        {% ticket_message message %}
+                    {% empty %}
+                        <div class="ticket-no-messages">
+                            ⚠️ Este ticket no tiene mensajes
+                        </div>
+                    {% endfor %}
+                    
+                    {% ticket_actions ticket %}
+                </div>
+            </div>
+        </details>
+    </article>
+{% endif %}

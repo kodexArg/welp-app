@@ -167,11 +167,17 @@
         /* El ícono de flecha debe agregarse en el template con un elemento SVG, no en el CSS */
     }
 
+    /* ==========================================
+       TAGS - Sistema de etiquetas
+       ========================================== */
+    
+    /* Tag base genérico */
     .tag {
         @apply text-xs font-medium py-1 px-1 rounded-full leading-none whitespace-nowrap border-2;
         @apply font-[var(--font-ui)];
     }
 
+    /* Tags individuales legacy (mantener para compatibilidad) */
     .tag-udn {
         @apply bg-yellow-100 text-accent border-accent;
     }
@@ -185,6 +191,7 @@
         @apply bg-purple-100 text-purple-600 border-purple-300;
     }
 
+    /* Estados de tags interactivos */
     .tag-unpressed {
         @apply bg-gray-100 text-gray-600 border-gray-300;
     }
@@ -193,16 +200,48 @@
         @apply bg-surface text-text border-primary;
     }
 
+    /* Tags unidos para tickets - Nuevos estilos específicos */
+    .tags-ticket-udn {
+        @apply bg-gray-50 text-gray-600 border border-gray-200;
+        @apply rounded-l-full cursor-default;
+        @apply text-[10px] py-0.5 px-2;
+        border-right: none;
+        margin-right: 0;
+    }
+
+    .tags-ticket-sector {
+        @apply bg-gray-50 text-gray-600 border-t border-b border-gray-200;
+        @apply rounded-none cursor-default;
+        @apply text-[10px] py-0.5 px-2;
+        border-left: none;
+        border-right: none;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .tags-ticket-category {
+        @apply bg-gray-50 text-gray-600 border border-gray-200;
+        @apply rounded-r-full cursor-default;
+        @apply text-[10px] py-0.5 px-2;
+        border-left: none;
+        margin-left: 0;
+    }
+
     .status {
-        @apply text-xs font-semibold py-1 px-2 rounded-full uppercase tracking-wide;
+        @apply text-[10px] font-semibold py-0.5 px-2 rounded-full uppercase tracking-wide;
+        @apply ml-1;
     }
 
     .status-open {
-        @apply bg-red-100 text-red-700;
+        @apply bg-red-100 text-red-600 border border-red-200;
     }
 
     .status-feedback {
-        @apply bg-blue-100 text-blue-700;
+        @apply bg-sky-200 text-sky-600;
+    }
+
+    .status-en-curso {
+        @apply bg-sky-200 text-sky-600;
     }
 
     .status-solved {
@@ -218,22 +257,24 @@
     }
 
     .status-closed {
-        @apply bg-gray-100 text-gray-700;
+        @apply bg-forest-200 text-forest-600;
     }
 
-    .text-status-open { @apply text-red-700; }
-    .text-status-feedback { @apply text-blue-700; }
+    .text-status-open { @apply text-red-600; }
+    .text-status-feedback { @apply text-sky-600; }
+    .text-status-en-curso { @apply text-sky-600; }
     .text-status-solved { @apply text-green-700; }
     .text-status-authorized { @apply text-green-600; }
     .text-status-rejected { @apply text-yellow-700; }
-    .text-status-closed { @apply text-gray-700; }
+    .text-status-closed { @apply text-forest-600; }
 
     .bg-status-open { @apply bg-red-100; }
-    .bg-status-feedback { @apply bg-blue-100; }
+    .bg-status-feedback { @apply bg-sky-200; }
+    .bg-status-en-curso { @apply bg-sky-200; }
     .bg-status-solved { @apply bg-green-100; }
     .bg-status-authorized { @apply bg-green-50; }
     .bg-status-rejected { @apply bg-yellow-100; }
-    .bg-status-closed { @apply bg-gray-100; }
+    .bg-status-closed { @apply bg-forest-200; }
 
     .card {
         @apply rounded-lg shadow-md;
@@ -413,38 +454,7 @@
         @apply bg-transparent;
     }
 
-    .treemap-toggle-button,
-    .treemap-clear-button {
-        @apply py-2 px-3 border font-bold text-xs uppercase cursor-pointer;
-        @apply bg-white border-border text-primary;
-        @apply hover:bg-surface hover:text-text;
-        @apply transition-all duration-200;
-        @apply flex-1 min-w-[100px];
-    }
 
-    .treemap-toggle-button.active {
-        @apply bg-primary border-primary text-white;
-    }
-
-    .treemap-clear-button {
-        @apply order-first flex-none w-10 min-w-10 max-w-10 text-sm;
-    }
-
-    .treemap-clear-button.highlighted {
-        @apply border-accent;
-    }
-
-    .treemap-toggle-button.short {
-        @apply basis-20 sm:basis-24;
-    }
-
-    .treemap-toggle-button.medium {
-        @apply basis-28 sm:basis-32;
-    }
-
-    .treemap-toggle-button.long {
-        @apply basis-36 sm:basis-40;
-    }
 
     .app-wide-button {
         @apply w-full flex items-center justify-center gap-4 py-8 px-6 rounded-lg border-2 cursor-pointer;
@@ -489,6 +499,328 @@
         .button-secondary {
             width: 100%;
         }
+    }
+
+    /* Ticket Components - Componentes de Tickets */
+    
+    .ticket-message-body {
+        @apply ml-8 mb-2 bg-white border border-earth-200 text-sm p-1.5 rounded-xl text-earth-700;
+        font-family: var(--font-ui);
+    }
+
+    .ticket-message-meta {
+        @apply text-sm text-gray-500 italic ml-2;
+        font-family: var(--font-ui);
+    }
+
+    .ticket-message-meta i {
+        @apply not-italic;
+    }
+
+    .ticket-message-header {
+        @apply flex justify-between items-center;
+    }
+
+    .ticket-message-date {
+        @apply text-sm text-gray-500 ml-auto;
+        font-family: var(--font-ui);
+    }
+
+    /* Ticket Components - 100% CSS Nativo */
+    .ticket-container {
+        @apply rounded-2xl p-3 mb-3 font-sans cursor-pointer;
+        @apply transition-all duration-200 ease-out;
+        @apply hover:shadow-md hover:bg-gray-50;
+    }
+
+    .ticket-summary {
+        @apply list-none flex flex-col md:flex-row justify-between items-start;
+        @apply w-full cursor-pointer;
+        @apply hover:bg-gray-100 rounded-xl transition-colors duration-150;
+    }
+
+    .ticket-title {
+        @apply flex items-center flex-grow pr-2 w-full md:w-auto cursor-pointer;
+    }
+
+    .ticket-caret {
+        @apply mr-2 flex-shrink-0;
+    }
+
+    .ticket-caret::before {
+        content: '';
+        @apply block w-0 h-0;
+        border-left: 6px solid var(--color-primary);
+        border-top: 4px solid transparent;
+        border-bottom: 4px solid transparent;
+        transform-origin: center;
+        transition: transform 200ms cubic-bezier(0.4, 0, 1, 1);
+    }
+
+    details[open] .ticket-caret::before {
+        @apply rotate-90;
+        transition: transform 180ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .ticket-info {
+        @apply flex flex-wrap justify-end items-center mt-1 md:mt-0 self-end md:self-auto;
+    }
+
+    .ticket-details {
+        @apply rounded-2xl p-3 -mb-1 -mx-1 mt-3 shadow-inner border border-sky-100 bg-sky-50;
+        display: grid;
+        grid-template-rows: 0fr;
+        transition: grid-template-rows 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    details[open] .ticket-details {
+        grid-template-rows: 1fr;
+        transition: grid-template-rows 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .ticket-details-content {
+        @apply overflow-hidden;
+    }
+
+    .ticket-actions {
+        @apply flex justify-end gap-2 mt-4;
+        @apply opacity-0 translate-y-1;
+        transition: opacity 200ms cubic-bezier(0.4, 0, 1, 1), transform 200ms cubic-bezier(0.4, 0, 1, 1);
+    }
+
+    details[open] .ticket-actions {
+        @apply opacity-100 translate-y-0;
+        transition: opacity 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94) 120ms, transform 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94) 120ms;
+    }
+
+    /* .ticket-actions-closing removida - usando transiciones CSS nativas */
+
+    .ticket-no-messages {
+        @apply bg-red-50 border-red-400 text-red-700 px-4 py-3 rounded-lg border-l-4 mb-4 font-sans;
+    }
+
+    .ticket-message {
+        @apply mb-4;
+    }
+
+    .ticket-message-meta {
+        @apply text-sm text-gray-800 italic ml-2 font-sans translate-y-[0.02rem];
+    }
+
+    .ticket-user-icon::before {
+        @apply content-['👤'] not-italic text-gray-800;
+    }
+
+    .ticket-message-body {
+        @apply ml-8 mb-2 bg-white border border-gray-300 text-sm p-1.5 rounded-xl text-earth-700 font-sans cursor-default;
+        @apply relative;
+    }
+
+    .ticket-message-date {
+        @apply text-xs text-earth-400 italic pointer-events-none font-sans;
+        @apply absolute bottom-1.5 right-1.5;
+        @apply m-0 p-0;
+    }
+
+    .ticket-attachments {
+        @apply ml-8 space-y-2;
+    }
+
+    .ticket-attachment {
+        @apply flex items-center space-x-2 text-sm;
+    }
+
+
+
+    .ticket-action-close {
+        @apply text-xs bg-sky-700 border border-sky-500 text-white rounded-full py-1 px-3 inline-flex items-center font-medium cursor-pointer hover:brightness-110;
+        pointer-events: auto;
+    }
+
+    .ticket-action-icon-close::before {
+        content: '\f256';
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        @apply mr-1 not-italic font-normal;
+    }
+
+    .ticket-action-authorize {
+        @apply text-xs bg-sky-700 border border-sky-500 text-white rounded-full py-1 px-3 inline-flex items-center font-medium cursor-pointer hover:brightness-110;
+        pointer-events: auto;
+    }
+
+    .ticket-action-icon-authorize::before {
+        @apply content-['✓'] mr-1 not-italic font-normal;
+    }
+
+    .ticket-action-respond {
+        @apply text-xs bg-sky-700 border border-sky-500 text-white rounded-full py-1 px-3 inline-flex items-center no-underline font-medium hover:brightness-110;
+        pointer-events: auto;
+    }
+
+    .ticket-action-icon::before {
+        @apply content-['↩'] mr-1 not-italic font-normal;
+    }
+
+    .ticket-action-closed {
+        @apply text-xs text-gray-500 rounded-full py-1 px-3 inline-flex items-center;
+    }
+
+    .ticket-action-icon-closed::before {
+        @apply content-['✓'] mr-1;
+    }
+
+    .ticket-status-icon::before {
+        @apply content-['🔧'] mr-1;
+    }
+
+    .status-open .ticket-status-icon::before {
+        @apply content-[''];
+    }
+
+    .status-feedback .ticket-status-icon::before {
+        @apply content-['💬'];
+    }
+
+    .status-en-curso .ticket-status-icon::before {
+        @apply content-['⏳'];
+    }
+
+    .status-solved .ticket-status-icon::before {
+        @apply content-['✅'];
+    }
+
+    .status-authorized .ticket-status-icon::before {
+        @apply content-['✓'];
+    }
+
+    .status-rejected .ticket-status-icon::before {
+        @apply content-['❌'];
+    }
+
+    .status-closed .ticket-status-icon::before {
+        @apply content-['🔒'];
+    }
+
+    .ticket-status-badge {
+        @apply inline-flex items-center px-2 py-1 rounded-full text-xs font-medium;
+    }
+
+    .ticket-header {
+        @apply flex items-center justify-between p-4 border-b border-border;
+    }
+
+    .ticket-timeline {
+        @apply space-y-4 p-4;
+    }
+
+    .ticket-timeline-item {
+        @apply flex items-start space-x-3;
+    }
+
+    .ticket-timeline-icon {
+        @apply flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm;
+    }
+
+    .ticket-timeline-content {
+        @apply flex-1 min-w-0;
+    }
+
+    .ticket-attachment-list {
+        @apply space-y-2 mt-3 p-3 bg-surface rounded-lg border border-border;
+    }
+
+    .ticket-attachment-item {
+        @apply flex items-center space-x-2 text-sm;
+    }
+
+    /* Ticket Detail Page - Vista de detalle */
+    .ticket-detail-header {
+        @apply mb-8;
+    }
+
+    .ticket-detail-breadcrumb {
+        @apply mb-4;
+    }
+
+    .ticket-detail-back {
+        @apply text-sm text-primary hover:text-secondary transition-colors duration-200;
+        @apply inline-flex items-center gap-1;
+    }
+
+    .ticket-detail-meta {
+        @apply flex flex-wrap items-center gap-4 text-sm text-gray-600 mt-2;
+    }
+
+    .ticket-detail-id {
+        @apply font-medium text-primary;
+    }
+
+    .ticket-detail-created {
+        @apply italic;
+    }
+
+    .ticket-detail-container {
+        @apply mb-8;
+    }
+
+    .ticket-detail-container .ticket-container {
+        @apply bg-white border border-border shadow-sm;
+        @apply mb-0;
+    }
+
+    .ticket-detail-container .ticket-summary {
+        @apply hover:bg-transparent;
+    }
+
+    .ticket-detail-response-section {
+        @apply bg-white rounded-lg border border-border shadow-sm p-6;
+    }
+
+    .ticket-detail-response-section h3 {
+        @apply text-lg font-medium mb-4 text-text;
+        @apply border-b border-border pb-2;
+    }
+
+    .ticket-response-form {
+        @apply space-y-4;
+    }
+
+    .form-help {
+        @apply text-xs text-gray-500 mt-1;
+    }
+
+    .ticket-response-actions {
+        @apply flex gap-3 pt-4;
+    }
+
+    /* Ticket Detail Mode - Modo expandido sin interactividad */
+    .ticket-container-detail {
+        @apply rounded-2xl p-3 mb-3 font-sans;
+        @apply bg-white border border-border shadow-sm;
+    }
+
+    .ticket-summary-detail {
+        @apply flex flex-col md:flex-row justify-between items-start;
+        @apply w-full;
+    }
+
+    .ticket-title-detail {
+        @apply flex items-center flex-grow pr-2 w-full md:w-auto;
+        @apply text-lg font-medium text-text;
+    }
+
+    .ticket-details-detail {
+        @apply rounded-2xl p-3 -mb-1 -mx-1 mt-3 shadow-inner border border-sky-100 bg-sky-50;
+    }
+
+    .ticket-details-detail .ticket-details-content {
+        @apply overflow-visible;
+    }
+
+    .ticket-details-detail .ticket-actions {
+        @apply flex justify-end gap-2 mt-4;
+        @apply opacity-100 translate-y-0;
     }
 
 } 

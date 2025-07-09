@@ -64,8 +64,40 @@
     font-display: swap;
 }
 
-/* Paleta EARTH (antes abyss) - invertida para seguir la lógica Tailwind */
-:root {
+@font-face {
+    font-family: 'Lato';
+    src: url('../fonts/Lato/Lato-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Lato';
+    src: url('../fonts/Lato/Lato-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Lato';
+    src: url('../fonts/Lato/Lato-Italic.ttf') format('truetype');
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Lato';
+    src: url('../fonts/Lato/Lato-BoldItalic.ttf') format('truetype');
+    font-weight: 700;
+    font-style: italic;
+    font-display: swap;
+}
+
+/* Paletas de colores para Tailwind 4 */
+@theme {
     --color-earth-50: #fae8d6;
     --color-earth-100: #f5d0ad;
     --color-earth-200: #f0b17d;
@@ -78,20 +110,18 @@
     --color-earth-900: #1a0c03;
     --color-earth-950: #120802;
 
-    /* Paleta SKY - invertida */
-    --color-sky-50: #e6f1f9;
-    --color-sky-100: #cce3f3;
-    --color-sky-200: #a9d1ea;
-    --color-sky-300: #83bddf;
-    --color-sky-400: #5ca8d6;
-    --color-sky-500: #3d88be;
-    --color-sky-600: #2e6996;
-    --color-sky-700: #1f4764;
-    --color-sky-800: #0f2332;
-    --color-sky-900: #071219;
-    --color-sky-950: #03090f;
+    --color-sky-50: #f4fafd;
+    --color-sky-100: #e6f1f9;
+    --color-sky-200: #cce3f3;
+    --color-sky-300: #a9d1ea;
+    --color-sky-400: #83bddf;
+    --color-sky-500: #5ca8d6;
+    --color-sky-600: #3d88be;
+    --color-sky-700: #2e6996;
+    --color-sky-800: #1f4764;
+    --color-sky-900: #0f2332;
+    --color-sky-950: #071219;
 
-    /* Paleta FOREST - invertida */
     --color-forest-50: #e8ede8;
     --color-forest-100: #d1dbd1;
     --color-forest-200: #a3b8a3;

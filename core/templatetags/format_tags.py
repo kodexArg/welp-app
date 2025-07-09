@@ -2,6 +2,7 @@ from django import template
 from django.utils import timezone
 from django.conf import settings
 import zoneinfo
+from ..views.utils import format_relative_date
 
 register = template.Library()
 
@@ -50,3 +51,18 @@ def current_time():
         return timezone.now().astimezone(tz)
     except:
         return timezone.now()
+
+@register.filter
+def relative_date(value):
+    """
+    Formatea una fecha de manera relativa en español
+    
+    Args:
+        value: datetime object o fecha a formatear
+        
+    Returns:
+        str: Fecha formateada relativamente (ej: "hace 20 minutos", "ayer", "24 de marzo")
+    
+    Usage: {{ message.created_on|relative_date }}
+    """
+    return format_relative_date(value)

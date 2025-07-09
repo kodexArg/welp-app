@@ -10,12 +10,17 @@
   
 
 
-  /* Tipografía */
+  /* Tipografía - Tailwind 4 Font Families */
+  --font-sans: 'Roboto Condensed', 'Arial Narrow', 'Liberation Sans Narrow', sans-serif;
+  --font-serif: 'Nunito', serif;
+  --font-mono: 'Roboto Mono', monospace;
+  --font-lato: 'Lato', sans-serif;
+  
+  /* Custom Font Variables */
   --font-brand: 'Grandstander-local', 'Grandstander', 'Comic Sans MS', 'Marker Felt', cursive;
   --font-p: 'Inter', sans-serif;
-  --font-ui: 'Roboto Condensed', 'Arial Narrow', 'Liberation Sans Narrow', sans-serif;
-  --font-mono: 'Roboto Mono', monospace;
-  --font-title: 'Nunito', sans-serif;
+  --font-ui: var(--font-sans);
+  --font-title: var(--font-serif);
 
   /* Layout y espaciados */
   --header-height: 8vh;

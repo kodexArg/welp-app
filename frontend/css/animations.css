@@ -281,80 +281,17 @@
     }
 }
 
-@keyframes wl-dev-slide-down {
-    from {
-        opacity: 0;
-        transform: translateY(-8px);
-        height: 0;
-        padding-top: 0;
-        padding-bottom: 0;
-        margin-top: 0;
-        margin-bottom: 0;
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-        height: auto;
-        padding-top: 1rem;
-        padding-bottom: 1rem;
-        margin-top: 0;
-        margin-bottom: 0;
-    }
-}
-
-@keyframes wl-dev-slide-up {
-    from {
-        opacity: 1;
-        transform: translateY(0);
-        height: auto;
-        padding-top: 1rem;
-        padding-bottom: 1rem;
-        margin-top: 0;
-        margin-bottom: 0;
-    }
-    to {
-        opacity: 0;
-        transform: translateY(-8px);
-        height: 0;
-        padding-top: 0;
-        padding-bottom: 0;
-        margin-top: 0;
-        margin-bottom: 0;
-    }
-}
-
-@keyframes wl-dev-fade-in {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
+/* Keyframes removidos - usando CSS transitions nativas con details[open] */
 
 @layer components {
-    .wl-dev-slide-down {
-        @apply opacity-0 overflow-hidden;
-        animation: wl-dev-slide-down 450ms ease-out forwards;
-    }
-
-    .wl-dev-slide-up {
-        @apply overflow-hidden;
-        animation: wl-dev-slide-up 280ms ease-in forwards;
-    }
-
-    .wl-dev-fade-in {
-        @apply opacity-0;
-        animation: wl-dev-fade-in 350ms ease-out forwards;
-    }
+    /* Ticket animations ahora manejadas por CSS nativo con details[open] */
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .wl-dev-slide-down,
-    .wl-dev-slide-up,
-    .wl-dev-fade-in {
-        animation-duration: 0.01ms !important;
+    .ticket-details,
+    .ticket-actions,
+    .ticket-caret,
+    .ticket-caret::before {
+        transition-duration: 0.01ms !important;
     }
 } 

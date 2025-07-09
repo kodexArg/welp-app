@@ -1,5 +1,5 @@
 from django.urls import path
-from .views.views import home, list_tickets, CreateTicketView, success_view
+from .views.views import home, list_tickets, ticket_detail, CreateTicketView, success_view
 from .views.others import close_ticket
 from .views.htmx import (
     htmx_udn,
@@ -17,6 +17,7 @@ urlpatterns = [
     path('create/', CreateTicketView.as_view(), name='create'),
     path('success/<int:ticket_id>/', success_view, name='success'),
     path('list/', list_tickets, name='list'),
+    path('ticket/<int:ticket_id>/', ticket_detail, name='detail'),
 ]
 
 # URLs para selección con HTMX

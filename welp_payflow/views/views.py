@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.views.generic import FormView
 from django.contrib import messages
 from django.db import transaction
@@ -24,6 +25,56 @@ def list_tickets(request):
         ).order_by('-id'),
     }
     return render(request, 'welp_payflow/list.html', context)
+
+
+@login_required(login_url='login')
+def ticket_detail(request, ticket_id):
+    """Vista de detalle de un ticket individual"""
+    ticket = get_object_or_404(
+        Ticket.objects.select_related(
+            'udn', 'sector', 'accounting_category'
+        ).prefetch_related(
+            'messages__user',
+            'messages__attachments'
+        ), 
+        id=ticket_id
+    )
+    
+    if request.method == 'POST':
+        response_body = request.POST.get('response_body', '').strip()
+        new_status = request.POST.get('status', '').strip()
+        
+        if response_body:
+            # Crear el nuevo mensaje de respuesta
+            message_status = new_status if new_status else ticket.status
+            
+            message = Message.objects.create(
+                ticket=ticket,
+                status=message_status,
+                user=request.user,
+                body=response_body
+            )
+            
+            # Manejar archivos adjuntos si los hay
+            files = request.FILES.getlist('attachments')
+            for file in files:
+                if file.size <= 52428800:  # 50MB limit
+                    Attachment.objects.create(
+                        file=file,
+                        message=message
+                    )
+            
+            messages.success(request, 'Respuesta enviada exitosamente')
+            
+            # Redirect para evitar resubmit
+            return redirect('welp_payflow:detail', ticket_id=ticket.id)
+        else:
+            messages.error(request, 'El mensaje de respuesta es obligatorio')
+    
+    context = {
+        'ticket': ticket,
+    }
+    return render(request, 'welp_payflow/detail.html', context)
 
 
 def success_view(request, ticket_id):

@@ -1,15 +1,23 @@
 {% with last_message=ticket.messages.last %}
     {% if last_message.status != 'closed' %}
-        <div>
-            <a href="{% url 'welp_payflow:list' %}">
-                <i class="fa fa-paper-plane"></i>
+        <div class="ticket-actions">
+            <button class="ticket-action-close">
+                <i class="ticket-action-icon-close"></i>
+                <span>CERRAR</span>
+            </button>
+            <button class="ticket-action-authorize">
+                <i class="ticket-action-icon-authorize"></i>
+                <span>AUTORIZAR</span>
+            </button>
+            <a href="{% url 'welp_payflow:detail' ticket.id %}" class="ticket-action-respond">
+                <i class="ticket-action-icon"></i>
                 <span>RESPONDER</span>
             </a>
         </div>
     {% else %}
-        <div>
-            <span>
-                <i class="fa fa-check-circle"></i>
+        <div class="ticket-actions">
+            <span class="ticket-action-closed">
+                <i class="ticket-action-icon-closed"></i>
                 <span>TICKET CERRADO</span>
             </span>
         </div>
