@@ -5,101 +5,22 @@
 
 {% block content %}
 <section>
-    <div class="flex items-center justify-center">
-        <div class="inline-flex items-center bg-green-50 px-4 py-2 rounded-full border border-green-200">
-            <i class="fa fa-clock text-green-700 mr-2"></i>
-            <p id="redirect-message" class="text-sm text-green-700 m-0 font-medium font-ui">
-                Redirigiendo en <span id="countdown" class="font-bold">30</span> segundos
-            </p>
-        </div>
+    <!-- Cuadro verde de éxito -->
+    <div class="bg-green-100 border border-green-300 rounded-lg p-4 text-center mb-6">
+        <i class="fa fa-check-circle text-green-700 text-2xl mb-2"></i>
+        <p class="text-green-700 font-medium font-ui mb-2">Solicitud registrada correctamente</p>
+        <p class="text-sm text-green-600 font-ui">
+            Redirigiendo en <span id="countdown" class="font-bold">10</span> segundos
+        </p>
     </div>
-    
-    <h1 class="mt-2">¡Solicitud creada exitosamente!</h1>
 
-    <article class="animate-fade-in">
-        {% with first_message=ticket.messages.first %}
-            <div class="border-b border-green-200 pb-4 mb-4">
-                <h2 class="text-left text-lg font-semibold">#{{ ticket.id }} - {{ ticket.title }}</h2>
-                <p class="text-sm text-primary">
-                    Reportado por: <strong>{{ first_message.user.get_full_name|default:first_message.user.username }}</strong> el {{ first_message.created_on|date:"l d \d\e F \d\e Y, H:i" }}
-                </p>
-                {% if first_message.reported_on %}
-                    <p class="text-sm text-primary">
-                        Fecha reportada: {{ first_message.reported_on|date:"l d \d\e F \d\e Y, H:i" }}
-                    </p>
-                {% endif %}
-            </div>
-        {% endwith %}
-        
-        <div class="mb-6">
-            <div class="flex flex-wrap items-center mb-4">
-                <span class="font-semibold text-green-800 mr-2">Solicitud de pago:</span>
-                <span class="text-green-900">{{ ticket.title }}</span>
-            </div>
-            
-            {% if ticket.estimated_amount %}
-                <div class="flex flex-wrap items-center mb-4">
-                    <span class="font-semibold text-green-800 mr-2">Monto estimado:</span>
-                    <span class="text-green-900 font-bold">${{ ticket.estimated_amount|floatformat:2 }}</span>
-                </div>
-            {% endif %}
-            
-            <div class="flex flex-wrap gap-2 mb-4">
-                <span class="tag tag-udn">{{ ticket.udn.name }}</span>
-                <span class="tag tag-sector">{{ ticket.sector.name }}</span>
-                <span class="tag tag-category">{{ ticket.accounting_category.name }}</span>
-                <span class="status status-open">
-                    <i class="fa fa-circle mr-1"></i> Abierto
-                </span>
-            </div>
-        </div>
-        
-        <blockquote class="bg-green-50 border-l-4 border-green-700 p-4 rounded-r-md mb-6">
-            {% with first_message=ticket.messages.first %}
-                {% if first_message.body %}
-                    <p class="mb-4">
-                        {{ first_message.body }}
-                    </p>
-                {% else %}
-                    <p class="mb-4 text-primary italic">No hay descripción proporcionada.</p>
-                {% endif %}
-
-                {% if first_message.attachments.all %}
-                   <div class="mt-4">
-                        <p class="text-sm text-green-700 font-medium font-ui">Adjuntos:</p>
-                        <div class="space-y-2 mt-2">
-                            {% for attachment in first_message.attachments.all %}
-                                <div class="flex items-center bg-white border border-green-200 rounded p-2">
-                                    <i class="fa fa-paperclip text-green-600 mr-2"></i>
-                                    <a href="{{ attachment.file.url }}" 
-                                       class="text-green-700 hover:text-green-900 transition-colors" 
-                                       target="_blank">
-                                        {{ attachment.file.name }}
-                                    </a>
-                                    <i class="fa fa-external-link-alt ml-2 text-xs text-green-600"></i>
-                                </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                {% endif %}
-            {% endwith %}
-        </blockquote>
-        
-        <div class="bg-green-100 border border-green-300 rounded-lg p-4 text-center">
-            <i class="fa fa-check-circle text-green-700 text-2xl mb-2 animate-pulse"></i>
-            <p class="text-green-700 font-medium font-ui">La solicitud ha sido registrada correctamente y está pendiente de revisión.</p>
-        </div>
-    </article>
     
-    <div class="component-buttons">
+    <div class="component-buttons mt-6">
         <a href="{% url 'welp_payflow:list' %}" class="button-primary">
             <i class="fa fa-list mr-2"></i>
-            Ir a Lista de Solicitudes
+            VER SOLICITUDES
         </a>
-        <a href="{% url 'welp_payflow:create' %}" class="button-secondary">
-            <i class="fa fa-plus mr-2"></i>
-            Crear Nueva Solicitud
-        </a>
+
     </div>
 </section>
 {% endblock %}
@@ -107,7 +28,7 @@
 {% block scripts %}
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        let seconds = 30;
+        let seconds = 10;
         const countdownElement = document.getElementById('countdown');
         
         const interval = setInterval(function() {
