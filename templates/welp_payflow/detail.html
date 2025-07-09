@@ -8,11 +8,13 @@
 <section>
     <div class="ticket-detail-header">
         <div class="flex justify-between items-center">
-            <a href="{% url 'welp_payflow:list' %}" class="detail-back-button">
-                <i class="detail-back-icon"></i>
-                <span>Solicitudes</span>
-            </a>
-            
+            <div class="flex items-center gap-4">
+                <a href="{% url 'welp_payflow:list' %}" class="detail-back-button">
+                    <i class="detail-back-icon"></i>
+                    <span>Solicitudes</span>
+                </a>
+                <h1 class="ticket-detail-title">{{ ticket.title }}</h1>
+            </div>
             {% ticket_status ticket %}
         </div>
     </div>

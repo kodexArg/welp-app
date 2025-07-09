@@ -1,17 +1,16 @@
-from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.urls import reverse
 
 from ..models import Ticket, Message
 
 @login_required(login_url='login')
 def close_ticket(request, ticket_id):
-    """Cierra un ticket si el usuario tiene permiso"""
-    ticket = get_object_or_404(Ticket, id=ticket_id)
-
-    if ticket.is_final:
-        return redirect(ticket.get_absolute_url())
+    """Redirige al detalle del ticket en modo cierre"""
+    return redirect(
+        reverse('welp_payflow:detail', kwargs={'ticket_id': ticket_id}) + '?action=close'
+    )
 
 
 @login_required(login_url='login')
@@ -58,16 +57,6 @@ def process_close_ticket(request, ticket_id):
     
     messages.success(request, 'Ticket cerrado exitosamente')
     return redirect('welp_payflow:list')
-
-    # Permisos simplificados: cualquier usuario autenticado puede cerrar
-
-    ticket.messages.create(
-        user=request.user,
-        status='closed',
-        body='Ticket cerrado por el usuario'
-    )
-    return redirect(ticket.get_absolute_url())
-
 
 @login_required(login_url='login')
 def authorize_ticket(request, ticket_id):
