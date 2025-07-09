@@ -61,18 +61,20 @@ def attachment_view(request, attachment_id):
 
 @login_required(login_url='login')
 def ticket_detail(request, ticket_id):
-    """Vista de detalle de un ticket individual"""
+    """Vista de detalle de un ticket individual con distintas acciones"""
     ticket = get_object_or_404(
         Ticket.objects.select_related(
             'udn', 'sector', 'accounting_category'
         ).prefetch_related(
             'messages__user',
             'messages__attachments'
-        ), 
+        ),
         id=ticket_id
     )
-    
-    if request.method == 'POST':
+
+    response_type = request.GET.get('action', 'comment')
+
+    if request.method == 'POST' and response_type == 'comment':
         response_body = request.POST.get('response_body', '').strip()
         new_status = request.POST.get('status', 'feedback')  # Default a feedback
         
@@ -107,12 +109,30 @@ def ticket_detail(request, ticket_id):
             
             # Redirect para evitar resubmit
             return redirect('welp_payflow:detail', ticket_id=ticket.id)
+
         else:
             messages.error(request, 'El comentario es obligatorio')
     
     context = {
         'ticket': ticket,
+        'response_type': response_type,
     }
+
+    if response_type == 'close':
+        is_owner = ticket.created_by == request.user
+        requires_comment = not (is_owner or request.user.is_superuser)
+        context.update({
+            'process_close_url': reverse('welp_payflow:process_close', kwargs={'ticket_id': ticket.id}),
+            'cancel_url': reverse('welp_payflow:detail', kwargs={'ticket_id': ticket.id}),
+            'requires_comment': requires_comment,
+            'is_owner': is_owner,
+        })
+    elif response_type == 'authorize':
+        context.update({
+            'authorize_url': reverse('welp_payflow:authorize-ticket', kwargs={'ticket_id': ticket.id}),
+            'cancel_url': reverse('welp_payflow:detail', kwargs={'ticket_id': ticket.id}),
+        })
+
     return render(request, 'welp_payflow/detail.html', context)
 
 
