@@ -1,0 +1,140 @@
+{% extends "core/base.html" %}
+{% load core_tags %}
+{% load format_tags %}
+
+{% block title %}{{ attachment.file.name|basename }} - Welp Payflow{% endblock %}
+
+{% block content %}
+<section class="attachment-viewer">
+    <div class="attachment-header">
+        <div class="attachment-breadcrumb">
+            <a href="{% url 'welp_payflow:list' %}" class="attachment-back-link">
+                ← Volver a Solicitudes
+            </a>
+            <span class="attachment-separator">|</span>
+            <a href="{% url 'welp_payflow:detail' ticket.id %}" class="attachment-back-link">
+                ← Volver al Ticket #{{ ticket.id }}
+            </a>
+        </div>
+        
+        <h1 class="attachment-title">{{ attachment.file.name|basename }}</h1>
+        
+        <div class="attachment-meta">
+            <span class="attachment-info">Ticket: {{ ticket.title }}</span>
+            <span class="attachment-info">Tipo: {{ attachment.get_attachment_type_display }}</span>
+            <span class="attachment-info">Tamaño: <span id="file-size">Calculando...</span></span>
+        </div>
+        
+        <div class="attachment-actions">
+            <a href="{{ attachment.file.url }}" download class="attachment-download-btn">
+                ↓ Descargar
+            </a>
+            <a href="{{ attachment.file.url }}" target="_blank" class="attachment-open-btn">
+                ↗ Abrir en nueva pestaña
+            </a>
+        </div>
+    </div>
+
+    <div class="attachment-content">
+        {% if file_type == 'image' %}
+            <div class="attachment-image-container">
+                <img src="{{ attachment.file.url }}" 
+                     alt="{{ attachment.file.name|basename }}" 
+                     class="attachment-image"
+                     onload="calculateImageSize(this)">
+            </div>
+        {% elif file_type == 'pdf' %}
+            <div class="attachment-pdf-container">
+                <iframe src="{{ attachment.file.url }}" 
+                        class="attachment-pdf"
+                        title="{{ attachment.file.name|basename }}">
+                    <p>Tu navegador no puede mostrar PDFs. <a href="{{ attachment.file.url }}" target="_blank">Haz clic aquí para abrirlo</a></p>
+                </iframe>
+            </div>
+        {% else %}
+            <div class="attachment-file-preview">
+                <div class="attachment-file-icon">
+                    {% if file_type == 'document' %}
+                        ▢
+                    {% elif file_type == 'spreadsheet' %}
+                        ▦
+                    {% else %}
+                        ⚬
+                    {% endif %}
+                </div>
+                <h3>{{ attachment.file.name|basename }}</h3>
+                <p class="attachment-file-type">
+                    Archivo {{ file_extension|upper }}
+                    {% if file_type == 'document' %}
+                        (Documento)
+                    {% elif file_type == 'spreadsheet' %}
+                        (Hoja de cálculo)
+                    {% else %}
+                        (Archivo genérico)
+                    {% endif %}
+                </p>
+                <p class="attachment-preview-note">
+                    Este tipo de archivo no se puede previsualizar en el navegador.<br>
+                    Usa los botones de arriba para descargarlo o abrirlo en una nueva pestaña.
+                </p>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+<script>
+function calculateImageSize(img) {
+    // Calcular tamaño de archivo aproximado basado en dimensiones
+    const width = img.naturalWidth;
+    const height = img.naturalHeight;
+    const fileSize = document.getElementById('file-size');
+    
+    // Intentar obtener el tamaño real del archivo
+    fetch('{{ attachment.file.url }}', {method: 'HEAD'})
+        .then(response => {
+            const contentLength = response.headers.get('content-length');
+            if (contentLength) {
+                const size = parseInt(contentLength);
+                if (size < 1024) {
+                    fileSize.textContent = size + ' B';
+                } else if (size < 1024 * 1024) {
+                    fileSize.textContent = (size / 1024).toFixed(1) + ' KB';
+                } else {
+                    fileSize.textContent = (size / (1024 * 1024)).toFixed(1) + ' MB';
+                }
+            } else {
+                fileSize.textContent = `${width}×${height} px`;
+            }
+        })
+        .catch(() => {
+            fileSize.textContent = `${width}×${height} px`;
+        });
+}
+
+// Para archivos no-imagen, intentar obtener el tamaño
+document.addEventListener('DOMContentLoaded', function() {
+    const fileSize = document.getElementById('file-size');
+    if (!fileSize.textContent.includes('×')) {
+        fetch('{{ attachment.file.url }}', {method: 'HEAD'})
+            .then(response => {
+                const contentLength = response.headers.get('content-length');
+                if (contentLength) {
+                    const size = parseInt(contentLength);
+                    if (size < 1024) {
+                        fileSize.textContent = size + ' B';
+                    } else if (size < 1024 * 1024) {
+                        fileSize.textContent = (size / 1024).toFixed(1) + ' KB';
+                    } else {
+                        fileSize.textContent = (size / (1024 * 1024)).toFixed(1) + ' MB';
+                    }
+                } else {
+                    fileSize.textContent = 'Tamaño desconocido';
+                }
+            })
+            .catch(() => {
+                fileSize.textContent = 'Tamaño desconocido';
+            });
+    }
+});
+</script>
+{% endblock %} 

@@ -1,10 +1,14 @@
 {% load format_tags %}
 <div class="ticket-message">
-    <span class="ticket-message-meta">
+    <span class="message-author">
         {% if message.status == 'open' %}Abierto{% elif message.status == 'feedback' %}Comentado{% elif message.status == 'solved' %}Resuelto{% elif message.status == 'authorized' %}Autorizado{% elif message.status == 'rejected' %}Rechazado{% elif message.status == 'closed' %}Cerrado{% else %}{{ message.status|title }}{% endif %} por
-        <i class="ticket-user-icon"></i>
+        <i class="user-icon"></i>
         {% if message.user %}
-            {{ message.user.first_name }} {{ message.user.last_name }}
+            {% if message.user.first_name and message.user.last_name %}
+                {{ message.user.first_name }} {{ message.user.last_name }}
+            {% else %}
+                {{ message.user.username }}
+            {% endif %}
         {% else %}
             Usuario eliminado
         {% endif %}
@@ -20,15 +24,20 @@
         </span>
     </div>
     {% if message.attachments.exists %}
-        <div class="ticket-attachments">
-            <strong>📎 ADJUNTOS:</strong>
+        <div class="message-attachments">
             {% for attachment in message.attachments.all %}
-                <div class="ticket-attachment">
-                    <span class="tag tag-category">{{ attachment.get_attachment_type_display }}</span>
-                    <a href="{{ attachment.file.url }}" target="_blank">
-                        {{ attachment.file.name|slice:"50:" }}{% if attachment.file.name|length > 50 %}...{% endif %}
-                    </a>
-                </div>
+                <a href="{% url 'welp_payflow:attachment' attachment.id %}" class="attachment-link">
+                    <i class="attachment-icon"></i>
+                    <span class="attachment-name">
+                        {% with basename=attachment.file.name|basename %}
+                            {% if basename|length > 30 %}
+                                {{ basename|slice:":25" }}...{{ basename|slice:"-5:" }}
+                            {% else %}
+                                {{ basename }}
+                            {% endif %}
+                        {% endwith %}
+                    </span>
+                </a>
             {% endfor %}
         </div>
     {% endif %}

@@ -2,6 +2,7 @@ from django import template
 from django.utils import timezone
 from django.conf import settings
 import zoneinfo
+import os
 from ..views.utils import format_relative_date
 
 register = template.Library()
@@ -66,3 +67,19 @@ def relative_date(value):
     Usage: {{ message.created_on|relative_date }}
     """
     return format_relative_date(value)
+
+
+@register.filter
+def basename(value):
+    """
+    Obtiene el nombre base del archivo desde una ruta completa
+    
+    Args:
+        value: string con la ruta del archivo
+        
+    Returns:
+        str: Solo el nombre del archivo sin la ruta
+        
+    Usage: {{ attachment.file.name|basename }}
+    """
+    return os.path.basename(value) if value else ''

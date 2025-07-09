@@ -28,6 +28,38 @@ def list_tickets(request):
 
 
 @login_required(login_url='login')
+def attachment_view(request, attachment_id):
+    """Vista para mostrar un adjunto individual"""
+    attachment = get_object_or_404(Attachment, id=attachment_id)
+    
+    # Determinar el tipo de archivo para la presentación
+    file_extension = attachment.file.name.split('.')[-1].lower() if '.' in attachment.file.name else ''
+    
+    image_extensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'svg']
+    pdf_extensions = ['pdf']
+    document_extensions = ['doc', 'docx', 'txt', 'rtf']
+    spreadsheet_extensions = ['xls', 'xlsx', 'csv']
+    
+    file_type = 'unknown'
+    if file_extension in image_extensions:
+        file_type = 'image'
+    elif file_extension in pdf_extensions:
+        file_type = 'pdf'
+    elif file_extension in document_extensions:
+        file_type = 'document'
+    elif file_extension in spreadsheet_extensions:
+        file_type = 'spreadsheet'
+    
+    context = {
+        'attachment': attachment,
+        'file_type': file_type,
+        'file_extension': file_extension,
+        'ticket': attachment.message.ticket,
+    }
+    return render(request, 'welp_payflow/attachment.html', context)
+
+
+@login_required(login_url='login')
 def ticket_detail(request, ticket_id):
     """Vista de detalle de un ticket individual"""
     ticket = get_object_or_404(
