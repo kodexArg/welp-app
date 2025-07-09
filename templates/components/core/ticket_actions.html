@@ -5,10 +5,10 @@
                 <i class="ticket-action-icon-close"></i>
                 <span>CERRAR</span>
             </a>
-            <button class="ticket-action-authorize">
+            <a href="{% url 'welp_payflow:detail' ticket.id %}?action=authorize" class="ticket-action-authorize">
                 <i class="ticket-action-icon-authorize"></i>
                 <span>AUTORIZAR</span>
-            </button>
+            </a>
             <a href="{% url 'welp_payflow:detail' ticket.id %}" class="ticket-action-respond">
                 <i class="ticket-action-icon"></i>
                 <span>RESPONDER</span>
@@ -21,5 +21,4 @@
                 <span>TICKET CERRADO</span>
             </span>
         </div>
-    {% endif %}
-{% endwith %}
+    {% endif %}{% endwith %}

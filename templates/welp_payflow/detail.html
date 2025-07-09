@@ -8,24 +8,46 @@
 <section>
     <div class="ticket-detail-header">
         <div class="flex justify-between items-center">
-            <a href="{% url 'welp_payflow:list' %}" class="detail-back-button">
-                <i class="detail-back-icon"></i>
-                <span>Solicitudes</span>
-            </a>
-            
+            <div class="flex items-center gap-4">
+                <a href="{% url 'welp_payflow:list' %}" class="detail-back-button">
+                    <i class="detail-back-icon"></i>
+                    <span>Solicitudes</span>
+                </a>
+                <h1 class="ticket-detail-title">{{ ticket.title }}</h1>
+            </div>
             {% ticket_status ticket %}
         </div>
     </div>
 
-    <div class="ticket-detail-container">
-        {% ticket_container ticket expandido=True %}
-    </div>
-    
-    {% ticket_message_input form_action=request.get_full_path show_attachments=True cancel_url="welp_payflow:list" %}
+    {% if response_type == 'close' %}
+        <div class="ticket-detail-container">
+            {% ticket_container ticket expandido=True %}
+            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6 rounded-r-lg">
+                {% if is_owner %}
+                    <p class="text-yellow-700">Está cerrando su propio ticket.</p>
+                {% else %}
+                    <p class="text-yellow-700">Está cerrando un ticket creado por otro usuario.</p>
+                {% endif %}
+            </div>
+        </div>
+        {% ticket_message_input form_action=process_close_url button_text="Confirmar Cierre" label_text="Comentario" placeholder="Explique el motivo del cierre" cancel_url=cancel_url required=requires_comment field_name="close_comment" %}
+    {% elif response_type == 'authorize' %}
+        <div class="ticket-detail-container">
+            {% ticket_container ticket expandido=True %}
+            <div class="bg-sky-50 border-l-4 border-sky-400 p-4 mb-6 rounded-r-lg">
+                <p class="text-sky-700">Confirme si desea autorizar este ticket.</p>
+            </div>
+        </div>
+        {% ticket_message_input form_action=authorize_url button_text="Autorizar" label_text="Comentario" placeholder="Comentario de autorización (opcional)" cancel_url=cancel_url required=False field_name="authorize_comment" %}
+    {% else %}
+        <div class="ticket-detail-container">
+            {% ticket_container ticket expandido=True %}
+        </div>
+        {% ticket_message_input form_action=request.get_full_path show_attachments=True cancel_url="welp_payflow:list" %}
+    {% endif %}
 </section>
 
 {% endblock %}
 
 {% block scripts %}
-    {% vite_asset 'frontend/js/welp_payflow/attachment_manager.js' %}
-{% endblock %} 
+    {% vite_asset 'frontend/js/welp_payflow/attachment_manager.js' %}{% endblock %} 
