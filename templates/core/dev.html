@@ -175,5 +175,8 @@
     </div>
 </section>
 
+{% endblock %}
 
-{% endblock %} 
+{% block scripts %}
+    {% vite_asset 'frontend/js/dev-content.js' %}
+{% endblock %}

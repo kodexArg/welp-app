@@ -18,15 +18,9 @@ export default defineConfig({
         main: 'frontend/main.js',
         styles: 'frontend/main.css',
         favicon: 'frontend/favicon.ico',
-        // Core components
-        'brand-logo': 'frontend/js/brand-logo.js',
-        'logout': 'frontend/js/logout.js',
-        'font-preload': 'frontend/js/font-preload.js',
-        'attachment-handler': 'frontend/js/attachment-handler.js',
-        // Welp Payflow JavaScript modules
-        'payflow-config': 'frontend/js/payflow-config.js',
-        'select-field-treemap': 'frontend/js/select-field-treemap.js',
-        'payflow-create-form': 'frontend/js/payflow-create-form.js',
+        'dev-content': 'frontend/js/dev-content.js',
+        'payflow-create': 'frontend/js/welp_payflow/create.js',
+        'payflow-success': 'frontend/js/welp_payflow/success.js',
       },
     },
   },
