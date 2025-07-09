@@ -1,0 +1,28 @@
+{% load core_tags %}
+
+<article>
+    {% ticket_header ticket %}
+    
+    <div>
+        <h5>💬 Mensajes ({{ ticket.messages.count }} total)</h5>
+        {% for message in ticket.messages.all %}
+            {% ticket_message message %}
+        {% empty %}
+            <div class="alert alert-error">
+                ⚠️ Este ticket no tiene mensajes (situación anómala)
+            </div>
+        {% endfor %}
+    </div>
+    
+    {% ticket_actions ticket %}
+</article> 
+
+<style>
+    article {
+        @apply bg-red p-6 rounded border-l-4 border-blue-500 ml-4 max-w-2xl mx-auto;
+    }
+
+    article h5 {
+        @apply text-lg font-semibold text-blue-700 mb-2;
+    }
+</style>

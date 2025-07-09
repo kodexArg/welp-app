@@ -179,7 +179,46 @@ def select_fields_body(form):
         dict: Contexto para el template
     """
     return {
-        'form': form,    }
+        'form': form,
+    }
 
+@register.inclusion_tag("components/core/ticket_header.html")
+def ticket_header(ticket):
+    return {"ticket": ticket}
 
+@register.inclusion_tag("components/core/ticket_message.html")
+def ticket_message(message):
+    return {"message": message}
 
+@register.inclusion_tag("components/core/ticket_actions.html")
+def ticket_actions(ticket):
+    return {"ticket": ticket}
+
+@register.inclusion_tag("components/core/pagination.html")
+def pagination(page_obj, request):
+    return {"page_obj": page_obj, "request": request}
+
+@register.inclusion_tag('components/core/radio-button.html')
+def radio_button(target, id, label, next_target, visible=True):
+    try:
+        from django.urls import reverse
+        full_url = reverse(f'welp_payflow:htmx-{next_target}', kwargs={target: id})
+    except Exception:
+        full_url = ''
+
+    return {
+        'target': target,
+        'id': id,
+        'label': label,
+        'next_target': next_target,
+        'full_url': full_url,
+        'visible': visible,
+    }
+
+@register.inclusion_tag('components/core/ticket_container.html')
+def ticket_container(ticket):
+    return {'ticket': ticket}
+
+@register.inclusion_tag('components/core/ticket_empty.html')
+def ticket_empty():
+    return {}

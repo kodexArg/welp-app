@@ -18,6 +18,9 @@ REGLA CRÍTICA: alwaysApply = true
 - NUNCA hardcodear credenciales, tokens o passwords en código
 - NUNCA definir constantes en código. Usar variables de entorno exclusivamente
 
+# Prohibido JavaScript
+- NUNCA agregar JavaScript sin solicitud expresa.
+
 # Prohibiciones de Arquitectura
 - NUNCA usar frameworks incompatibles fuera de Django 5 + Tailwind 4 + Vite + HTMX
 - NUNCA agregar dependencias sin documentar justificación en requirements.txt y pyproject.toml

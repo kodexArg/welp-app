@@ -1,0 +1,40 @@
+<div class="card">
+    <div class="card-body">
+        <span>
+            {% if message.status == 'open' %}Abierto{% elif message.status == 'feedback' %}Comentado{% elif message.status == 'solved' %}Resuelto{% elif message.status == 'authorized' %}Autorizado{% elif message.status == 'rejected' %}Rechazado{% elif message.status == 'closed' %}Cerrado{% else %}{{ message.status|title }}{% endif %} por
+            <i>👤</i>
+            {% if message.user %}
+                {{ message.user.first_name }} {{ message.user.last_name }}
+            {% else %}
+                Usuario eliminado
+            {% endif %}
+        </span>
+        <span>
+            {{ message.created_on|date:"d \d\e F, H:i" }}
+        </span>
+        
+        {% if message.body %}
+            <blockquote>
+                {{ message.body }}
+            </blockquote>
+        {% else %}
+            <blockquote>
+                (Sin contenido)
+            </blockquote>
+        {% endif %}
+        
+        {% if message.attachments.exists %}
+            <div>
+                <strong>📎 ADJUNTOS:</strong>
+                {% for attachment in message.attachments.all %}
+                    <div>
+                        <span class="tag tag-category">{{ attachment.get_attachment_type_display }}</span>
+                        <a href="{{ attachment.file.url }}" target="_blank">
+                            {{ attachment.file.name|slice:"50:" }}{% if attachment.file.name|length > 50 %}...{% endif %}
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+</div> 

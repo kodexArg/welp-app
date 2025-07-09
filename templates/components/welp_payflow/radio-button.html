@@ -1,7 +1,0 @@
-{% if visible %}
-<div>
-    <input class="sr-only peer" type="radio" name="{{ target }}" id="{{ target }}_{{ id }}" value="{{ id }}"{% if full_url %}
-           hx-get="{{ full_url }}" hx-target="#{{ next_target }}-container" hx-swap="outerHTML" hx-trigger="change"{% endif %}>
-    <label for="{{ target }}_{{ id }}" class="radio-button">{{ label }}</label>
-</div>
-{% endif %} 

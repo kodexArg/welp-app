@@ -1,0 +1,17 @@
+{% with last_message=ticket.messages.last %}
+    {% if last_message.status != 'closed' %}
+        <div>
+            <a href="{% url 'welp_payflow:list' %}">
+                <i class="fa fa-paper-plane"></i>
+                <span>RESPONDER</span>
+            </a>
+        </div>
+    {% else %}
+        <div>
+            <span>
+                <i class="fa fa-check-circle"></i>
+                <span>TICKET CERRADO</span>
+            </span>
+        </div>
+    {% endif %}
+{% endwith %}

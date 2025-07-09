@@ -3,7 +3,7 @@ from django.urls import reverse
 
 register = template.Library()
 
-@register.inclusion_tag('components/welp_payflow/radio-button.html')
+@register.inclusion_tag('components/core/radio-button.html')
 def radio_button(target, id, label, next_target, visible=True):
     """Componente radio-button HTMX usado en Welp Payflow."""
     try:
