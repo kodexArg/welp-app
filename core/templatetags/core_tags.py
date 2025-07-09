@@ -1,7 +1,7 @@
 from django import template
 from django.urls import reverse
 from welp_desk.constants import DESK_STATUSES
-from welp_payflow.constants import PAYFLOW_STATUSES
+from welp_payflow.constants import PAYFLOW_STATUSES, PAYFLOW_STATUS_FLOW
 
 register = template.Library()
 
@@ -222,3 +222,56 @@ def ticket_container(ticket, expandido=False):
 @register.inclusion_tag('components/core/ticket_empty.html')
 def ticket_empty():
     return {}
+
+@register.filter
+def get_status_flow(ticket):
+    """
+    Obtiene la información del flujo de estado del ticket
+    
+    Args:
+        ticket: Ticket de PayFlow
+    
+    Returns:
+        dict: Información del estado actual y siguiente acción
+    """
+    try:
+        if not ticket or not hasattr(ticket, 'status'):
+            return {
+                'current_action': 'Estado desconocido',
+                'next_action': None,
+                'is_waiting': False,
+                'priority': 'none'
+            }
+        
+        status = ticket.status or 'open'
+        flow_info = PAYFLOW_STATUS_FLOW.get(status)
+        
+        if not flow_info:
+            return {
+                'current_action': f'Estado: {status}',
+                'next_action': None,
+                'is_waiting': False,
+                'priority': 'none'
+            }
+        
+        return flow_info
+    except Exception:
+        return {
+            'current_action': 'Error al obtener estado',
+            'next_action': None,
+            'is_waiting': False,
+            'priority': 'none'
+        }
+
+@register.inclusion_tag('components/core/ticket_status.html')
+def ticket_status(ticket):
+    """
+    Componente de estado del ticket con información de flujo
+    
+    Args:
+        ticket: Ticket de PayFlow
+    
+    Returns:
+        dict: Contexto para el template
+    """
+    return {'ticket': ticket}

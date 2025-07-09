@@ -7,17 +7,13 @@
 {% block content %}
 <section>
     <div class="ticket-detail-header">
-        <div class="ticket-detail-breadcrumb">
-            <a href="{% url 'welp_payflow:list' %}" class="ticket-detail-back">
-                ← Volver a Solicitudes
+        <div class="flex justify-between items-center">
+            <a href="{% url 'welp_payflow:list' %}" class="detail-back-button">
+                <i class="detail-back-icon"></i>
+                <span>Solicitudes</span>
             </a>
-        </div>
-        
-        <h1>{{ ticket.title }}</h1>
-        
-        <div class="ticket-detail-meta">
-            <span class="ticket-detail-id">Solicitud #{{ ticket.id }}</span>
-            <span class="ticket-detail-created">Creada {{ ticket.created_on|date:"d \\d\\e F \\d\\e Y" }}</span>
+            
+            {% ticket_status ticket %}
         </div>
     </div>
 
@@ -26,63 +22,56 @@
     </div>
     
     <div class="ticket-detail-response-section">
-        <h3>Responder a esta solicitud</h3>
         <div class="ticket-response-form">
-            <form method="post" enctype="multipart/form-data">
+            <form method="post" enctype="multipart/form-data" id="comment-form">
                 {% csrf_token %}
+                <input type="hidden" name="status" value="feedback">
+                
                 <div class="form-group">
-                    <label for="response_body">Mensaje de respuesta</label>
+                    <label for="response_body">Comentario</label>
                     <textarea 
                         id="response_body" 
                         name="response_body" 
                         class="form-input"
                         rows="4"
-                        placeholder="Escriba su respuesta o comentario aquí..."
+                        placeholder="Escriba su comentario aquí..."
                         required
                     ></textarea>
                 </div>
                 
                 <div class="form-group">
-                    <label for="status">Cambiar estado (opcional)</label>
-                    <select id="status" name="status" class="form-select">
-                        <option value="">Mantener estado actual</option>
-                        <option value="feedback">Comentar</option>
-                        <option value="solved">Marcar como resuelto</option>
-                        <option value="authorized">Autorizar</option>
-                        <option value="closed">Cerrar ticket</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="attachments">Archivos adjuntos (opcional)</label>
-                    <input 
-                        type="file" 
-                        id="attachments" 
-                        name="attachments" 
-                        class="form-input"
-                        multiple
-                        accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg,.gif"
-                    >
+                    <label>Archivos adjuntos (opcional)</label>
+                    <div id="attachments-container">
+                        <div class="attachment-input-row">
+                            <input 
+                                type="file" 
+                                name="attachments" 
+                                class="form-input attachment-input"
+                                accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg,.gif"
+                            >
+                            <button type="button" class="button-minimal add-attachment">+</button>
+                        </div>
+                    </div>
                     <p class="form-help">Máximo 50MB por archivo. Formatos: PDF, DOC, XLS, imágenes</p>
                 </div>
                 
                 <div class="ticket-response-actions">
-                    <button type="submit" class="button-primary">
-                        Enviar Respuesta
+                    <button type="submit" class="comment-action-submit">
+                        <i class="comment-action-icon-submit"></i>
+                        <span>Agregar Comentario</span>
                     </button>
-                    <a href="{% url 'welp_payflow:list' %}" class="button-secondary">
-                        Cancelar
+                    <a href="{% url 'welp_payflow:list' %}" class="comment-action-cancel">
+                        <i class="comment-action-icon-cancel"></i>
+                        <span>Cancelar</span>
                     </a>
                 </div>
             </form>
         </div>
     </div>
 </section>
+
 {% endblock %}
 
 {% block scripts %}
-    {% comment %}
-    No incluir ticket_interactivity.js en vista de detalle
-    porque el ticket siempre está expandido
-    {% endcomment %}
+    {% vite_asset 'frontend/js/welp_payflow/attachment_manager.js' %}
 {% endblock %} 

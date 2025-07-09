@@ -74,34 +74,41 @@ def ticket_detail(request, ticket_id):
     
     if request.method == 'POST':
         response_body = request.POST.get('response_body', '').strip()
-        new_status = request.POST.get('status', '').strip()
+        new_status = request.POST.get('status', 'feedback')  # Default a feedback
         
         if response_body:
-            # Crear el nuevo mensaje de respuesta
-            message_status = new_status if new_status else ticket.status
-            
+            # Crear el nuevo mensaje de comentario
             message = Message.objects.create(
                 ticket=ticket,
-                status=message_status,
+                status=new_status,
                 user=request.user,
                 body=response_body
             )
             
-            # Manejar archivos adjuntos si los hay
+            # Manejar archivos adjuntos múltiples
             files = request.FILES.getlist('attachments')
+            attachment_count = 0
             for file in files:
-                if file.size <= 52428800:  # 50MB limit
-                    Attachment.objects.create(
-                        file=file,
-                        message=message
-                    )
+                if file and file.size > 0:  # Verificar que el archivo no esté vacío
+                    if file.size <= 52428800:  # 50MB limit
+                        Attachment.objects.create(
+                            file=file,
+                            message=message
+                        )
+                        attachment_count += 1
+                    else:
+                        messages.warning(request, f'Archivo {file.name} demasiado grande (máximo 50MB)')
             
-            messages.success(request, 'Respuesta enviada exitosamente')
+            success_msg = 'Comentario agregado exitosamente'
+            if attachment_count > 0:
+                success_msg += f' con {attachment_count} archivo{"s" if attachment_count > 1 else ""} adjunto{"s" if attachment_count > 1 else ""}'
+            
+            messages.success(request, success_msg)
             
             # Redirect para evitar resubmit
             return redirect('welp_payflow:detail', ticket_id=ticket.id)
         else:
-            messages.error(request, 'El mensaje de respuesta es obligatorio')
+            messages.error(request, 'El comentario es obligatorio')
     
     context = {
         'ticket': ticket,
@@ -175,4 +182,25 @@ class CreateTicketView(LoginRequiredMixin, FormView):
                 
         except Exception as e:
             messages.error(self.request, 'Error al crear la solicitud')
-            return self.form_invalid(form) 
+            return self.form_invalid(form)
+
+
+@login_required(login_url='login')
+def ticket_status_htmx(request, ticket_id):
+    """Vista HTMX para actualizar el estado del ticket"""
+    try:
+        ticket = get_object_or_404(Ticket, id=ticket_id)
+        
+        # Verificar que el usuario tenga permisos para ver este ticket
+        # (simplificado - en producción implementar lógica de permisos completa)
+        
+        context = {
+            'ticket': ticket,
+        }
+        return render(request, 'components/core/ticket_status.html', context)
+    except Exception as e:
+        # En caso de error, devolver componente vacío
+        context = {
+            'ticket': None,
+        }
+        return render(request, 'components/core/ticket_status.html', context) 

@@ -132,4 +132,72 @@ FORM_TIMEOUT_SECONDS = int(os.environ.get('PAYFLOW_FORM_TIMEOUT', '300'))
 MAX_UPLOAD_FILES = int(os.environ.get('PAYFLOW_MAX_UPLOAD_FILES', '10'))
 
 TREEMAP_MIN_ITEMS = int(os.environ.get('PAYFLOW_TREEMAP_MIN_ITEMS', '3'))
-TREEMAP_MAX_ITEMS = int(os.environ.get('PAYFLOW_TREEMAP_MAX_ITEMS', '50')) 
+TREEMAP_MAX_ITEMS = int(os.environ.get('PAYFLOW_TREEMAP_MAX_ITEMS', '50'))
+
+# Estado actual y acciones esperadas según el flujo
+PAYFLOW_STATUS_FLOW = {
+    'open': {
+        'current_action': 'Esperando autorización inicial',
+        'next_action': 'Autorizar solicitud',
+        'responsible_roles': ['supervisor', 'manager'],
+        'can_transition_to': ['authorized', 'closed'],
+        'is_waiting': True,
+        'priority': 'high'
+    },
+    'authorized': {
+        'current_action': 'Esperando presupuestos',
+        'next_action': 'Adjuntar presupuestos',
+        'responsible_roles': ['technician', 'purchase_manager'],
+        'can_transition_to': ['budgeted', 'closed'],
+        'is_waiting': True,
+        'priority': 'medium'
+    },
+    'budgeted': {
+        'current_action': 'Esperando autorización de pago',
+        'next_action': 'Autorizar pago',
+        'responsible_roles': ['supervisor', 'manager'],
+        'can_transition_to': ['payment_authorized', 'rejected', 'closed'],
+        'is_waiting': True,
+        'priority': 'high'
+    },
+    'rejected': {
+        'current_action': 'Presupuestos rechazados',
+        'next_action': 'Revisar y adjuntar nuevos presupuestos',
+        'responsible_roles': ['technician', 'purchase_manager'],
+        'can_transition_to': ['budgeted', 'closed'],
+        'is_waiting': True,
+        'priority': 'high'
+    },
+    'payment_authorized': {
+        'current_action': 'Esperando proceso de pago',
+        'next_action': 'Procesar facturación',
+        'responsible_roles': ['purchase_manager'],
+        'can_transition_to': ['processing_payment', 'closed'],
+        'is_waiting': True,
+        'priority': 'medium'
+    },
+    'processing_payment': {
+        'current_action': 'Procesando pago/facturación',
+        'next_action': 'Confirmar envío',
+        'responsible_roles': ['purchase_manager'],
+        'can_transition_to': ['shipping', 'closed'],
+        'is_waiting': False,
+        'priority': 'low'
+    },
+    'shipping': {
+        'current_action': 'En proceso de envío/entrega',
+        'next_action': 'Confirmar recepción',
+        'responsible_roles': ['end_user', 'purchase_manager'],
+        'can_transition_to': ['closed'],
+        'is_waiting': False,
+        'priority': 'low'
+    },
+    'closed': {
+        'current_action': 'Solicitud finalizada',
+        'next_action': None,
+        'responsible_roles': [],
+        'can_transition_to': [],
+        'is_waiting': False,
+        'priority': None
+    }
+} 

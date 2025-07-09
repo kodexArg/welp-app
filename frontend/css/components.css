@@ -236,12 +236,12 @@
         @apply bg-red-100 text-red-600 border border-red-200;
     }
 
-    .status-feedback {
-        @apply bg-sky-200 text-sky-600;
+        .status-feedback {
+        @apply bg-forest-200 text-forest-600;
     }
-
+    
     .status-en-curso {
-        @apply bg-sky-200 text-sky-600;
+        @apply bg-forest-200 text-forest-600;
     }
 
     .status-solved {
@@ -261,16 +261,16 @@
     }
 
     .text-status-open { @apply text-red-600; }
-    .text-status-feedback { @apply text-sky-600; }
-    .text-status-en-curso { @apply text-sky-600; }
+    .text-status-feedback { @apply text-forest-600; }
+    .text-status-en-curso { @apply text-forest-600; }
     .text-status-solved { @apply text-green-700; }
     .text-status-authorized { @apply text-green-600; }
     .text-status-rejected { @apply text-yellow-700; }
     .text-status-closed { @apply text-forest-600; }
 
     .bg-status-open { @apply bg-red-100; }
-    .bg-status-feedback { @apply bg-sky-200; }
-    .bg-status-en-curso { @apply bg-sky-200; }
+    .bg-status-feedback { @apply bg-forest-200; }
+    .bg-status-en-curso { @apply bg-forest-200; }
     .bg-status-solved { @apply bg-green-100; }
     .bg-status-authorized { @apply bg-green-50; }
     .bg-status-rejected { @apply bg-yellow-100; }
@@ -413,8 +413,8 @@
     .select-fields-body input,
     .select-fields-body textarea {
         @apply w-full px-3 py-2 border rounded-md;
-        @apply bg-white text-text border-border;
-        @apply focus:outline-none focus:ring-2 focus:border-primary;
+        @apply bg-white text-text border-forest-300;
+        @apply focus:outline-none focus:ring-2 focus:border-forest-400;
         @apply transition-all duration-200;
         --tw-ring-color: rgb(226 232 240);
     }
@@ -567,7 +567,7 @@
     }
 
     .ticket-details {
-        @apply rounded-2xl p-3 -mb-1 -mx-1 mt-3 shadow-inner border border-sky-100 bg-sky-50;
+        @apply rounded-2xl p-3 -mb-1 -mx-1 mt-3 shadow-inner border border-forest-100 bg-forest-50;
         display: grid;
         grid-template-rows: 0fr;
         transition: grid-template-rows 300ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -604,12 +604,12 @@
     }
 
     .message-author {
-        @apply text-xs text-sky-600 ml-2 font-sans translate-y-[0.02rem] italic;
+        @apply text-xs text-forest-600 ml-2 font-sans translate-y-[0.02rem] italic;
     }
 
     .user-icon::before {
         content: '●';
-        @apply text-xs text-sky-400 mr-0.5;
+        @apply text-xs text-forest-400 mr-0.5;
     }
 
     .ticket-message-body {
@@ -618,7 +618,7 @@
     }
 
     .ticket-message-date {
-        @apply text-[10px] text-sky-400 italic pointer-events-none font-sans;
+        @apply text-[10px] text-forest-400 italic pointer-events-none font-sans;
         @apply absolute bottom-1.5 right-1.5;
         @apply m-0 p-0;
     }
@@ -628,7 +628,7 @@
     }
 
     .attachment-link {
-        @apply flex items-center text-[10px] text-sky-400 hover:text-sky-600 no-underline;
+        @apply flex items-center text-[10px] text-forest-400 hover:text-forest-600 no-underline;
         @apply transition-colors duration-200;
     }
 
@@ -644,7 +644,7 @@
 
 
     .ticket-action-close {
-        @apply text-xs bg-forest-600 border border-forest-500 text-white rounded-full py-1 px-3 inline-flex items-center font-medium cursor-pointer hover:brightness-110;
+        @apply text-xs bg-forest-500 border border-forest-400 text-white rounded-full py-1 px-3 inline-flex items-center font-medium cursor-pointer hover:brightness-110;
         pointer-events: auto;
     }
 
@@ -654,7 +654,7 @@
     }
 
     .ticket-action-authorize {
-        @apply text-xs bg-forest-600 border border-forest-500 text-white rounded-full py-1 px-3 inline-flex items-center font-medium cursor-pointer hover:brightness-110;
+        @apply text-xs bg-forest-500 border border-forest-400 text-white rounded-full py-1 px-3 inline-flex items-center font-medium cursor-pointer hover:brightness-110;
         pointer-events: auto;
     }
 
@@ -663,7 +663,7 @@
     }
 
     .ticket-action-respond {
-        @apply text-xs bg-forest-600 border border-forest-500 text-white rounded-full py-1 px-3 inline-flex items-center no-underline font-medium hover:brightness-110;
+        @apply text-xs bg-forest-500 border border-forest-400 text-white rounded-full py-1 px-3 inline-flex items-center no-underline font-medium hover:brightness-110;
         pointer-events: auto;
     }
 
@@ -688,11 +688,11 @@
     }
 
     .status-feedback .ticket-status-icon::before {
-        @apply content-['●'];
+        @apply content-['💬'];
     }
 
     .status-en-curso .ticket-status-icon::before {
-        @apply content-['●'];
+        @apply content-['⏳'];
     }
 
     .status-solved .ticket-status-icon::before {
@@ -708,7 +708,7 @@
     }
 
     .status-closed .ticket-status-icon::before {
-        @apply content-['●'];
+        @apply content-['🔒'];
     }
 
     .ticket-status-badge {
@@ -745,28 +745,12 @@
 
     /* Ticket Detail Page - Vista de detalle */
     .ticket-detail-header {
-        @apply mb-8;
-    }
-
-    .ticket-detail-breadcrumb {
-        @apply mb-4;
+        @apply mb-6;
     }
 
     .ticket-detail-back {
         @apply text-sm text-forest-600 hover:text-forest-700 transition-colors duration-200;
         @apply inline-flex items-center gap-1;
-    }
-
-    .ticket-detail-meta {
-        @apply flex flex-wrap items-center gap-4 text-sm text-sky-600 mt-2;
-    }
-
-    .ticket-detail-id {
-        @apply font-medium text-forest-700;
-    }
-
-    .ticket-detail-created {
-        @apply italic text-sky-500;
     }
 
     .ticket-detail-container {
@@ -786,21 +770,54 @@
         @apply bg-white rounded-lg border border-forest-200 shadow-sm p-6;
     }
 
-    .ticket-detail-response-section h3 {
-        @apply text-lg font-medium mb-4 text-forest-700;
-        @apply border-b border-forest-200 pb-2;
-    }
-
     .ticket-response-form {
         @apply space-y-4;
     }
 
     .form-help {
-        @apply text-xs text-sky-500 mt-1;
+        @apply text-xs text-forest-500 mt-1;
     }
 
     .ticket-response-actions {
         @apply flex gap-3 pt-4;
+    }
+
+    .attachment-input-row {
+        @apply flex items-center gap-2 mb-2;
+    }
+
+    .attachment-input {
+        @apply flex-1;
+    }
+
+    .add-attachment, .remove-attachment {
+        @apply w-8 h-8 flex items-center justify-center rounded border text-xs font-bold;
+        @apply bg-forest-50 border-forest-200 text-forest-600 hover:bg-forest-100 transition-colors duration-200;
+        @apply cursor-pointer;
+    }
+
+    .remove-attachment {
+        @apply bg-red-50 border-red-200 text-red-600 hover:bg-red-100;
+    }
+
+    .comment-action-submit {
+        @apply text-xs bg-forest-500 border border-forest-400 text-white rounded-full py-1 px-3 inline-flex items-center font-medium cursor-pointer hover:brightness-110;
+        @apply transition-all duration-200;
+    }
+
+    .comment-action-icon-submit::before {
+        content: '✓';
+        @apply mr-1 not-italic font-normal;
+    }
+
+    .comment-action-cancel {
+        @apply text-xs bg-forest-100 border border-forest-300 text-forest-600 rounded-full py-1 px-3 inline-flex items-center font-medium cursor-pointer hover:bg-forest-200;
+        @apply transition-all duration-200 no-underline;
+    }
+
+    .comment-action-icon-cancel::before {
+        content: '×';
+        @apply mr-1 not-italic font-normal;
     }
 
     /* Ticket Detail Mode - Modo expandido sin interactividad */
@@ -820,7 +837,7 @@
     }
 
     .ticket-details-detail {
-        @apply rounded-2xl p-3 -mb-1 -mx-1 mt-3 shadow-inner border border-sky-100 bg-sky-50;
+        @apply rounded-2xl p-3 -mb-1 -mx-1 mt-3 shadow-inner border border-forest-100 bg-forest-50;
     }
 
     .ticket-details-detail .ticket-details-content {
@@ -850,7 +867,7 @@
     }
 
     .attachment-separator {
-        @apply mx-2 text-sky-400;
+        @apply mx-2 text-forest-400;
     }
 
     .attachment-title {
@@ -858,11 +875,11 @@
     }
 
     .attachment-meta {
-        @apply flex flex-wrap gap-4 text-sm text-sky-600 mb-4;
+        @apply flex flex-wrap gap-4 text-sm text-forest-600 mb-4;
     }
 
     .attachment-info {
-        @apply bg-sky-50 px-3 py-1 rounded-full text-sky-700;
+        @apply bg-forest-50 px-3 py-1 rounded-full text-forest-700;
     }
 
     .attachment-actions {
@@ -870,7 +887,7 @@
     }
 
     .attachment-download-btn, .attachment-open-btn {
-        @apply bg-forest-600 text-white px-4 py-2 rounded-lg hover:bg-forest-500 transition-colors duration-200 no-underline text-sm font-medium;
+        @apply bg-forest-500 text-white px-4 py-2 rounded-lg hover:bg-forest-400 transition-colors duration-200 no-underline text-sm font-medium;
     }
 
     .attachment-content {
@@ -913,11 +930,111 @@
     }
 
     .attachment-file-type {
-        @apply text-sky-600 text-sm mb-4;
+        @apply text-forest-600 text-sm mb-4;
     }
 
     .attachment-preview-note {
-        @apply text-sky-500 text-sm italic;
+        @apply text-forest-500 text-sm italic;
+    }
+
+    /* Ticket Status Indicator - Indicador de estado de ticket */
+    .ticket-status-indicator {
+        @apply text-right;
+    }
+
+    .status-container {
+        @apply inline-flex flex-col items-end space-y-1;
+    }
+
+    .status-priority-high .status-badge {
+        @apply bg-red-50 border-red-200;
+    }
+
+    .status-priority-medium .status-badge {
+        @apply bg-forest-50 border-forest-200;
+    }
+
+    .status-priority-low .status-badge {
+        @apply bg-forest-50 border-forest-200;
+    }
+
+    .status-priority-none .status-badge {
+        @apply bg-gray-50 border-gray-200;
+    }
+
+    .status-badge {
+        @apply inline-flex items-center px-3 py-1 rounded-full border text-xs font-medium;
+        @apply bg-forest-50 border-forest-200 text-forest-700;
+    }
+
+    .status-icon {
+        @apply mr-1.5;
+    }
+
+    .status-icon::before {
+        @apply content-['●'];
+    }
+
+    .status-icon.status-open::before {
+        @apply content-['●'] text-red-600;
+    }
+
+    .status-icon.status-authorized::before {
+        @apply content-['✓'] text-purple-600;
+    }
+
+    .status-icon.status-budgeted::before {
+        @apply content-['▦'] text-green-600;
+    }
+
+    .status-icon.status-rejected::before {
+        @apply content-['×'] text-yellow-600;
+    }
+
+    .status-icon.status-payment_authorized::before {
+        @apply content-['▢'] text-orange-600;
+    }
+
+    .status-icon.status-processing_payment::before {
+        @apply content-['⚬'] text-blue-600;
+    }
+
+    .status-icon.status-shipping::before {
+        @apply content-['↗'] text-purple-600;
+    }
+
+    .status-icon.status-closed::before {
+        @apply content-['⚫'] text-gray-600;
+    }
+
+    .status-label {
+        @apply font-medium;
+    }
+
+    .status-action {
+        @apply text-[11px] text-right space-y-0.5;
+    }
+
+    .current-action {
+        @apply block text-forest-600 font-medium;
+    }
+
+    .next-action {
+        @apply block text-forest-500 italic;
+    }
+
+    /* Improved Back Button - Botón de volver mejorado */
+    .detail-back-button {
+        @apply inline-flex items-center gap-2 px-4 py-2 rounded-lg border;
+        @apply bg-white border-forest-300 text-forest-700;
+        @apply hover:bg-forest-50 hover:border-forest-400 hover:text-forest-800;
+        @apply transition-all duration-200 no-underline text-sm font-medium;
+        @apply shadow-sm hover:shadow-md;
+    }
+
+    .detail-back-icon::before {
+        content: '←';
+        @apply text-base font-normal;
     }
 
 } 
