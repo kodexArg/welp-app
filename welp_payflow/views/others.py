@@ -66,5 +66,36 @@ def process_close_ticket(request, ticket_id):
         status='closed',
         body='Ticket cerrado por el usuario'
     )
+    return redirect(ticket.get_absolute_url())
 
-    return redirect(ticket.get_absolute_url()) 
+
+@login_required(login_url='login')
+def authorize_ticket(request, ticket_id):
+    """Autoriza un ticket si el usuario tiene permisos"""
+    if request.method != 'POST':
+        return redirect('welp_payflow:detail', ticket_id=ticket_id)
+
+    ticket = get_object_or_404(Ticket, id=ticket_id)
+
+    # Verificar permisos básicos
+    has_permission = request.user.is_superuser or request.user.payflow_roles.filter(can_authorize=True).exists()
+    if not has_permission:
+        messages.error(request, 'No tiene permisos para autorizar este ticket.')
+        return redirect('welp_payflow:detail', ticket_id=ticket.id)
+
+    # Validar transición de estado
+    if not ticket.can_transition_to_status('authorized'):
+        messages.error(request, 'Este ticket no puede ser autorizado en su estado actual.')
+        return redirect('welp_payflow:detail', ticket_id=ticket.id)
+
+    comment = request.POST.get('authorize_comment', '').strip()
+
+    Message.objects.create(
+        ticket=ticket,
+        status='authorized',
+        user=request.user,
+        body=comment or 'Ticket autorizado por el usuario'
+    )
+
+    messages.success(request, 'Ticket autorizado exitosamente')
+    return redirect('welp_payflow:detail', ticket_id=ticket.id)
