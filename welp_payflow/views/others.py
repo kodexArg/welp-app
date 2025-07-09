@@ -86,5 +86,6 @@ def authorize_ticket(request, ticket_id):
         user=request.user,
         body=comment or 'Ticket autorizado por el usuario'
     )
+
     messages.success(request, 'Ticket autorizado exitosamente')
     return redirect('welp_payflow:detail', ticket_id=ticket.id)
