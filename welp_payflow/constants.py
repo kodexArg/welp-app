@@ -132,7 +132,7 @@ FORM_TIMEOUT_SECONDS = int(os.environ.get('PAYFLOW_FORM_TIMEOUT', '300'))
 MAX_UPLOAD_FILES = int(os.environ.get('PAYFLOW_MAX_UPLOAD_FILES', '10'))
 
 TREEMAP_MIN_ITEMS = int(os.environ.get('PAYFLOW_TREEMAP_MIN_ITEMS', '3'))
-TREEMAP_MAX_ITEMS = int(os.environ.get('PAYFLOW_TREEMAP_MAX_ITEMS', '50'))
+TREEMAP_MAX_ITEMS = int(os.environ.get('PAYFLOW_TREEMAP_MAX_ITEMS', '50')) 
 
 # Estado actual y acciones esperadas según el flujo
 PAYFLOW_STATUS_FLOW = {

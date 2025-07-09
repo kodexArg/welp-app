@@ -40,37 +40,37 @@ Ticket Container - Soporta dos modos:
     </article>
 {% else %}
     <!-- Modo expandible para vista de lista -->
-    <article class="ticket-container">
-        <details>
-            <summary class="ticket-summary">
-                <div class="ticket-title">
-                    <i class="ticket-caret"></i>
-                    {{ ticket.title }}
-                </div>
-                <div class="ticket-info">
-                    <span class="tags-ticket-udn">{{ ticket.udn.name }}</span>
-                    <span class="tags-ticket-sector">{{ ticket.sector.name }}</span>
-                    <span class="tags-ticket-category">{{ ticket.accounting_category.name }}</span>
-                    <span class="status status-{{ ticket.status|default:'open' }}">
-                        <i class="ticket-status-icon"></i>
-                        {{ ticket.get_status_display|default:'Abierto' }}
-                    </span>
-                </div>
-            </summary>
-            
-            <div class="ticket-details">
+<article class="ticket-container">
+    <details>
+        <summary class="ticket-summary">
+            <div class="ticket-title">
+                <i class="ticket-caret"></i>
+                {{ ticket.title }}
+            </div>
+            <div class="ticket-info">
+                <span class="tags-ticket-udn">{{ ticket.udn.name }}</span>
+                <span class="tags-ticket-sector">{{ ticket.sector.name }}</span>
+                <span class="tags-ticket-category">{{ ticket.accounting_category.name }}</span>
+                <span class="status status-{{ ticket.status|default:'open' }}">
+                    <i class="ticket-status-icon"></i>
+                    {{ ticket.get_status_display|default:'Abierto' }}
+                </span>
+            </div>
+        </summary>
+        
+        <div class="ticket-details">
                 <div class="ticket-details-content">
-                    {% for message in ticket.messages.all %}
-                        {% ticket_message message %}
-                    {% empty %}
-                        <div class="ticket-no-messages">
-                            ⚠️ Este ticket no tiene mensajes
-                        </div>
-                    {% endfor %}
-                    
-                    {% ticket_actions ticket %}
+            {% for message in ticket.messages.all %}
+                {% ticket_message message %}
+            {% empty %}
+                <div class="ticket-no-messages">
+                    ⚠️ Este ticket no tiene mensajes
+                </div>
+            {% endfor %}
+        
+        {% ticket_actions ticket %}
                 </div>
             </div>
-        </details>
-    </article>
+    </details>
+</article>
 {% endif %}

@@ -12,9 +12,9 @@ document.addEventListener('click', event => {
     if (details && !event.target.closest('summary')) {
         event.preventDefault();
         ticket.querySelector('summary').click();
-    }
+            }
 });
-
+        
 // Soporte teclado minimalista
 document.addEventListener('keydown', event => {
     if ((event.key === 'Enter' || event.key === ' ') && 

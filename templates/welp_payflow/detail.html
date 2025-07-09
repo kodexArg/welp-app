@@ -21,53 +21,7 @@
         {% ticket_container ticket expandido=True %}
     </div>
     
-    <div class="ticket-detail-response-section">
-        <div class="ticket-response-form">
-            <form method="post" enctype="multipart/form-data" id="comment-form">
-                {% csrf_token %}
-                <input type="hidden" name="status" value="feedback">
-                
-                <div class="form-group">
-                    <label for="response_body">Comentario</label>
-                    <textarea 
-                        id="response_body" 
-                        name="response_body" 
-                        class="form-input"
-                        rows="4"
-                        placeholder="Escriba su comentario aquí..."
-                        required
-                    ></textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label>Archivos adjuntos (opcional)</label>
-                    <div id="attachments-container">
-                        <div class="attachment-input-row">
-                            <input 
-                                type="file" 
-                                name="attachments" 
-                                class="form-input attachment-input"
-                                accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg,.gif"
-                            >
-                            <button type="button" class="button-minimal add-attachment">+</button>
-                        </div>
-                    </div>
-                    <p class="form-help">Máximo 50MB por archivo. Formatos: PDF, DOC, XLS, imágenes</p>
-                </div>
-                
-                <div class="ticket-response-actions">
-                    <button type="submit" class="comment-action-submit">
-                        <i class="comment-action-icon-submit"></i>
-                        <span>Agregar Comentario</span>
-                    </button>
-                    <a href="{% url 'welp_payflow:list' %}" class="comment-action-cancel">
-                        <i class="comment-action-icon-cancel"></i>
-                        <span>Cancelar</span>
-                    </a>
-                </div>
-            </form>
-        </div>
-    </div>
+    {% ticket_message_input form_action=request.get_full_path show_attachments=True cancel_url="welp_payflow:list" %}
 </section>
 
 {% endblock %}

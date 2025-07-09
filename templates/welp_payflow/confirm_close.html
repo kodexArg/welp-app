@@ -1,0 +1,44 @@
+{% extends "core/base.html" %}
+{% load core_tags %}
+
+{% block title %}Cerrar Ticket - {{ ticket.title }} - Welp Payflow{% endblock %}
+
+{% block content %}
+<section>
+    <div class="ticket-detail-header">
+        <div class="flex justify-between items-center">
+            <a href="{% url 'welp_payflow:detail' ticket.id %}" class="detail-back-button">
+                <i class="detail-back-icon"></i>
+                <span>Volver al Ticket</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="ticket-detail-container">
+        {% ticket_container ticket expandido=True %}
+        
+        <!-- Warning for Non-Owners -->
+        {% if not is_owner %}
+        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6 rounded-r-lg">
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    <span class="text-xl">⚠️</span>
+                </div>
+                <div class="ml-3">
+                    <h3 class="text-lg font-medium text-yellow-800">Advertencia</h3>
+                    <p class="text-yellow-700 mt-1">
+                        Está cerrando un ticket que no le pertenece.
+                        {% if ticket.created_by %}
+                            Este ticket fue creado por <strong>{{ ticket.created_by.username }}</strong>.
+                        {% endif %}
+                        Debe proporcionar un motivo para esta acción.
+                    </p>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    
+    {% ticket_message_input form_action=process_close_url button_text="Confirmar Cierre" label_text=label_text placeholder=placeholder_text cancel_url=cancel_url required=requires_comment field_name="close_comment" cancel_text="Cancelar" %}
+</section>
+{% endblock %} 

@@ -644,7 +644,7 @@
 
 
     .ticket-action-close {
-        @apply text-xs bg-forest-500 border border-forest-400 text-white rounded-full py-1 px-3 inline-flex items-center font-medium cursor-pointer hover:brightness-110;
+        @apply text-xs bg-forest-500 border border-forest-400 text-white rounded-full py-1 px-3 inline-flex items-center font-medium cursor-pointer hover:brightness-110 no-underline;
         pointer-events: auto;
     }
 
@@ -1036,5 +1036,7 @@
         content: '←';
         @apply text-base font-normal;
     }
+
+
 
 } 

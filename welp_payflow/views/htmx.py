@@ -1,6 +1,8 @@
 """HTMX views for welp_payflow"""
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.urls import reverse
 from django.db import models
 from django.core.paginator import Paginator
 
@@ -65,7 +67,42 @@ def htmx_fields_body(request, accounting_category):
 
 
 @login_required(login_url='login')
-def htmx_confirm_close_ticket(request, ticket_id):
-    """Muestra el modal de confirmación para cerrar un ticket"""
+def confirm_close_ticket_page(request, ticket_id):
+    """Muestra la página de confirmación para cerrar un ticket"""
     ticket = get_object_or_404(Ticket, id=ticket_id)
-    return render(request, 'welp_payflow/partials/modal-confirm-close.html', {'ticket': ticket}) 
+    
+    # Verificar si el ticket ya está cerrado
+    if ticket.status == 'closed':
+        messages.warning(request, 'Este ticket ya está cerrado.')
+        return redirect('welp_payflow:detail', ticket_id=ticket.id)
+    
+    # Determinar permisos y tipo de usuario
+    is_owner = ticket.created_by == request.user
+    is_superuser = request.user.is_superuser
+    can_close = is_owner or is_superuser
+    
+    if not can_close:
+        messages.error(request, 'No tiene permisos para cerrar este ticket.')
+        return redirect('welp_payflow:detail', ticket_id=ticket.id)
+    
+    # Preparar variables para el template
+    requires_comment = not (is_owner or is_superuser)
+    
+    if requires_comment:
+        label_text = "Motivo del cierre (obligatorio)"
+        placeholder_text = "Explique detalladamente el motivo por el cual está cerrando este ticket..."
+    else:
+        label_text = "Comentario de cierre (opcional)"
+        placeholder_text = "Agregue un comentario sobre el cierre del ticket (opcional)..."
+    
+    context = {
+        'ticket': ticket,
+        'can_close': can_close,
+        'is_owner': is_owner,
+        'requires_comment': requires_comment,
+        'process_close_url': reverse('welp_payflow:process_close', kwargs={'ticket_id': ticket.id}),
+        'cancel_url': reverse('welp_payflow:detail', kwargs={'ticket_id': ticket.id}),
+        'label_text': label_text,
+        'placeholder_text': placeholder_text,
+    }
+    return render(request, 'welp_payflow/confirm_close.html', context) 

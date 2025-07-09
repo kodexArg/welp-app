@@ -194,6 +194,42 @@ def ticket_message(message):
 def ticket_actions(ticket):
     return {"ticket": ticket}
 
+@register.inclusion_tag("components/core/ticket_message_input.html")
+def ticket_message_input(form_action, button_text="Agregar Comentario", label_text="Comentario", 
+                        placeholder="Escriba su comentario aquí...", cancel_url=None, 
+                        required=True, show_attachments=False, field_name="response_body",
+                        cancel_text="Cancelar", hidden_fields=None):
+    """
+    Componente reutilizable para input de mensajes de tickets
+    
+    Args:
+        form_action (str): URL de acción del formulario
+        button_text (str): Texto del botón de envío
+        label_text (str): Etiqueta del campo de texto
+        placeholder (str): Placeholder del textarea
+        cancel_url (str): URL de cancelación (opcional)
+        required (bool): Si el campo es obligatorio
+        show_attachments (bool): Si mostrar sección de archivos adjuntos
+        field_name (str): Nombre del campo en el formulario
+        cancel_text (str): Texto del botón de cancelar
+        hidden_fields (dict): Campos ocultos del formulario
+    
+    Returns:
+        dict: Contexto para el template
+    """
+    return {
+        'form_action': form_action,
+        'button_text': button_text,
+        'label_text': label_text,
+        'placeholder': placeholder,
+        'cancel_url': cancel_url,
+        'required': required,
+        'show_attachments': show_attachments,
+        'field_name': field_name,
+        'cancel_text': cancel_text,
+        'hidden_fields': hidden_fields or {},
+    }
+
 @register.inclusion_tag("components/core/pagination.html")
 def pagination(page_obj, request):
     return {"page_obj": page_obj, "request": request}

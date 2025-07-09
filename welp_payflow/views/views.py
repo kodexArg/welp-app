@@ -182,7 +182,7 @@ class CreateTicketView(LoginRequiredMixin, FormView):
                 
         except Exception as e:
             messages.error(self.request, 'Error al crear la solicitud')
-            return self.form_invalid(form)
+            return self.form_invalid(form) 
 
 
 @login_required(login_url='login')

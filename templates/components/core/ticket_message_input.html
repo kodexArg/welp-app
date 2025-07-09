@@ -1,0 +1,65 @@
+{% comment %}
+Componente reutilizable para input de mensajes de tickets
+Replica el estilo del formulario de respuesta de detail.html
+{% endcomment %}
+
+<div class="ticket-detail-response-section">
+    <div class="ticket-response-form">
+        <form method="post" enctype="multipart/form-data" action="{{ form_action }}">
+            {% csrf_token %}
+            
+            {% comment %} Campo status por defecto para comentarios {% endcomment %}
+            {% if not hidden_fields.status %}
+                <input type="hidden" name="status" value="feedback">
+            {% endif %}
+            
+            {% comment %} Campos ocultos dinámicos {% endcomment %}
+            {% for field_name, field_value in hidden_fields.items %}
+                <input type="hidden" name="{{ field_name }}" value="{{ field_value }}">
+            {% endfor %}
+            
+            <div class="form-group">
+                <label for="{{ field_name }}">{{ label_text }}</label>
+                <textarea 
+                    id="{{ field_name }}" 
+                    name="{{ field_name }}" 
+                    class="form-input"
+                    rows="4"
+                    placeholder="{{ placeholder }}"
+                    {% if required %}required{% endif %}
+                ></textarea>
+            </div>
+            
+            {% if show_attachments %}
+            <div class="form-group">
+                <label>Archivos adjuntos (opcional)</label>
+                <div id="attachments-container">
+                    <div class="attachment-input-row">
+                        <input 
+                            type="file" 
+                            name="attachments" 
+                            class="form-input attachment-input"
+                            accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg,.gif"
+                        >
+                        <button type="button" class="button-minimal add-attachment">+</button>
+                    </div>
+                </div>
+                <p class="form-help">Máximo 50MB por archivo. Formatos: PDF, DOC, XLS, imágenes</p>
+            </div>
+            {% endif %}
+            
+            <div class="ticket-response-actions">
+                <button type="submit" class="comment-action-submit">
+                    <i class="comment-action-icon-submit"></i>
+                    <span>{{ button_text }}</span>
+                </button>
+                {% if cancel_url %}
+                <a href="{{ cancel_url }}" class="comment-action-cancel">
+                    <i class="comment-action-icon-cancel"></i>
+                    <span>{{ cancel_text }}</span>
+                </a>
+                {% endif %}
+            </div>
+        </form>
+    </div>
+</div> 

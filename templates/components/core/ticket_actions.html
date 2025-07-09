@@ -1,10 +1,10 @@
 {% with last_message=ticket.messages.last %}
     {% if last_message.status != 'closed' %}
         <div class="ticket-actions">
-            <button class="ticket-action-close">
+            <a href="{% url 'welp_payflow:confirm-close' ticket.id %}" class="ticket-action-close">
                 <i class="ticket-action-icon-close"></i>
                 <span>CERRAR</span>
-            </button>
+            </a>
             <button class="ticket-action-authorize">
                 <i class="ticket-action-icon-authorize"></i>
                 <span>AUTORIZAR</span>
