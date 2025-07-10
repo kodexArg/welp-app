@@ -4,6 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
 from ..models import Ticket, Message
+from ..utils import can_user_transition_ticket
+from ..constants import PAYFLOW_STATUSES
 
 @login_required(login_url='login')
 def close_ticket(request, ticket_id):
@@ -98,4 +100,48 @@ def authorize_ticket(request, ticket_id):
     )
 
     messages.success(request, 'Ticket autorizado exitosamente')
+    return redirect('welp_payflow:detail', ticket_id=ticket.id)
+
+
+@login_required(login_url='login')
+def transition_ticket(request, ticket_id, target_status):
+    """Vista general para manejar todas las transiciones de estado"""
+    if request.method != 'POST':
+        return redirect('welp_payflow:detail', ticket_id=ticket_id)
+
+    ticket = get_object_or_404(Ticket, id=ticket_id)
+
+    # Verificar si la transición es válida
+    if not ticket.can_transition_to_status(target_status):
+        messages.error(request, f'Este ticket no puede cambiar al estado {target_status}.')
+        return redirect('welp_payflow:detail', ticket_id=ticket.id)
+
+    # Verificar permisos del usuario
+    if not can_user_transition_ticket(request.user, ticket, target_status):
+        messages.error(request, f'No tiene permisos para cambiar este ticket al estado {target_status}.')
+        return redirect('welp_payflow:detail', ticket_id=ticket.id)
+
+    # Obtener el comentario del formulario
+    comment_field = f'{target_status}_comment'
+    comment = request.POST.get(comment_field, '').strip()
+    
+    # Obtener información del estado para el mensaje
+    status_info = PAYFLOW_STATUSES.get(target_status, {})
+    status_label = status_info.get('label', target_status)
+    
+    # Crear mensaje automático si no hay comentario
+    if not comment:
+        comment = f'Estado cambiado a {status_label}'
+    else:
+        comment = f'Estado cambiado a {status_label}: {comment}'
+
+    # Crear el mensaje de transición
+    Message.objects.create(
+        ticket=ticket,
+        status=target_status,
+        user=request.user,
+        body=comment
+    )
+
+    messages.success(request, f'Ticket cambiado exitosamente a {status_label}')
     return redirect('welp_payflow:detail', ticket_id=ticket.id)

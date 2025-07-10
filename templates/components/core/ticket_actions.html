@@ -3,19 +3,12 @@
     {% if last_message.status != 'closed' %}
         <div class="ticket-actions">
             {% if can_close_ticket %}
-                {% ticket_action_button 'close' href=(ticket|get_absolute_url)|add:'?close=1' %}
+                {% ticket_action_button 'close' ticket_id=ticket_id %}
             {% endif %}
             {% for target_status in transition_buttons %}
-                {% ticket_action_button target_status href="#" %}
+                {% ticket_action_button target_status ticket_id=ticket_id %}
             {% endfor %}
-            {% ticket_action_button 'feedback' href=(ticket|get_absolute_url) %}
-        </div>
-    {% else %}
-        <div class="ticket-actions">
-            <span class="ticket-action-closed">
-                <i class="ticket-action-icon-closed"></i>
-                <span>TICKET CERRADO</span>
-            </span>
+            {% ticket_action_button 'feedback' ticket_id=ticket_id %}
         </div>
     {% endif %}
 {% endwith %}

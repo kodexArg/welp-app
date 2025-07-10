@@ -193,13 +193,15 @@ def ticket_message(message):
 
 
 @register.inclusion_tag('components/core/ticket_action_button.html')
-def ticket_action_button(action, href='#'):
+def ticket_action_button(action, ticket_id=None, href='#'):
     """Renderiza un botón de acción para tickets usando los datos de PAYFLOW_STATUSES."""
+    from django.urls import reverse
+    
     extra_actions = {
         'feedback': {
             'label': 'COMENTAR',
             'icon': '💬',
-            'color_name': 'sky',
+            'color_name': 'forest',
         },
         'close': {
             'label': 'CERRAR',
@@ -207,6 +209,20 @@ def ticket_action_button(action, href='#'):
             'color_name': 'forest',
         },
     }
+
+    # Generar URL basada en la acción
+    if href == '#' and ticket_id:
+        try:
+            if action == 'close':
+                href = reverse('welp_payflow:detail') + f'?response_type=close'
+                href = href.replace('ticket/', f'ticket/{ticket_id}/')
+            elif action == 'feedback':
+                href = reverse('welp_payflow:detail', kwargs={'ticket_id': ticket_id})
+            elif action in PAYFLOW_STATUSES:
+                href = reverse('welp_payflow:detail') + f'?response_type={action}'
+                href = href.replace('ticket/', f'ticket/{ticket_id}/')
+        except Exception:
+            href = '#'
 
     if action in PAYFLOW_STATUSES:
         info = PAYFLOW_STATUSES[action]
@@ -232,7 +248,12 @@ def ticket_actions(context, ticket):
     user = context['request'].user if 'request' in context else None
     can_close_ticket = can_user_close_ticket(user, ticket) if user else False
     transition_buttons = get_user_ticket_transitions(user, ticket)
-    return {"ticket": ticket, "can_close_ticket": can_close_ticket, "transition_buttons": transition_buttons}
+    return {
+        "ticket": ticket, 
+        "can_close_ticket": can_close_ticket, 
+        "transition_buttons": transition_buttons,
+        "ticket_id": ticket.id if ticket else None
+    }
 
 @register.inclusion_tag("components/core/ticket_message_input.html")
 def ticket_message_input(form_action, button_text="Agregar Comentario", label_text="Comentario", 

@@ -109,8 +109,9 @@ def confirm_close_ticket_page(request, ticket_id):
         'cancel_url': reverse('welp_payflow:detail', kwargs={'ticket_id': ticket.id}),
         'label_text': label_text,
         'placeholder_text': placeholder_text,
+        'response_type': 'close',
     }
-    return render(request, 'welp_payflow/confirm_close.html', context) 
+    return render(request, 'welp_payflow/detail.html', context)
 
 
 @login_required(login_url='login')

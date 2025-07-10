@@ -10,6 +10,14 @@ from django.http import HttpResponse
 from ..models import Ticket, Message, Attachment
 from ..forms import PayflowTicketCreationForm
 from ..utils import can_user_close_ticket
+from ..constants import (
+    PAYFLOW_RESPONSE_TYPES, 
+    PAYFLOW_CONFIRMATION_TEXTS, 
+    PAYFLOW_BUTTON_TEXTS, 
+    PAYFLOW_COMMENT_PLACEHOLDERS, 
+    PAYFLOW_COMMENT_LABELS, 
+    PAYFLOW_REQUIRED_FIELDS
+)
 
 
 def home(request):
@@ -73,7 +81,7 @@ def ticket_detail(request, ticket_id):
         id=ticket_id
     )
 
-    response_type = request.GET.get('action', 'comment')
+    response_type = request.GET.get('response_type', 'comment')
 
     if request.method == 'POST' and response_type == 'comment':
         response_body = request.POST.get('response_body', '').strip()
@@ -116,25 +124,40 @@ def ticket_detail(request, ticket_id):
         else:
             messages.error(request, 'El comentario es obligatorio')
     
+    # Obtener datos de constantes para el response_type actual
+    response_info = PAYFLOW_RESPONSE_TYPES.get(response_type, PAYFLOW_RESPONSE_TYPES['comment'])
+    confirmation_info = PAYFLOW_CONFIRMATION_TEXTS.get(response_type, {})
+    
     context = {
         'ticket': ticket,
         'response_type': response_type,
         'can_close_ticket': can_user_close_ticket(request.user, ticket),
+        'response_info': response_info,
+        'confirmation_info': confirmation_info,
+        'button_text': PAYFLOW_BUTTON_TEXTS.get(response_type, 'Enviar'),
+        'comment_placeholder': PAYFLOW_COMMENT_PLACEHOLDERS.get(response_type, 'Escriba su comentario aquí...'),
+        'comment_label': PAYFLOW_COMMENT_LABELS.get(response_type, 'Comentario'),
+        'field_required': PAYFLOW_REQUIRED_FIELDS.get(response_type, False),
     }
+
+    # URL base para cancelar
+    cancel_url = reverse('welp_payflow:detail', kwargs={'ticket_id': ticket.id})
 
     if response_type == 'close':
         is_owner = ticket.created_by == request.user
         requires_comment = not (is_owner or request.user.is_superuser)
         context.update({
             'process_close_url': reverse('welp_payflow:process_close', kwargs={'ticket_id': ticket.id}),
-            'cancel_url': reverse('welp_payflow:detail', kwargs={'ticket_id': ticket.id}),
+            'cancel_url': cancel_url,
             'requires_comment': requires_comment,
             'is_owner': is_owner,
+            'field_required': requires_comment,  # Override para close
         })
-    elif response_type == 'authorize':
+    elif response_type in ['authorized', 'budgeted', 'rejected', 'payment_authorized', 'processing_payment', 'shipping']:
+        # Para todas las transiciones de estado usar la nueva vista general
         context.update({
-            'authorize_url': reverse('welp_payflow:authorize-ticket', kwargs={'ticket_id': ticket.id}),
-            'cancel_url': reverse('welp_payflow:detail', kwargs={'ticket_id': ticket.id}),
+            'transition_url': reverse('welp_payflow:transition', kwargs={'ticket_id': ticket.id, 'target_status': response_type}),
+            'cancel_url': cancel_url,
         })
 
     return render(request, 'welp_payflow/detail.html', context)

@@ -232,4 +232,131 @@ PAYFLOW_STATUS_FLOW = {
         'is_waiting': False,
         'priority': None
     }
+}
+
+# Mapeo de tipos de respuesta para labels y estilos en la interfaz
+PAYFLOW_RESPONSE_TYPES = {
+    'close': {
+        'label': os.environ.get('PAYFLOW_RESPONSE_CLOSE_LABEL', 'Cerrar'),
+        'color_class': os.environ.get('PAYFLOW_RESPONSE_CLOSE_COLOR', 'text-gray-500'),
+    },
+    'authorized': {
+        'label': os.environ.get('PAYFLOW_RESPONSE_AUTH_LABEL', 'Autorizar'),
+        'color_class': os.environ.get('PAYFLOW_RESPONSE_AUTH_COLOR', 'text-purple-500'),
+    },
+    'budgeted': {
+        'label': os.environ.get('PAYFLOW_RESPONSE_BUDGET_LABEL', 'Presupuestar'),
+        'color_class': os.environ.get('PAYFLOW_RESPONSE_BUDGET_COLOR', 'text-green-600'),
+    },
+    'rejected': {
+        'label': os.environ.get('PAYFLOW_RESPONSE_REJECT_LABEL', 'Rechazar'),
+        'color_class': os.environ.get('PAYFLOW_RESPONSE_REJECT_COLOR', 'text-yellow-600'),
+    },
+    'payment_authorized': {
+        'label': os.environ.get('PAYFLOW_RESPONSE_PAY_AUTH_LABEL', 'Autorizar Pago'),
+        'color_class': os.environ.get('PAYFLOW_RESPONSE_PAY_AUTH_COLOR', 'text-orange-500'),
+    },
+    'processing_payment': {
+        'label': os.environ.get('PAYFLOW_RESPONSE_PROCESS_LABEL', 'Procesar Pago'),
+        'color_class': os.environ.get('PAYFLOW_RESPONSE_PROCESS_COLOR', 'text-cyan-600'),
+    },
+    'shipping': {
+        'label': os.environ.get('PAYFLOW_RESPONSE_SHIP_LABEL', 'Envío'),
+        'color_class': os.environ.get('PAYFLOW_RESPONSE_SHIP_COLOR', 'text-violet-600'),
+    },
+    'comment': {
+        'label': os.environ.get('PAYFLOW_RESPONSE_COMMENT_LABEL', 'Comentar'),
+        'color_class': os.environ.get('PAYFLOW_RESPONSE_COMMENT_COLOR', 'text-gray-400'),
+    },
+}
+
+# Textos de confirmación para cada tipo de acción
+PAYFLOW_CONFIRMATION_TEXTS = {
+    'close': {
+        'owner_message': os.environ.get('PAYFLOW_CLOSE_OWNER_MSG', 'Está cerrando su propio ticket.'),
+        'non_owner_message': os.environ.get('PAYFLOW_CLOSE_NON_OWNER_MSG', 'Está cerrando un ticket creado por otro usuario.'),
+        'bg_color': 'bg-yellow-50',
+        'border_color': 'border-yellow-400',
+        'text_color': 'text-yellow-700',
+    },
+    'authorized': {
+        'message': os.environ.get('PAYFLOW_AUTH_CONFIRM_MSG', '¿Autorizar?'),
+        'bg_color': 'bg-sky-50',
+        'border_color': 'border-sky-400',
+        'text_color': 'text-sky-700',
+    },
+    'budgeted': {
+        'message': os.environ.get('PAYFLOW_BUDGET_CONFIRM_MSG', '¿Presupuestar?'),
+        'bg_color': 'bg-green-50',
+        'border_color': 'border-green-400',
+        'text_color': 'text-green-700',
+    },
+    'rejected': {
+        'message': os.environ.get('PAYFLOW_REJECT_CONFIRM_MSG', '¿Rechazar presupuestos?'),
+        'bg_color': 'bg-yellow-50',
+        'border_color': 'border-yellow-400',
+        'text_color': 'text-yellow-700',
+    },
+    'payment_authorized': {
+        'message': os.environ.get('PAYFLOW_PAY_AUTH_CONFIRM_MSG', '¿Autorizar pago?'),
+        'bg_color': 'bg-orange-50',
+        'border_color': 'border-orange-400',
+        'text_color': 'text-orange-700',
+    },
+    'processing_payment': {
+        'message': os.environ.get('PAYFLOW_PROCESS_CONFIRM_MSG', '¿Procesar pago?'),
+        'bg_color': 'bg-cyan-50',
+        'border_color': 'border-cyan-400',
+        'text_color': 'text-cyan-700',
+    },
+    'shipping': {
+        'message': os.environ.get('PAYFLOW_SHIP_CONFIRM_MSG', '¿Envío?'),
+        'bg_color': 'bg-violet-50',
+        'border_color': 'border-violet-400',
+        'text_color': 'text-violet-700',
+    },
+}
+
+# Textos de botones para cada acción
+PAYFLOW_BUTTON_TEXTS = {
+    'close': os.environ.get('PAYFLOW_BTN_CLOSE', 'Confirmar Cierre'),
+    'authorized': os.environ.get('PAYFLOW_BTN_AUTH', 'Autorizar'),
+    'budgeted': os.environ.get('PAYFLOW_BTN_BUDGET', 'Marcar como Presupuestado'),
+    'rejected': os.environ.get('PAYFLOW_BTN_REJECT', 'Rechazar Presupuestos'),
+    'payment_authorized': os.environ.get('PAYFLOW_BTN_PAY_AUTH', 'Autorizar Pago'),
+    'processing_payment': os.environ.get('PAYFLOW_BTN_PROCESS', 'Procesar Pago'),
+    'shipping': os.environ.get('PAYFLOW_BTN_SHIP', 'Marcar como En Envío'),
+}
+
+# Placeholders para comentarios
+PAYFLOW_COMMENT_PLACEHOLDERS = {
+    'close': os.environ.get('PAYFLOW_PH_CLOSE', 'Explique el motivo del cierre'),
+    'authorized': os.environ.get('PAYFLOW_PH_AUTH', 'Comentario de autorización (opcional)'),
+    'budgeted': os.environ.get('PAYFLOW_PH_BUDGET', 'Detalles del presupuesto adjuntado'),
+    'rejected': os.environ.get('PAYFLOW_PH_REJECT', 'Explique por qué se rechazan los presupuestos'),
+    'payment_authorized': os.environ.get('PAYFLOW_PH_PAY_AUTH', 'Comentario de autorización de pago (opcional)'),
+    'processing_payment': os.environ.get('PAYFLOW_PH_PROCESS', 'Detalles del proceso de pago/facturación'),
+    'shipping': os.environ.get('PAYFLOW_PH_SHIP', 'Detalles del envío/entrega (opcional)'),
+}
+
+# Labels para campos de comentario
+PAYFLOW_COMMENT_LABELS = {
+    'close': os.environ.get('PAYFLOW_LBL_CLOSE', 'Comentario'),
+    'authorized': os.environ.get('PAYFLOW_LBL_AUTH', 'Comentario'),
+    'budgeted': os.environ.get('PAYFLOW_LBL_BUDGET', 'Comentario'),
+    'rejected': os.environ.get('PAYFLOW_LBL_REJECT', 'Motivo del rechazo'),
+    'payment_authorized': os.environ.get('PAYFLOW_LBL_PAY_AUTH', 'Comentario'),
+    'processing_payment': os.environ.get('PAYFLOW_LBL_PROCESS', 'Comentario'),
+    'shipping': os.environ.get('PAYFLOW_LBL_SHIP', 'Comentario'),
+}
+
+# Configuración de campos requeridos
+PAYFLOW_REQUIRED_FIELDS = {
+    'close': False,  # Se calcula dinámicamente según el usuario
+    'authorized': False,
+    'budgeted': True,
+    'rejected': True,
+    'payment_authorized': False,
+    'processing_payment': False,
+    'shipping': False,
 } 

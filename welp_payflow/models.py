@@ -152,7 +152,7 @@ class Ticket(models.Model):
         return reverse('welp_payflow:list')
 
     def get_close_url(self):
-        return reverse('welp_payflow:htmx-confirm-close', kwargs={'ticket_id': self.id})
+        return reverse('welp_payflow:confirm-close', kwargs={'ticket_id': self.id})
 
     @property
     def created_by(self):
