@@ -252,8 +252,8 @@ def radio_button(target, id, label, next_target, visible=True):
     }
 
 @register.inclusion_tag('components/core/ticket_container.html')
-def ticket_container(ticket, expandido=False):
-    return {'ticket': ticket, 'expandido': expandido}
+def ticket_container(ticket, expandido=False, hide_buttons=False):
+    return {'ticket': ticket, 'expandido': expandido, 'hide_buttons': hide_buttons}
 
 @register.inclusion_tag('components/core/ticket_empty.html')
 def ticket_empty():

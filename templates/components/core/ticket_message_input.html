@@ -3,7 +3,7 @@ Componente reutilizable para input de mensajes de tickets
 Replica el estilo del formulario de respuesta de detail.html
 {% endcomment %}
 
-<div class="ticket-detail-response-section">
+<div class="ticket-detail-response-section rounded-2xl border border-forest-200 bg-white shadow-inner p-6 mt-3 mb-3">
     <div class="ticket-response-form">
         <form method="post" enctype="multipart/form-data" action="{{ form_action }}">
             {% csrf_token %}
@@ -48,18 +48,18 @@ Replica el estilo del formulario de respuesta de detail.html
             </div>
             {% endif %}
             
-            <div class="ticket-response-actions">
-                <button type="submit" class="comment-action-submit">
-                    <i class="comment-action-icon-submit"></i>
-                    <span>{{ button_text }}</span>
-                </button>
+            <div class="ticket-response-actions flex gap-2 pt-4">
                 {% if cancel_url %}
                 <a href="{{ cancel_url }}" class="comment-action-cancel">
                     <i class="comment-action-icon-cancel"></i>
-                    <span>{{ cancel_text }}</span>
+                    <span>CANCELAR</span>
                 </a>
                 {% endif %}
+                <button type="submit" class="comment-action-submit">
+                    <i class="comment-action-icon-submit"></i>
+                    <span>ENVIAR</span>
+                </button>
             </div>
         </form>
     </div>
-</div> 
+</div>

@@ -34,7 +34,9 @@ Ticket Container - Soporta dos modos:
                     </div>
                 {% endfor %}
                 
-                {% ticket_actions ticket %}
+                {% if not hide_buttons %}
+                    {% ticket_actions ticket %}
+                {% endif %}
             </div>
         </div>
     </article>
@@ -59,18 +61,19 @@ Ticket Container - Soporta dos modos:
         </summary>
         
         <div class="ticket-details">
-                <div class="ticket-details-content">
-            {% for message in ticket.messages.all %}
-                {% ticket_message message %}
-            {% empty %}
-                <div class="ticket-no-messages">
-                    ⚠️ Este ticket no tiene mensajes
-                </div>
-            {% endfor %}
-        
-        {% ticket_actions ticket %}
-                </div>
+            <div class="ticket-details-content">
+                {% for message in ticket.messages.all %}
+                    {% ticket_message message %}
+                {% empty %}
+                    <div class="ticket-no-messages">
+                        ⚠️ Este ticket no tiene mensajes
+                    </div>
+                {% endfor %}
+                {% if not hide_buttons %}
+                    {% ticket_actions ticket %}
+                {% endif %}
             </div>
+        </div>
     </details>
 </article>
 {% endif %}
