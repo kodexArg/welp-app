@@ -14,9 +14,23 @@
 
             <div id="udn-container"></div>
 
-            <div id="sector-container"></div>
+            {% comment %}
+            Si hay una sola opción de sector, renderizar el input hidden aquí.
+            {% endcomment %}
+            {% if sectors and sectors|length == 1 %}
+                <input type="hidden" name="sector" value="{{ sectors.0.pk }}" />
+            {% else %}
+                <div id="sector-container"></div>
+            {% endif %}
 
-            <div id="accounting-category-container"></div>
+            {% comment %}
+            Si hay una sola opción de categoría contable, renderizar el input hidden aquí.
+            {% endcomment %}
+            {% if categories and categories|length == 1 %}
+                <input type="hidden" name="accounting_category" value="{{ categories.0.pk }}" />
+            {% else %}
+                <div id="accounting-category-container"></div>
+            {% endif %}
 
             <div id="fields-body-container"></div>
 

@@ -165,17 +165,15 @@ class CreateTicketView(LoginRequiredMixin, FormView):
         return context
     
     def form_invalid(self, form):
+        print(f"[PAYFLOW_VIEW] Form inválido. POST data: {self.request.POST.dict()} | FILES: {[f.name for f in self.request.FILES.getlist('attachments')]} | errors: {form.errors.as_json()}")
         for field, errors in form.errors.items():
             field_name = form.fields[field].label if field in form.fields else 'Error'
             for error in errors:
                 messages.error(self.request, f'{field_name}: {error}')
-        
         for error in form.non_field_errors():
             messages.error(self.request, error)
-        
         if self.request.headers.get('HX-Request'):
             return render(self.request, self.template_name, {'form': form})
-        
         return super().form_invalid(form)
     
     def form_valid(self, form):
