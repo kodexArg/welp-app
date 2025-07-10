@@ -119,7 +119,7 @@ def ticket_detail(request, ticket_id):
             messages.success(request, success_msg)
             
             # Redirect para evitar resubmit
-            return redirect('welp_payflow:detail', ticket_id=ticket.id)
+            return redirect('welp_payflow:list')
 
         else:
             messages.error(request, 'El comentario es obligatorio')
@@ -141,14 +141,14 @@ def ticket_detail(request, ticket_id):
     }
 
     # URL base para cancelar
-    cancel_url = reverse('welp_payflow:detail', kwargs={'ticket_id': ticket.id})
+    cancel_url = reverse('welp_payflow:list')
 
     if response_type == 'close':
         is_owner = ticket.created_by == request.user
         requires_comment = not (is_owner or request.user.is_superuser)
         context.update({
             'process_close_url': reverse('welp_payflow:process_close', kwargs={'ticket_id': ticket.id}),
-            'cancel_url': cancel_url,
+            'cancel_url': reverse('welp_payflow:detail', kwargs={'ticket_id': ticket.id}),
             'requires_comment': requires_comment,
             'is_owner': is_owner,
             'field_required': requires_comment,  # Override para close
@@ -157,8 +157,10 @@ def ticket_detail(request, ticket_id):
         # Para todas las transiciones de estado usar la nueva vista general
         context.update({
             'transition_url': reverse('welp_payflow:transition', kwargs={'ticket_id': ticket.id, 'target_status': response_type}),
-            'cancel_url': cancel_url,
+            'cancel_url': reverse('welp_payflow:detail', kwargs={'ticket_id': ticket.id}),
         })
+    else:
+        context['cancel_url'] = cancel_url
 
     return render(request, 'welp_payflow/detail.html', context)
 

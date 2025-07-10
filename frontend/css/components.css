@@ -857,6 +857,20 @@
         @apply uppercase tracking-wide font-[var(--font-ui)];
     }
 
+    .comment-action-icon-submit::before {
+        content: '✓';
+        margin-right: 0.25rem;
+        font-style: normal;
+        font-weight: normal;
+    }
+
+    .comment-action-icon-cancel::before {
+        content: '×';
+        margin-right: 0.25rem;
+        font-style: normal;
+        font-weight: normal;
+    }
+
     /* Ticket Detail Mode - Modo expandido sin interactividad */
     .ticket-container-detail {
         @apply rounded-2xl p-3 mb-3 font-sans;
