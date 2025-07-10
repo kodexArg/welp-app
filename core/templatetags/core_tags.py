@@ -2,6 +2,7 @@ from django import template
 from django.urls import reverse
 from welp_desk.constants import DESK_STATUSES
 from welp_payflow.constants import PAYFLOW_STATUSES, PAYFLOW_STATUS_FLOW
+from welp_payflow.utils import can_user_close_ticket
 
 register = template.Library()
 
@@ -190,9 +191,11 @@ def ticket_header(ticket):
 def ticket_message(message):
     return {"message": message}
 
-@register.inclusion_tag("components/core/ticket_actions.html")
-def ticket_actions(ticket):
-    return {"ticket": ticket}
+@register.inclusion_tag("components/core/ticket_actions.html", takes_context=True)
+def ticket_actions(context, ticket):
+    user = context['request'].user if 'request' in context else None
+    can_close_ticket = can_user_close_ticket(user, ticket) if user else False
+    return {"ticket": ticket, "can_close_ticket": can_close_ticket}
 
 @register.inclusion_tag("components/core/ticket_message_input.html")
 def ticket_message_input(form_action, button_text="Agregar Comentario", label_text="Comentario", 
@@ -251,9 +254,10 @@ def radio_button(target, id, label, next_target, visible=True):
         'visible': visible,
     }
 
-@register.inclusion_tag('components/core/ticket_container.html')
-def ticket_container(ticket, expandido=False, hide_buttons=False):
-    return {'ticket': ticket, 'expandido': expandido, 'hide_buttons': hide_buttons}
+@register.inclusion_tag('components/core/ticket_container.html', takes_context=True)
+def ticket_container(context, ticket, expandido=False, hide_buttons=False):
+    ctx = context.flatten() if hasattr(context, 'flatten') else dict(context)
+    return {'ticket': ticket, 'expandido': expandido, 'hide_buttons': hide_buttons, **ctx}
 
 @register.inclusion_tag('components/core/ticket_empty.html')
 def ticket_empty():

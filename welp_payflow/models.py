@@ -261,3 +261,6 @@ class Attachment(models.Model):
 
     def __str__(self):
         return f"Archivo {self.get_attachment_type_display()} - Ticket #{self.message.ticket.id}" 
+
+
+# Eliminar la función can_user_close_ticket de este archivo 

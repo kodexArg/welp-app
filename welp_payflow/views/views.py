@@ -9,6 +9,7 @@ from django.http import HttpResponse
 
 from ..models import Ticket, Message, Attachment
 from ..forms import PayflowTicketCreationForm
+from ..utils import can_user_close_ticket
 
 
 def home(request):
@@ -118,6 +119,7 @@ def ticket_detail(request, ticket_id):
     context = {
         'ticket': ticket,
         'response_type': response_type,
+        'can_close_ticket': can_user_close_ticket(request.user, ticket),
     }
 
     if response_type == 'close':
