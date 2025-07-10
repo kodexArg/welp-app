@@ -191,6 +191,42 @@ def ticket_header(ticket):
 def ticket_message(message):
     return {"message": message}
 
+
+@register.inclusion_tag('components/core/ticket_action_button.html')
+def ticket_action_button(action, href='#'):
+    """Renderiza un botón de acción para tickets usando los datos de PAYFLOW_STATUSES."""
+    extra_actions = {
+        'feedback': {
+            'label': 'COMENTAR',
+            'icon': '💬',
+            'color_name': 'sky',
+        },
+        'close': {
+            'label': 'CERRAR',
+            'icon': '×',
+            'color_name': 'forest',
+        },
+    }
+
+    if action in PAYFLOW_STATUSES:
+        info = PAYFLOW_STATUSES[action]
+        label = info.get('label', action)
+        icon = info.get('icon', '')
+        color = info.get('color_name', 'forest')
+    else:
+        info = extra_actions.get(action, {})
+        label = info.get('label', action)
+        icon = info.get('icon', '')
+        color = info.get('color_name', 'forest')
+
+    return {
+        'action': action,
+        'href': href,
+        'label': label,
+        'icon': icon,
+        'color': color,
+    }
+
 @register.inclusion_tag("components/core/ticket_actions.html", takes_context=True)
 def ticket_actions(context, ticket):
     user = context['request'].user if 'request' in context else None

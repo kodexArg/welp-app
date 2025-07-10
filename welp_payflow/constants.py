@@ -12,6 +12,8 @@ PAYFLOW_STATUSES = {
         'is_active': os.environ.get('PAYFLOW_STATUS_OPEN_ACTIVE', 'true').lower() == 'true',
         'is_final': os.environ.get('PAYFLOW_STATUS_OPEN_FINAL', 'false').lower() == 'true',
         'transitions': os.environ.get('PAYFLOW_STATUS_OPEN_TRANSITIONS', 'authorized,closed').split(','),
+        'allowed_roles': [],  # Estado inicial, no accesible directamente
+        'color_name': 'red',
     },
     'authorized': {
         'label': os.environ.get('PAYFLOW_STATUS_AUTHORIZED_LABEL', 'Autorizado'),
@@ -21,6 +23,8 @@ PAYFLOW_STATUSES = {
         'is_active': os.environ.get('PAYFLOW_STATUS_AUTHORIZED_ACTIVE', 'true').lower() == 'true',
         'is_final': os.environ.get('PAYFLOW_STATUS_AUTHORIZED_FINAL', 'false').lower() == 'true',
         'transitions': os.environ.get('PAYFLOW_STATUS_AUTHORIZED_TRANSITIONS', 'budgeted,closed').split(','),
+        'allowed_roles': ['supervisor', 'manager'],
+        'color_name': 'purple',
     },
     'budgeted': {
         'label': os.environ.get('PAYFLOW_STATUS_BUDGETED_LABEL', 'Presupuestado'),
@@ -30,6 +34,8 @@ PAYFLOW_STATUSES = {
         'is_active': os.environ.get('PAYFLOW_STATUS_BUDGETED_ACTIVE', 'true').lower() == 'true',
         'is_final': os.environ.get('PAYFLOW_STATUS_BUDGETED_FINAL', 'false').lower() == 'true',
         'transitions': os.environ.get('PAYFLOW_STATUS_BUDGETED_TRANSITIONS', 'payment_authorized,rejected,closed').split(','),
+        'allowed_roles': ['purchase_manager', 'technician'],
+        'color_name': 'green',
     },
     'rejected': {
         'label': os.environ.get('PAYFLOW_STATUS_REJECTED_LABEL', 'Rechazado'),
@@ -39,6 +45,8 @@ PAYFLOW_STATUSES = {
         'is_active': os.environ.get('PAYFLOW_STATUS_REJECTED_ACTIVE', 'true').lower() == 'true',
         'is_final': os.environ.get('PAYFLOW_STATUS_REJECTED_FINAL', 'false').lower() == 'true',
         'transitions': os.environ.get('PAYFLOW_STATUS_REJECTED_TRANSITIONS', 'budgeted,closed').split(','),
+        'allowed_roles': ['supervisor', 'manager'],
+        'color_name': 'yellow',
     },
     'payment_authorized': {
         'label': os.environ.get('PAYFLOW_STATUS_PAYMENT_AUTH_LABEL', 'Pago Autorizado'),
@@ -48,6 +56,8 @@ PAYFLOW_STATUSES = {
         'is_active': os.environ.get('PAYFLOW_STATUS_PAYMENT_AUTH_ACTIVE', 'true').lower() == 'true',
         'is_final': os.environ.get('PAYFLOW_STATUS_PAYMENT_AUTH_FINAL', 'false').lower() == 'true',
         'transitions': os.environ.get('PAYFLOW_STATUS_PAYMENT_AUTH_TRANSITIONS', 'processing_payment,closed').split(','),
+        'allowed_roles': ['manager'],
+        'color_name': 'orange',
     },
     'processing_payment': {
         'label': os.environ.get('PAYFLOW_STATUS_PROCESSING_LABEL', 'Procesando Pago'),
@@ -57,6 +67,8 @@ PAYFLOW_STATUSES = {
         'is_active': os.environ.get('PAYFLOW_STATUS_PROCESSING_ACTIVE', 'true').lower() == 'true',
         'is_final': os.environ.get('PAYFLOW_STATUS_PROCESSING_FINAL', 'false').lower() == 'true',
         'transitions': os.environ.get('PAYFLOW_STATUS_PROCESSING_TRANSITIONS', 'shipping,closed').split(','),
+        'allowed_roles': ['purchase_manager'],
+        'color_name': 'cyan',
     },
     'shipping': {
         'label': os.environ.get('PAYFLOW_STATUS_SHIPPING_LABEL', 'En Envío'),
@@ -66,6 +78,8 @@ PAYFLOW_STATUSES = {
         'is_active': os.environ.get('PAYFLOW_STATUS_SHIPPING_ACTIVE', 'true').lower() == 'true',
         'is_final': os.environ.get('PAYFLOW_STATUS_SHIPPING_FINAL', 'false').lower() == 'true',
         'transitions': os.environ.get('PAYFLOW_STATUS_SHIPPING_TRANSITIONS', 'closed').split(','),
+        'allowed_roles': ['purchase_manager', 'technician'],
+        'color_name': 'violet',
     },
     'closed': {
         'label': os.environ.get('PAYFLOW_STATUS_CLOSED_LABEL', 'Cerrado'),
@@ -75,6 +89,8 @@ PAYFLOW_STATUSES = {
         'is_active': os.environ.get('PAYFLOW_STATUS_CLOSED_ACTIVE', 'false').lower() == 'true',
         'is_final': os.environ.get('PAYFLOW_STATUS_CLOSED_FINAL', 'true').lower() == 'true',
         'transitions': os.environ.get('PAYFLOW_STATUS_CLOSED_TRANSITIONS', '').split(',') if os.environ.get('PAYFLOW_STATUS_CLOSED_TRANSITIONS') else [],
+        'allowed_roles': [],  # No hay transiciones desde cerrado
+        'color_name': 'forest',
     },
     'unknown': {
         'label': 'Desconocido',
@@ -84,6 +100,8 @@ PAYFLOW_STATUSES = {
         'is_active': False,
         'is_final': False,
         'transitions': [],
+        'allowed_roles': [],
+        'color_name': 'gray',
     },
 }
 

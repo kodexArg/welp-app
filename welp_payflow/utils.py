@@ -119,14 +119,16 @@ def can_user_transition_ticket(user, ticket, target_status):
     possible_transitions = PAYFLOW_STATUSES.get(current_status, {}).get('transitions', [])
     if target_status not in possible_transitions:
         return False
-    responsible_roles = PAYFLOW_STATUS_FLOW.get(target_status, {}).get('responsible_roles', [])
-    if not responsible_roles:
-        return user.is_superuser
+    allowed_roles = PAYFLOW_STATUSES.get(target_status, {}).get('allowed_roles', [])
+    if user.is_superuser:
+        return True
+    if not allowed_roles:
+        return False
     user_roles = getattr(user, 'payflow_roles', None)
     if user_roles is None:
         return False
     for role in user.payflow_roles.all():
-        if role.get_role_type() in responsible_roles:
+        if role.get_role_type() in allowed_roles:
             return True
     return False
 

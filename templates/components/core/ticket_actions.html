@@ -3,21 +3,12 @@
     {% if last_message.status != 'closed' %}
         <div class="ticket-actions">
             {% if can_close_ticket %}
-            <a href="{% url 'welp_payflow:detail' ticket.id %}?close=1" class="ticket-action-close">
-                <i class="ticket-action-icon-close"></i>
-                <span>CERRAR</span>
-            </a>
+                {% ticket_action_button 'close' href=(ticket|get_absolute_url)|add:'?close=1' %}
             {% endif %}
             {% for target_status in transition_buttons %}
-                <button class="ticket-action-{{ target_status }}" style="background-color: {{ PAYFLOW_STATUSES|get_item:target_status|get_item:'color' }}; color: white;">
-                    <span>{{ PAYFLOW_STATUSES|get_item:target_status|get_item:'icon' }}</span>
-                    <span>{{ PAYFLOW_STATUSES|get_item:target_status|get_item:'label' }}</span>
-                </button>
+                {% ticket_action_button target_status href="#" %}
             {% endfor %}
-            <a href="{% url 'welp_payflow:detail' ticket.id %}" class="ticket-action-respond">
-                <i class="ticket-action-icon"></i>
-                <span>RESPONDER</span>
-            </a>
+            {% ticket_action_button 'feedback' href=(ticket|get_absolute_url) %}
         </div>
     {% else %}
         <div class="ticket-actions">
