@@ -192,53 +192,44 @@ def ticket_message(message):
     return {"message": message}
 
 
-@register.inclusion_tag('components/core/ticket_action_button.html')
-def ticket_action_button(action, ticket_id=None, href='#'):
-    """Renderiza un botón de acción para tickets usando los datos de PAYFLOW_STATUSES."""
+def get_ticket_action_data(action, ticket_id=None):
+    """Obtiene datos simplificados para acciones de tickets usando íconos FontAwesome"""
     from django.urls import reverse
     
-    extra_actions = {
-        'feedback': {
-            'label': 'COMENTAR',
-            'icon': '💬',
-            'color_name': 'forest',
-        },
-        'close': {
-            'label': 'CERRAR',
-            'icon': '×',
-            'color_name': 'forest',
-        },
+    # Definiciones simplificadas en el componente con íconos FA
+    # NOTA: 'close' y 'closed' no deben ser procesados aquí
+    action_data = {
+        'feedback': {'label': 'COMENTAR', 'fa_icon': 'fa-regular fa-comment'},
+        'authorized': {'label': 'AUTORIZAR', 'fa_icon': 'fa-solid fa-check'},
+        'budgeted': {'label': 'PRESUPUESTAR', 'fa_icon': 'fa-solid fa-file-invoice-dollar'},
+        'rejected': {'label': 'RECHAZAR', 'fa_icon': 'fa-solid fa-ban'},
+        'payment_authorized': {'label': 'AUTORIZAR PAGO', 'fa_icon': 'fa-solid fa-credit-card'},
+        'processing_payment': {'label': 'PROCESAR PAGO', 'fa_icon': 'fa-solid fa-money-bill-transfer'},
+        'shipping': {'label': 'ENVÍO', 'fa_icon': 'fa-solid fa-truck'},
     }
-
-    # Generar URL basada en la acción
-    if href == '#' and ticket_id:
+    
+    # Retornar None para acciones inválidas
+    if action in ['close', 'closed']:
+        return None
+    
+    info = action_data.get(action, {'label': action.upper(), 'fa_icon': 'fa-solid fa-circle'})
+    
+    # Generar URL
+    href = '#'
+    if ticket_id:
         try:
-            if action == 'close':
-                href = reverse('welp_payflow:detail', kwargs={'ticket_id': ticket_id}) + '?response_type=close'
-            elif action == 'feedback':
+            if action == 'feedback':
                 href = reverse('welp_payflow:detail', kwargs={'ticket_id': ticket_id})
-            elif action in PAYFLOW_STATUSES:
+            else:
                 href = reverse('welp_payflow:detail', kwargs={'ticket_id': ticket_id}) + f'?response_type={action}'
         except Exception:
             href = '#'
-
-    if action in PAYFLOW_STATUSES:
-        info = PAYFLOW_STATUSES[action]
-        label = info.get('label', action)
-        icon = info.get('icon', '')
-        color = info.get('color_name', 'forest')
-    else:
-        info = extra_actions.get(action, {})
-        label = info.get('label', action)
-        icon = info.get('icon', '')
-        color = info.get('color_name', 'forest')
-
+    
     return {
         'action': action,
         'href': href,
-        'label': label,
-        'icon': icon,
-        'color': color,
+        'label': info['label'],
+        'fa_icon': info['fa_icon'],
     }
 
 @register.inclusion_tag("components/core/ticket_actions.html", takes_context=True)
@@ -246,11 +237,26 @@ def ticket_actions(context, ticket):
     user = context['request'].user if 'request' in context else None
     can_close_ticket = can_user_close_ticket(user, ticket) if user else False
     transition_buttons = get_user_ticket_transitions(user, ticket)
+    
+    # Preparar datos de acciones
+    actions_data = []
+    
+    # Solo agregar transiciones válidas (excluir 'closed' y 'close')
+    for action in transition_buttons:
+        if action not in ['closed', 'close']:
+            action_data = get_ticket_action_data(action, ticket.id)
+            if action_data:  # Solo agregar si no es None
+                actions_data.append(action_data)
+    
+    # Siempre agregar feedback al final
+    feedback_data = get_ticket_action_data('feedback', ticket.id)
+    if feedback_data:
+        actions_data.append(feedback_data)
+    
     return {
-        "ticket": ticket, 
-        "can_close_ticket": can_close_ticket, 
-        "transition_buttons": transition_buttons,
-        "ticket_id": ticket.id if ticket else None
+        "ticket": ticket,
+        "actions_data": actions_data,
+        "can_close_ticket": can_close_ticket,
     }
 
 @register.inclusion_tag("components/core/ticket_message_input.html")

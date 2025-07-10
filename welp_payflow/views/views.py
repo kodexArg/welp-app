@@ -134,7 +134,7 @@ def ticket_detail(request, ticket_id):
         'can_close_ticket': can_user_close_ticket(request.user, ticket),
         'response_info': response_info,
         'confirmation_info': confirmation_info,
-        'button_text': PAYFLOW_BUTTON_TEXTS.get(response_type, 'Enviar'),
+        'button_text': PAYFLOW_BUTTON_TEXTS.get(response_type, PAYFLOW_BUTTON_TEXTS.get('comment', 'Enviar')),
         'comment_placeholder': PAYFLOW_COMMENT_PLACEHOLDERS.get(response_type, 'Escriba su comentario aquí...'),
         'comment_label': PAYFLOW_COMMENT_LABELS.get(response_type, 'Comentario'),
         'field_required': PAYFLOW_REQUIRED_FIELDS.get(response_type, False),

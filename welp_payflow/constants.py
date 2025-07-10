@@ -326,6 +326,7 @@ PAYFLOW_BUTTON_TEXTS = {
     'payment_authorized': os.environ.get('PAYFLOW_BTN_PAY_AUTH', 'Autorizar Pago'),
     'processing_payment': os.environ.get('PAYFLOW_BTN_PROCESS', 'Procesar Pago'),
     'shipping': os.environ.get('PAYFLOW_BTN_SHIP', 'Marcar como En Envío'),
+    'comment': os.environ.get('PAYFLOW_BTN_COMMENT', 'Comentar'),
 }
 
 # Placeholders para comentarios

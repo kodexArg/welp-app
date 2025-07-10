@@ -9,31 +9,30 @@
     <h2 class="text-2xl font-bold">{{ response_info.label }}</h2>
     
     {% if response_type == 'close' %}
+        <div class="{{ confirmation_info.bg_color }} border-l-4 {{ confirmation_info.border_color }} p-4 mb-6 rounded-r-lg">
+            {% if is_owner %}
+                <p class="{{ confirmation_info.text_color }}">{{ confirmation_info.owner_message }}</p>
+            {% else %}
+                <p class="{{ confirmation_info.text_color }}">{{ confirmation_info.non_owner_message }}</p>
+            {% endif %}
+        </div>
         <div class="ticket-detail-container">
             {% ticket_container ticket expanded=True hide_buttons=True %}
-                
-            <div class="{{ confirmation_info.bg_color }} border-l-4 {{ confirmation_info.border_color }} p-4 mb-6 rounded-r-lg">
-                {% if is_owner %}
-                    <p class="{{ confirmation_info.text_color }}">{{ confirmation_info.owner_message }}</p>
-                {% else %}
-                    <p class="{{ confirmation_info.text_color }}">{{ confirmation_info.non_owner_message }}</p>
-                {% endif %}
-            </div>
         </div>
         {% ticket_message_input form_action=process_close_url button_text=button_text label_text=comment_label placeholder=comment_placeholder cancel_url=cancel_url required=field_required field_name="close_comment" %}
     {% elif response_type == 'authorized' or response_type == 'budgeted' or response_type == 'rejected' or response_type == 'payment_authorized' or response_type == 'processing_payment' or response_type == 'shipping' %}
+        <div class="{{ confirmation_info.bg_color }} border-l-4 {{ confirmation_info.border_color }} p-4 mb-6 rounded-r-lg">
+            <p class="{{ confirmation_info.text_color }}">{{ confirmation_info.message }}</p>
+        </div>
         <div class="ticket-detail-container">
             {% ticket_container ticket expanded=True hide_buttons=True %}
-            <div class="{{ confirmation_info.bg_color }} border-l-4 {{ confirmation_info.border_color }} p-4 mb-6 rounded-r-lg">
-                <p class="{{ confirmation_info.text_color }}">{{ confirmation_info.message }}</p>
-            </div>
         </div>
         {% ticket_message_input form_action=transition_url button_text=button_text label_text=comment_label placeholder=comment_placeholder cancel_url=cancel_url required=field_required field_name=response_type|add:"_comment" %}
     {% else %}
         <div class="ticket-detail-container">
             {% ticket_container ticket expanded=True hide_buttons=True %}
         </div>
-        {% ticket_message_input form_action=request.get_full_path show_attachments=True cancel_url=cancel_url %}
+        {% ticket_message_input form_action=request.get_full_path button_text=button_text show_attachments=True cancel_url=cancel_url %}
     {% endif %}
 </section>
 

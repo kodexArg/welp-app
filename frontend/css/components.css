@@ -156,7 +156,7 @@
     }
 
     .form-input:invalid {
-        @apply border-red-500;
+        @apply border-border;
     }
 
     .form-select {
@@ -673,41 +673,7 @@
 
 
 
-    .ticket-action-close {
-        @apply text-xs bg-forest-500 border border-forest-400 text-white rounded-full py-1 px-3 inline-flex items-center font-medium cursor-pointer hover:brightness-110 no-underline;
-        pointer-events: auto;
-    }
 
-    .ticket-action-icon-close::before {
-        content: '×';
-        @apply mr-1 not-italic font-normal;
-    }
-
-    .ticket-action-authorize {
-        @apply text-xs bg-forest-500 border border-forest-400 text-white rounded-full py-1 px-3 inline-flex items-center font-medium cursor-pointer hover:brightness-110;
-        pointer-events: auto;
-    }
-
-    .ticket-action-icon-authorize::before {
-        @apply content-['✓'] mr-1 not-italic font-normal;
-    }
-
-    .ticket-action-respond {
-        @apply text-xs bg-forest-500 border border-forest-400 text-white rounded-full py-1 px-3 inline-flex items-center no-underline font-medium hover:brightness-110;
-        pointer-events: auto;
-    }
-
-    .ticket-action-icon::before {
-        @apply content-['↩'] mr-1 not-italic font-normal;
-    }
-
-    .ticket-action-closed {
-        @apply text-xs text-forest-500 rounded-full py-1 px-3 inline-flex items-center;
-    }
-
-    .ticket-action-icon-closed::before {
-        @apply content-['✓'] mr-1;
-    }
 
     .ticket-status-icon::before {
         @apply content-['●'] mr-1;
@@ -837,46 +803,72 @@
         @apply flex-1;
     }
 
-    .add-attachment, .remove-attachment {
-        @apply w-8 h-8 flex items-center justify-center rounded border text-xs font-bold;
-        @apply bg-forest-50 border-forest-200 text-forest-600 hover:bg-forest-100 transition-colors duration-200;
-        @apply cursor-pointer;
+    .add-attachment,
+    .remove-attachment {
+        @apply w-8 h-8 flex items-center justify-center rounded border text-xs font-bold bg-forest-50 border-forest-200 text-forest-600 hover:bg-forest-100 transition-colors duration-200 cursor-pointer;
     }
-
     .remove-attachment {
         @apply bg-red-50 border-red-200 text-red-600 hover:bg-red-100;
     }
-
-    .comment-action-submit {
-        @apply text-xs bg-forest-500 border border-forest-400 text-white rounded-full py-1 px-3 inline-flex items-center font-medium cursor-pointer hover:brightness-110;
-        @apply transition-all duration-200;
-        @apply uppercase tracking-wide font-[var(--font-ui)];
+    .response-action-submit {
+        @apply text-sm bg-forest-500 border border-forest-400 text-white rounded-full py-2 px-4 inline-flex items-center font-medium cursor-pointer hover:brightness-110 transition-all duration-200 uppercase tracking-wide font-[var(--font-ui)];
     }
-
-    .comment-action-cancel {
-        @apply text-xs bg-forest-100 border border-forest-300 text-forest-600 rounded-full py-1 px-3 inline-flex items-center font-medium cursor-pointer hover:bg-forest-200;
-        @apply transition-all duration-200 no-underline;
-        @apply uppercase tracking-wide font-[var(--font-ui)];
+    .response-action-cancel {
+        @apply text-sm bg-forest-100 border border-forest-300 text-forest-600 rounded-full py-2 px-4 inline-flex items-center font-medium cursor-pointer hover:bg-forest-200 transition-all duration-200 no-underline uppercase tracking-wide font-[var(--font-ui)];
     }
-
-    .comment-action-icon-submit::before {
+    .response-action-icon-submit::before {
         content: '✓';
         margin-right: 0.25rem;
         font-style: normal;
         font-weight: normal;
     }
-
-    .comment-action-icon-cancel::before {
+    .response-action-icon-cancel::before {
         content: '×';
         margin-right: 0.25rem;
         font-style: normal;
         font-weight: normal;
     }
-
-    /* Ticket Detail Mode - Modo expandido sin interactividad */
+    .attachment-details {
+        @apply mt-3;
+    }
+    .attachment-summary {
+        @apply cursor-pointer select-none flex items-center py-2 px-3 text-forest-600 hover:text-forest-700 hover:bg-forest-50 rounded transition-colors duration-200 border border-transparent hover:border-forest-200;
+        list-style: none;
+    }
+    .attachment-summary::-webkit-details-marker {
+        display: none;
+    }
+    .attachment-summary::marker {
+        display: none;
+    }
+    .attachment-summary::before {
+        content: '';
+        @apply block w-0 h-0 mr-2;
+        border-left: 4px solid var(--color-forest-600);
+        border-top: 3px solid transparent;
+        border-bottom: 3px solid transparent;
+        transform-origin: center;
+        transition: transform 200ms cubic-bezier(0.4, 0, 1, 1);
+    }
+    .attachment-details[open] .attachment-summary::before {
+        @apply rotate-90;
+        transition: transform 180ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .attachment-content {
+        @apply mt-3 pl-6;
+        display: grid;
+        grid-template-rows: 0fr;
+        transition: grid-template-rows 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .attachment-details[open] .attachment-content {
+        grid-template-rows: 1fr;
+        transition: grid-template-rows 250ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .attachment-content > div {
+        @apply overflow-hidden;
+    }
     .ticket-container-detail {
-        @apply rounded-2xl p-3 mb-3 font-sans;
-        @apply bg-white border border-forest-200 shadow-sm;
+        @apply rounded-2xl p-3 mb-3 font-sans bg-white border border-forest-200 shadow-sm;
     }
 
     .ticket-summary-detail {

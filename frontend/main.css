@@ -1,4 +1,19 @@
 @import "tailwindcss";
+
+@theme {
+  --color-forest-50: #e8ede8;
+  --color-forest-100: #d1dbd1;
+  --color-forest-200: #a3b8a3;
+  --color-forest-300: #759575;
+  --color-forest-400: #4a724a;
+  --color-forest-500: #3d5f3d;
+  --color-forest-600: #304c30;
+  --color-forest-700: #243824;
+  --color-forest-800: #1a291a;
+  --color-forest-900: #121e12;
+  --color-forest-950: #0a120a;
+}
+
 @import "./css/variables.css";
 @import "./css/navbar.css";
 @import "./css/themes.css";
