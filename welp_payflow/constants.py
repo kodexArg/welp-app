@@ -76,6 +76,15 @@ PAYFLOW_STATUSES = {
         'is_final': os.environ.get('PAYFLOW_STATUS_CLOSED_FINAL', 'true').lower() == 'true',
         'transitions': os.environ.get('PAYFLOW_STATUS_CLOSED_TRANSITIONS', '').split(',') if os.environ.get('PAYFLOW_STATUS_CLOSED_TRANSITIONS') else [],
     },
+    'unknown': {
+        'label': 'Desconocido',
+        'color': '#d1d5db',  # gris claro
+        'icon': '❓',
+        'description': 'Estado desconocido',
+        'is_active': False,
+        'is_final': False,
+        'transitions': [],
+    },
 }
 
 PAYFLOW_PERMISSIONS = os.environ.get('PAYFLOW_PERMISSIONS', 'can_open,can_comment,can_solve,can_authorize,can_process_payment,can_close').split(',')

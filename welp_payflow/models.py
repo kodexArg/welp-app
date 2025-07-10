@@ -160,8 +160,10 @@ class Ticket(models.Model):
 
     @property
     def status(self):
-        last_message = self.messages.order_by('-created_on').first()
-        return last_message.status if last_message else 'open'
+        # Buscar el último mensaje cuyo status sea un estado válido (no comentario)
+        valid_statuses = list(PAYFLOW_STATUSES.keys())
+        last_valid = self.messages.filter(status__in=valid_statuses).order_by('-created_on').first()
+        return last_valid.status if last_valid else 'unknown'
 
     def can_transition_to_status(self, new_status):
         current_status = self.status
@@ -186,6 +188,16 @@ class Ticket(models.Model):
 class Message(models.Model):
     ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE, related_name="messages", verbose_name="Ticket")
     status = models.CharField(max_length=STATUS_MAX_LENGTH, choices=[(key, value['label']) for key, value in PAYFLOW_STATUSES.items()], default='open', verbose_name="Estado")
+    message_type = models.CharField(
+        max_length=20,
+        choices=[
+            ('status', 'Cambio de Estado'),
+            ('feedback', 'Comentario/Feedback'),
+            ('system', 'Sistema'),
+        ],
+        default='status',
+        verbose_name="Tipo de Mensaje"
+    )
     reported_on = models.DateTimeField(null=True, blank=True, verbose_name="Fecha Reportada")
     created_on = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de Creación")
     user = models.ForeignKey('core.User', on_delete=models.SET_NULL, null=True, blank=True, related_name="payflow_messages", verbose_name="Usuario")

@@ -299,6 +299,23 @@ def get_status_flow(ticket):
             'priority': 'none'
         }
 
+@register.filter
+def get_status_label(status, system='payflow'):
+    """
+    Obtiene la etiqueta legible del estado
+    
+    Args:
+        status (str): Estado del ticket
+        system (str): Sistema de origen ('desk' o 'payflow')
+    
+    Returns:
+        str: Etiqueta legible del estado
+    """
+    if system == 'payflow':
+        return PAYFLOW_STATUSES.get(status, {}).get('label', status.title() if status else 'Sin Estado')
+    else:
+        return DESK_STATUSES.get(status, {}).get('label', status.title() if status else 'Sin Estado')
+
 @register.inclusion_tag('components/core/ticket_status.html')
 def ticket_status(ticket):
     """
@@ -311,3 +328,45 @@ def ticket_status(ticket):
         dict: Contexto para el template
     """
     return {'ticket': ticket}
+
+@register.filter
+def get_ticket_action_info(ticket):
+    """
+    Dado un ticket, retorna un dict con la acción esperada, ícono y color según el estado actual.
+    """
+    status = getattr(ticket, 'status', None) or 'open'
+    status_info = PAYFLOW_STATUSES.get(status, {})
+    flow_info = PAYFLOW_STATUS_FLOW.get(status, {})
+    return {
+        'icon': status_info.get('icon', ''),
+        'color': status_info.get('color', ''),
+        'label': status_info.get('label', status.title()),
+        'status': status,
+        'current_action': flow_info.get('current_action', ''),
+        'next_action': flow_info.get('next_action', ''),
+    }
+
+@register.filter
+def get_ticket_comment_count(ticket):
+    """
+    Retorna la cantidad de mensajes que son comentarios (no transiciones de estado).
+    Un comentario es un mensaje cuyo status es igual al status del mensaje anterior (no cambia el estado) y tiene body no vacío.
+    Si no es posible comparar, cuenta como comentario todo mensaje cuyo status es igual al status actual del ticket y tiene body no vacío.
+    """
+    if not ticket:
+        return 0
+    messages = list(ticket.messages.order_by('created_on'))
+    if not messages:
+        return 0
+    count = 0
+    prev_status = None
+    for msg in messages:
+        if prev_status is not None and msg.status == prev_status and msg.body and msg.body.strip():
+            count += 1
+        prev_status = msg.status
+    # fallback: si no hay ninguno detectado, cuenta los mensajes cuyo status es igual al status actual del ticket
+    if count == 0:
+        status = getattr(ticket, 'status', None)
+        if status:
+            count = ticket.messages.filter(status=status).exclude(body__isnull=True).exclude(body__exact='').count()
+    return count

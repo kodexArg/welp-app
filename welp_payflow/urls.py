@@ -8,6 +8,7 @@ from .views.htmx import (
     htmx_list_content,
     confirm_close_ticket_page,
     htmx_fields_body,
+    htmx_ticket_feedback_count,
 )
 
 app_name = 'welp_payflow'
@@ -34,6 +35,8 @@ urlpatterns += [
     path('htmx/list-content/', htmx_list_content, name='htmx-list-content'),
     path('ticket/<int:ticket_id>/confirm-close/', confirm_close_ticket_page, name='confirm-close'),
     path('htmx/ticket-status/<int:ticket_id>/', ticket_status_htmx, name='ticket_status'),
+    path('htmx/ticket-feedback-count/<int:ticket_id>/', htmx_ticket_feedback_count, name='htmx-ticket-feedback-count'),
     path('tickets/<int:ticket_id>/close/', close_ticket, name='close-ticket'),
-    path('ticket/<int:ticket_id>/process-close/', process_close_ticket, name='process_close'),    path('ticket/<int:ticket_id>/authorize/', authorize_ticket, name='authorize-ticket'),
+    path('ticket/<int:ticket_id>/process-close/', process_close_ticket, name='process_close'),
+    path('ticket/<int:ticket_id>/authorize/', authorize_ticket, name='authorize-ticket'),
 ]

@@ -5,14 +5,17 @@ from django.contrib import messages
 from django.urls import reverse
 from django.db import models
 from django.core.paginator import Paginator
+from django.http import HttpResponse
 
 from ..models import UDN, Sector, AccountingCategory, Ticket
 
 
 @login_required(login_url='login')
 def htmx_list_content(request):
-    """Devuelve el contenido paginado de la lista de tickets para HTMX"""
-    tickets = Ticket.objects.all().annotate(last_message_timestamp=models.Max('messages__created_on')).order_by('-last_message_timestamp')
+    """Devuelve el contenido paginado de la lista de tickets para HTMX ordenados por el último mensaje creado"""
+    tickets = Ticket.objects.all().annotate(
+        last_message_timestamp=models.Max('messages__created_on')
+    ).order_by('-last_message_timestamp')
     paginator = Paginator(tickets, 6)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -106,3 +109,16 @@ def confirm_close_ticket_page(request, ticket_id):
         'placeholder_text': placeholder_text,
     }
     return render(request, 'welp_payflow/confirm_close.html', context) 
+
+
+@login_required(login_url='login')
+def htmx_ticket_feedback_count(request, ticket_id):
+    ticket = get_object_or_404(Ticket, id=ticket_id)
+    count = 0
+    for _ in ticket.messages.order_by('created_on'):
+        if ticket.status != 'feedback':
+            break
+        count += 1
+    if count > 0:
+        return HttpResponse(f'<span class="ml-2 align-middle text-xs text-sky-400"><i class="fa fa-comments"></i><sub>{count}</sub></span>')
+    return HttpResponse('')

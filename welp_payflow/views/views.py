@@ -76,7 +76,9 @@ def ticket_detail(request, ticket_id):
 
     if request.method == 'POST' and response_type == 'comment':
         response_body = request.POST.get('response_body', '').strip()
-        new_status = request.POST.get('status', 'feedback')  # Default a feedback
+        # Obtener el estado actual del ticket para el nuevo comentario
+        current_status = ticket.status
+        new_status = current_status
         
         if response_body:
             # Crear el nuevo mensaje de comentario

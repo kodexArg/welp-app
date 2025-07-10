@@ -17,10 +17,17 @@ Ticket Container - Soporta dos modos:
                 <span class="tags-ticket-udn">{{ ticket.udn.name }}</span>
                 <span class="tags-ticket-sector">{{ ticket.sector.name }}</span>
                 <span class="tags-ticket-category">{{ ticket.accounting_category.name }}</span>
-                <span class="status status-{{ ticket.status|default:'open' }}">
-                    <i class="ticket-status-icon"></i>
-                    {{ ticket.get_status_display|default:'Abierto' }}
+                {% with action_info=ticket|get_ticket_action_info %}
+                <span class="status status-{{ action_info.status }} tag" style="color: {{ action_info.color }};">
+                    <span class="mr-1">{{ action_info.icon }}</span>
+                    {{ action_info.current_action }}
+                    <div id="ticket-feedback-count-{{ ticket.id }}" class="inline align-middle text-xs" 
+                        hx-get="{% url 'welp_payflow:htmx-ticket-feedback-count' ticket.id %}"
+                        hx-trigger="load"
+                        hx-swap="outerHTML">
+                    </div>
                 </span>
+                {% endwith %}
             </div>
         </div>
         
@@ -53,10 +60,17 @@ Ticket Container - Soporta dos modos:
                 <span class="tags-ticket-udn">{{ ticket.udn.name }}</span>
                 <span class="tags-ticket-sector">{{ ticket.sector.name }}</span>
                 <span class="tags-ticket-category">{{ ticket.accounting_category.name }}</span>
-                <span class="status status-{{ ticket.status|default:'open' }}">
-                    <i class="ticket-status-icon"></i>
-                    {{ ticket.get_status_display|default:'Abierto' }}
+                {% with action_info=ticket|get_ticket_action_info %}
+                <span class="status status-{{ action_info.status }} tag" style="color: {{ action_info.color }};">
+                    <span class="mr-1">{{ action_info.icon }}</span>
+                    {{ action_info.current_action }}
+                    <div id="ticket-feedback-count-{{ ticket.id }}" class="inline align-middle text-xs" 
+                        hx-get="{% url 'welp_payflow:htmx-ticket-feedback-count' ticket.id %}"
+                        hx-trigger="load"
+                        hx-swap="outerHTML">
+                    </div>
                 </span>
+                {% endwith %}
             </div>
         </summary>
         
