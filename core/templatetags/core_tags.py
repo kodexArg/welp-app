@@ -2,7 +2,7 @@ from django import template
 from django.urls import reverse
 from welp_desk.constants import DESK_STATUSES
 from welp_payflow.constants import PAYFLOW_STATUSES, PAYFLOW_STATUS_FLOW
-from welp_payflow.utils import can_user_close_ticket
+from welp_payflow.utils import can_user_close_ticket, get_user_ticket_transitions
 
 register = template.Library()
 
@@ -195,7 +195,8 @@ def ticket_message(message):
 def ticket_actions(context, ticket):
     user = context['request'].user if 'request' in context else None
     can_close_ticket = can_user_close_ticket(user, ticket) if user else False
-    return {"ticket": ticket, "can_close_ticket": can_close_ticket}
+    transition_buttons = get_user_ticket_transitions(user, ticket)
+    return {"ticket": ticket, "can_close_ticket": can_close_ticket, "transition_buttons": transition_buttons}
 
 @register.inclusion_tag("components/core/ticket_message_input.html")
 def ticket_message_input(form_action, button_text="Agregar Comentario", label_text="Comentario", 

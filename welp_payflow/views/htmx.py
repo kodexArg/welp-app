@@ -8,6 +8,7 @@ from django.core.paginator import Paginator
 from django.http import HttpResponse
 
 from ..models import UDN, Sector, AccountingCategory, Ticket
+from ..utils import get_user_udns, get_user_sectors, get_user_accounting_categories
 
 
 @login_required(login_url='login')
@@ -33,7 +34,7 @@ def htmx_list_content(request):
 @login_required(login_url='login')
 def htmx_udn(request):
     """Devuelve el partial de selección de UDN según permisos del usuario"""
-    udns = UDN.objects.all()
+    udns = get_user_udns(request.user)
     return render(request, 'welp_payflow/partials/create/udn.html', {'udns': udns})
 
 
@@ -41,14 +42,15 @@ def htmx_udn(request):
 def htmx_sector(request, udn):
     """Devuelve los sectores disponibles para una UDN específica"""
     udn_obj = get_object_or_404(UDN, id=udn)
-    sectors = Sector.objects.filter(udn=udn_obj)
+    sectors = get_user_sectors(request.user, udn_obj)
     return render(request, 'welp_payflow/partials/create/sector.html', {'sectors': sectors})
 
 
 @login_required(login_url='login')
 def htmx_accounting_category(request, sector):
     """Devuelve las categorías contables asociadas a un sector"""
-    categories = AccountingCategory.objects.filter(sector__id=sector)
+    sector_obj = get_object_or_404(Sector, id=sector)
+    categories = get_user_accounting_categories(request.user, sector_obj)
     return render(request, 'welp_payflow/partials/create/accounting-category.html', {
         'categories': categories
     })
@@ -59,7 +61,7 @@ def htmx_fields_body(request, accounting_category):
     """Devuelve los campos de detalle (Body) una vez seleccionada la categoría contable"""
     from ..forms import PayflowTicketCreationForm
 
-    form = PayflowTicketCreationForm()
+    form = PayflowTicketCreationForm(user=request.user)
     return render(
         request,
         'welp_payflow/partials/create/fields-body.html',

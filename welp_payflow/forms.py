@@ -74,8 +74,15 @@ class PayflowTicketCreationForm(forms.Form):
     )
     
     def __init__(self, *args, **kwargs):
-        kwargs.pop('user', None)
+        self.user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
+        
+        if self.user:
+            from .utils import get_user_udns
+            available_udns = get_user_udns(self.user)
+            self.fields['udn'].queryset = available_udns
+            self.fields['sector'].queryset = Sector.objects.none()
+            self.fields['accounting_category'].queryset = AccountingCategory.objects.none()
     
     def clean(self):
         cleaned_data = super().clean()
@@ -85,6 +92,11 @@ class PayflowTicketCreationForm(forms.Form):
         
         if not all([udn, sector, accounting_category]):
             raise ValidationError("UDN, Sector y Categoría Contable son obligatorios.")
+        
+        if self.user:
+            from .utils import can_user_create_ticket_in_context
+            if not can_user_create_ticket_in_context(self.user, udn, sector):
+                raise ValidationError("No tiene permisos para crear tickets en esta UDN/Sector.")
         
         if not sector.udn.filter(id=udn.id).exists():
             raise ValidationError(f"El sector '{sector.name}' no pertenece a la UDN '{udn.name}'.")

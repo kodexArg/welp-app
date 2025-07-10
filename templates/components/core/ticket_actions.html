@@ -1,3 +1,4 @@
+{% load core_tags %}
 {% with last_message=ticket.messages.last %}
     {% if last_message.status != 'closed' %}
         <div class="ticket-actions">
@@ -7,10 +8,12 @@
                 <span>CERRAR</span>
             </a>
             {% endif %}
-            <button class="ticket-action-authorize">
-                <i class="ticket-action-icon-authorize"></i>
-                <span>AUTORIZAR</span>
-            </button>
+            {% for target_status in transition_buttons %}
+                <button class="ticket-action-{{ target_status }}" style="background-color: {{ PAYFLOW_STATUSES|get_item:target_status|get_item:'color' }}; color: white;">
+                    <span>{{ PAYFLOW_STATUSES|get_item:target_status|get_item:'icon' }}</span>
+                    <span>{{ PAYFLOW_STATUSES|get_item:target_status|get_item:'label' }}</span>
+                </button>
+            {% endfor %}
             <a href="{% url 'welp_payflow:detail' ticket.id %}" class="ticket-action-respond">
                 <i class="ticket-action-icon"></i>
                 <span>RESPONDER</span>

@@ -153,7 +153,16 @@ class CreateTicketView(LoginRequiredMixin, FormView):
     form_class = PayflowTicketCreationForm
     
     def get_form_kwargs(self):
-        return super().get_form_kwargs()
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        from ..utils import get_user_udns
+        available_udns = get_user_udns(self.request.user)
+        context['has_create_permissions'] = available_udns.exists()
+        return context
     
     def form_invalid(self, form):
         for field, errors in form.errors.items():

@@ -120,6 +120,14 @@ def create_users():
         Roles.objects.all().delete()
         User.objects.filter(is_superuser=False).delete()
 
+        # Obtener todas las UDN y sectores
+        all_udns = list(UDN.objects.all())
+        all_sectors = list(Sector.objects.all())
+        udn_sectors_map = {udn.name: [] for udn in all_udns}
+        for sector in all_sectors:
+            for udn in sector.udn.all():
+                udn_sectors_map[udn.name].append(sector)
+
         for data in USERS_DATA:
             user = User.objects.create_user(
                 username=data['username'],
@@ -129,15 +137,69 @@ def create_users():
                 email=f"{data['username']}@example.com",
             )
 
-            udn = UDN.objects.get(name=data['udn']) if data['udn'] else None
-            sector = Sector.objects.get(name=data['sector']) if data['sector'] else None
+            role_type = data['role']
+            user_udn = data['udn']
+            user_sector = data['sector']
 
-            role = Roles(user=user, udn=udn, sector=sector)
-            role.set_permissions_from_role_type(data['role'])
-            role.save()
-            logger.info(f"  ✓ Creado {user.username} como {data['role']}")
+            if role_type == 'end_user':
+                # Un UDN, varios sectores (2 sectores si hay, incluyendo el original)
+                sectors = [s for s in udn_sectors_map.get(user_udn, [])]
+                if user_sector and user_sector in [s.name for s in sectors]:
+                    # Prioriza el sector original y uno más si existe
+                    sector_objs = [s for s in sectors if s.name == user_sector]
+                    extra_sectors = [s for s in sectors if s.name != user_sector]
+                    sector_objs += extra_sectors[:1]  # máximo 2 sectores
+                else:
+                    sector_objs = sectors[:2]
+                for sector in sector_objs:
+                    role = Roles(user=user, udn=sector.udn.first(), sector=sector)
+                    role.set_permissions_from_role_type(role_type)
+                    role.save()
+                    logger.info(f"  ✓ Creado {user.username} como {role_type} en {sector.udn.first().name}/{sector.name}")
 
-        logger.info(f"Total de usuarios creados: {len(USERS_DATA)}")
+            elif role_type == 'supervisor':
+                # Un UDN, varios sectores (hasta 3 sectores si hay)
+                sectors = [s for s in udn_sectors_map.get(user_udn, [])]
+                if user_sector and user_sector in [s.name for s in sectors]:
+                    sector_objs = [s for s in sectors if s.name == user_sector]
+                    extra_sectors = [s for s in sectors if s.name != user_sector]
+                    sector_objs += extra_sectors[:2]  # máximo 3 sectores
+                else:
+                    sector_objs = sectors[:3]
+                for sector in sector_objs:
+                    role = Roles(user=user, udn=sector.udn.first(), sector=sector)
+                    role.set_permissions_from_role_type(role_type)
+                    role.save()
+                    logger.info(f"  ✓ Creado {user.username} como {role_type} en {sector.udn.first().name}/{sector.name}")
+
+            elif role_type == 'technician':
+                # Acceso a todas las combinaciones UDN/Sector
+                for udn in all_udns:
+                    for sector in udn_sectors_map[udn.name]:
+                        role = Roles(user=user, udn=udn, sector=sector)
+                        role.set_permissions_from_role_type(role_type)
+                        role.save()
+                logger.info(f"  ✓ Creado {user.username} como {role_type} en TODAS las UDN y sectores")
+
+            elif role_type == 'manager':
+                # Un UDN, todos los sectores de ese UDN
+                sectors = udn_sectors_map.get(user_udn, [])
+                for sector in sectors:
+                    role = Roles(user=user, udn=sector.udn.first(), sector=sector)
+                    role.set_permissions_from_role_type(role_type)
+                    role.save()
+                logger.info(f"  ✓ Creado {user.username} como {role_type} en {user_udn} (todos los sectores)")
+
+            elif role_type == 'purchase_manager':
+                # Acceso a todas las combinaciones UDN/Sector
+                for udn in all_udns:
+                    for sector in udn_sectors_map[udn.name]:
+                        role = Roles(user=user, udn=udn, sector=sector)
+                        role.set_permissions_from_role_type(role_type)
+                        role.save()
+                logger.info(f"  ✓ Creado {user.username} como {role_type} en TODAS las UDN y sectores")
+
+        logger.info(f"Total de usuarios creados: {len(USERS_DATA)} (con roles múltiples según corresponda)")
 
 
 def main():
