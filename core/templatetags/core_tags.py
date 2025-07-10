@@ -214,13 +214,11 @@ def ticket_action_button(action, ticket_id=None, href='#'):
     if href == '#' and ticket_id:
         try:
             if action == 'close':
-                href = reverse('welp_payflow:detail') + f'?response_type=close'
-                href = href.replace('ticket/', f'ticket/{ticket_id}/')
+                href = reverse('welp_payflow:detail', kwargs={'ticket_id': ticket_id}) + '?response_type=close'
             elif action == 'feedback':
                 href = reverse('welp_payflow:detail', kwargs={'ticket_id': ticket_id})
             elif action in PAYFLOW_STATUSES:
-                href = reverse('welp_payflow:detail') + f'?response_type={action}'
-                href = href.replace('ticket/', f'ticket/{ticket_id}/')
+                href = reverse('welp_payflow:detail', kwargs={'ticket_id': ticket_id}) + f'?response_type={action}'
         except Exception:
             href = '#'
 

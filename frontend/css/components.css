@@ -230,6 +230,8 @@
     .status {
         @apply text-[10px] font-semibold py-0.5 px-2 rounded-full uppercase tracking-wide;
         @apply ml-1;
+        @apply flex items-center justify-center;
+        @apply h-5 min-h-5;
     }
 
     .status-open {
@@ -269,7 +271,7 @@
     }
 
     .status-closed {
-        @apply bg-forest-200 text-forest-600 border border-forest-300;
+        @apply bg-forest-50 text-forest-300 border border-forest-100;
     }
 
     .status-unknown {
@@ -285,7 +287,7 @@
     .text-status-payment_authorized { @apply text-orange-600; }
     .text-status-processing_payment { @apply text-cyan-600; }
     .text-status-shipping { @apply text-purple-500; }
-    .text-status-closed { @apply text-forest-600; }
+    .text-status-closed { @apply text-forest-300; }
     .text-status-unknown { @apply text-gray-400; }
 
     .bg-status-open { @apply bg-red-100; }
@@ -297,7 +299,7 @@
     .bg-status-payment_authorized { @apply bg-orange-100; }
     .bg-status-processing_payment { @apply bg-cyan-100; }
     .bg-status-shipping { @apply bg-purple-100; }
-    .bg-status-closed { @apply bg-forest-200; }
+    .bg-status-closed { @apply bg-forest-100; }
     .bg-status-unknown { @apply bg-gray-100; }
 
     .card {
