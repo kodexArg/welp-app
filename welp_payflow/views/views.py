@@ -160,6 +160,7 @@ def ticket_detail(request, ticket_id):
             'cancel_url': reverse('welp_payflow:detail', kwargs={'ticket_id': ticket.id}),
         })
     else:
+        # Caso 'comment' - cancelar lleva a la lista
         context['cancel_url'] = cancel_url
 
     return render(request, 'welp_payflow/detail.html', context)

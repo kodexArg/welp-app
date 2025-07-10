@@ -260,17 +260,17 @@ def ticket_actions(context, ticket):
     }
 
 @register.inclusion_tag("components/core/ticket_message_input.html")
-def ticket_message_input(form_action, button_text="Agregar Comentario", label_text="Comentario", 
+def ticket_message_input(form_action, button_text="Agregar Comentario", label_text=None, 
                         placeholder="Escriba su comentario aquí...", cancel_url=None, 
                         required=True, show_attachments=False, field_name="response_body",
-                        cancel_text="Cancelar", hidden_fields=None):
+                        cancel_text="Cancelar", hidden_fields=None, response_type=None):
     """
     Componente reutilizable para input de mensajes de tickets
     
     Args:
         form_action (str): URL de acción del formulario
         button_text (str): Texto del botón de envío
-        label_text (str): Etiqueta del campo de texto
+        label_text (str): Etiqueta del campo de texto (opcional, se genera automáticamente)
         placeholder (str): Placeholder del textarea
         cancel_url (str): URL de cancelación (opcional)
         required (bool): Si el campo es obligatorio
@@ -278,14 +278,34 @@ def ticket_message_input(form_action, button_text="Agregar Comentario", label_te
         field_name (str): Nombre del campo en el formulario
         cancel_text (str): Texto del botón de cancelar
         hidden_fields (dict): Campos ocultos del formulario
+        response_type (str): Tipo de respuesta para generar label y color dinámicamente
     
     Returns:
         dict: Contexto para el template
     """
+    
+    # Determinar label y color basado en response_type
+    if not label_text and response_type:
+        if response_type == 'close':
+            label_text = "Motivo de cierre de ticket"
+            label_color = "text-earth-600"
+        elif response_type == 'rejected':
+            label_text = "Motivo de rechazo de ticket" 
+            label_color = "text-earth-600"
+        else:
+            label_text = "Comentario"
+            label_color = "text-forest-600"
+    else:
+        # Fallback
+        if not label_text:
+            label_text = "Comentario"
+        label_color = "text-forest-600"
+    
     return {
         'form_action': form_action,
         'button_text': button_text,
         'label_text': label_text,
+        'label_color': label_color,
         'placeholder': placeholder,
         'cancel_url': cancel_url,
         'required': required,

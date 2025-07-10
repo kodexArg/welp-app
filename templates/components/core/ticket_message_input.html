@@ -1,25 +1,18 @@
-{% comment %}
-Componente reutilizable para input de mensajes de tickets
-Replica el estilo del formulario de respuesta de detail.html
-{% endcomment %}
-
 <div class="ticket-detail-response-section rounded-2xl border border-forest-200 bg-white shadow-inner p-6 mt-3 mb-3">
     <div class="ticket-response-form">
         <form method="post" enctype="multipart/form-data" action="{{ form_action }}">
             {% csrf_token %}
             
-            {% comment %} Campo status por defecto para comentarios {% endcomment %}
             {% if not hidden_fields.status %}
                 <input type="hidden" name="status" value="feedback">
             {% endif %}
             
-            {% comment %} Campos ocultos dinámicos {% endcomment %}
             {% for field_name, field_value in hidden_fields.items %}
                 <input type="hidden" name="{{ field_name }}" value="{{ field_value }}">
             {% endfor %}
             
             <div class="form-group">
-                <label for="{{ field_name }}">{{ label_text }}</label>
+                <label for="{{ field_name }}" class="form-label {{ label_color }}">{{ label_text|lower }}:</label>
                 <textarea 
                     id="{{ field_name }}" 
                     name="{{ field_name }}" 
@@ -31,11 +24,10 @@ Replica el estilo del formulario de respuesta de detail.html
             </div>
             
             {% if show_attachments %}
-            <!-- Desplegable de attachments usando details/summary -->
             <details class="attachment-details">
                 <summary class="attachment-summary">
                     <i class="fa-solid fa-paperclip text-xs mr-2"></i>
-                    <span class="text-sm text-forest-600">Agregar archivos adjuntos...</span>
+                    <span class="text-sm text-forest-600">Agregar adjuntos...</span>
                 </summary>
                 
                 <div class="attachment-content">

@@ -19,20 +19,18 @@
         <div class="ticket-detail-container">
             {% ticket_container ticket expanded=True hide_buttons=True %}
         </div>
-        {% ticket_message_input form_action=process_close_url button_text=button_text label_text=comment_label placeholder=comment_placeholder cancel_url=cancel_url required=field_required field_name="close_comment" %}
+        {% ticket_message_input form_action=process_close_url button_text=button_text label_text=comment_label placeholder=comment_placeholder cancel_url=cancel_url required=field_required field_name="close_comment" response_type=response_type %}
     {% elif response_type == 'authorized' or response_type == 'budgeted' or response_type == 'rejected' or response_type == 'payment_authorized' or response_type == 'processing_payment' or response_type == 'shipping' %}
-        <div class="{{ confirmation_info.bg_color }} border-l-4 {{ confirmation_info.border_color }} p-4 mb-6 rounded-r-lg">
-            <p class="{{ confirmation_info.text_color }}">{{ confirmation_info.message }}</p>
-        </div>
+
         <div class="ticket-detail-container">
             {% ticket_container ticket expanded=True hide_buttons=True %}
         </div>
-        {% ticket_message_input form_action=transition_url button_text=button_text label_text=comment_label placeholder=comment_placeholder cancel_url=cancel_url required=field_required field_name=response_type|add:"_comment" %}
+        {% ticket_message_input form_action=transition_url button_text=button_text label_text=comment_label placeholder=comment_placeholder cancel_url=cancel_url required=field_required field_name=response_type|add:"_comment" response_type=response_type %}
     {% else %}
         <div class="ticket-detail-container">
             {% ticket_container ticket expanded=True hide_buttons=True %}
         </div>
-        {% ticket_message_input form_action=request.get_full_path button_text=button_text show_attachments=True cancel_url=cancel_url %}
+        {% ticket_message_input form_action=request.get_full_path button_text=button_text show_attachments=True cancel_url=cancel_url response_type=response_type %}
     {% endif %}
 </section>
 
