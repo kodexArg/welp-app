@@ -96,7 +96,6 @@
     font-display: swap;
 }
 
-/* Paletas de colores para Tailwind 4 */
 @theme {
     --color-earth-50: #fae8d6;
     --color-earth-100: #f5d0ad;

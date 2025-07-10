@@ -145,44 +145,7 @@
         @apply bg-bg;
     }
 
-    form {
-        @apply p-0 m-0;
-    }
-
-    label {
-        @apply block mb-2 font-medium uppercase tracking-wide;
-        @apply text-text font-[var(--font-ui)];
-    }
-
-    input, textarea, select {
-        @apply w-full px-3 py-2 mb-2 border-2 rounded-md;
-        @apply bg-white border-border text-text;
-        @apply transition-all duration-200;
-    }
-
-    input:focus, textarea:focus, select:focus {
-        @apply outline-none border-2 border-primary;
-    }
-
-    button {
-        @apply cursor-pointer;
-    }
-
     hr {
         @apply my-6 border-t border-border;
-    }
-
-    code, pre {
-        @apply p-0 font-[var(--font-mono)];
-    }
-
-    code {
-        @apply px-1 py-0.5 rounded text-sm;
-        @apply bg-surface text-text;
-    }
-
-    pre {
-        @apply p-3 mb-4 rounded overflow-x-auto;
-        @apply bg-primary text-white;
     }
 } 
