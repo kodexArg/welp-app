@@ -1,12 +1,8 @@
 {% load core_tags %}
 
-{% comment %}
-Ticket Container - Soporta dos modos:
-- expandible: Para vista de lista (default)
-- expandido: Para vista de detalle (sin interactividad)
-{% endcomment %}
 
-{% if expandido %}
+
+{% if expanded %}
     <!-- Modo expandido para vista de detalle -->
     <article class="ticket-container-detail">
         <div class="ticket-summary-detail">

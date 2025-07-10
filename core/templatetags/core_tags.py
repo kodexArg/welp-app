@@ -256,9 +256,9 @@ def radio_button(target, id, label, next_target, visible=True):
     }
 
 @register.inclusion_tag('components/core/ticket_container.html', takes_context=True)
-def ticket_container(context, ticket, expandido=False, hide_buttons=False):
+def ticket_container(context, ticket, expanded=False, hide_buttons=False):
     ctx = context.flatten() if hasattr(context, 'flatten') else dict(context)
-    return {'ticket': ticket, 'expandido': expandido, 'hide_buttons': hide_buttons, **ctx}
+    return {'ticket': ticket, 'expanded': expanded, 'hide_buttons': hide_buttons, **ctx}
 
 @register.inclusion_tag('components/core/ticket_empty.html')
 def ticket_empty():
