@@ -1,6 +1,6 @@
 from django.urls import path
 from .views.views import home, list_tickets, ticket_detail, attachment_view, CreateTicketView, success_view, ticket_status_htmx
-from .views.others import close_ticket, process_close_ticket
+from .views.others import close_ticket, process_close_ticket, authorize_ticket
 from .views.htmx import (
     htmx_udn,
     htmx_sector,
@@ -36,4 +36,5 @@ urlpatterns += [
     path('htmx/ticket-status/<int:ticket_id>/', ticket_status_htmx, name='ticket_status'),
     path('tickets/<int:ticket_id>/close/', close_ticket, name='close-ticket'),
     path('ticket/<int:ticket_id>/process-close/', process_close_ticket, name='process_close'),
-] 
+    path('ticket/<int:ticket_id>/authorize/', authorize_ticket, name='authorize-ticket'),
+]
