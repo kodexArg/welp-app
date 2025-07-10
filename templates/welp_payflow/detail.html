@@ -11,18 +11,23 @@
             <i class="fa fa-arrow-left"></i>
             <span>Solicitudes</span>
         </a>
-        <div class="flex flex-col items-end">
-            {% ticket_status ticket %}
-            {% if ticket.status_note or ticket.next_action %}
-                <div class="text-right mt-1">
-                    {% if ticket.status_note %}
-                        <span class="text-sm text-forest-700 font-semibold">{{ ticket.status_note }}</span><br>
-                    {% endif %}
-                    {% if ticket.next_action %}
-                        <span class="text-xs text-forest-600 italic">→ {{ ticket.next_action }}</span>
-                    {% endif %}
-                </div>
+        <div class="flex flex-col md:flex-row md:items-center md:justify-end md:gap-6 w-full">
+            {% with status_info=ticket|get_status_flow %}
+            {% if ticket.status != 'closed' %}
+            <span class="order-2 md:order-1 ticket-action-closed">
+                <i class="ticket-action-icon-closed"></i>
+                {{ status_info.current_action }}
+            </span>
             {% endif %}
+            {% endwith %}
+            <div class="order-1 md:order-2 flex flex-col items-end">
+                {% ticket_status ticket %}
+                {% if ticket.status_note %}
+                    <div class="text-right mt-1">
+                        <span class="text-sm text-forest-700 font-semibold">{{ ticket.status_note }}</span><br>
+                    </div>
+                {% endif %}
+            </div>
         </div>
     </div>
 

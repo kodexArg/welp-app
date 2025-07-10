@@ -370,3 +370,13 @@ def get_ticket_comment_count(ticket):
         if status:
             count = ticket.messages.filter(status=status).exclude(body__isnull=True).exclude(body__exact='').count()
     return count
+
+@register.filter
+def get_item(dictionary, key):
+    """
+    Permite acceder a un valor de un diccionario por clave en los templates.
+    Usage: {{ dict|get_item:key }}
+    """
+    if isinstance(dictionary, dict):
+        return dictionary.get(key, '')
+    return ''

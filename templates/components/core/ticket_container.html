@@ -17,17 +17,17 @@ Ticket Container - Soporta dos modos:
                 <span class="tags-ticket-udn">{{ ticket.udn.name }}</span>
                 <span class="tags-ticket-sector">{{ ticket.sector.name }}</span>
                 <span class="tags-ticket-category">{{ ticket.accounting_category.name }}</span>
-                {% with action_info=ticket|get_ticket_action_info %}
-                <span class="status status-{{ action_info.status }} tag" style="color: {{ action_info.color }};">
-                    <span class="mr-1">{{ action_info.icon }}</span>
-                    {{ action_info.current_action }}
-                    <div id="ticket-feedback-count-{{ ticket.id }}" class="inline align-middle text-xs" 
-                        hx-get="{% url 'welp_payflow:htmx-ticket-feedback-count' ticket.id %}"
-                        hx-trigger="load"
-                        hx-swap="outerHTML">
-                    </div>
+                {% with status_info=ticket|get_status_flow %}
+                <span class="status status-{{ ticket.status }} tag" style="color: {{ PAYFLOW_STATUSES|get_item:ticket.status|get_item:'color' }};">
+                    <span class="mr-1">{{ PAYFLOW_STATUSES|get_item:ticket.status|get_item:'icon' }}</span>
+                    {{ ticket.status|get_status_label }}
                 </span>
                 {% endwith %}
+                <div id="ticket-feedback-count-{{ ticket.id }}" class="inline align-middle text-xs" 
+                    hx-get="{% url 'welp_payflow:htmx-ticket-feedback-count' ticket.id %}"
+                    hx-trigger="load"
+                    hx-swap="outerHTML">
+                </div>
             </div>
         </div>
         
@@ -40,9 +40,25 @@ Ticket Container - Soporta dos modos:
                         ⚠️ Este ticket no tiene mensajes
                     </div>
                 {% endfor %}
-                
                 {% if not hide_buttons %}
+                <div class="ticket-action-row flex justify-between items-center gap-2 mt-4 mb-2">
+                    {% with status_info=ticket|get_status_flow %}
+                    <span class="ticket-action-closed">
+                        <i class="ticket-action-icon-closed"></i>
+                        {{ status_info.current_action }}
+                    </span>
+                    {% endwith %}
                     {% ticket_actions ticket %}
+                </div>
+                {% else %}
+                <div class="ticket-action-row flex justify-end items-center mt-4 mb-2">
+                    {% with status_info=ticket|get_status_flow %}
+                    <span class="ticket-action-closed">
+                        <i class="ticket-action-icon-closed"></i>
+                        {{ status_info.current_action }}
+                    </span>
+                    {% endwith %}
+                </div>
                 {% endif %}
             </div>
         </div>
@@ -60,17 +76,17 @@ Ticket Container - Soporta dos modos:
                 <span class="tags-ticket-udn">{{ ticket.udn.name }}</span>
                 <span class="tags-ticket-sector">{{ ticket.sector.name }}</span>
                 <span class="tags-ticket-category">{{ ticket.accounting_category.name }}</span>
-                {% with action_info=ticket|get_ticket_action_info %}
-                <span class="status status-{{ action_info.status }} tag" style="color: {{ action_info.color }};">
-                    <span class="mr-1">{{ action_info.icon }}</span>
-                    {{ action_info.current_action }}
-                    <div id="ticket-feedback-count-{{ ticket.id }}" class="inline align-middle text-xs" 
-                        hx-get="{% url 'welp_payflow:htmx-ticket-feedback-count' ticket.id %}"
-                        hx-trigger="load"
-                        hx-swap="outerHTML">
-                    </div>
+                {% with status_info=ticket|get_status_flow %}
+                <span class="status status-{{ ticket.status }} tag" style="color: {{ PAYFLOW_STATUSES|get_item:ticket.status|get_item:'color' }};">
+                    <span class="mr-1">{{ PAYFLOW_STATUSES|get_item:ticket.status|get_item:'icon' }}</span>
+                    {{ ticket.status|get_status_label }}
                 </span>
                 {% endwith %}
+                <div id="ticket-feedback-count-{{ ticket.id }}" class="inline align-middle text-xs" 
+                    hx-get="{% url 'welp_payflow:htmx-ticket-feedback-count' ticket.id %}"
+                    hx-trigger="load"
+                    hx-swap="outerHTML">
+                </div>
             </div>
         </summary>
         
@@ -84,7 +100,24 @@ Ticket Container - Soporta dos modos:
                     </div>
                 {% endfor %}
                 {% if not hide_buttons %}
+                <div class="ticket-action-row flex justify-between items-center gap-2 mt-4 mb-2">
+                    {% with status_info=ticket|get_status_flow %}
+                    <span class="ticket-action-closed">
+                        <i class="ticket-action-icon-closed"></i>
+                        {{ status_info.current_action }}
+                    </span>
+                    {% endwith %}
                     {% ticket_actions ticket %}
+                </div>
+                {% else %}
+                <div class="ticket-action-row flex justify-end items-center mt-4 mb-2">
+                    {% with status_info=ticket|get_status_flow %}
+                    <span class="ticket-action-closed">
+                        <i class="ticket-action-icon-closed"></i>
+                        {{ status_info.current_action }}
+                    </span>
+                    {% endwith %}
+                </div>
                 {% endif %}
             </div>
         </div>
