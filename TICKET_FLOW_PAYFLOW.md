@@ -4,7 +4,7 @@
 
 ### Estructura de Datos
 ```
-UDN → Sector → IssueCategory → Issue
+UDN → Sector → Accounting (TODO: Arreglar)
 ```
 
 ### Sistema de Permisos
@@ -22,19 +22,24 @@ UDN → Sector (PERMISOS AQUÍ)
 ## 👥 Tipos de Operadores
 
 ### 1. **Usuario Final**
-- ✅ `can_open` | ❌ `can_comment` | ❌ `can_solve` | ❌ `can_authorize` | ❌ `can_process_payment` | ❌ `can_close`
+- **Descripción**: Solo puede crear solicitudes para sí mismo y ver el estado de sus propias solicitudes. Puede añadir comentarios a sus solicitudes y confirmar la entrega para cerrarlas.
+- **Permisos Clave**: `can_open`
 
 ### 2. **Técnico**
-- ✅ `can_open` | ✅ `can_comment` | ✅ `can_solve` | ❌ `can_authorize` | ❌ `can_process_payment` | ❌ `can_close`
+- **Descripción**: Puede crear solicitudes. Una vez que una solicitud en su UDN/Sector es autorizada por un supervisor, puede verla para buscar y adjuntar presupuestos (`solve`).
+- **Permisos Clave**: `can_open`, `can_comment`, `can_solve`
 
 ### 3. **Supervisor de Área**
-- ✅ `can_open` | ✅ `can_comment` | ❌ `can_solve` | ✅ `can_authorize` | ❌ `can_process_payment` | ✅ `can_close`
+- **Descripción**: Puede crear solicitudes y ver todas las de su UDN y Sector asignados. Realiza la **primera autorización** de las solicitudes de su área y puede rechazarlas o cerrarlas.
+- **Permisos Clave**: `can_open`, `can_comment`, `can_authorize`, `can_close`
 
 ### 4. **Gestor de Compras**
-- ❌ `can_open` | ✅ `can_comment` | ✅ `can_solve` | ❌ `can_authorize` | ✅ `can_process_payment` | ❌ `can_close`
+- **Descripción**: Puede crear y gestionar sus propias solicitudes. Se encarga de todas las solicitudes que han sido autorizadas, pudiendo adjuntar presupuestos (`solve`), y gestionar el proceso de pago (`processing_payment`) y envío (`shipping`).
+- **Permisos Clave**: `can_open`, `can_comment`, `can_solve`, `can_process_payment`
 
 ### 5. **Gerente/Director**
-- ✅ `can_open` | ✅ `can_comment` | ❌ `can_solve` | ✅ `can_authorize` | ✅ `can_process_payment` | ✅ `can_close`
+- **Descripción**: Tiene todas las capacidades de un Supervisor, pero además es el único rol que puede realizar la **autorización de pago** sobre un ticket ya presupuestado.
+- **Permisos Clave**: `can_open`, `can_comment`, `can_authorize`, `can_process_payment`, `can_close`
 
 ## 🔄 Estados de Solicitud
 
@@ -59,7 +64,7 @@ UDN → Sector (PERMISOS AQUÍ)
 | `open` | `closed` | Supervisor, Gerente (cancelación) |
 | `authorized` | `budgeted` | Gestor de Compras, Técnico |
 | `authorized` | `closed` | Supervisor, Gerente (cancelación) |
-| `budgeted` | `payment_authorized` | Supervisor, Gerente |
+| `budgeted` | `payment_authorized` | Gerente |
 | `budgeted` | `rejected` | Supervisor, Gerente |
 | `budgeted` | `closed` | Supervisor, Gerente (cancelación) |
 | `rejected` | `budgeted` | Gestor de Compras, Técnico |
@@ -95,7 +100,7 @@ Los comentarios son **información adicional** que acompaña las transiciones de
 1. Usuario: "Licencias Office 365 - $300" (`open`)
 2. Supervisor: "Autorizado" → comentario con aprobación (`authorized`)
 3. Gestor de Compras: "Presupuestos de 3 proveedores adjuntados" (`budgeted`)
-4. Supervisor: "Aprobado proveedor A - $280" → comentario con decisión (`payment_authorized`)
+4. Gerente: "Aprobado proveedor A - $280" → comentario con decisión (`payment_authorized`)
 5. Gestor de Compras: "Procesando facturación con proveedor" (`processing_payment`)
 6. Gestor de Compras: "Licencias compradas, enviando credenciales" (`shipping`)
 7. Usuario: "Recibido y funcionando" (`closed`)
@@ -106,7 +111,7 @@ Los comentarios son **información adicional** que acompaña las transiciones de
 3. Gestor: "Presupuestos de 3 proveedores adjuntados" (`budgeted`)
 4. Supervisor: "Presupuestos muy altos, buscar alternativas" (`rejected`)
 5. Gestor: "Nuevas cotizaciones con descuentos adjuntadas" (`budgeted`)
-6. Supervisor: "Aprobado proveedor con descuento" (`payment_authorized`)
+6. Gerente: "Aprobado proveedor con descuento" (`payment_authorized`)
 7. Gestor: "Procesando orden de compra" (`processing_payment`)
 8. Gestor: "Equipos en camino" (`shipping`)
 9. Usuario: "Recibido" (`closed`)
@@ -115,7 +120,7 @@ Los comentarios son **información adicional** que acompaña las transiciones de
 1. Supervisor: "Mantenimiento urgente - $400" (`open`)
 2. Supervisor: "Auto-autorizado por urgencia" (`authorized`)
 3. Técnico: "Cotizaciones de emergencia adjuntadas" (`budgeted`)
-4. Supervisor: "Aprobado proveedor habitual" (`payment_authorized`)
+4. Gerente: "Aprobado proveedor habitual" (`payment_authorized`)
 5. Gestor: "Procesando pago urgente" (`processing_payment`)
 6. Gestor: "Servicio realizado" (`shipping`)
 7. Supervisor: "Confirmado" (`closed`)
@@ -135,64 +140,9 @@ PayFlowRoles(user=ana, udn=km_1151, sector=administracion, can_comment=True, can
 PayFlowRoles(user=carlos, udn=las_bovedas, sector=administracion, can_comment=True, can_authorize=True, can_close=True)
 
 # Gestor de Compras - Todas las UDNs autorizadas, gestiona presupuestos y envíos
-PayFlowRoles(user=maria, udn=None, sector=None, can_comment=True, can_solve=True, can_process_payment=True)
+PayFlowRoles(user=maria, udn=None, sector=None, can_open=True, can_comment=True, can_solve=True, can_process_payment=True)
 
 # Gerente - Toda la UDN (todos los sectores)
 PayFlowRoles(user=luis, udn=km_1151, sector=None, can_open=True, can_comment=True, 
              can_authorize=True, can_process_payment=True, can_close=True)
-```
-
-## 📊 Filtrado de Solicitudes
-
-```python
-def get_user_payflow_tickets(user):
-    own_tickets = Q(messages__user=user)
-    user_roles = user.payflow_roles.filter(can_comment=True)
-    context_tickets = Q()
-    
-    for role in user_roles:
-        role_filter = Q()
-        if role.udn: 
-            role_filter &= Q(udn=role.udn)
-        if role.sector: 
-            role_filter &= Q(sector=role.sector)
-        # Las categorías e issues heredan automáticamente del sector
-        context_tickets |= role_filter
-    
-    # Solicitudes en proceso para gestores de compras
-    if user.payflow_roles.filter(can_process_payment=True).exists():
-        process_tickets = Q(status__in=['authorized', 'budgeted', 'payment_authorized', 'processing_payment', 'shipping'])
-        context_tickets |= process_tickets
-    
-    return PayFlowTicket.objects.filter(own_tickets | context_tickets).distinct()
-```
-
-## 🔧 Interacción con el Modelo
-
-### Lógica de Herencia de Permisos
-1. **Asignación**: Los permisos se asignan solo a UDN/Sector en el modelo `PayFlowRoles`
-2. **Herencia automática**: Todas las `IssueCategory` del sector heredan los permisos
-3. **Herencia en cascada**: Todas las `Issues` de cada categoría heredan los permisos del sector
-4. **Filtrado**: El sistema filtra automáticamente solicitudes por UDN/Sector del usuario
-5. **Caso especial**: Gestor de Compras ve solicitudes autorizadas independientemente del sector
-
-### Ejemplo de Herencia
-```python
-# Usuario con permisos en sector "Administración" de "Km 1151"
-PayFlowRoles(user=supervisor, udn=km_1151, sector=administracion, can_authorize=True, can_close=True)
-
-# Ve automáticamente solicitudes de TODAS las categorías del sector Administración:
-# - Compras, Software, Licencias, Equipamiento, Mobiliario, etc.
-# - Y todas las issues específicas dentro de cada categoría
-```
-
-### Gestor de Compras - Caso Especial
-```python
-# Gestor con acceso global a solicitudes autorizadas
-PayFlowRoles(user=gestor, udn=None, sector=None, can_process_payment=True)
-
-# Ve automáticamente:
-# - Todas las solicitudes con estado 'authorized' o 'pending_payment'
-# - Independientemente de UDN, Sector o Categoría
-# - Porque su rol es procesar compras ya aprobadas
 ```
