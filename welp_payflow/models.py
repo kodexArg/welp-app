@@ -2,7 +2,7 @@ from django.db import models
 from django.db.models import Q
 from django.urls import reverse
 from django.utils import timezone
-from .constants import PAYFLOW_STATUSES, STATUS_MAX_LENGTH
+from .constants import PAYFLOW_STATUSES, STATUS_MAX_LENGTH, PAYFLOW_ROLE_PERMISSIONS
 from .utils import get_available_payflow_transitions, get_permissions_for_role_type
 
 
@@ -108,23 +108,24 @@ class TicketManager(models.Manager):
             own_tickets = Q(messages__user=user)
             
             user_roles = user.payflow_roles.all()
-            if not user_roles.exists():
-                return queryset.filter(own_tickets).distinct()
-            
-            role_tickets = Q()
-            for role in user_roles:
-                role_filter = Q()
-                if role.udn:
-                    role_filter &= Q(udn=role.udn)
-                if role.sector:
-                    role_filter &= Q(sector=role.sector)
-                role_tickets |= role_filter
-            
-            if user.payflow_roles.filter(can_process_payment=True).exists():
-                authorized_tickets = Q(status__in=['authorized', 'budgeted', 'payment_authorized', 'processing_payment', 'shipping'])
-                role_tickets |= authorized_tickets
-            
-            return queryset.filter(own_tickets | role_tickets).distinct()
+            can_view_others = any(PAYFLOW_ROLE_PERMISSIONS.get(role.get_role_type(), {}).get('can_view_others_tickets', False) for role in user_roles)
+            if can_view_others:
+                role_tickets = Q()
+                for role in user_roles:
+                    if PAYFLOW_ROLE_PERMISSIONS.get(role.get_role_type(), {}).get('can_view_others_tickets', False):
+                        role_filter = Q()
+                        if role.udn:
+                            role_filter &= Q(udn=role.udn)
+                        if role.sector:
+                            role_filter &= Q(sector=role.sector)
+                        role_tickets |= role_filter
+                # Gestores de compra pueden ver tickets en proceso
+                if user.payflow_roles.filter(can_process_payment=True).exists():
+                    authorized_tickets = Q(status__in=['authorized', 'budgeted', 'payment_authorized', 'processing_payment', 'shipping'])
+                    role_tickets |= authorized_tickets
+                return queryset.filter(own_tickets | role_tickets).distinct()
+            # Otros usuarios: solo sus propios tickets
+            return queryset.filter(own_tickets).distinct()
         return queryset
 
 

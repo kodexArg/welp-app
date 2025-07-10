@@ -93,6 +93,7 @@ DESK_ROLE_PERMISSIONS = {
         'can_authorize': False,
         'can_open': True,
         'can_close': False,
+        'can_view_others_tickets': False,
     },
     'technician': {
         'can_read': True,
@@ -101,6 +102,7 @@ DESK_ROLE_PERMISSIONS = {
         'can_authorize': False,
         'can_open': True,
         'can_close': False,
+        'can_view_others_tickets': False,
     },
     'supervisor': {
         'can_read': True,
@@ -109,6 +111,7 @@ DESK_ROLE_PERMISSIONS = {
         'can_authorize': True,
         'can_open': True,
         'can_close': True,
+        'can_view_others_tickets': True,
     },
     'admin': {
         'can_read': True,
@@ -117,6 +120,7 @@ DESK_ROLE_PERMISSIONS = {
         'can_authorize': True,
         'can_open': True,
         'can_close': True,
+        'can_view_others_tickets': True,
     },
 }
 

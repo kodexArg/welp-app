@@ -97,6 +97,7 @@ PAYFLOW_ROLE_PERMISSIONS = {
         'can_authorize': os.environ.get('PAYFLOW_ROLE_END_USER_AUTHORIZE', 'false').lower() == 'true',
         'can_process_payment': os.environ.get('PAYFLOW_ROLE_END_USER_PAYMENT', 'false').lower() == 'true',
         'can_close': os.environ.get('PAYFLOW_ROLE_END_USER_CLOSE', 'false').lower() == 'true',
+        'can_view_others_tickets': False,
     },
     'technician': {
         'can_open': os.environ.get('PAYFLOW_ROLE_TECH_OPEN', 'true').lower() == 'true',
@@ -105,6 +106,7 @@ PAYFLOW_ROLE_PERMISSIONS = {
         'can_authorize': os.environ.get('PAYFLOW_ROLE_TECH_AUTHORIZE', 'false').lower() == 'true',
         'can_process_payment': os.environ.get('PAYFLOW_ROLE_TECH_PAYMENT', 'false').lower() == 'true',
         'can_close': os.environ.get('PAYFLOW_ROLE_TECH_CLOSE', 'false').lower() == 'true',
+        'can_view_others_tickets': False,
     },
     'supervisor': {
         'can_open': os.environ.get('PAYFLOW_ROLE_SUPER_OPEN', 'true').lower() == 'true',
@@ -113,6 +115,7 @@ PAYFLOW_ROLE_PERMISSIONS = {
         'can_authorize': os.environ.get('PAYFLOW_ROLE_SUPER_AUTHORIZE', 'true').lower() == 'true',
         'can_process_payment': os.environ.get('PAYFLOW_ROLE_SUPER_PAYMENT', 'false').lower() == 'true',
         'can_close': os.environ.get('PAYFLOW_ROLE_SUPER_CLOSE', 'true').lower() == 'true',
+        'can_view_others_tickets': True,
     },
     'purchase_manager': {
         'can_open': os.environ.get('PAYFLOW_ROLE_PURCHASE_OPEN', 'false').lower() == 'true',
@@ -121,6 +124,7 @@ PAYFLOW_ROLE_PERMISSIONS = {
         'can_authorize': os.environ.get('PAYFLOW_ROLE_PURCHASE_AUTHORIZE', 'false').lower() == 'true',
         'can_process_payment': os.environ.get('PAYFLOW_ROLE_PURCHASE_PAYMENT', 'true').lower() == 'true',
         'can_close': os.environ.get('PAYFLOW_ROLE_PURCHASE_CLOSE', 'false').lower() == 'true',
+        'can_view_others_tickets': True,
     },
     'manager': {
         'can_open': os.environ.get('PAYFLOW_ROLE_MANAGER_OPEN', 'true').lower() == 'true',
@@ -129,6 +133,7 @@ PAYFLOW_ROLE_PERMISSIONS = {
         'can_authorize': os.environ.get('PAYFLOW_ROLE_MANAGER_AUTHORIZE', 'true').lower() == 'true',
         'can_process_payment': os.environ.get('PAYFLOW_ROLE_MANAGER_PAYMENT', 'true').lower() == 'true',
         'can_close': os.environ.get('PAYFLOW_ROLE_MANAGER_CLOSE', 'true').lower() == 'true',
+        'can_view_others_tickets': True,
     },
 }
 

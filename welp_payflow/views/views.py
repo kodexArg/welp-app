@@ -17,7 +17,7 @@ def home(request):
 
 def list_tickets(request):
     context = {
-        'tickets': Ticket.objects.all().select_related(
+        'tickets': Ticket.objects.get_queryset(request.user).select_related(
             'udn', 'sector', 'accounting_category'
         ).prefetch_related(
             'messages__user',

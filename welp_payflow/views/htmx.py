@@ -13,7 +13,7 @@ from ..models import UDN, Sector, AccountingCategory, Ticket
 @login_required(login_url='login')
 def htmx_list_content(request):
     """Devuelve el contenido paginado de la lista de tickets para HTMX ordenados por el último mensaje creado"""
-    tickets = Ticket.objects.all().annotate(
+    tickets = Ticket.objects.get_queryset(request.user).annotate(
         last_message_timestamp=models.Max('messages__created_on')
     ).order_by('-last_message_timestamp')
     paginator = Paginator(tickets, 6)

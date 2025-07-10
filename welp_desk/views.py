@@ -16,7 +16,7 @@ def index(request):
 
 def list_dev(request):
     context = {
-        'tickets': Ticket.objects.all().select_related(
+        'tickets': Ticket.objects.get_queryset(request.user).select_related(
             'udn', 'sector', 'issue_category', 'issue'
         ).prefetch_related(
             'messages__user',
