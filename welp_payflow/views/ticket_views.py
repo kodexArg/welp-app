@@ -48,6 +48,11 @@ class TicketDetailView(LoginRequiredMixin, DetailView):
         from ..utils import process_ticket_response
         ticket = self.get_object()
         success, message = process_ticket_response(request, ticket)
+        if success:
+            messages.success(request, message)
+            return redirect('welp_payflow:list')
+
+        messages.error(request, message)
         return redirect('welp_payflow:detail', ticket_id=ticket.id)
 
 
