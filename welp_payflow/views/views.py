@@ -10,14 +10,7 @@ from django.http import HttpResponse
 from ..models import Ticket, Message, Attachment
 from ..forms import PayflowTicketCreationForm
 from ..utils import can_user_close_ticket
-from ..constants import (
-    PAYFLOW_RESPONSE_TYPES, 
-    PAYFLOW_CONFIRMATION_TEXTS, 
-    PAYFLOW_BUTTON_TEXTS, 
-    PAYFLOW_COMMENT_PLACEHOLDERS, 
-    PAYFLOW_COMMENT_LABELS, 
-    PAYFLOW_REQUIRED_FIELDS
-)
+from ..constants import PAYFLOW_STATUSES
 
 
 def home(request):
@@ -124,20 +117,27 @@ def ticket_detail(request, ticket_id):
         else:
             messages.error(request, 'El comentario es obligatorio')
     
-    # Obtener datos de constantes para el response_type actual
-    response_info = PAYFLOW_RESPONSE_TYPES.get(response_type, PAYFLOW_RESPONSE_TYPES['comment'])
-    confirmation_info = PAYFLOW_CONFIRMATION_TEXTS.get(response_type, {})
+    action_to_status_map = {'close': 'closed'}
+    status_key = action_to_status_map.get(response_type, response_type)
     
+    # Obtener toda la información de UI de la nueva constante
+    status_info = PAYFLOW_STATUSES.get(status_key, {})
+    ui_info = status_info.get('ui', {})
+
+    # Para 'comment', que no es un estado completo, obtener su UI específica
+    if response_type == 'comment':
+        ui_info = PAYFLOW_STATUSES.get('comment', {}).get('ui', {})
+
     context = {
         'ticket': ticket,
         'response_type': response_type,
         'can_close_ticket': can_user_close_ticket(request.user, ticket),
-        'response_info': response_info,
-        'confirmation_info': confirmation_info,
-        'button_text': PAYFLOW_BUTTON_TEXTS.get(response_type, PAYFLOW_BUTTON_TEXTS.get('comment', 'Enviar')),
-        'comment_placeholder': PAYFLOW_COMMENT_PLACEHOLDERS.get(response_type, 'Escriba su comentario aquí...'),
-        'comment_label': PAYFLOW_COMMENT_LABELS.get(response_type, 'Comentario'),
-        'field_required': PAYFLOW_REQUIRED_FIELDS.get(response_type, False),
+        'response_info': ui_info,
+        'confirmation_info': ui_info.get('confirmation', {}),
+        'button_text': ui_info.get('button_text', 'Enviar'),
+        'comment_placeholder': ui_info.get('comment_placeholder', 'Escriba su comentario aquí...'),
+        'comment_label': ui_info.get('comment_label', 'Comentario'),
+        'field_required': ui_info.get('comment_required', False),
     }
 
     # URL base para cancelar

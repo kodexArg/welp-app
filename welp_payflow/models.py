@@ -121,7 +121,7 @@ class TicketManager(models.Manager):
                         role_tickets |= role_filter
                 # Gestores de compra pueden ver tickets en proceso
                 if user.payflow_roles.filter(can_process_payment=True).exists():
-                    authorized_tickets = Q(status__in=['authorized', 'budgeted', 'payment_authorized', 'processing_payment', 'shipping'])
+                    authorized_tickets = Q(messages__status__in=['authorized', 'budgeted', 'payment_authorized', 'processing_payment', 'shipping'])
                     role_tickets |= authorized_tickets
                 return queryset.filter(own_tickets | role_tickets).distinct()
             # Otros usuarios: solo sus propios tickets
@@ -162,7 +162,7 @@ class Ticket(models.Model):
     @property
     def status(self):
         # Buscar el último mensaje cuyo status sea un estado válido (no comentario)
-        valid_statuses = list(PAYFLOW_STATUSES.keys())
+        valid_statuses = [key for key, value in PAYFLOW_STATUSES.items() if 'is_final' in value]
         last_valid = self.messages.filter(status__in=valid_statuses).order_by('-created_on').first()
         return last_valid.status if last_valid else 'unknown'
 
@@ -188,7 +188,12 @@ class Ticket(models.Model):
 
 class Message(models.Model):
     ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE, related_name="messages", verbose_name="Ticket")
-    status = models.CharField(max_length=STATUS_MAX_LENGTH, choices=[(key, value['label']) for key, value in PAYFLOW_STATUSES.items()], default='open', verbose_name="Estado")
+    status = models.CharField(
+        max_length=STATUS_MAX_LENGTH,
+        choices=[(key, value['label']) for key, value in PAYFLOW_STATUSES.items() if 'is_final' in value],
+        default='open',
+        verbose_name="Estado"
+    )
     message_type = models.CharField(
         max_length=20,
         choices=[
