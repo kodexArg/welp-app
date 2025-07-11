@@ -140,12 +140,17 @@ def get_user_ticket_transitions(user, ticket):
 
 
 def get_ticket_action_data(action, ticket_id=None):
-    status_info = PAYFLOW_STATUSES.get(action, {})
+    if action == 'feedback':
+        status_info = PAYFLOW_STATUSES.get('comment', {})
+    else:
+        status_info = PAYFLOW_STATUSES.get(action, {})
+    
     ui_info = status_info.get('ui', {})
+    fa_icons = FA_ICONS
     if action == 'closed':
         return None
     label = ui_info.get('button_text', status_info.get('label', action.upper()))
-    fa_icon = FA_ICONS.get(action, 'fa-solid fa-circle')
+    fa_icon = fa_icons.get(action, 'fa-solid fa-circle')
     href = '#'
     if ticket_id:
         from django.urls import reverse
@@ -161,4 +166,53 @@ def get_ticket_action_data(action, ticket_id=None):
         'href': href,
         'label': label,
         'fa_icon': fa_icon,
+    }
+
+
+def get_ticket_actions_context(user, ticket):
+    actions_data = []
+    if not user or not user.is_authenticated or not ticket:
+        return {'ticket': ticket, 'actions': []}
+
+    # Obtener todas las transiciones permitidas
+    all_allowed_actions = get_user_ticket_transitions(user, ticket)
+
+    # Preparar las acciones por separado
+    close_action = None
+    comment_action = None
+    other_actions = []
+
+    # Generar data para cada acción y clasificarlas
+    for action in all_allowed_actions:
+        action_data = get_ticket_action_data(action, ticket.id)
+        if action_data:
+            if action == 'close':
+                close_action = action_data
+            elif action == 'feedback': # 'feedback' es el tipo de acción para comentar
+                comment_action = action_data
+            elif action != 'closed': # 'closed' no es una acción, es un estado final
+                other_actions.append(action_data)
+
+    # Añadir el botón de comentar si es posible y no está en la lista
+    # Cualquier usuario autenticado puede comentar si el ticket no está cerrado
+    if ticket.status != 'closed':
+        if not comment_action:
+            # Asegurarse de que el botón de comentar se genere correctamente
+            temp_comment_action = get_ticket_action_data('feedback', ticket.id)
+            if temp_comment_action:
+                comment_action = temp_comment_action
+
+    # Construir la lista final de acciones en el orden deseado
+    final_actions = []
+    if close_action:
+        final_actions.append(close_action)
+    
+    final_actions.extend(other_actions)
+
+    if comment_action:
+        final_actions.append(comment_action)
+    
+    return {
+        'ticket': ticket,
+        'actions': final_actions
     } 

@@ -78,7 +78,7 @@ PAYFLOW_STATUSES = {
                 'message': '¿Presupuestar?',
                 'style': {'bg': 'bg-green-50', 'border': 'border-green-400', 'text': 'text-green-700'}
             },
-            'button_text': 'Marcar como Presupuestado',
+            'button_text': 'Presupuestar',
             'comment_placeholder': 'Detalles del presupuesto adjuntado',
             'comment_label': 'Comentario',
             'comment_required': True,
@@ -323,7 +323,7 @@ TREEMAP_MIN_ITEMS = 3
 TREEMAP_MAX_ITEMS = 50 
 
 FA_ICONS = {
-    'feedback': 'fa-regular fa-comment',
+    'feedback': 'fa-brands fa-telegram-plane',
     'authorized': 'fa-solid fa-check',
     'budgeted': 'fa-solid fa-file-invoice-dollar',
     'rejected': 'fa-solid fa-ban',
