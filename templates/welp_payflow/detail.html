@@ -16,21 +16,14 @@
                 <p class="{{ confirmation_info.style.text }}">{{ confirmation_info.non_owner_message }}</p>
             {% endif %}
         </div>
-        <div class="ticket-detail-container">
-            {% ticket_container ticket expanded=True %}
-        </div>
-        {% ticket_message_input form_action=process_close_url button_text=button_text label_text=comment_label placeholder=comment_placeholder cancel_url=cancel_url required=field_required field_name="close_comment" response_type=response_type %}
-    {% elif response_type == 'authorized' or response_type == 'budgeted' or response_type == 'rejected' or response_type == 'payment_authorized' or response_type == 'processing_payment' or response_type == 'shipping' %}
+    {% endif %}
 
-        <div class="ticket-detail-container">
-            {% ticket_container ticket expanded=True %}
-        </div>
-        {% ticket_message_input form_action=transition_url button_text=button_text label_text=comment_label placeholder=comment_placeholder cancel_url=cancel_url required=field_required field_name=response_type|add:"_comment" response_type=response_type %}
-    {% else %}
-        <div class="ticket-detail-container">
-            {% ticket_container ticket expanded=True %}
-        </div>
-        {% ticket_message_input form_action=request.get_full_path button_text=button_text show_attachments=True cancel_url=cancel_url response_type=response_type %}
+    <div class="ticket-detail-container">
+        {% ticket_container ticket expanded=True %}
+    </div>
+
+    {% if show_comment_box %}
+        {% payflow_response_form ticket=ticket response_type=response_type is_owner=is_owner cancel_url=cancel_url cancel_text="Cancelar" hidden_fields=hidden_fields %}
     {% endif %}
 </section>
 

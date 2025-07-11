@@ -22,7 +22,11 @@ PAYFLOW_STATUSES = {
             'is_waiting': True,
             'priority': 'high',
         },
-        'ui': {}  # No hay una acción de UI directa para pasar al estado 'open'
+        'ui': {
+            'show_comment_box': False,
+            'show_attachments': False,
+            'comment_required': False,
+        }
     },
     'authorized': {
         'label': 'Autorizado',
@@ -52,6 +56,8 @@ PAYFLOW_STATUSES = {
             'comment_placeholder': 'Comentario de autorización (opcional)',
             'comment_label': 'Comentario',
             'comment_required': False,
+            'show_comment_box': False,
+            'show_attachments': False,
         }
     },
     'budgeted': {
@@ -82,6 +88,8 @@ PAYFLOW_STATUSES = {
             'comment_placeholder': 'Detalles del presupuesto adjuntado',
             'comment_label': 'Comentario',
             'comment_required': True,
+            'show_comment_box': True,
+            'show_attachments': True,
         }
     },
     'rejected': {
@@ -112,6 +120,8 @@ PAYFLOW_STATUSES = {
             'comment_placeholder': 'Explique por qué se rechazan los presupuestos',
             'comment_label': 'Motivo del rechazo',
             'comment_required': True,
+            'show_comment_box': True,
+            'show_attachments': False,
         }
     },
     'payment_authorized': {
@@ -142,6 +152,8 @@ PAYFLOW_STATUSES = {
             'comment_placeholder': 'Comentario de autorización de pago (opcional)',
             'comment_label': 'Comentario',
             'comment_required': False,
+            'show_comment_box': False,
+            'show_attachments': False,
         }
     },
     'processing_payment': {
@@ -172,6 +184,8 @@ PAYFLOW_STATUSES = {
             'comment_placeholder': 'Detalles del proceso de pago/facturación',
             'comment_label': 'Comentario',
             'comment_required': False,
+            'show_comment_box': False,
+            'show_attachments': False,
         }
     },
     'shipping': {
@@ -202,6 +216,8 @@ PAYFLOW_STATUSES = {
             'comment_placeholder': 'Detalles del envío/entrega (opcional)',
             'comment_label': 'Comentario',
             'comment_required': False,
+            'show_comment_box': True,
+            'show_attachments': True,
         }
     },
     'closed': {
@@ -232,7 +248,9 @@ PAYFLOW_STATUSES = {
             'button_text': 'Confirmar Cierre',
             'comment_placeholder': 'Explique el motivo del cierre',
             'comment_label': 'Comentario',
-            'comment_required': False,  # La lógica es dinámica, se maneja en la vista.
+            'comment_required': True,
+            'show_comment_box': True,
+            'show_attachments': False,
         }
     },
 
@@ -242,6 +260,9 @@ PAYFLOW_STATUSES = {
             'action_label': 'Comentar',
             'color_class': 'text-gray-400',
             'button_text': 'Comentar',
+            'comment_required': True,
+            'show_comment_box': True,
+            'show_attachments': True,
         }
     },
 
@@ -257,7 +278,11 @@ PAYFLOW_STATUSES = {
         'transitions': [],
         'allowed_roles': [],
         'flow': {},
-        'ui': {}
+        'ui': {
+            'show_comment_box': False,
+            'show_attachments': False,
+            'comment_required': False,
+        }
     },
 }
 
@@ -316,10 +341,10 @@ MAX_FILE_SIZE = 52428800
 API_BASE_URL = '/api/payflow/'
 SELECT_OPTIONS_ENDPOINT = 'select-options'
 
-FORM_TIMEOUT_SECONDS = 300
-MAX_UPLOAD_FILES = 10
+FORM_TIMEOUT_SECONDS = 300 
+MAX_UPLOAD_FILES = 10 
 
-TREEMAP_MIN_ITEMS = 3
+TREEMAP_MIN_ITEMS = 3 
 TREEMAP_MAX_ITEMS = 50 
 
 FA_ICONS = {

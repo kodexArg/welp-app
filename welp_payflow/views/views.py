@@ -76,92 +76,122 @@ def ticket_detail(request, ticket_id):
 
     response_type = request.GET.get('response_type', 'comment')
 
-    if request.method == 'POST' and response_type == 'comment':
-        response_body = request.POST.get('response_body', '').strip()
-        # Obtener el estado actual del ticket para el nuevo comentario
-        current_status = ticket.status
-        new_status = current_status
-        
-        if response_body:
-            # Crear el nuevo mensaje de comentario
-            message = Message.objects.create(
-                ticket=ticket,
-                status=new_status,
-                user=request.user,
-                body=response_body
-            )
-            
-            # Manejar archivos adjuntos múltiples
-            files = request.FILES.getlist('attachments')
-            attachment_count = 0
-            for file in files:
-                if file and file.size > 0:  # Verificar que el archivo no esté vacío
-                    if file.size <= 52428800:  # 50MB limit
-                        Attachment.objects.create(
-                            file=file,
-                            message=message
-                        )
-                        attachment_count += 1
-                    else:
-                        messages.warning(request, f'Archivo {file.name} demasiado grande (máximo 50MB)')
-            
-            success_msg = 'Comentario agregado exitosamente'
-            if attachment_count > 0:
-                success_msg += f' con {attachment_count} archivo{"s" if attachment_count > 1 else ""} adjunto{"s" if attachment_count > 1 else ""}'
-            
-            messages.success(request, success_msg)
-            
-            # Redirect para evitar resubmit
-            return redirect('welp_payflow:list')
+    # Determinar el estado o acción para obtener la configuración de UI
+    # Si es una transición, usamos el response_type. Si es un comentario normal, usamos 'comment'.
+    # Para el caso 'close', la configuración general se obtiene de 'closed' pero la validación de comentario es dinámica.
+    ui_key = response_type
+    if ui_key == 'close':
+        ui_key = 'closed' # Usamos la configuración de 'closed' para el UI del cierre
+    elif ui_key == 'feedback':
+        ui_key = 'comment' # Usamos la configuración de 'comment' para el UI de feedback
 
+    status_ui_info = PAYFLOW_STATUSES.get(ui_key, {}).get('ui', {})
+
+    # Valores por defecto de UI
+    show_attachments = status_ui_info.get('show_attachments', False)
+    show_comment_box = status_ui_info.get('show_comment_box', True)
+    field_required = status_ui_info.get('comment_required', False)
+
+    # Lógica específica para el cierre de ticket (override de comment_required)
+    is_owner = (ticket.created_by == request.user) if ticket.created_by else False
+    if response_type == 'close':
+        # Si es dueño o superuser, comentario NO es obligatorio para cerrar
+        if is_owner or request.user.is_superuser:
+            field_required = False
         else:
-            messages.error(request, 'El comentario es obligatorio')
-    
-    action_to_status_map = {'close': 'closed'}
-    status_key = action_to_status_map.get(response_type, response_type)
-    
-    # Obtener toda la información de UI de la nueva constante
-    status_info = PAYFLOW_STATUSES.get(status_key, {})
-    ui_info = status_info.get('ui', {})
-
-    # Para 'comment', que no es un estado completo, obtener su UI específica
-    if response_type == 'comment':
-        ui_info = PAYFLOW_STATUSES.get('comment', {}).get('ui', {})
+            # Para otros roles que cierran, el comentario SÍ es obligatorio
+            field_required = True
 
     context = {
         'ticket': ticket,
         'response_type': response_type,
-        'can_close_ticket': can_user_close_ticket(request.user, ticket),
-        'response_info': ui_info,
-        'confirmation_info': ui_info.get('confirmation', {}),
-        'button_text': ui_info.get('button_text', 'Enviar'),
-        'comment_placeholder': ui_info.get('comment_placeholder', 'Escriba su comentario aquí...'),
-        'comment_label': ui_info.get('comment_label', 'Comentario'),
-        'field_required': ui_info.get('comment_required', False),
+        'response_info': status_ui_info,
+        'confirmation_info': status_ui_info.get('confirmation', {}),
+        'button_text': status_ui_info.get('button_text', 'Enviar'),
+        'comment_placeholder': status_ui_info.get('comment_placeholder', 'Escriba su comentario aquí...'),
+        'comment_label': status_ui_info.get('comment_label', 'Comentario'),
+        'field_required': field_required,
+        'show_attachments': show_attachments,
+        'show_comment_box': show_comment_box,
+        'is_owner': is_owner if response_type == 'close' else False,
+        'hidden_fields': {},
     }
 
-    # URL base para cancelar
-    cancel_url = reverse('welp_payflow:list')
-
+    # URL para la acción del formulario
     if response_type == 'close':
-        is_owner = ticket.created_by == request.user
-        requires_comment = not (is_owner or request.user.is_superuser)
-        context.update({
-            'process_close_url': reverse('welp_payflow:process_close', kwargs={'ticket_id': ticket.id}),
-            'cancel_url': reverse('welp_payflow:detail', kwargs={'ticket_id': ticket.id}),
-            'requires_comment': requires_comment,
-            'is_owner': is_owner,
-            'field_required': requires_comment,  # Override para close
-        })
-    elif response_type in ['authorized', 'budgeted', 'rejected', 'payment_authorized', 'processing_payment', 'shipping']:
-        # Para todas las transiciones de estado usar la nueva vista general
-        context.update({
-            'transition_url': reverse('welp_payflow:transition', kwargs={'ticket_id': ticket.id, 'target_status': response_type}),
-            'cancel_url': reverse('welp_payflow:detail', kwargs={'ticket_id': ticket.id}),
-        })
-    else:
-        # Caso 'comment' - cancelar lleva a la lista
-        context['cancel_url'] = cancel_url
+        context['form_action'] = reverse('welp_payflow:process_close', kwargs={'ticket_id': ticket.id})
+    elif response_type == 'comment':
+        context['form_action'] = request.get_full_path()
+    else: # Para otras transiciones de estado
+        context['form_action'] = reverse('welp_payflow:transition', kwargs={'ticket_id': ticket.id, 'target_status': response_type})
+    
+    context['cancel_url'] = reverse('welp_payflow:detail', kwargs={'ticket_id': ticket.id})
+
+
+    if request.method == 'POST':
+        response_body = request.POST.get('response_body', '').strip()
+        files = request.FILES.getlist('attachments')
+        
+        # Validar si el comentario es requerido y está vacío
+        if field_required and not response_body:
+            messages.error(request, 'El comentario es obligatorio.')
+            return render(request, 'welp_payflow/detail.html', context)
+        
+        # Validar si se requiere adjunto y no hay
+        if show_attachments and not files:
+            messages.error(request, 'Es obligatorio adjuntar al menos un archivo.')
+            return render(request, 'welp_payflow/detail.html', context)
+
+        try:
+            with transaction.atomic():
+                current_status = ticket.status
+                new_status = current_status
+                message_type = 'feedback' # Default a feedback
+
+                if response_type == 'close':
+                    new_status = 'closed'
+                    message_type = 'status'
+                elif response_type != 'comment': # Cualquier otra respuesta que sea una transición de estado
+                    new_status = response_type
+                    message_type = 'status'
+
+                message = Message.objects.create(
+                    ticket=ticket,
+                    status=new_status,
+                    user=request.user,
+                    body=response_body,
+                    message_type=message_type
+                )
+
+                # Manejar archivos adjuntos múltiples
+                attachment_count = 0
+                for file in files:
+                    if file and file.size > 0:  # Verificar que el archivo no esté vacío
+                        if file.size <= 52428800:  # 50MB limit
+                            Attachment.objects.create(
+                                file=file,
+                                message=message
+                            )
+                            attachment_count += 1
+                        else:
+                            messages.warning(request, f'Archivo {file.name} demasiado grande (máximo 50MB)')
+                
+                success_msg = status_ui_info.get('action_label', response_type.capitalize()) + ' realizado exitosamente'
+                if attachment_count > 0:
+                    success_msg += f' con {attachment_count} archivo{"s" if attachment_count > 1 else ""} adjunto{"s" if attachment_count > 1 else ""}'
+                
+                messages.success(request, success_msg)
+
+                if request.headers.get('HX-Request'):
+                    response = HttpResponse()
+                    response['HX-Redirect'] = reverse('welp_payflow:detail', kwargs={'ticket_id': ticket.id})
+                    return response
+                
+                return redirect('welp_payflow:detail', ticket_id=ticket.id)
+                
+        except Exception as e:
+            messages.error(request, f'Error al procesar la solicitud: {e}')
+            return render(request, 'welp_payflow/detail.html', context)
 
     return render(request, 'welp_payflow/detail.html', context)
 

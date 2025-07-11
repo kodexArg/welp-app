@@ -46,22 +46,6 @@ def ticket_actions(context, ticket):
     user = context.get('request').user
     return get_ticket_actions_context(user, ticket)
 
-@register.inclusion_tag('components/payflow/ticket_message_input.html')
-def ticket_message_input(form_action, button_text="Agregar Comentario", label_text=None, placeholder="Escriba su comentario aquí...", cancel_url=None, required=True, show_attachments=False, field_name="response_body", cancel_text="Cancelar", hidden_fields=None, response_type=None):
-    return {
-        'form_action': form_action,
-        'button_text': button_text,
-        'label_text': label_text,
-        'placeholder': placeholder,
-        'cancel_url': cancel_url,
-        'required': required,
-        'show_attachments': show_attachments,
-        'field_name': field_name,
-        'cancel_text': cancel_text,
-        'hidden_fields': hidden_fields,
-        'response_type': response_type,
-    }
-
 @register.inclusion_tag('components/payflow/pagination.html')
 def pagination(page_obj, request):
     return {'page_obj': page_obj, 'request': request}
@@ -198,8 +182,8 @@ def payflow_action_button(ticket, action_type, user_can_transition=True, is_owne
         'comment_required': action_info.get('comment_required', False),
     }
 
-@register.inclusion_tag('components/payflow/response-form.html')
-def payflow_response_form(ticket, response_type, user_can_transition=True, is_owner=False, comment_value=''):
+@register.inclusion_tag('components/payflow/ticket_message_input.html')
+def payflow_response_form(ticket, response_type, user_can_transition=True, is_owner=False, comment_value='', cancel_url=None, cancel_text="Cancelar", hidden_fields=None):
     action_info = PAYFLOW_STATUSES.get(response_type, {}).get('ui', {})
     if not action_info and response_type != 'comment':
         action_info = PAYFLOW_STATUSES.get('comment', {}).get('ui', {})
@@ -207,15 +191,19 @@ def payflow_response_form(ticket, response_type, user_can_transition=True, is_ow
             user_can_transition = True
     if not action_info or not user_can_transition:
         return {'visible': False}
+    
     button_text = action_info.get('button_text', response_type.replace('_', ' ').title())
-    comment_label = action_info.get('comment_label', 'Comentario')
-    comment_placeholder = action_info.get('comment_placeholder', 'Escriba su comentario aquí...')
-    comment_required = action_info.get('comment_required', False)
+    label_text = action_info.get('comment_label', 'Comentario')
+    placeholder = action_info.get('comment_placeholder', 'Escriba su comentario aquí...')
+    required = action_info.get('comment_required', False)
+    show_attachments = action_info.get('show_attachments', False)
+    label_color = action_info.get('color_class', 'text-gray-500')
+
     if response_type == 'close':
         if is_owner:
-            comment_required = False
+            required = False
         else:
-            comment_required = True
+            required = True
         close_confirmation = action_info.get('confirmation', {})
         owner_message = close_confirmation.get('owner_message', '')
         non_owner_message = close_confirmation.get('non_owner_message', '')
@@ -224,18 +212,28 @@ def payflow_response_form(ticket, response_type, user_can_transition=True, is_ow
         owner_message = ''
         non_owner_message = ''
         confirmation_style = {}
+
+    field_name = f"{response_type}_comment"
+    form_action = reverse('welp_payflow:transition', kwargs={'ticket_id': ticket.id, 'target_status': response_type})
+
     return {
         'ticket': ticket,
         'response_type': response_type,
         'button_text': button_text,
-        'comment_label': comment_label,
-        'comment_placeholder': comment_placeholder,
-        'comment_required': comment_required,
-        'transition_url': reverse('welp_payflow:transition', kwargs={'ticket_id': ticket.id, 'target_status': response_type}),
+        'label_text': label_text,
+        'placeholder': placeholder,
+        'required': required,
+        'show_attachments': show_attachments,
+        'field_name': field_name,
+        'form_action': form_action,
         'is_owner': is_owner,
         'owner_message': owner_message,
         'non_owner_message': non_owner_message,
         'confirmation_style': confirmation_style,
         'comment_value': comment_value,
+        'cancel_url': cancel_url,
+        'cancel_text': cancel_text,
+        'hidden_fields': hidden_fields if hidden_fields is not None else {},
         'visible': True,
+        'label_color': label_color,
     }
