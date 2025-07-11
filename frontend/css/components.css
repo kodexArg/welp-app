@@ -293,7 +293,7 @@
     }
 
     .status-shipping {
-        @apply bg-purple-100 text-purple-500 border border-purple-200;
+        @apply bg-earth-50 text-earth-400 border border-earth-100;
     }
 
     .status-closed {
@@ -312,7 +312,7 @@
     .text-status-rejected { @apply text-yellow-600; }
     .text-status-payment_authorized { @apply text-orange-600; }
     .text-status-processing_payment { @apply text-cyan-600; }
-    .text-status-shipping { @apply text-purple-500; }
+    .text-status-shipping { @apply text-earth-400; }
     .text-status-closed { @apply text-forest-300; }
     .text-status-unknown { @apply text-gray-400; }
 
@@ -324,7 +324,7 @@
     .bg-status-rejected { @apply bg-yellow-100; }
     .bg-status-payment_authorized { @apply bg-orange-100; }
     .bg-status-processing_payment { @apply bg-cyan-100; }
-    .bg-status-shipping { @apply bg-purple-100; }
+    .bg-status-shipping { @apply bg-earth-50; }
     .bg-status-closed { @apply bg-forest-100; }
     .bg-status-unknown { @apply bg-gray-100; }
 
@@ -1041,7 +1041,7 @@
     }
 
     .status-icon.status-shipping::before {
-        @apply content-['↗'] text-purple-600;
+        @apply content-['↗'] text-earth-400;
     }
 
     .status-icon.status-closed::before {

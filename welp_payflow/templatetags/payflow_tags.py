@@ -182,64 +182,67 @@ def payflow_action_button(ticket, action_type, user_can_transition=True, is_owne
         'comment_required': action_info.get('comment_required', False),
     }
 
-@register.inclusion_tag('components/payflow/ticket_message_input.html')
-def payflow_response_form(ticket, response_type, user_can_transition=True, is_owner=False, comment_value='', cancel_url=None, cancel_text="Cancelar", hidden_fields=None):
-    action_info = PAYFLOW_STATUSES.get(response_type, {}).get('ui', {})
-    if not action_info and response_type != 'comment':
-        action_info = PAYFLOW_STATUSES.get('comment', {}).get('ui', {})
-        if response_type == 'comment':
-            user_can_transition = True
-    if not action_info or not user_can_transition:
-        return {'visible': False}
+@register.inclusion_tag('components/payflow/ticket_message_input.html', takes_context=True)
+def payflow_response_form(context, ticket, response_type, user_can_transition=True, is_owner=False, comment_value='', cancel_url=None, cancel_text="Cancelar", hidden_fields=None):
+    request = context['request']
     
+    ui_key = response_type
+    if ui_key == 'close':
+        ui_key = 'closed'
+    elif ui_key == 'feedback':
+        ui_key = 'comment'
+
+    action_info = PAYFLOW_STATUSES.get(ui_key, {})
+
+    if not action_info:
+        return {'visible': False}
+
     button_text = action_info.get('button_text', response_type.replace('_', ' ').title())
-    label_text = action_info.get('comment_label', 'Comentario')
-    placeholder = action_info.get('comment_placeholder', 'Escriba su comentario aquí...')
-    required = action_info.get('comment_required', False)
+    comment_label = action_info.get('comment_label', 'Comentario')
+    comment_placeholder = action_info.get('comment_placeholder', 'Escriba su comentario aquí...')
+    field_required = action_info.get('comment_required', False)
     show_attachments = action_info.get('show_attachments', False)
-    show_comment_box = action_info.get('show_comment_box', False)
-    label_color = action_info.get('color_class', 'text-gray-500')
-    confirmation_message = action_info.get('confirmation', {}).get('message')
-
+    show_comment_box = action_info.get('show_comment_box', True)
+    confirmation_message = action_info.get('confirmation_message', '')
+    
     if response_type == 'close':
-        if is_owner:
-            required = False
-        else:
-            required = True
-        close_confirmation = action_info.get('confirmation', {})
-        owner_message = close_confirmation.get('owner_message', '')
-        non_owner_message = close_confirmation.get('non_owner_message', '')
-        confirmation_style = close_confirmation.get('style', {})
-    else:
-        owner_message = ''
-        non_owner_message = ''
-        confirmation_style = {}
+        if is_owner or request.user.is_superuser:
+            field_required = False
 
-    field_name = f"{response_type}_comment"
-    form_action = reverse('welp_payflow:transition', kwargs={'ticket_id': ticket.id, 'target_status': response_type})
-    icon_class = FA_ICONS.get(response_type, '')
+    comment_field_name = 'response_body'
+    if response_type == 'close':
+        comment_field_name = 'close_comment'
+    elif response_type != 'comment':
+        comment_field_name = f'{response_type}_comment'
+    
+    form_action = ''
+    if response_type == 'close':
+        form_action = reverse('welp_payflow:process_close', kwargs={'ticket_id': ticket.id})
+    elif response_type == 'comment':
+        form_action = request.get_full_path()
+    else:
+        form_action = reverse('welp_payflow:transition', kwargs={'ticket_id': ticket.id, 'target_status': response_type})
+    
+    icon_class = FA_ICONS.get(response_type, 'fa-solid fa-paper-plane')
+    final_cancel_url = cancel_url or reverse('welp_payflow:detail', kwargs={'ticket_id': ticket.id})
 
     return {
         'ticket': ticket,
         'response_type': response_type,
         'button_text': button_text,
-        'label_text': label_text,
-        'placeholder': placeholder,
-        'required': required,
+        'comment_label': comment_label,
+        'comment_placeholder': comment_placeholder,
+        'field_required': field_required,
         'show_attachments': show_attachments,
         'show_comment_box': show_comment_box,
         'confirmation_message': confirmation_message,
-        'field_name': field_name,
+        'comment_field_name': comment_field_name,
         'form_action': form_action,
         'is_owner': is_owner,
-        'owner_message': owner_message,
-        'non_owner_message': non_owner_message,
-        'confirmation_style': confirmation_style,
         'comment_value': comment_value,
-        'cancel_url': reverse('welp_payflow:list'),
+        'cancel_url': final_cancel_url,
         'cancel_text': cancel_text,
         'hidden_fields': hidden_fields if hidden_fields is not None else {},
         'visible': True,
-        'label_color': label_color,
         'icon_class': icon_class,
     }

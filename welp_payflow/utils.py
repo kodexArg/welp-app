@@ -145,18 +145,19 @@ def get_ticket_action_data(action, ticket_id=None):
     else:
         status_info = PAYFLOW_STATUSES.get(action, {})
     
-    ui_info = status_info.get('ui', {})
+    # Usar 'action_label' o 'button_text' para el label del botón
+    label = status_info.get('action_label', status_info.get('button_text', action.replace('_', ' ').title()))
     fa_icons = FA_ICONS
     if action == 'closed':
         return None
-    label = ui_info.get('button_text', status_info.get('label', action.upper()))
+    
     fa_icon = fa_icons.get(action, 'fa-solid fa-circle')
     href = '#'
     if ticket_id:
         from django.urls import reverse
         try:
             if action == 'feedback':
-                href = reverse('welp_payflow:detail', kwargs={'ticket_id': ticket_id})
+                href = reverse('welp_payflow:detail', kwargs={'ticket_id': ticket_id}) + '?response_type=comment'
             else:
                 href = reverse('welp_payflow:detail', kwargs={'ticket_id': ticket_id}) + f'?response_type={action}'
         except Exception:
@@ -229,10 +230,11 @@ def get_ticket_detail_context_data(request, ticket):
     elif ui_key == 'feedback':
         ui_key = 'comment'
 
-    status_ui_info = PAYFLOW_STATUSES.get(ui_key, {}).get('ui', {})
-    show_attachments = status_ui_info.get('show_attachments', False)
-    show_comment_box = status_ui_info.get('show_comment_box', True)
-    field_required = status_ui_info.get('comment_required', False)
+    status_info = PAYFLOW_STATUSES.get(ui_key, {})
+
+    show_attachments = status_info.get('show_attachments', False)
+    show_comment_box = status_info.get('show_comment_box', True)
+    field_required = status_info.get('comment_required', False)
 
     is_owner = (ticket.created_by == request.user) if ticket.created_by else False
     if response_type == 'close':
@@ -241,19 +243,27 @@ def get_ticket_detail_context_data(request, ticket):
         else:
             field_required = True
 
+    comment_field_name = 'response_body'
+    if response_type == 'close':
+        comment_field_name = 'close_comment'
+    elif response_type != 'comment':
+        comment_field_name = f'{response_type}_comment'
+
     context = {
         'ticket': ticket,
         'response_type': response_type,
-        'response_info': status_ui_info,
-        'confirmation_info': status_ui_info.get('confirmation', {}),
-        'button_text': status_ui_info.get('button_text', 'Enviar'),
-        'comment_placeholder': status_ui_info.get('comment_placeholder', 'Escriba su comentario aquí...'),
-        'comment_label': status_ui_info.get('comment_label', 'Comentario'),
+        'response_info': status_info,
+        'confirmation_message': status_info.get('confirmation_message', ''),
+        'button_text': status_info.get('button_text', 'Enviar'),
+        'comment_placeholder': status_info.get('comment_placeholder', 'Escriba su comentario aquí...'),
+        'comment_label': status_info.get('comment_label', 'Comentario'),
         'field_required': field_required,
         'show_attachments': show_attachments,
         'show_comment_box': show_comment_box,
         'is_owner': is_owner if response_type == 'close' else False,
         'hidden_fields': {},
+        'icon_class': FA_ICONS.get(response_type, 'fa-solid fa-paper-plane'),
+        'comment_field_name': comment_field_name,
     }
 
     if response_type == 'close':
@@ -275,7 +285,14 @@ def process_ticket_response(request, ticket):
     from .models import Message, Attachment
 
     response_type = request.GET.get('response_type', 'comment')
-    response_body = request.POST.get('response_body', '').strip()
+    
+    comment_field_name = 'response_body'
+    if response_type == 'close':
+        comment_field_name = 'close_comment'
+    elif response_type != 'comment':
+        comment_field_name = f'{response_type}_comment'
+        
+    response_body = request.POST.get(comment_field_name, '').strip()
     files = request.FILES.getlist('attachments')
 
     ui_key = response_type
@@ -284,9 +301,9 @@ def process_ticket_response(request, ticket):
     elif ui_key == 'feedback':
         ui_key = 'comment'
 
-    status_ui_info = PAYFLOW_STATUSES.get(ui_key, {}).get('ui', {})
-    field_required = status_ui_info.get('comment_required', False)
-    show_attachments = status_ui_info.get('show_attachments', False)
+    status_info = PAYFLOW_STATUSES.get(ui_key, {})
+    field_required = status_info.get('comment_required', False)
+    show_attachments = status_info.get('show_attachments', False)
 
     is_owner = (ticket.created_by == request.user) if ticket.created_by else False
     if response_type == 'close' and (is_owner or request.user.is_superuser):
@@ -328,7 +345,7 @@ def process_ticket_response(request, ticket):
                     else:
                         messages.warning(request, f'Archivo {file.name} demasiado grande (máximo 50MB)')
             
-            success_msg = status_ui_info.get('action_label', response_type.capitalize()) + ' realizado exitosamente'
+            success_msg = status_info.get('action_label', response_type.capitalize()) + ' realizado exitosamente'
             if attachment_count > 0:
                 success_msg += f' con {attachment_count} archivo{"s" if attachment_count > 1 else ""} adjunto{"s" if attachment_count > 1 else ""}'
             

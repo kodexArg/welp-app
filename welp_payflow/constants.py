@@ -22,11 +22,9 @@ PAYFLOW_STATUSES = {
             'is_waiting': True,
             'priority': 'high',
         },
-        'ui': {
-            'show_comment_box': False,
-            'show_attachments': False,
-            'comment_required': False,
-        }
+        'show_comment_box': False,
+        'show_attachments': False,
+        'comment_required': False,
     },
     'authorized': {
         'label': 'Autorizado',
@@ -45,20 +43,15 @@ PAYFLOW_STATUSES = {
             'is_waiting': True,
             'priority': 'medium',
         },
-        'ui': {
-            'action_label': 'Autorizar',
-            'color_class': 'text-purple-500',
-            'confirmation': {
-                'message': '¿Autorizar?',
-                'style': {'bg': 'bg-sky-50', 'border': 'border-sky-400', 'text': 'text-sky-700'}
-            },
-            'button_text': 'Autorizar',
-            'comment_placeholder': 'Comentario de autorización (opcional)',
-            'comment_label': 'Comentario',
-            'comment_required': False,
-            'show_comment_box': False,
-            'show_attachments': False,
-        }
+        'action_label': 'Autorizar',
+        'color_class': 'text-purple-500',
+        'confirmation_message': '¿Autorizar solicitud? Esto prepara la solicitud para recibir presupuestos',
+        'button_text': 'Autorizar',
+        'comment_placeholder': 'Comentario de autorización (opcional)',
+        'comment_label': 'Comentario',
+        'comment_required': True,
+        'show_comment_box': False,
+        'show_attachments': False,
     },
     'budgeted': {
         'label': 'Presupuestado',
@@ -77,20 +70,16 @@ PAYFLOW_STATUSES = {
             'is_waiting': True,
             'priority': 'high',
         },
-        'ui': {
-            'action_label': 'Presupuestar',
-            'color_class': 'text-green-600',
-            'confirmation': {
-                'message': '¿Presupuestar?',
-                'style': {'bg': 'bg-green-50', 'border': 'border-green-400', 'text': 'text-green-700'}
-            },
-            'button_text': 'Enviar presupuesto',
-            'comment_placeholder': 'Detalles del presupuesto adjuntado',
-            'comment_label': 'Comentario',
-            'comment_required': True,
-            'show_comment_box': True,
-            'show_attachments': True,
-        }
+        'action_label': 'Presupuestar',
+        'color_class': 'text-green-600',
+        'confirmation_message': '¿Confirmar presupuestos? Esto autoriza la preparación para el pago.',
+        'confirmation_style': {'bg': 'bg-green-50', 'border': 'border-green-400', 'text': 'text-green-700'},
+        'button_text': 'Enviar presupuesto',
+        'comment_placeholder': 'Detalles del presupuesto adjuntado',
+        'comment_label': 'Comentario',
+        'comment_required': True,
+        'show_comment_box': True,
+        'show_attachments': True,
     },
     'rejected': {
         'label': 'Rechazado',
@@ -109,20 +98,16 @@ PAYFLOW_STATUSES = {
             'is_waiting': True,
             'priority': 'high',
         },
-        'ui': {
-            'action_label': 'Rechazar',
-            'color_class': 'text-yellow-600',
-            'confirmation': {
-                'message': '¿Rechazar presupuestos?',
-                'style': {'bg': 'bg-yellow-50', 'border': 'border-yellow-400', 'text': 'text-yellow-700'}
-            },
-            'button_text': 'Rechazar',
-            'comment_placeholder': 'Explique por qué se rechazan los presupuestos',
-            'comment_label': 'Motivo del rechazo',
-            'comment_required': True,
-            'show_comment_box': True,
-            'show_attachments': False,
-        }
+        'action_label': 'Rechazar',
+        'color_class': 'text-yellow-600',
+        'confirmation_message': '¿Rechazar presupuestos? Se notificará al proveedor y se solicitará una nueva propuesta.',
+        'confirmation_style': {'bg': 'bg-yellow-50', 'border': 'border-yellow-400', 'text': 'text-yellow-700'},
+        'button_text': 'Rechazar',
+        'comment_placeholder': 'Explique por qué se rechazan los presupuestos',
+        'comment_label': 'Motivo del rechazo',
+        'comment_required': True,
+        'show_comment_box': True,
+        'show_attachments': False,
     },
     'payment_authorized': {
         'label': 'Pago Autorizado',
@@ -141,20 +126,16 @@ PAYFLOW_STATUSES = {
             'is_waiting': True,
             'priority': 'medium',
         },
-        'ui': {
-            'action_label': 'Autorizar Pago',
-            'color_class': 'text-orange-500',
-            'confirmation': {
-                'message': '¿Autorizar pago?',
-                'style': {'bg': 'bg-orange-50', 'border': 'border-orange-400', 'text': 'text-orange-700'}
-            },
-            'button_text': 'Autorizar pago',
-            'comment_placeholder': 'Comentario de autorización de pago (opcional)',
-            'comment_label': 'Comentario',
-            'comment_required': False,
-            'show_comment_box': False,
-            'show_attachments': False,
-        }
+        'action_label': 'Autorizar Pago',
+        'color_class': 'text-orange-500',
+        'confirmation_message': '¿Autorizar pago? Esto inicia el proceso de facturación y desembolso.',
+        'confirmation_style': {'bg': 'bg-orange-50', 'border': 'border-orange-400', 'text': 'text-orange-700'},
+        'button_text': 'Autorizar pago',
+        'comment_placeholder': 'Comentario de autorización de pago (opcional)',
+        'comment_label': 'Comentario',
+        'comment_required': False,
+        'show_comment_box': False,
+        'show_attachments': False,
     },
     'processing_payment': {
         'label': 'Procesando Pago',
@@ -173,20 +154,16 @@ PAYFLOW_STATUSES = {
             'is_waiting': False,
             'priority': 'low',
         },
-        'ui': {
-            'action_label': 'Procesar Pago',
-            'color_class': 'text-cyan-600',
-            'confirmation': {
-                'message': '¿Procesar pago?',
-                'style': {'bg': 'bg-cyan-50', 'border': 'border-cyan-400', 'text': 'text-cyan-700'}
-            },
-            'button_text': 'Marcar como Procesando Pago',
-            'comment_placeholder': 'Detalles del proceso de pago/facturación',
-            'comment_label': 'Comentario',
-            'comment_required': False,
-            'show_comment_box': False,
-            'show_attachments': False,
-        }
+        'action_label': 'Procesar Pago',
+        'color_class': 'text-cyan-600',
+        'confirmation_message': '¿Confirmar pago procesado? Esto marca el final del proceso de facturación.',
+        'confirmation_style': {'bg': 'bg-cyan-50', 'border': 'border-cyan-400', 'text': 'text-cyan-700'},
+        'button_text': 'Marcar como Procesando Pago',
+        'comment_placeholder': 'Detalles del proceso de pago/facturación',
+        'comment_label': 'Comentario',
+        'comment_required': False,
+        'show_comment_box': False,
+        'show_attachments': False,
     },
     'shipping': {
         'label': 'En Envío',
@@ -205,20 +182,16 @@ PAYFLOW_STATUSES = {
             'is_waiting': False,
             'priority': 'low',
         },
-        'ui': {
-            'action_label': 'Envío',
-            'color_class': 'text-violet-600',
-            'confirmation': {
-                'message': '¿Envío?',
-                'style': {'bg': 'bg-violet-50', 'border': 'border-violet-400', 'text': 'text-violet-700'}
-            },
-            'button_text': 'Marcar como En camino',
-            'comment_placeholder': 'Detalles del envío/entrega (opcional)',
-            'comment_label': 'Comentario',
-            'comment_required': False,
-            'show_comment_box': True,
-            'show_attachments': True,
-        }
+        'action_label': 'Envío',
+        'color_class': 'text-violet-600',
+        'confirmation_message': '¿Confirmar envío? Se notificará al usuario final para la recepción.',
+        'confirmation_style': {'bg': 'bg-violet-50', 'border': 'border-violet-400', 'text': 'text-violet-700'},
+        'button_text': 'Marcar como En camino',
+        'comment_placeholder': 'Detalles del envío/entrega (opcional)',
+        'comment_label': 'Comentario',
+        'comment_required': False,
+        'show_comment_box': True,
+        'show_attachments': True,
     },
     'closed': {
         'label': 'Cerrado',
@@ -237,33 +210,28 @@ PAYFLOW_STATUSES = {
             'is_waiting': False,
             'priority': None,
         },
-        'ui': {
-            'action_label': 'Cerrar',
-            'color_class': 'text-gray-500',
-            'confirmation': {
-                'owner_message': 'Está cerrando su propio ticket.',
-                'non_owner_message': 'Está cerrando un ticket creado por otro usuario.',
-                'style': {'bg': 'bg-yellow-50', 'border': 'border-yellow-400', 'text': 'text-yellow-700'}
-            },
-            'button_text': 'Confirmar Cierre',
-            'comment_placeholder': 'Explique el motivo del cierre',
-            'comment_label': 'Comentario',
-            'comment_required': True,
-            'show_comment_box': True,
-            'show_attachments': False,
-        }
+        'action_label': 'Cerrar',
+        'color_class': 'text-gray-500',
+        'owner_message': 'Está cerrando su propio ticket.',
+        'non_owner_message': 'Está cerrando un ticket creado por otro usuario.',
+        'confirmation_style': {'bg': 'bg-yellow-50', 'border': 'border-yellow-400', 'text': 'text-yellow-700'},
+        'confirmation_message': '¿Cerrar ticket? Esto finalizará la solicitud y no se podrán añadir más comentarios ni adjuntos.',
+        'button_text': 'Confirmar Cierre',
+        'comment_placeholder': 'Explique el motivo del cierre',
+        'comment_label': 'Comentario',
+        'comment_required': True,
+        'show_comment_box': True,
+        'show_attachments': False,
     },
 
     # Tipos especiales para acciones de UI que no son estados reales de ticket.
     'comment': {
-        'ui': {
-            'action_label': 'Comentar',
-            'color_class': 'text-gray-400',
-            'button_text': 'Comentar',
-            'comment_required': True,
-            'show_comment_box': True,
-            'show_attachments': True,
-        }
+        'action_label': 'Comentar',
+        'color_class': 'text-gray-400',
+        'button_text': 'Comentar',
+        'comment_required': True,
+        'show_comment_box': True,
+        'show_attachments': True,
     },
 
     # Estado de fallback
@@ -278,11 +246,9 @@ PAYFLOW_STATUSES = {
         'transitions': [],
         'allowed_roles': [],
         'flow': {},
-        'ui': {
-            'show_comment_box': False,
-            'show_attachments': False,
-            'comment_required': False,
-        }
+        'show_comment_box': False,
+        'show_attachments': False,
+        'comment_required': False,
     },
 }
 

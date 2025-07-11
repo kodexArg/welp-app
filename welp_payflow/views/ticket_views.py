@@ -43,6 +43,12 @@ class TicketDetailView(LoginRequiredMixin, DetailView):
         detail_context = get_ticket_detail_context_data(self.request, self.object)
         return {**context, **detail_context}
 
+    def post(self, request, *args, **kwargs):
+        from ..utils import process_ticket_response
+        ticket = self.get_object()
+        success, message = process_ticket_response(request, ticket)
+        return redirect('welp_payflow:detail', ticket_id=ticket.id)
+
 
 class CreateTicketView(LoginRequiredMixin, CreateView):
     model = Ticket
