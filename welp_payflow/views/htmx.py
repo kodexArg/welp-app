@@ -20,7 +20,6 @@ def htmx_list_content(request):
     paginator = Paginator(tickets, 6)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-
     return render(
         request,
         'welp_payflow/partials/list-content.html',
@@ -60,7 +59,6 @@ def htmx_accounting_category(request, sector):
 def htmx_fields_body(request, accounting_category):
     """Devuelve los campos de detalle (Body) una vez seleccionada la categoría contable"""
     from ..forms import PayflowTicketCreationForm
-
     form = PayflowTicketCreationForm(user=request.user)
     return render(
         request,
@@ -69,49 +67,6 @@ def htmx_fields_body(request, accounting_category):
             'form': form,
         }
     )
-
-
-@login_required(login_url='login')
-def confirm_close_ticket_page(request, ticket_id):
-    """Muestra la página de confirmación para cerrar un ticket"""
-    ticket = get_object_or_404(Ticket, id=ticket_id)
-    
-    # Verificar si el ticket ya está cerrado
-    if ticket.status == 'closed':
-        messages.warning(request, 'Este ticket ya está cerrado.')
-        return redirect('welp_payflow:detail', ticket_id=ticket.id)
-    
-    # Determinar permisos y tipo de usuario
-    is_owner = ticket.created_by == request.user
-    is_superuser = request.user.is_superuser
-    can_close = is_owner or is_superuser
-    
-    if not can_close:
-        messages.error(request, 'No tiene permisos para cerrar este ticket.')
-        return redirect('welp_payflow:detail', ticket_id=ticket.id)
-    
-    # Preparar variables para el template
-    requires_comment = not (is_owner or is_superuser)
-    
-    if requires_comment:
-        label_text = "Motivo del cierre (obligatorio)"
-        placeholder_text = "Explique detalladamente el motivo por el cual está cerrando este ticket..."
-    else:
-        label_text = "Comentario de cierre (opcional)"
-        placeholder_text = "Agregue un comentario sobre el cierre del ticket (opcional)..."
-    
-    context = {
-        'ticket': ticket,
-        'can_close': can_close,
-        'is_owner': is_owner,
-        'requires_comment': requires_comment,
-        'process_close_url': reverse('welp_payflow:process_close', kwargs={'ticket_id': ticket.id}),
-        'cancel_url': reverse('welp_payflow:detail', kwargs={'ticket_id': ticket.id}),
-        'label_text': label_text,
-        'placeholder_text': placeholder_text,
-        'response_type': 'close',
-    }
-    return render(request, 'welp_payflow/detail.html', context)
 
 
 @login_required(login_url='login')
@@ -125,3 +80,19 @@ def htmx_ticket_feedback_count(request, ticket_id):
     if count > 0:
         return HttpResponse(f'<span class="ml-2 align-middle text-xs text-sky-400"><i class="fa fa-comments"></i><sub>{count}</sub></span>')
     return HttpResponse('')
+
+
+@login_required(login_url='login')
+def ticket_status_htmx(request, ticket_id):
+    """Vista HTMX para actualizar el estado del ticket"""
+    try:
+        ticket = get_object_or_404(Ticket, id=ticket_id)
+        context = {
+            'ticket': ticket,
+        }
+        return render(request, 'components/payflow/ticket_status.html', context)
+    except Exception:
+        context = {
+            'ticket': None,
+        }
+        return render(request, 'components/payflow/ticket_status.html', context)

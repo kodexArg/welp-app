@@ -1,24 +1,27 @@
 from django.urls import path
-from .views.views import home, list_tickets, ticket_detail, attachment_view, CreateTicketView, success_view, ticket_status_htmx
+from .views.views import (
+    HomeView, TicketListView, TicketDetailView, attachment_view, 
+    CreateTicketView, success_view, confirm_close_ticket_page
+)
 from .views.others import close_ticket, process_close_ticket, authorize_ticket, transition_ticket
 from .views.htmx import (
     htmx_udn,
     htmx_sector,
     htmx_accounting_category,
     htmx_list_content,
-    confirm_close_ticket_page,
     htmx_fields_body,
     htmx_ticket_feedback_count,
+    ticket_status_htmx,
 )
 
 app_name = 'welp_payflow'
 
 urlpatterns = [
-    path('', home, name='index'),
+    path('', HomeView.as_view(), name='index'),
     path('create/', CreateTicketView.as_view(), name='create'),
     path('success/<int:ticket_id>/', success_view, name='success'),
-    path('list/', list_tickets, name='list'),
-    path('ticket/<int:ticket_id>/', ticket_detail, name='detail'),
+    path('list/', TicketListView.as_view(), name='list'),
+    path('ticket/<int:ticket_id>/', TicketDetailView.as_view(), name='detail'),
     path('attachment/<int:attachment_id>/', attachment_view, name='attachment'),
 ]
 

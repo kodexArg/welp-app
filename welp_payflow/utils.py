@@ -216,3 +216,126 @@ def get_ticket_actions_context(user, ticket):
         'ticket': ticket,
         'actions': final_actions
     } 
+
+
+def get_ticket_detail_context_data(request, ticket):
+    """Prepara el contexto para la vista de detalle del ticket."""
+    from django.urls import reverse
+
+    response_type = request.GET.get('response_type', 'comment')
+    ui_key = response_type
+    if ui_key == 'close':
+        ui_key = 'closed'
+    elif ui_key == 'feedback':
+        ui_key = 'comment'
+
+    status_ui_info = PAYFLOW_STATUSES.get(ui_key, {}).get('ui', {})
+    show_attachments = status_ui_info.get('show_attachments', False)
+    show_comment_box = status_ui_info.get('show_comment_box', True)
+    field_required = status_ui_info.get('comment_required', False)
+
+    is_owner = (ticket.created_by == request.user) if ticket.created_by else False
+    if response_type == 'close':
+        if is_owner or request.user.is_superuser:
+            field_required = False
+        else:
+            field_required = True
+
+    context = {
+        'ticket': ticket,
+        'response_type': response_type,
+        'response_info': status_ui_info,
+        'confirmation_info': status_ui_info.get('confirmation', {}),
+        'button_text': status_ui_info.get('button_text', 'Enviar'),
+        'comment_placeholder': status_ui_info.get('comment_placeholder', 'Escriba su comentario aquí...'),
+        'comment_label': status_ui_info.get('comment_label', 'Comentario'),
+        'field_required': field_required,
+        'show_attachments': show_attachments,
+        'show_comment_box': show_comment_box,
+        'is_owner': is_owner if response_type == 'close' else False,
+        'hidden_fields': {},
+    }
+
+    if response_type == 'close':
+        context['form_action'] = reverse('welp_payflow:process_close', kwargs={'ticket_id': ticket.id})
+    elif response_type == 'comment':
+        context['form_action'] = request.get_full_path()
+    else:
+        context['form_action'] = reverse('welp_payflow:transition', kwargs={'ticket_id': ticket.id, 'target_status': response_type})
+    
+    context['cancel_url'] = reverse('welp_payflow:detail', kwargs={'ticket_id': ticket.id})
+
+    return context
+
+
+def process_ticket_response(request, ticket):
+    """Procesa la respuesta (POST) en la vista de detalle del ticket."""
+    from django.db import transaction
+    from django.contrib import messages
+    from .models import Message, Attachment
+
+    response_type = request.GET.get('response_type', 'comment')
+    response_body = request.POST.get('response_body', '').strip()
+    files = request.FILES.getlist('attachments')
+
+    ui_key = response_type
+    if ui_key == 'close':
+        ui_key = 'closed'
+    elif ui_key == 'feedback':
+        ui_key = 'comment'
+
+    status_ui_info = PAYFLOW_STATUSES.get(ui_key, {}).get('ui', {})
+    field_required = status_ui_info.get('comment_required', False)
+    show_attachments = status_ui_info.get('show_attachments', False)
+
+    is_owner = (ticket.created_by == request.user) if ticket.created_by else False
+    if response_type == 'close' and (is_owner or request.user.is_superuser):
+        field_required = False
+    
+    if field_required and not response_body:
+        messages.error(request, 'El comentario es obligatorio.')
+        return (False, 'El comentario es obligatorio.')
+
+    if show_attachments and not files:
+        messages.error(request, 'Es obligatorio adjuntar al menos un archivo.')
+        return (False, 'Es obligatorio adjuntar al menos un archivo.')
+
+    try:
+        with transaction.atomic():
+            new_status = ticket.status
+            message_type = 'feedback'
+            if response_type == 'close':
+                new_status = 'closed'
+                message_type = 'status'
+            elif response_type != 'comment':
+                new_status = response_type
+                message_type = 'status'
+
+            message = Message.objects.create(
+                ticket=ticket,
+                status=new_status,
+                user=request.user,
+                body=response_body,
+                message_type=message_type
+            )
+            
+            attachment_count = 0
+            for file in files:
+                if file and file.size > 0:
+                    if file.size <= 52428800:
+                        Attachment.objects.create(file=file, message=message)
+                        attachment_count += 1
+                    else:
+                        messages.warning(request, f'Archivo {file.name} demasiado grande (máximo 50MB)')
+            
+            success_msg = status_ui_info.get('action_label', response_type.capitalize()) + ' realizado exitosamente'
+            if attachment_count > 0:
+                success_msg += f' con {attachment_count} archivo{"s" if attachment_count > 1 else ""} adjunto{"s" if attachment_count > 1 else ""}'
+            
+            messages.success(request, success_msg)
+            return (True, success_msg)
+            
+    except Exception as e:
+        error_msg = f'Error al procesar la solicitud: {e}'
+        messages.error(request, error_msg)
+        return (False, error_msg) 
