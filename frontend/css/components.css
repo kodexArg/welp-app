@@ -125,10 +125,6 @@
         @apply hover:bg-transparent hover:border-transparent;
     }
 
-    .form-group {
-        @apply mb-4;
-    }
-
     .form-label {
         @apply block text-sm font-medium mb-2;
         @apply text-text font-[var(--font-ui)];
@@ -846,8 +842,6 @@
     .response-action-cancel {
         @apply text-sm bg-forest-100 border border-forest-300 text-forest-600 rounded-full py-2 px-4 inline-flex items-center font-medium cursor-pointer hover:bg-forest-200 transition-all duration-200 no-underline uppercase tracking-wide font-[var(--font-ui)];
     }
- 
-
     .attachment-details {
         @apply mt-3;
     }
@@ -859,7 +853,7 @@
         @apply hidden;
     }
     .attachment-content {
-        @apply mt-3 pl-6 grid transition-[grid-template-rows] duration-300 ease-in-out;
+        @apply pl-6 grid transition-[grid-template-rows] duration-300 ease-in-out;
         grid-template-rows: 0fr;
     }
     .attachment-details[open] .attachment-content {
