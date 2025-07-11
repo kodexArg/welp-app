@@ -1,19 +1,27 @@
 {% load payflow_tags %}
+{% load core_tags %}
 {% if page_obj.has_other_pages %}
 <div id="pagination" class="flex flex-row justify-center items-center w-full gap-x-2">
     {% if page_obj.has_previous %}
-        {% component "button"
-            label="Primera"
-            color="button-secondary"
-            icon="fa fa-angle-double-left"
-            action="?page=1"
-            target="#list-container" / %}
-        {% component "button"
-            label="Anterior"
-            color="button-secondary"
-            icon="fa fa-angle-left"
-            action="?page={{ page_obj.previous_page_number }}"
-            target="#list-container" / %}
+        {% with base_url="?page=1" %}
+            {% if request.GET.urlencode %}
+                {% with full_url=base_url|add:"&"|add:request.GET.urlencode %}
+                    {% button text="Primera" variant="secondary" icon="fa fa-angle-double-left" href=full_url %}
+                {% endwith %}
+            {% else %}
+                {% button text="Primera" variant="secondary" icon="fa fa-angle-double-left" href=base_url %}
+            {% endif %}
+        {% endwith %}
+
+        {% with base_url="?page="|add:page_obj.previous_page_number %}
+            {% if request.GET.urlencode %}
+                {% with full_url=base_url|add:"&"|add:request.GET.urlencode %}
+                    {% button text="Anterior" variant="secondary" icon="fa fa-angle-left" href=full_url %}
+                {% endwith %}
+            {% else %}
+                {% button text="Anterior" variant="secondary" icon="fa fa-angle-left" href=base_url %}
+            {% endif %}
+        {% endwith %}
     {% endif %}
 
     <span class="text-gray-700">
@@ -21,18 +29,25 @@
     </span>
 
     {% if page_obj.has_next %}
-        {% component "button"
-            label="Siguiente"
-            color="button-secondary"
-            icon="fa fa-angle-right"
-            action="?page={{ page_obj.next_page_number }}"
-            target="#list-container" / %}
-        {% component "button"
-            label="Última"
-            color="button-secondary"
-            icon="fa fa-angle-double-right"
-            action="?page={{ page_obj.paginator.num_pages }}"
-            target="#list-container" / %}
+        {% with base_url="?page="|add:page_obj.next_page_number %}
+            {% if request.GET.urlencode %}
+                {% with full_url=base_url|add:"&"|add:request.GET.urlencode %}
+                    {% button text="Siguiente" variant="secondary" icon="fa fa-angle-right" href=full_url %}
+                {% endwith %}
+            {% else %}
+                {% button text="Siguiente" variant="secondary" icon="fa fa-angle-right" href=base_url %}
+            {% endif %}
+        {% endwith %}
+        
+        {% with base_url="?page="|add:page_obj.paginator.num_pages %}
+            {% if request.GET.urlencode %}
+                {% with full_url=base_url|add:"&"|add:request.GET.urlencode %}
+                    {% button text="Última" variant="secondary" icon="fa fa-angle-double-right" href=full_url %}
+                {% endwith %}
+            {% else %}
+                {% button text="Última" variant="secondary" icon="fa fa-angle-double-right" href=base_url %}
+            {% endif %}
+        {% endwith %}
     {% endif %}
 </div>
 {% endif %} 
