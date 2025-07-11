@@ -4,7 +4,7 @@ from .views import (
     CreateTicketView, SuccessView, ConfirmCloseTicketView,
     ProcessCloseTicketView, TransitionTicketView,
     htmx_udn, htmx_sector, htmx_accounting_category,
-    htmx_list_content, htmx_fields_body, htmx_ticket_feedback_count,
+    htmx_list_content, htmx_fields_body,
     ticket_status_htmx,
 )
 
@@ -29,7 +29,6 @@ htmx_urlpatterns = [
     path('htmx/create/fields-body/<int:accounting_category>/', htmx_fields_body, name='htmx-fields-body'),
     path('htmx/list-content/', htmx_list_content, name='htmx-list-content'),
     path('htmx/ticket-status/<int:ticket_id>/', ticket_status_htmx, name='ticket_status'),
-    path('htmx/ticket-feedback-count/<int:ticket_id>/', htmx_ticket_feedback_count, name='htmx-ticket-feedback-count'),
 ]
 
 urlpatterns += htmx_urlpatterns

@@ -59,15 +59,6 @@ def htmx_fields_body(request, accounting_category):
 
 
 @login_required(login_url='login')
-def htmx_ticket_feedback_count(request, ticket_id):
-    ticket = get_object_or_404(Ticket, id=ticket_id)
-    count = ticket.messages.filter(status='feedback').count()
-    if count > 0:
-        return HttpResponse(f'<span class="mx-2 align-middle text-xs text-sky-300"><i class="fa fa-comments"></i><sub>{count}</sub></span>')
-    return HttpResponse('')
-
-
-@login_required(login_url='login')
 def ticket_status_htmx(request, ticket_id):
     ticket = get_object_or_404(Ticket, id=ticket_id)
     return render(request, 'components/payflow/ticket_status.html', {'ticket': ticket})

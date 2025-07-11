@@ -15,7 +15,7 @@ Cada usuario se crea con contraseña igual a su nombre de usuario. Se asume que 
 |--------------------|---------------------|---------------|------------------------------------|------------------|
 | pato.moro          | Pato Moro           | KM 1151       | Administración, Operaciones        | end_user         |
 | vino.tes           | Vino Tes            | KM 1151       | Operaciones, Administración        | end_user         |
-| coco.zen           | Coco Zen            | Las Bóvedas   | Administración, Operaciones        | end_user         |
+| coco.zen           | Coco Zen            | KM 1151       | Administración, Operaciones        | end_user         |
 | lili.per           | Lili Per            | Las Bóvedas   | Operaciones, Administración        | end_user         |
 | pepe.kid           | Pepe Kid            | Parador       | Parrilla, Mantenimiento           | end_user         |
 | pili.box           | Pili Box            | KCBD          | Operaciones                        | end_user         |

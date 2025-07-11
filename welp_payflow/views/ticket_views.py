@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.db import transaction
 from django.urls import reverse
 from django.http import HttpResponse
+from decimal import Decimal, InvalidOperation
 
 from ..models import Ticket, Message, Attachment
 from ..forms import PayflowTicketCreationForm
@@ -168,6 +169,15 @@ class TransitionTicketView(LoginRequiredMixin, View):
             message = Message.objects.create(
                 ticket=ticket, status=target_status, user=request.user, body=body
             )
+
+            if target_status == 'budgeted':
+                estimated_amount_str = request.POST.get('estimated_amount')
+                if estimated_amount_str:
+                    try:
+                        ticket.estimated_amount = Decimal(estimated_amount_str)
+                        ticket.save(update_fields=['estimated_amount'])
+                    except InvalidOperation:
+                        messages.warning(request, f"El monto '{estimated_amount_str}' no es un número válido y no se guardó.")
             
             files = request.FILES.getlist('attachments')
             for file in files:

@@ -226,6 +226,8 @@ def payflow_response_form(context, ticket, response_type, user_can_transition=Tr
     icon_class = FA_ICONS.get(response_type, 'fa-solid fa-paper-plane')
     final_cancel_url = cancel_url or reverse('welp_payflow:detail', kwargs={'ticket_id': ticket.id})
 
+    show_estimated_amount_input = (response_type == 'budgeted')
+
     return {
         'ticket': ticket,
         'response_type': response_type,
@@ -245,4 +247,15 @@ def payflow_response_form(context, ticket, response_type, user_can_transition=Tr
         'hidden_fields': hidden_fields if hidden_fields is not None else {},
         'visible': True,
         'icon_class': icon_class,
+        'show_estimated_amount_input': show_estimated_amount_input,
+    }
+
+@register.inclusion_tag('components/payflow/ticket_summary_info.html')
+def ticket_summary_info(ticket):
+    feedback_count = ticket.messages.filter(status='feedback').count()
+    has_estimated_amount = ticket.estimated_amount and ticket.estimated_amount > 0
+    return {
+        'ticket': ticket,
+        'feedback_count': feedback_count,
+        'has_estimated_amount': has_estimated_amount,
     }

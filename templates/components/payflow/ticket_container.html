@@ -8,11 +8,7 @@
                 {{ ticket.title }}
             </div>
             <div class="ticket-info">
-                <div id="ticket-feedback-count-{{ ticket.id }}"
-                    hx-get="{% url 'welp_payflow:htmx-ticket-feedback-count' ticket.id %}"
-                    hx-trigger="load"
-                    hx-swap="outerHTML">
-                </div>
+                {% ticket_summary_info ticket %}
                 <span class="tags-ticket-udn">{{ ticket.udn.name }}</span>
                 <span class="tags-ticket-sector">{{ ticket.sector.name }}</span>
                 <span class="tags-ticket-category">{{ ticket.accounting_category.name }}</span>
@@ -66,11 +62,7 @@
                 {{ ticket.title }}
             </div>
             <div class="ticket-info">
-                <div id="ticket-feedback-count-{{ ticket.id }}" class="inline align-middle text-xs mr-1" 
-                    hx-get="{% url 'welp_payflow:htmx-ticket-feedback-count' ticket.id %}"
-                    hx-trigger="load"
-                    hx-swap="outerHTML">
-                </div>
+                {% ticket_summary_info ticket %}
                 <span class="tags-ticket-udn">{{ ticket.udn.name }}</span>
                 <span class="tags-ticket-sector">{{ ticket.sector.name }}</span>
                 <span class="tags-ticket-category">{{ ticket.accounting_category.name }}</span>

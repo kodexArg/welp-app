@@ -10,12 +10,12 @@ Ticket Status - Muestra el estado actual y la acción esperada
      aria-live="polite"
      aria-label="Estado del ticket">
     {% with status_info=ticket|get_status_flow %}
-        <div class="status-container status-priority-{{ status_info.priority|default:'none' }}">
+        <div class="status-container status-priority-{{ status_info.priority }}">
             <div class="status-badge" 
-                 aria-label="Estado actual: {{ ticket.get_status_display|default:'Abierto' }}">
-                <i class="status-icon status-{{ ticket.status|default:'open' }}" 
+                 aria-label="Estado actual: {{ ticket.get_status_display }}">
+                <i class="status-icon status-{{ ticket.status }}" 
                    aria-hidden="true"></i>
-                <span class="status-label">{{ ticket.get_status_display|default:'Abierto' }}</span>
+                <span class="status-label">{{ ticket.get_status_display }}</span>
             </div>
             
             <div class="status-action" aria-label="Información de acciones">

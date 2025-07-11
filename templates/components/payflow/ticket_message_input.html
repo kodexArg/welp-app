@@ -23,6 +23,20 @@
                         {% if field_required %}required{% endif %}
                     ></textarea>
                 </div>
+                {% if show_estimated_amount_input %}
+                <div class="form-group">
+                    <label for="id_estimated_amount" class="form-label">Monto estimado (USD):</label>
+                    <input 
+                        type="number" 
+                        step="0.01" 
+                        min="0" 
+                        name="estimated_amount" 
+                        id="id_estimated_amount" 
+                        class="form-input"
+                        placeholder="Ej: 1000.00"
+                    >
+                </div>
+                {% endif %}
                 
                 {% if show_attachments %}
                 <details class="attachment-details">
