@@ -84,7 +84,7 @@ PAYFLOW_STATUSES = {
                 'message': '¿Presupuestar?',
                 'style': {'bg': 'bg-green-50', 'border': 'border-green-400', 'text': 'text-green-700'}
             },
-            'button_text': 'Presupuestar',
+            'button_text': 'Enviar presupuesto',
             'comment_placeholder': 'Detalles del presupuesto adjuntado',
             'comment_label': 'Comentario',
             'comment_required': True,
@@ -116,7 +116,7 @@ PAYFLOW_STATUSES = {
                 'message': '¿Rechazar presupuestos?',
                 'style': {'bg': 'bg-yellow-50', 'border': 'border-yellow-400', 'text': 'text-yellow-700'}
             },
-            'button_text': 'Rechazar Presupuestos',
+            'button_text': 'Rechazar',
             'comment_placeholder': 'Explique por qué se rechazan los presupuestos',
             'comment_label': 'Motivo del rechazo',
             'comment_required': True,
@@ -148,7 +148,7 @@ PAYFLOW_STATUSES = {
                 'message': '¿Autorizar pago?',
                 'style': {'bg': 'bg-orange-50', 'border': 'border-orange-400', 'text': 'text-orange-700'}
             },
-            'button_text': 'Autorizar Pago',
+            'button_text': 'Autorizar pago',
             'comment_placeholder': 'Comentario de autorización de pago (opcional)',
             'comment_label': 'Comentario',
             'comment_required': False,
@@ -180,7 +180,7 @@ PAYFLOW_STATUSES = {
                 'message': '¿Procesar pago?',
                 'style': {'bg': 'bg-cyan-50', 'border': 'border-cyan-400', 'text': 'text-cyan-700'}
             },
-            'button_text': 'Procesar Pago',
+            'button_text': 'Marcar como Procesando Pago',
             'comment_placeholder': 'Detalles del proceso de pago/facturación',
             'comment_label': 'Comentario',
             'comment_required': False,
@@ -212,7 +212,7 @@ PAYFLOW_STATUSES = {
                 'message': '¿Envío?',
                 'style': {'bg': 'bg-violet-50', 'border': 'border-violet-400', 'text': 'text-violet-700'}
             },
-            'button_text': 'Marcar como En Envío',
+            'button_text': 'Marcar como En camino',
             'comment_placeholder': 'Detalles del envío/entrega (opcional)',
             'comment_label': 'Comentario',
             'comment_required': False,

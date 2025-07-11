@@ -2,7 +2,7 @@ from django import template
 from django.urls import reverse
 from django.utils.html import format_html
 from welp_desk.constants import DESK_STATUSES
-from welp_payflow.constants import PAYFLOW_STATUSES
+from welp_payflow.constants import PAYFLOW_STATUSES, FA_ICONS
 from welp_payflow.utils import get_ticket_actions_context
 
 register = template.Library()
@@ -197,7 +197,9 @@ def payflow_response_form(ticket, response_type, user_can_transition=True, is_ow
     placeholder = action_info.get('comment_placeholder', 'Escriba su comentario aquí...')
     required = action_info.get('comment_required', False)
     show_attachments = action_info.get('show_attachments', False)
+    show_comment_box = action_info.get('show_comment_box', False)
     label_color = action_info.get('color_class', 'text-gray-500')
+    confirmation_message = action_info.get('confirmation', {}).get('message')
 
     if response_type == 'close':
         if is_owner:
@@ -215,6 +217,7 @@ def payflow_response_form(ticket, response_type, user_can_transition=True, is_ow
 
     field_name = f"{response_type}_comment"
     form_action = reverse('welp_payflow:transition', kwargs={'ticket_id': ticket.id, 'target_status': response_type})
+    icon_class = FA_ICONS.get(response_type, '')
 
     return {
         'ticket': ticket,
@@ -224,6 +227,8 @@ def payflow_response_form(ticket, response_type, user_can_transition=True, is_ow
         'placeholder': placeholder,
         'required': required,
         'show_attachments': show_attachments,
+        'show_comment_box': show_comment_box,
+        'confirmation_message': confirmation_message,
         'field_name': field_name,
         'form_action': form_action,
         'is_owner': is_owner,
@@ -231,9 +236,10 @@ def payflow_response_form(ticket, response_type, user_can_transition=True, is_ow
         'non_owner_message': non_owner_message,
         'confirmation_style': confirmation_style,
         'comment_value': comment_value,
-        'cancel_url': cancel_url,
+        'cancel_url': reverse('welp_payflow:list'),
         'cancel_text': cancel_text,
         'hidden_fields': hidden_fields if hidden_fields is not None else {},
         'visible': True,
         'label_color': label_color,
+        'icon_class': icon_class,
     }

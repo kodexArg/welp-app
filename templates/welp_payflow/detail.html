@@ -22,9 +22,7 @@
         {% ticket_container ticket expanded=True %}
     </div>
 
-    {% if show_comment_box %}
-        {% payflow_response_form ticket=ticket response_type=response_type is_owner=is_owner cancel_url=cancel_url cancel_text="Cancelar" hidden_fields=hidden_fields %}
-    {% endif %}
+    {% payflow_response_form ticket=ticket response_type=response_type is_owner=is_owner cancel_url=cancel_url cancel_text="Cancelar" hidden_fields=hidden_fields %}
 </section>
 
 {% endblock %}

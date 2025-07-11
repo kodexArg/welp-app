@@ -11,52 +11,58 @@
                 <input type="hidden" name="{{ field_name }}" value="{{ field_value }}">
             {% endfor %}
             
-            <div class="form-group">
-                <label for="{{ field_name }}" class="form-label {{ label_color }}">{{ label_text|lower }}:</label>
-                <textarea 
-                    id="{{ field_name }}" 
-                    name="{{ field_name }}" 
-                    class="form-input"
-                    rows="4"
-                    placeholder="{{ placeholder }}"
-                    {% if required %}required{% endif %}
-                ></textarea>
-            </div>
-            
-            {% if show_attachments %}
-            <details class="attachment-details">
-                <summary class="attachment-summary">
-                    <i class="fa-solid fa-paperclip text-xs mr-2"></i>
-                    <span class="text-sm text-forest-600">Agregar adjuntos...</span>
-                </summary>
-                
-                <div class="attachment-content">
-                    <div id="attachments-container">
-                        <div class="attachment-input-row">
-                            <input 
-                                type="file" 
-                                name="attachments" 
-                                class="form-input attachment-input"
-                                accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg,.gif"
-                            >
-                            <button type="button" class="button-minimal add-attachment">+</button>
-                        </div>
-                    </div>
-                    <p class="form-help">Máximo 50MB por archivo. Formatos: PDF, DOC, XLS, imágenes</p>
+            {% if show_comment_box %}
+                <div class="form-group">
+                    <label for="{{ field_name }}" class="form-label {{ label_color }}">{{ label_text|lower }}:</label>
+                    <textarea 
+                        id="{{ field_name }}" 
+                        name="{{ field_name }}" 
+                        class="form-input"
+                        rows="4"
+                        placeholder="{{ placeholder }}"
+                        {% if required %}required{% endif %}
+                    ></textarea>
                 </div>
-            </details>
+                
+                {% if show_attachments %}
+                <details class="attachment-details">
+                    <summary class="attachment-summary">
+                        <i class="fa-solid fa-paperclip text-xs mr-2"></i>
+                        <span class="text-sm text-forest-600">Agregar adjuntos...</span>
+                    </summary>
+                    
+                    <div class="attachment-content">
+                        <div id="attachments-container">
+                            <div class="attachment-input-row">
+                                <input 
+                                    type="file" 
+                                    name="attachments" 
+                                    class="form-input attachment-input"
+                                    accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg,.gif"
+                                >
+                                <button type="button" class="button-minimal add-attachment">+</button>
+                            </div>
+                        </div>
+                        <p class="form-help">Máximo 50MB por archivo. Formatos: PDF, DOC, XLS, imágenes</p>
+                    </div>
+                </details>
+                {% endif %}
+            {% else %}
+                <div class="confirmation-message py-2">
+                    <p class="text-base {{ label_color }}">{{ confirmation_message }}</p>
+                </div>
             {% endif %}
             
             <div class="ticket-response-actions flex justify-end gap-3 pt-4">
                 {% if cancel_url %}
                 <a href="{{ cancel_url }}" class="response-action-cancel">
                     <i class="response-action-icon-cancel"></i>
-                    <span>CANCELAR</span>
+                    <span>{{ cancel_text|default:"Cancelar"|upper }}</span>
                 </a>
                 {% endif %}
                 <button type="submit" class="response-action-submit">
-                    <i class="response-action-icon-submit"></i>
-                    <span>{{ button_text|default:"ENVIAR" }}</span>
+                    <i class="{{ icon_class }} response-action-icon-submit mr-2"></i>
+                    <span class="font-normal capitalize">{{ button_text|default:"Enviar" }}</span>
                 </button>
             </div>
         </form>
