@@ -1,4 +1,4 @@
-{% load core_tags %}
+{% load payflow_tags %}
 {% with last_message=ticket.messages.last %}
     {% if last_message.status != 'closed' %}
         <div class="ticket-actions">

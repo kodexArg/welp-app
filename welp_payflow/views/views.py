@@ -254,10 +254,10 @@ def ticket_status_htmx(request, ticket_id):
         context = {
             'ticket': ticket,
         }
-        return render(request, 'components/core/ticket_status.html', context)
+        return render(request, 'components/payflow/ticket_status.html', context)
     except Exception as e:
         # En caso de error, devolver componente vacío
         context = {
             'ticket': None,
         }
-        return render(request, 'components/core/ticket_status.html', context) 
+        return render(request, 'components/payflow/ticket_status.html', context)
