@@ -261,7 +261,7 @@
     }
 
     .status-open {
-        @apply bg-red-100 text-red-600 border border-red-200;
+        @apply bg-red-50 text-red-400 border border-red-200;
     }
 
         .status-feedback {
@@ -285,7 +285,7 @@
     }
 
     .status-payment_authorized {
-        @apply bg-orange-100 text-orange-600 border border-orange-200;
+        @apply bg-purple-100 text-purple-600 border border-purple-200;
     }
 
     .status-processing_payment {
@@ -304,25 +304,25 @@
         @apply bg-gray-100 text-gray-400 border border-gray-200;
     }
 
-    .text-status-open { @apply text-red-600; }
+    .text-status-open { @apply text-red-400; }
     .text-status-feedback { @apply text-forest-600; }
     .text-status-solved { @apply text-green-700; }
     .text-status-authorized { @apply text-purple-600; }
     .text-status-budgeted { @apply text-green-600; }
     .text-status-rejected { @apply text-yellow-600; }
-    .text-status-payment_authorized { @apply text-orange-600; }
+    .text-status-payment_authorized { @apply text-purple-600; }
     .text-status-processing_payment { @apply text-cyan-600; }
     .text-status-shipping { @apply text-earth-400; }
     .text-status-closed { @apply text-forest-300; }
     .text-status-unknown { @apply text-gray-400; }
 
-    .bg-status-open { @apply bg-red-100; }
+    .bg-status-open { @apply bg-red-50; }
     .bg-status-feedback { @apply bg-forest-200; }
     .bg-status-solved { @apply bg-green-100; }
     .bg-status-authorized { @apply bg-purple-100; }
     .bg-status-budgeted { @apply bg-green-100; }
     .bg-status-rejected { @apply bg-yellow-100; }
-    .bg-status-payment_authorized { @apply bg-orange-100; }
+    .bg-status-payment_authorized { @apply bg-purple-100; }
     .bg-status-processing_payment { @apply bg-cyan-100; }
     .bg-status-shipping { @apply bg-earth-50; }
     .bg-status-closed { @apply bg-forest-100; }
@@ -1017,7 +1017,7 @@
     }
 
     .status-icon.status-open::before {
-        @apply content-['●'] text-red-600;
+        @apply content-['▢'] text-red-400;
     }
 
     .status-icon.status-authorized::before {
@@ -1033,7 +1033,7 @@
     }
 
     .status-icon.status-payment_authorized::before {
-        @apply content-['▢'] text-orange-600;
+        @apply content-['▢'] text-purple-600;
     }
 
     .status-icon.status-processing_payment::before {

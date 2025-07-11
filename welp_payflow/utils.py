@@ -279,80 +279,29 @@ def get_ticket_detail_context_data(request, ticket):
 
 
 def process_ticket_response(request, ticket):
-    """Procesa la respuesta (POST) en la vista de detalle del ticket."""
-    from django.db import transaction
-    from django.contrib import messages
+    """Procesa la respuesta (comentario) del usuario en un ticket."""
     from .models import Message, Attachment
+    from django.db import transaction
 
-    response_type = request.GET.get('response_type', 'comment')
-    
-    comment_field_name = 'response_body'
-    if response_type == 'close':
-        comment_field_name = 'close_comment'
-    elif response_type != 'comment':
-        comment_field_name = f'{response_type}_comment'
-        
-    response_body = request.POST.get(comment_field_name, '').strip()
-    files = request.FILES.getlist('attachments')
+    response_type = request.POST.get('response_type', 'comment')
+    if response_type != 'comment':
+        return False, "Tipo de respuesta no soportado."
 
-    ui_key = response_type
-    if ui_key == 'close':
-        ui_key = 'closed'
-    elif ui_key == 'feedback':
-        ui_key = 'comment'
-
-    status_info = PAYFLOW_STATUSES.get(ui_key, {})
-    field_required = status_info.get('comment_required', False)
-    show_attachments = status_info.get('show_attachments', False)
-
-    is_owner = (ticket.created_by == request.user) if ticket.created_by else False
-    if response_type == 'close' and (is_owner or request.user.is_superuser):
-        field_required = False
-    
-    if field_required and not response_body:
-        messages.error(request, 'El comentario es obligatorio.')
-        return (False, 'El comentario es obligatorio.')
-
-    if show_attachments and not files:
-        messages.error(request, 'Es obligatorio adjuntar al menos un archivo.')
-        return (False, 'Es obligatorio adjuntar al menos un archivo.')
+    comment_body = request.POST.get('response_body', '').strip()
+    if not comment_body:
+        return False, "El comentario no puede estar vacío."
 
     try:
         with transaction.atomic():
-            new_status = ticket.status
-            message_type = 'feedback'
-            if response_type == 'close':
-                new_status = 'closed'
-                message_type = 'status'
-            elif response_type != 'comment':
-                new_status = response_type
-                message_type = 'status'
-
             message = Message.objects.create(
                 ticket=ticket,
-                status=new_status,
                 user=request.user,
-                body=response_body,
-                message_type=message_type
+                body=comment_body,
+                status='feedback'
             )
-            
-            attachment_count = 0
+            files = request.FILES.getlist('attachments')
             for file in files:
-                if file and file.size > 0:
-                    if file.size <= 52428800:
-                        Attachment.objects.create(file=file, message=message)
-                        attachment_count += 1
-                    else:
-                        messages.warning(request, f'Archivo {file.name} demasiado grande (máximo 50MB)')
-            
-            success_msg = status_info.get('action_label', response_type.capitalize()) + ' realizado exitosamente'
-            if attachment_count > 0:
-                success_msg += f' con {attachment_count} archivo{"s" if attachment_count > 1 else ""} adjunto{"s" if attachment_count > 1 else ""}'
-            
-            messages.success(request, success_msg)
-            return (True, success_msg)
-            
+                Attachment.objects.create(file=file, message=message)
+        return True, "Comentario añadido exitosamente."
     except Exception as e:
-        error_msg = f'Error al procesar la solicitud: {e}'
-        messages.error(request, error_msg)
-        return (False, error_msg) 
+        return False, f"Error al guardar el comentario: {str(e)}" 

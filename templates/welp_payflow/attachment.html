@@ -25,20 +25,19 @@
 
     <div class="attachment-content z-0">
         {% if file_type == 'image' %}
-            <div class="attachment-image-container">
+            <div class="attachment-image-container flex justify-center items-center">
                 <img src="{{ attachment.file.url }}" 
                      alt="{{ attachment.file.name|basename }}" 
-                     class="attachment-image"
-                     onload="window.calculateImageSize && window.calculateImageSize(this)">
+                     class="attachment-image max-h-[70vh] rounded shadow border mx-auto">
             </div>
         {% elif file_type == 'pdf' %}
-            <div class="attachment-pdf-container">
-                <iframe src="{{ attachment.file.url }}" 
-                        class="attachment-pdf"
-                        title="{{ attachment.file.name|basename }}">
-                    <p>Tu navegador no puede mostrar PDFs. <a href="{{ attachment.file.url }}" target="_blank">Haz clic aquí para abrirlo</a></p>
-                </iframe>
-            </div>
+            <div id="pdf-container" class="h-[80vh] w-full"></div>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfobject/2.2.14/pdfobject.min.js"></script>
+            <script>
+                PDFObject.embed("{{ attachment.file.url }}#view=FitH", "#pdf-container", {
+                    fallbackLink: "<p class='text-center mt-4'>Tu navegador no soporta PDFs. <a href='{{ attachment.file.url }}' target='_blank'>Descargar</a></p>"
+                });
+            </script>
         {% else %}
             <div class="attachment-file-preview">
                 <div class="attachment-file-icon">
@@ -79,5 +78,4 @@
 {% endblock %}
 
 {% block scripts %}
-    {% vite_asset 'frontend/js/welp_payflow/attachment_viewer.js' %}
 {% endblock %} 
