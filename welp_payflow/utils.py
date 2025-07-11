@@ -1,4 +1,4 @@
-from .constants import PAYFLOW_STATUSES, PAYFLOW_ROLE_PERMISSIONS
+from .constants import PAYFLOW_STATUSES, PAYFLOW_ROLE_PERMISSIONS, FA_ICONS
 
 
 def get_available_payflow_transitions(current_status):
@@ -109,9 +109,15 @@ def can_user_transition_ticket(user, ticket, target_status):
     possible_transitions = PAYFLOW_STATUSES.get(current_status, {}).get('transitions', [])
     if target_status not in possible_transitions:
         return False
-    allowed_roles = PAYFLOW_STATUSES.get(target_status, {}).get('allowed_roles', [])
+
     if user.is_superuser:
         return True
+
+    if target_status == 'closed':
+        return can_user_close_ticket(user, ticket)
+
+    allowed_roles = PAYFLOW_STATUSES.get(target_status, {}).get('allowed_roles', [])
+
     if not allowed_roles:
         return False
 
@@ -130,4 +136,29 @@ def get_user_ticket_transitions(user, ticket):
     for target_status in transitions:
         if can_user_transition_ticket(user, ticket, target_status):
             allowed.append(target_status)
-    return allowed 
+    return allowed
+
+
+def get_ticket_action_data(action, ticket_id=None):
+    status_info = PAYFLOW_STATUSES.get(action, {})
+    ui_info = status_info.get('ui', {})
+    if action == 'closed':
+        return None
+    label = ui_info.get('button_text', status_info.get('label', action.upper()))
+    fa_icon = FA_ICONS.get(action, 'fa-solid fa-circle')
+    href = '#'
+    if ticket_id:
+        from django.urls import reverse
+        try:
+            if action == 'feedback':
+                href = reverse('welp_payflow:detail', kwargs={'ticket_id': ticket_id})
+            else:
+                href = reverse('welp_payflow:detail', kwargs={'ticket_id': ticket_id}) + f'?response_type={action}'
+        except Exception:
+            href = '#'
+    return {
+        'action': action,
+        'href': href,
+        'label': label,
+        'fa_icon': fa_icon,
+    } 

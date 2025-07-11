@@ -2,34 +2,8 @@
 {% with last_message=ticket.messages.last %}
     {% if last_message.status != 'closed' %}
         <div class="ticket-actions">
-            <!-- Botón CERRAR solo para propietario/superusuario -->
-            {% if can_close_ticket %}
-                <a
-                    href="/payflow/ticket/{{ ticket.id }}/?response_type=close"
-                    class="
-                        bg-forest-400
-                        border
-                        border-forest-500
-                        text-forest-50
-                        text-xs
-                        rounded-full
-                        py-1
-                        px-3
-                        inline-flex
-                        items-center
-                        font-medium
-                        hover:brightness-110
-                        no-underline
-                        transition-all
-                        duration-200
-                    "
-                >
-                    <i class="mr-2 fa-solid fa-xmark"></i>
-                    <span>CERRAR</span>
-                </a>
-            {% endif %}
             <!-- Botones de transición de estado -->
-            {% for action_data in actions_data %}
+            {% for action_data in actions %}
                 <a
                     href="{{ action_data.href }}"
                     class="

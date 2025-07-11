@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.utils.html import format_html
 from welp_desk.constants import DESK_STATUSES
 from welp_payflow.constants import PAYFLOW_STATUSES
-from welp_payflow.utils import can_user_close_ticket, get_user_ticket_transitions
+from welp_payflow.utils import can_user_close_ticket, get_user_ticket_transitions, get_ticket_action_data
 
 register = template.Library()
 
@@ -172,60 +172,15 @@ def ticket_header(ticket):
 def ticket_message(message):
     return {"message": message}
 
-def get_ticket_action_data(action, ticket_id=None):
-    """Obtiene datos para acciones de tickets usando PAYFLOW_STATUSES"""
-    # No imports internos innecesarios
-    status_info = PAYFLOW_STATUSES.get(action, {})
-    ui_info = status_info.get('ui', {})
-    fa_icons = {
-        'feedback': 'fa-regular fa-comment',
-        'authorized': 'fa-solid fa-check',
-        'budgeted': 'fa-solid fa-file-invoice-dollar',
-        'rejected': 'fa-solid fa-ban',
-        'payment_authorized': 'fa-solid fa-credit-card',
-        'processing_payment': 'fa-solid fa-money-bill-transfer',
-        'shipping': 'fa-solid fa-truck',
-        'close': 'fa-solid fa-lock',
-    }
-    if action in ['close', 'closed']:
-        return None
-    label = ui_info.get('button_text', status_info.get('label', action.upper()))
-    fa_icon = fa_icons.get(action, 'fa-solid fa-circle')
-    href = '#'
-    if ticket_id:
-        try:
-            if action == 'feedback':
-                href = reverse('welp_payflow:detail', kwargs={'ticket_id': ticket_id})
-            else:
-                href = reverse('welp_payflow:detail', kwargs={'ticket_id': ticket_id}) + f'?response_type={action}'
-        except Exception:
-            href = '#'
-    return {
-        'action': action,
-        'href': href,
-        'label': label,
-        'fa_icon': fa_icon,
-    }
-
 @register.inclusion_tag("components/core/ticket_actions.html", takes_context=True)
 def ticket_actions(context, ticket):
     user = context['request'].user if 'request' in context else None
-    can_close_ticket = can_user_close_ticket(user, ticket) if user else False
-    transition_buttons = get_user_ticket_transitions(user, ticket)
+    transition_buttons = get_user_ticket_transitions(user, ticket) if user else []
     actions_data = []
     for action in transition_buttons:
-        if action not in ['closed', 'close']:
-            action_data = get_ticket_action_data(action, ticket.id)
-            if action_data:
-                actions_data.append(action_data)
-    if can_close_ticket:
-        close_action_data = {
-            'action': 'close',
-            'href': reverse('welp_payflow:detail', kwargs={'ticket_id': ticket.id}) + '?response_type=close',
-            'label': 'CERRAR',
-            'fa_icon': 'fa-solid fa-lock',
-        }
-        actions_data.append(close_action_data)
+        action_data = get_ticket_action_data(action, ticket.id)
+        if action_data:
+            actions_data.append(action_data)
     return {
         'ticket': ticket,
         'actions': actions_data

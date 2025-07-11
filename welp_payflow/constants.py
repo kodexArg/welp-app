@@ -321,3 +321,14 @@ MAX_UPLOAD_FILES = 10
 
 TREEMAP_MIN_ITEMS = 3
 TREEMAP_MAX_ITEMS = 50 
+
+FA_ICONS = {
+    'feedback': 'fa-regular fa-comment',
+    'authorized': 'fa-solid fa-check',
+    'budgeted': 'fa-solid fa-file-invoice-dollar',
+    'rejected': 'fa-solid fa-ban',
+    'payment_authorized': 'fa-solid fa-credit-card',
+    'processing_payment': 'fa-solid fa-money-bill-transfer',
+    'shipping': 'fa-solid fa-truck',
+    'close': 'fa-solid fa-lock',
+} 
