@@ -28,7 +28,7 @@
         <div class="message-attachments">
             {% for attachment in message.attachments.all %}
                 <a href="{% url 'welp_payflow:attachment' attachment.id %}" class="attachment-link">
-                    <i class="attachment-icon"></i>
+                    <i class="fa-solid fa-paperclip attachment-icon mr-1"></i>
                     <span class="attachment-name">
                         {% with basename=attachment.file.name|basename %}
                             {% if basename|length > 30 %}

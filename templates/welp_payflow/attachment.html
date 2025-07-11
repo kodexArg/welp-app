@@ -1,46 +1,35 @@
 {% extends "core/base.html" %}
 {% load format_tags %}
+{% load django_vite %}
 
 {% block title %}{{ attachment.file.name|basename }} - Welp Payflow{% endblock %}
 
 {% block content %}
 <section class="attachment-viewer">
-    <div class="attachment-header">
-        <div class="attachment-breadcrumb">
-            <a href="{% url 'welp_payflow:list' %}" class="attachment-back-link">
-                ← Volver a Solicitudes
-            </a>
-            <span class="attachment-separator">|</span>
-            <a href="{% url 'welp_payflow:detail' ticket.id %}" class="attachment-back-link">
-                ← Volver al Ticket #{{ ticket.id }}
-            </a>
-        </div>
-        
+    <div class="attachment-header relative z-10 pointer-events-auto">
         <h1 class="attachment-title">{{ attachment.file.name|basename }}</h1>
         
-        <div class="attachment-meta">
-            <span class="attachment-info">Ticket: {{ ticket.title }}</span>
-            <span class="attachment-info">Tipo: {{ attachment.get_attachment_type_display }}</span>
-            <span class="attachment-info">Tamaño: <span id="file-size">Calculando...</span></span>
-        </div>
-        
-        <div class="attachment-actions">
-            <a href="{{ attachment.file.url }}" download class="attachment-download-btn">
-                ↓ Descargar
+            <a href="{% url 'welp_payflow:detail' ticket_id=ticket.id %}" class="detail-back-button">
+                <i class="fa-solid fa-arrow-left mr-2"></i>
+                Volver al Ticket
             </a>
-            <a href="{{ attachment.file.url }}" target="_blank" class="attachment-open-btn">
-                ↗ Abrir en nueva pestaña
+            <a href="{% url 'welp_payflow:list' %}" class="detail-back-button">
+                <i class="fa-solid fa-list mr-2"></i>
+                Lista de Solicitudes
             </a>
-        </div>
+            <a href="{{ attachment.file.url }}" target="_blank" class="button-primary attachment-open-btn">
+                <i class="fa-solid fa-external-link-alt mr-2"></i>
+                Abrir en Pestaña
+            </a>
     </div>
 
-    <div class="attachment-content">
+    <div class="attachment-content z-0">
         {% if file_type == 'image' %}
             <div class="attachment-image-container">
                 <img src="{{ attachment.file.url }}" 
                      alt="{{ attachment.file.name|basename }}" 
                      class="attachment-image"
-                     onload="calculateImageSize(this)">
+                     onload="window.calculateImageSize && window.calculateImageSize(this)">
             </div>
         {% elif file_type == 'pdf' %}
             <div class="attachment-pdf-container">
@@ -79,61 +68,16 @@
             </div>
         {% endif %}
     </div>
+
+    <div class="mt-6">
+            <div class="attachment-meta">
+            <span class="attachment-info">Ticket: {{ ticket.title }}</span>
+            <span class="attachment-info">Tipo: {{ attachment.get_attachment_type_display }}</span>
+            <span class="attachment-info">Tamaño: <span id="file-size">Calculando...</span></span>
+        </div>
 </section>
+{% endblock %}
 
-<script>
-function calculateImageSize(img) {
-    // Calcular tamaño de archivo aproximado basado en dimensiones
-    const width = img.naturalWidth;
-    const height = img.naturalHeight;
-    const fileSize = document.getElementById('file-size');
-    
-    // Intentar obtener el tamaño real del archivo
-    fetch('{{ attachment.file.url }}', {method: 'HEAD'})
-        .then(response => {
-            const contentLength = response.headers.get('content-length');
-            if (contentLength) {
-                const size = parseInt(contentLength);
-                if (size < 1024) {
-                    fileSize.textContent = size + ' B';
-                } else if (size < 1024 * 1024) {
-                    fileSize.textContent = (size / 1024).toFixed(1) + ' KB';
-                } else {
-                    fileSize.textContent = (size / (1024 * 1024)).toFixed(1) + ' MB';
-                }
-            } else {
-                fileSize.textContent = `${width}×${height} px`;
-            }
-        })
-        .catch(() => {
-            fileSize.textContent = `${width}×${height} px`;
-        });
-}
-
-// Para archivos no-imagen, intentar obtener el tamaño
-document.addEventListener('DOMContentLoaded', function() {
-    const fileSize = document.getElementById('file-size');
-    if (!fileSize.textContent.includes('×')) {
-        fetch('{{ attachment.file.url }}', {method: 'HEAD'})
-            .then(response => {
-                const contentLength = response.headers.get('content-length');
-                if (contentLength) {
-                    const size = parseInt(contentLength);
-                    if (size < 1024) {
-                        fileSize.textContent = size + ' B';
-                    } else if (size < 1024 * 1024) {
-                        fileSize.textContent = (size / 1024).toFixed(1) + ' KB';
-                    } else {
-                        fileSize.textContent = (size / (1024 * 1024)).toFixed(1) + ' MB';
-                    }
-                } else {
-                    fileSize.textContent = 'Tamaño desconocido';
-                }
-            })
-            .catch(() => {
-                fileSize.textContent = 'Tamaño desconocido';
-            });
-    }
-});
-</script>
+{% block scripts %}
+    {% vite_asset 'frontend/js/welp_payflow/attachment_viewer.js' %}
 {% endblock %} 

@@ -45,7 +45,7 @@ PAYFLOW_STATUSES = {
         },
         'action_label': 'Autorizar',
         'color_class': 'text-purple-500',
-        'confirmation_message': '¿Autorizar solicitud? Esto prepara la solicitud para recibir presupuestos',
+        'confirmation_message': 'Confirmar autorización.',
         'button_text': 'Autorizar',
         'comment_placeholder': 'Comentario de autorización (opcional)',
         'comment_label': 'Comentario',

@@ -680,7 +680,7 @@
     }
 
     .message-attachments {
-        @apply flex flex-col items-end space-y-1 mt-2 ml-8;
+        @apply flex flex-col items-end space-y-1 mt-2 mx-4;
     }
 
     .attachment-link {
@@ -1080,5 +1080,68 @@
     .detail-back-icon::before {
         content: '←';
         @apply text-base font-normal;
+    }
+
+    /* Attachment Viewer - Visor de Adjuntos */
+    .attachment-viewer {
+        @apply max-w-4xl mx-auto;
+    }
+
+    .attachment-header {
+        @apply text-center mb-8;
+    }
+
+    .attachment-title {
+        @apply text-2xl font-bold mb-4;
+        @apply text-text font-[var(--font-title)];
+    }
+
+    .attachment-meta {
+        @apply flex flex-wrap justify-center gap-4 text-sm mb-6;
+        @apply text-primary font-[var(--font-ui)];
+    }
+
+    .attachment-info {
+        @apply bg-surface px-3 py-1 rounded-full border border-border;
+    }
+
+    .attachment-content {
+        @apply bg-white rounded-lg border border-border shadow-sm overflow-hidden;
+    }
+
+    .attachment-image-container {
+        @apply flex justify-center items-center p-6;
+    }
+
+    .attachment-image {
+        @apply max-w-full max-h-[70vh] rounded-lg shadow-lg;
+        @apply object-contain;
+    }
+
+    .attachment-pdf-container {
+        @apply w-full h-[70vh];
+    }
+
+    .attachment-pdf {
+        @apply w-full h-full border-0;
+    }
+
+    .attachment-file-preview {
+        @apply text-center p-12;
+    }
+
+    .attachment-file-icon {
+        @apply text-6xl mb-4;
+        @apply text-primary;
+    }
+
+    .attachment-file-type {
+        @apply text-sm mb-4;
+        @apply text-primary font-[var(--font-ui)];
+    }
+
+    .attachment-preview-note {
+        @apply text-sm;
+        @apply text-primary font-[var(--font-ui)];
     }
 }
