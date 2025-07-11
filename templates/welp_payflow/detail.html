@@ -19,7 +19,7 @@
     {% endif %}
 
     <div class="ticket-detail-container">
-        {% ticket_container ticket expanded=True %}
+        {% ticket_container ticket expanded=True hide_buttons=True %}
     </div>
 
     {% payflow_response_form ticket=ticket response_type=response_type is_owner=is_owner cancel_url=cancel_url cancel_text="Cancelar" hidden_fields=hidden_fields %}
