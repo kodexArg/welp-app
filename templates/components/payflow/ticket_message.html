@@ -1,8 +1,9 @@
 {% load format_tags %}
+{% load payflow_tags %}
 <div class="ticket-message">
     <span class="message-author">
         <i class="user-icon"></i>
-        {% if message.status == 'open' %}Abierto{% elif message.status == 'feedback' %}Comentado{% elif message.status == 'solved' %}Resuelto{% elif message.status == 'authorized' %}Autorizado{% elif message.status == 'rejected' %}Rechazado{% elif message.status == 'closed' %}Cerrado{% else %}{{ message.status|title }}{% endif %} por
+        {{ message.status|get_status_label }} por
         {% if message.user %}
             {% if message.user.first_name and message.user.last_name %}
             {{ message.user.first_name }} {{ message.user.last_name }}
