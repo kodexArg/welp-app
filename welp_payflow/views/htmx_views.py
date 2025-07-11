@@ -14,13 +14,14 @@ def htmx_list_content(request):
     tickets = Ticket.objects.get_queryset(request.user).annotate(
         last_message_timestamp=models.Max('messages__created_on')
     ).order_by('-last_message_timestamp')
-    paginator = Paginator(tickets, 6)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
+    # paginator = Paginator(tickets, 6) # Deshabilitado para mostrar todos los tickets
+    # page_number = request.GET.get('page')
+    # page_obj = paginator.get_page(page_number)
     return render(
         request,
         'welp_payflow/partials/list-content.html',
-        {'tickets': page_obj.object_list, 'page_obj': page_obj}
+        # {'tickets': page_obj.object_list, 'page_obj': page_obj}
+        {'tickets': tickets} # Mostrar todos los tickets
     )
 
 

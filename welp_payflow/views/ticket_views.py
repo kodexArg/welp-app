@@ -17,7 +17,7 @@ class TicketListView(LoginRequiredMixin, ListView):
     model = Ticket
     template_name = 'welp_payflow/list.html'
     context_object_name = 'tickets'
-    paginate_by = 10
+    # paginate_by = 10 # Deshabilitado para mostrar todos los tickets
 
     def get_queryset(self):
         return Ticket.objects.get_queryset(self.request.user).select_related(
