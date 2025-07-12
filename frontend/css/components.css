@@ -277,7 +277,7 @@
     }
 
     .status-budgeted {
-        @apply bg-forest-100 text-forest-400 border border-forest-100;
+        @apply bg-green-50 text-green-400 border border-green-300;
     }
 
     .status-rejected {
