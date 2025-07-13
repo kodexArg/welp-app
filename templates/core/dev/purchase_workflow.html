@@ -5,147 +5,117 @@
 
 {% block content %}
 <section class="my-6 max-w-4xl mx-auto">
-    <div class="text-center mb-12">
-        <h1 class="text-3xl font-bold text-text font-[var(--font-title)]">Manual de Usuario: Workflow de Compras</h1>
-        <p class="text-lg text-primary font-[var(--font-p)] mt-2">Guía completa del proceso de solicitudes de compra y pago en Welp Payflow.</p>
-    </div>
-
-    <!-- Flujo Simplificado Visual -->
-    <div class="dev-section">
-        <h2 class="section-title text-center">Flujo Simplificado de Estados</h2>
-        <div class="flex justify-center mb-8">
-            <div class="bg-white rounded-lg border border-border p-4 overflow-x-auto w-full">
-                <pre class="mermaid">
-                    graph LR;
-                        Abierto((Abierto)) --> Autorizado((Autorizado));
-                        Autorizado --> Presupuestado((Presupuestado));
-                        Presupuestado --> Pago_Autorizado((Pago Autorizado));
-                        Presupuestado --> Rechazado((Rechazado));
-                        Presupuestado --> Cancelado((Cancelado (Cerrado)));
-                        Rechazado --> Presupuestado;
-                        Pago_Autorizado --> Procesando_Pago((Procesando Pago));
-                        Procesando_Pago --> Envio_Entrega((En Envío/Entrega));
-                        Envio_Entrega --> Cerrado((Cerrado));
-
-                        style Abierto fill:#FEF2F2,stroke:#FECACA,stroke-width:2px,color:#F87171;
-                        style Autorizado fill:#F3E8FF,stroke:#E9D5FF,stroke-width:2px,color:#A855F7;
-                        style Presupuestado fill:#F0FDF4,stroke:#BEE3BE,stroke-width:2px,color:#10B981;
-                        style Pago_Autorizado fill:#F3E8FF,stroke:#E9D5FF,stroke-width:2px,color:#9333EA;
-                        style Rechazado fill:#FEF3C7,stroke:#FDE68A,stroke-width:2px,color:#D97706;
-                        style Procesando_Pago fill:#ECFEFF,stroke:#A5F3FC,stroke-width:2px,color:#06B6D4;
-                        style Envio_Entrega fill:#FDF2F8,stroke:#FBCFE8,stroke-width:2px,color:#D946EF;
-                        style Cerrado fill:#F1F5F9,stroke:#E2E8F0,stroke-width:2px,color:#94A3B8;
-                        style Cancelado fill:#F1F5F9,stroke:#E2E8F0,stroke-width:2px,color:#94A3B8;
-                </pre>
+    <article class="mb-12">
+        <div class="text-center mb-12">
+            <h1 class="text-3xl font-bold text-text font-[var(--font-title)]">Manual de Usuario: Workflow de Compras</h1>
+            <p class="text-lg text-primary font-[var(--font-p)] mt-2">Guía completa del proceso de solicitudes de compra y pago en Welp Payflow.</p>
+        </div>
+        <!-- Flujo Simplificado Visual -->
+        <div class="dev-section">
+            <h2 class="section-title text-center">Flujo Simplificado de Estados</h2>
+            <div class="flex justify-center mb-8">
+                {% include "core/dev/partials/workflow_graph.html" %}
             </div>
         </div>
-    </div>
+    </article>
 
-    <!-- Roles -->
-    <div class="dev-section">
-        <h2 class="section-title">Actores del Proceso (Roles)</h2>
-        <div class="space-y-4">
-            <div class="p-4 bg-white border border-border rounded-lg">
-                <h3 class="font-semibold text-text">1. Usuario Final</h3>
-                <p class="text-sm text-primary mt-1">Crea solicitudes para sí mismo, añade comentarios y confirma la recepción para cerrar el ticket.</p>
-            </div>
-            <div class="p-4 bg-white border border-border rounded-lg">
-                <h3 class="font-semibold text-text">2. Técnico</h3>
-                <p class="text-sm text-primary mt-1">Además de crear tickets, puede ver las solicitudes autorizadas de su área para buscar y adjuntar presupuestos.</p>
-            </div>
-            <div class="p-4 bg-white border border-border rounded-lg">
-                <h3 class="font-semibold text-text">3. Supervisor de Área</h3>
-                <p class="text-sm text-primary mt-1">Realiza la **primera autorización** de las solicitudes de su equipo. Puede ver todos los tickets de su área y rechazarlos si es necesario.</p>
-            </div>
-            <div class="p-4 bg-white border border-border rounded-lg">
-                <h3 class="font-semibold text-text">4. Gestor de Compras</h3>
-                <p class="text-sm text-primary mt-1">Gestiona las solicitudes autorizadas, adjunta presupuestos, procesa los pagos y coordina la entrega.</p>
-            </div>
-            <div class="p-4 bg-white border border-border rounded-lg">
-                <h3 class="font-semibold text-text">5. Gerente / Director</h3>
-                <p class="text-sm text-primary mt-1">Tiene permisos de Supervisor y es el **único que autoriza el pago final** sobre un ticket ya presupuestado.</p>
+    <article class="mb-12">
+        <!-- Roles -->
+        <div class="dev-section">
+            <h2 class="section-title">Actores del Proceso (Roles)</h2>
+            <div class="space-y-4">
+                <div class="p-4 bg-white border border-border rounded-lg">
+                    <h3 class="font-semibold text-text">1. Usuario Final</h3>
+                    <p class="text-sm text-primary mt-1">Crea solicitudes para sí mismo, añade comentarios y confirma la recepción para cerrar el ticket.</p>
+                </div>
+                <div class="p-4 bg-white border border-border rounded-lg">
+                    <h3 class="font-semibold text-text">2. Técnico</h3>
+                    <p class="text-sm text-primary mt-1">Además de crear tickets, puede ver las solicitudes autorizadas de su área para buscar y adjuntar presupuestos.</p>
+                </div>
+                <div class="p-4 bg-white border border-border rounded-lg">
+                    <h3 class="font-semibold text-text">3. Supervisor de Área</h3>
+                    <p class="text-sm text-primary mt-1">Realiza la **primera autorización** de las solicitudes de su equipo. Puede ver todos los tickets de su área y rechazarlos si es necesario.</p>
+                </div>
+                <div class="p-4 bg-white border border-border rounded-lg">
+                    <h3 class="font-semibold text-text">4. Gestor de Compras</h3>
+                    <p class="text-sm text-primary mt-1">Gestiona las solicitudes autorizadas, adjunta presupuestos, procesa los pagos y coordina la entrega.</p>
+                </div>
+                <div class="p-4 bg-white border border-border rounded-lg">
+                    <h3 class="font-semibold text-text">5. Gerente / Director</h3>
+                    <p class="text-sm text-primary mt-1">Tiene permisos de Supervisor y es el **único que autoriza el pago final** sobre un ticket ya presupuestado.</p>
+                </div>
             </div>
         </div>
-    </div>
+    </article>
 
-    <!-- Detalle de Estados y Transiciones -->
-    <div class="dev-section">
-        <h2 class="section-title">Detalle de Estados y Transiciones</h2>
-        <div class="workflow-container">
-            <!-- Open -->
-            <div class="workflow-step"><div class="step-header">🔴 Abierto</div><p class="task-item">La solicitud ha sido creada y está esperando la aprobación inicial.</p><div class="actor-row"><span class="actor-tag">Siguiente paso:</span> <span class="actor-tag">Autorizar o Rechazar</span><span class="actor-tag">Responsable:</span> <span class="actor-tag">Supervisor, Gerente</span></div></div>
-            <!-- Authorized -->
-            <div class="workflow-step"><div class="step-header">🟣 Autorizado</div><p class="task-item">La solicitud fue aprobada. Ahora se deben buscar y adjuntar presupuestos.</p><div class="actor-row"><span class="actor-tag">Siguiente paso:</span> <span class="actor-tag">Adjuntar Presupuestos</span><span class="actor-tag">Responsable:</span> <span class="actor-tag">Gestor de Compras, Técnico</span></div></div>
-            <!-- Budgeted -->
-            <div class="workflow-step"><div class="step-header">🟢 Presupuestado</div><p class="task-item">Se adjuntaron los presupuestos. Se necesita la aprobación final para el pago.</p><div class="actor-row"><span class="actor-tag">Siguiente paso:</span> <span class="actor-tag">Autorizar Pago o Rechazar</span><span class="actor-tag">Responsable:</span> <span class="actor-tag">Gerente</span></div></div>
-             <!-- Rejected -->
-            <div class="workflow-step decision-step"><div class="step-header">🟡 Rechazado</div><p class="task-item">La solicitud o los presupuestos fueron rechazados. Se necesita revisar y adjuntar nuevas opciones.</p><div class="actor-row"><span class="actor-tag">Siguiente paso:</span> <span class="actor-tag">Adjuntar Nuevos Presupuestos</span><span class="actor-tag">Responsable:</span> <span class="actor-tag">Gestor de Compras, Técnico</span></div></div>
-            <!-- Payment Authorized -->
-            <div class="workflow-step"><div class="step-header">🔶 Pago Autorizado</div><p class="task-item">El Gerente aprobó el pago del presupuesto seleccionado.</p><div class="actor-row"><span class="actor-tag">Siguiente paso:</span> <span class="actor-tag">Procesar el Pago</span><span class="actor-tag">Responsable:</span> <span class="actor-tag">Gestor de Compras</span></div></div>
-            <!-- Processing Payment -->
-            <div class="workflow-step"><div class="step-header">💰 Procesando Pago</div><p class="task-item">El Gestor de Compras está realizando los trámites para pagar al proveedor.</p><div class="actor-row"><span class="actor-tag">Siguiente paso:</span> <span class="actor-tag">Marcar como Enviado</span><span class="actor-tag">Responsable:</span> <span class="actor-tag">Gestor de Compras</span></div></div>
-            <!-- Shipping -->
-            <div class="workflow-step"><div class="step-header">📦 En Envío / Entrega</div><p class="task-item">El producto o servicio ya ha sido pagado y está en camino.</p><div class="actor-row"><span class="actor-tag">Siguiente paso:</span> <span class="actor-tag">Confirmar Recepción y Cerrar</span><span class="actor-tag">Responsable:</span> <span class="actor-tag">Usuario, Gestor de Compras</span></div></div>
-            <!-- Closed -->
-            <div class="workflow-step"><div class="step-header">⚫ Cerrado</div><p class="task-item">La solicitud se ha completado y finalizado.</p></div>
+    <article class="mb-12">
+        <!-- Detalle de Estados y Transiciones -->
+        <div class="dev-section">
+            <h2 class="section-title">Detalle de Estados y Transiciones</h2>
+            <div class="workflow-container">
+                <!-- Open -->
+                <div class="workflow-step"><div class="step-header">🔴 Abierto</div><p class="task-item">La solicitud ha sido creada y está esperando la aprobación inicial.</p><div class="actor-row"><span class="actor-tag">Siguiente paso:</span> <span class="actor-tag">Autorizar o Rechazar</span><span class="actor-tag">Responsable:</span> <span class="actor-tag">Supervisor, Gerente</span></div></div>
+                <!-- Authorized -->
+                <div class="workflow-step"><div class="step-header">🟣 Autorizado</div><p class="task-item">La solicitud fue aprobada. Ahora se deben buscar y adjuntar presupuestos.</p><div class="actor-row"><span class="actor-tag">Siguiente paso:</span> <span class="actor-tag">Adjuntar Presupuestos</span><span class="actor-tag">Responsable:</span> <span class="actor-tag">Gestor de Compras, Técnico</span></div></div>
+                <!-- Budgeted -->
+                <div class="workflow-step"><div class="step-header">🟢 Presupuestado</div><p class="task-item">Se adjuntaron los presupuestos. Se necesita la aprobación final para el pago.</p><div class="actor-row"><span class="actor-tag">Siguiente paso:</span> <span class="actor-tag">Autorizar Pago o Rechazar</span><span class="actor-tag">Responsable:</span> <span class="actor-tag">Gerente</span></div></div>
+                 <!-- Rejected -->
+                <div class="workflow-step decision-step"><div class="step-header">🟡 Rechazado</div><p class="task-item">La solicitud o los presupuestos fueron rechazados. Se necesita revisar y adjuntar nuevas opciones.</p><div class="actor-row"><span class="actor-tag">Siguiente paso:</span> <span class="actor-tag">Adjuntar Nuevos Presupuestos</span><span class="actor-tag">Responsable:</span> <span class="actor-tag">Gestor de Compras, Técnico</span></div></div>
+                <!-- Payment Authorized -->
+                <div class="workflow-step"><div class="step-header">🔶 Pago Autorizado</div><p class="task-item">El Gerente aprobó el pago del presupuesto seleccionado.</p><div class="actor-row"><span class="actor-tag">Siguiente paso:</span> <span class="actor-tag">Procesar el Pago</span><span class="actor-tag">Responsable:</span> <span class="actor-tag">Gestor de Compras</span></div></div>
+                <!-- Processing Payment -->
+                <div class="workflow-step"><div class="step-header">💰 Procesando Pago</div><p class="task-item">El Gestor de Compras está realizando los trámites para pagar al proveedor.</p><div class="actor-row"><span class="actor-tag">Siguiente paso:</span> <span class="actor-tag">Marcar como Enviado</span><span class="actor-tag">Responsable:</span> <span class="actor-tag">Gestor de Compras</span></div></div>
+                <!-- Shipping -->
+                <div class="workflow-step"><div class="step-header">📦 En Envío / Entrega</div><p class="task-item">El producto o servicio ya ha sido pagado y está en camino.</p><div class="actor-row"><span class="actor-tag">Siguiente paso:</span> <span class="actor-tag">Confirmar Recepción y Cerrar</span><span class="actor-tag">Responsable:</span> <span class="actor-tag">Usuario, Gestor de Compras</span></div></div>
+                <!-- Closed -->
+                <div class="workflow-step"><div class="step-header">⚫ Cerrado</div><p class="task-item">La solicitud se ha completado y finalizado.</p></div>
+            </div>
         </div>
-    </div>
+    </article>
 
-    <!-- Tabla de Transiciones -->
-    <div class="dev-section">
-        <h2 class="section-title">Tabla de Transiciones por Rol</h2>
-        <div class="overflow-x-auto bg-white p-4 rounded-lg border border-border">
-            <table class="min-w-full text-sm text-left">
-                <thead class="bg-surface font-ui text-text"><tr><th class="p-2">Desde el Estado</th><th class="p-2">Hacia el Estado</th><th class="p-2">¿Quién puede hacerlo?</th></tr></thead>
-                <tbody class="divide-y divide-border">
-                    <tr class="hover:bg-surface"><td>Abierto</td><td>Autorizado</td><td>Supervisor, Gerente</td></tr>
-                    <tr class="hover:bg-surface"><td>Abierto</td><td>Cerrado (Cancelar)</td><td>Supervisor, Gerente, Usuario creador</td></tr>
-                    <tr class="hover:bg-surface"><td>Autorizado</td><td>Presupuestado</td><td>Gestor de Compras, Técnico</td></tr>
-                    <tr class="hover:bg-surface"><td>Presupuestado</td><td>Pago Autorizado</td><td>Gerente</td></tr>
-                    <tr class="hover:bg-surface"><td>Presupuestado</td><td>Rechazado</td><td>Supervisor, Gerente</td></tr>
-                    <tr class="hover:bg-surface"><td>Rechazado</td><td>Presupuestado</td><td>Gestor de Compras, Técnico</td></tr>
-                    <tr class="hover:bg-surface"><td>Pago Autorizado</td><td>Procesando Pago</td><td>Gestor de Compras</td></tr>
-                    <tr class="hover:bg-surface"><td>Procesando Pago</td><td>En Envío / Entrega</td><td>Gestor de Compras</td></tr>
-                    <tr class="hover:bg-surface"><td>En Envío / Entrega</td><td>Cerrado</td><td>Usuario creador, Gestor de Compras</td></tr>
-                </tbody>
-            </table>
+    <article class="mb-12">
+        <!-- Tabla de Transiciones -->
+        <div class="dev-section">
+            <h2 class="section-title">Tabla de Transiciones por Rol</h2>
+            <div class="overflow-x-auto bg-white p-4 rounded-lg border border-border">
+                <table class="min-w-full text-sm text-left">
+                    <thead class="bg-surface font-ui text-text"><tr><th class="p-2">Desde el Estado</th><th class="p-2">Hacia el Estado</th><th class="p-2">¿Quién puede hacerlo?</th></tr></thead>
+                    <tbody class="divide-y divide-border">
+                        <tr class="hover:bg-surface"><td>Abierto</td><td>Autorizado</td><td>Supervisor, Gerente</td></tr>
+                        <tr class="hover:bg-surface"><td>Abierto</td><td>Cerrado (Cancelar)</td><td>Supervisor, Gerente, Usuario creador</td></tr>
+                        <tr class="hover:bg-surface"><td>Autorizado</td><td>Presupuestado</td><td>Gestor de Compras, Técnico</td></tr>
+                        <tr class="hover:bg-surface"><td>Presupuestado</td><td>Pago Autorizado</td><td>Gerente</td></tr>
+                        <tr class="hover:bg-surface"><td>Presupuestado</td><td>Rechazado</td><td>Supervisor, Gerente</td></tr>
+                        <tr class="hover:bg-surface"><td>Rechazado</td><td>Presupuestado</td><td>Gestor de Compras, Técnico</td></tr>
+                        <tr class="hover:bg-surface"><td>Pago Autorizado</td><td>Procesando Pago</td><td>Gestor de Compras</td></tr>
+                        <tr class="hover:bg-surface"><td>Procesando Pago</td><td>En Envío / Entrega</td><td>Gestor de Compras</td></tr>
+                        <tr class="hover:bg-surface"><td>En Envío / Entrega</td><td>Cerrado</td><td>Usuario creador, Gestor de Compras</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="transversal-note mt-4"><p><strong>Nota sobre Comentarios:</strong> Añadir un comentario a una solicitud **no cambia su estado**. Los comentarios son para añadir información, hacer preguntas o dar seguimiento.</p></div>
         </div>
-        <div class="transversal-note mt-4"><p><strong>Nota sobre Comentarios:</strong> Añadir un comentario a una solicitud **no cambia su estado**. Los comentarios son para añadir información, hacer preguntas o dar seguimiento.</p></div>
-    </div>
+    </article>
 
-    <!-- Ejemplo Práctico -->
-    <div class="dev-section">
-        <h2 class="section-title">Ejemplo Práctico: Compra de un Ordenador</h2>
-        <ol class="relative border-l border-border ml-4">
-            <li class="mb-6 ml-6"><span class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -left-3 ring-8 ring-white"><i class="fa fa-user"></i></span><h3 class="font-semibold">1. Creación</h3><p class="text-sm text-primary">**Ana (Usuario Final)** crea una solicitud: "Necesito un nuevo ordenador para diseño". El ticket queda en estado **Abierto**.</p></li>
-            <li class="mb-6 ml-6"><span class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -left-3 ring-8 ring-white"><i class="fa fa-user-tie"></i></span><h3 class="font-semibold">2. Autorización Inicial</h3><p class="text-sm text-primary">**Carlos (Supervisor)** revisa la solicitud y la aprueba. El ticket cambia a **Autorizado**.</p></li>
-            <li class="mb-6 ml-6"><span class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -left-3 ring-8 ring-white"><i class="fa fa-file-invoice-dollar"></i></span><h3 class="font-semibold">3. Presupuesto</h3><p class="text-sm text-primary">**María (Gestor de Compras)** ve el ticket, busca tres presupuestos y los adjunta. El ticket cambia a **Presupuestado**.</p></li>
-            <li class="mb-6 ml-6"><span class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -left-3 ring-8 ring-white"><i class="fa fa-crown"></i></span><h3 class="font-semibold">4. Autorización Final</h3><p class="text-sm text-primary">**Luisa (Gerente)** revisa los presupuestos, elige uno y aprueba el pago. El ticket cambia a **Pago Autorizado**.</p></li>
-            <li class="mb-6 ml-6"><span class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -left-3 ring-8 ring-white"><i class="fa fa-credit-card"></i></span><h3 class="font-semibold">5. Gestión de Pago</h3><p class="text-sm text-primary">**María (Gestor de Compras)** realiza la compra y el pago. El ticket cambia a **Procesando Pago**.</p></li>
-            <li class="mb-6 ml-6"><span class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -left-3 ring-8 ring-white"><i class="fa fa-shipping-fast"></i></span><h3 class="font-semibold">6. Envío</h3><p class="text-sm text-primary">Una vez pagado, María actualiza el estado a **En Envío / Entrega**.</p></li>
-            <li class="mb-6 ml-6"><span class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -left-3 ring-8 ring-white"><i class="fa fa-check-circle"></i></span><h3 class="font-semibold">7. Cierre</h3><p class="text-sm text-primary">Cuando el ordenador llega, **Ana (Usuario Final)** confirma la recepción y el ticket se marca como **Cerrado**.</p></li>
-        </ol>
-    </div>
+    <article class="mb-12">
+        <!-- Ejemplo Práctico -->
+        <div class="dev-section">
+            <h2 class="section-title">Ejemplo Práctico: Compra de un Ordenador</h2>
+            <ol class="relative border-l border-border ml-4">
+                <li class="mb-6 ml-6"><span class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -left-3 ring-8 ring-white"><i class="fa fa-user"></i></span><h3 class="font-semibold">1. Creación</h3><p class="text-sm text-primary">**Ana (Usuario Final)** crea una solicitud: "Necesito un nuevo ordenador para diseño". El ticket queda en estado **Abierto**.</p></li>
+                <li class="mb-6 ml-6"><span class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -left-3 ring-8 ring-white"><i class="fa fa-user-tie"></i></span><h3 class="font-semibold">2. Autorización Inicial</h3><p class="text-sm text-primary">**Carlos (Supervisor)** revisa la solicitud y la aprueba. El ticket cambia a **Autorizado**.</p></li>
+                <li class="mb-6 ml-6"><span class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -left-3 ring-8 ring-white"><i class="fa fa-file-invoice-dollar"></i></span><h3 class="font-semibold">3. Presupuesto</h3><p class="text-sm text-primary">**María (Gestor de Compras)** ve el ticket, busca tres presupuestos y los adjunta. El ticket cambia a **Presupuestado**.</p></li>
+                <li class="mb-6 ml-6"><span class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -left-3 ring-8 ring-white"><i class="fa fa-crown"></i></span><h3 class="font-semibold">4. Autorización Final</h3><p class="text-sm text-primary">**Luisa (Gerente)** revisa los presupuestos, elige uno y aprueba el pago. El ticket cambia a **Pago Autorizado**.</p></li>
+                <li class="mb-6 ml-6"><span class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -left-3 ring-8 ring-white"><i class="fa fa-credit-card"></i></span><h3 class="font-semibold">5. Gestión de Pago</h3><p class="text-sm text-primary">**María (Gestor de Compras)** realiza la compra y el pago. El ticket cambia a **Procesando Pago**.</p></li>
+                <li class="mb-6 ml-6"><span class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -left-3 ring-8 ring-white"><i class="fa fa-shipping-fast"></i></span><h3 class="font-semibold">6. Envío</h3><p class="text-sm text-primary">Una vez pagado, María actualiza el estado a **En Envío / Entrega**.</p></li>
+                <li class="mb-6 ml-6"><span class="absolute flex items-center justify-center w-6 h-6 bg-blue-100 rounded-full -left-3 ring-8 ring-white"><i class="fa fa-check-circle"></i></span><h3 class="font-semibold">7. Cierre</h3><p class="text-sm text-primary">Cuando el ordenador llega, **Ana (Usuario Final)** confirma la recepción y el ticket se marca como **Cerrado**.</p></li>
+            </ol>
+        </div>
+    </article>
 
 </section>
 {% endblock %}
-
-{% block scripts %}
-    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"></script>
-    <script>
-      mermaid.initialize({
-        startOnLoad: true,
-        theme: 'base',
-        themeVariables: {
-          primaryColor: '#6366f1',
-          secondaryColor: '#fbbf24',
-          tertiaryColor: '#10b981',
-          fontFamily: 'var(--font-ui), sans-serif',
-          fontSize: '16px',
-          lineColor: '#64748b',
-          nodeTextColor: '#22223b',
-          canvasBkgColor: '#FFFFFF',
-        }
-      });
-    </script>
-{% endblock %} 
+{% block scripts %}{% endblock %}
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({ startOnLoad: true });</script>
+</body> 
