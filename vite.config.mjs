@@ -18,7 +18,7 @@ export default defineConfig({
         main: 'frontend/main.js',
         styles: 'frontend/main.css',
         favicon: 'frontend/favicon.ico',
-        'dev-content': 'frontend/js/dev-content.js',
+        'dev-content': 'frontend/js/dev/dev-content.js',
         'payflow-create': 'frontend/js/welp_payflow/create.js',
         'payflow-success': 'frontend/js/welp_payflow/success.js',
       },
