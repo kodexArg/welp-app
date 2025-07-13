@@ -226,62 +226,42 @@
         @apply bg-surface text-text border-primary;
     }
 
-    /* Tags unidos para tickets - Nuevos estilos específicos */
+    /* Tags UDN - Sector - Categoría */
     .tags-ticket-udn {
-        @apply bg-gray-50 text-gray-600 border border-gray-200;
-        @apply rounded-l-full cursor-default uppercase;
-        @apply text-[10px] py-0.5 px-2;
-        border-right: none;
-        margin-right: 0;
+        @apply bg-gray-50 text-gray-600 border border-gray-200 rounded-s-full cursor-not-allowed select-none uppercase text-[10px] py-0.5 px-2 border-r-0 mr-0 pointer-events-none;
     }
 
     .tags-ticket-sector {
-        @apply bg-gray-50 text-gray-600 border-t border-b border-gray-200;
-        @apply rounded-none cursor-default uppercase;
-        @apply text-[10px] py-0.5 px-2;
-        border-left: none;
-        border-right: none;
-        margin-left: 0;
-        margin-right: 0;
+        @apply bg-gray-50 text-gray-600 border-y border-gray-200 rounded-none cursor-not-allowed select-none uppercase text-[10px] py-0.5 px-2 border-l-0 border-r-0 ml-0 mr-0 pointer-events-none;
     }
 
     .tags-ticket-category {
-        @apply bg-gray-50 text-gray-600 border border-gray-200;
-        @apply rounded-r-full cursor-default uppercase;
-        @apply text-[10px] py-0.5 px-2;
-        border-left: none;
-        margin-left: 0;
+        @apply bg-gray-50 text-gray-600 border border-gray-200 rounded-e-full cursor-not-allowed select-none uppercase text-[10px] py-0.5 px-2 border-l-0 ml-0 pointer-events-none;
     }
 
+    /* Tags de Estados de tickets */
     .status {
         @apply text-[10px] font-semibold py-0.5 px-2 rounded-full uppercase tracking-wide;
         @apply ml-1;
         @apply flex items-center justify-center;
         @apply h-5 min-h-5;
+        @apply cursor-not-allowed select-none pointer-events-none;
     }
 
     .status-open {
         @apply bg-red-50 text-red-400 border border-red-200;
     }
 
-        .status-feedback {
-        @apply bg-forest-200 text-forest-600;
-    }
-    
-    .status-solved {
-        @apply bg-green-100 text-green-700;
-    }
-
     .status-authorized {
-        @apply bg-purple-100 text-purple-600 border border-purple-200;
+        @apply bg-purple-100 text-purple-500 border border-purple-200;
     }
 
     .status-budgeted {
-        @apply bg-green-50 text-green-400 border border-green-300;
+        @apply bg-emerald-50 text-emerald-500 border border-emerald-200;
     }
 
     .status-rejected {
-        @apply bg-yellow-100 text-yellow-600 border border-yellow-200;
+            @apply bg-amber-100 text-amber-600 border border-amber-200;
     }
 
     .status-payment_authorized {
@@ -293,11 +273,11 @@
     }
 
     .status-shipping {
-        @apply bg-earth-50 text-earth-400 border border-earth-100;
+        @apply bg-fuchsia-100 text-fuchsia-500 border border-fuchsia-200;
     }
 
     .status-closed {
-        @apply bg-forest-50 text-forest-300 border border-forest-100;
+        @apply bg-slate-100 text-slate-400 border border-slate-200;
     }
 
     .status-unknown {
