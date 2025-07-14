@@ -198,22 +198,12 @@ def payflow_response_form(context, ticket, response_type, user_can_transition=Tr
         return {'visible': False}
 
     button_text = action_info.get('button_text', response_type.replace('_', ' ').title())
-    comment_label = action_info.get('comment_label', 'Comentario')
-    comment_placeholder = action_info.get('comment_placeholder', 'Escriba su comentario aquí...')
     field_required = action_info.get('comment_required', False)
-    show_attachments = action_info.get('show_attachments', False)
-    show_comment_box = action_info.get('show_comment_box', True)
     confirmation_message = action_info.get('confirmation_message', '')
     
     if response_type == 'close':
         if is_owner or request.user.is_superuser:
             field_required = False
-
-    comment_field_name = 'response_body'
-    if response_type == 'close':
-        comment_field_name = 'close_comment'
-    elif response_type != 'comment':
-        comment_field_name = f'{response_type}_comment'
     
     form_action = ''
     if response_type == 'close':
@@ -228,17 +218,40 @@ def payflow_response_form(context, ticket, response_type, user_can_transition=Tr
 
     show_estimated_amount_input = (response_type == 'budgeted')
 
+    form_fields = []
+    if action_info.get('show_comment_box', True):
+        comment_field_name = 'response_body'
+        if response_type == 'close':
+            comment_field_name = 'close_comment'
+        elif response_type != 'comment':
+            comment_field_name = f'{response_type}_comment'
+        
+        form_fields.append({
+            'id': f'field_{comment_field_name}',
+            'name': comment_field_name,
+            'label': action_info.get('comment_label', 'Comentario'),
+            'placeholder': action_info.get('comment_placeholder', 'Escriba su comentario aquí...'),
+            'required': field_required,
+            'field_type': 'textarea'
+        })
+    
+    if action_info.get('show_attachments', False):
+        form_fields.append({
+            'id': 'field_attachments',
+            'name': 'attachments',
+            'label': 'Archivos Adjuntos',
+            'placeholder': 'Seleccionar archivos...',
+            'required': False,
+            'field_type': 'file'
+        })
+
     return {
         'ticket': ticket,
         'response_type': response_type,
+        'response_info': action_info,
         'button_text': button_text,
-        'comment_label': comment_label,
-        'comment_placeholder': comment_placeholder,
         'field_required': field_required,
-        'show_attachments': show_attachments,
-        'show_comment_box': show_comment_box,
         'confirmation_message': confirmation_message,
-        'comment_field_name': comment_field_name,
         'form_action': form_action,
         'is_owner': is_owner,
         'comment_value': comment_value,
@@ -248,6 +261,7 @@ def payflow_response_form(context, ticket, response_type, user_can_transition=Tr
         'visible': True,
         'icon_class': icon_class,
         'show_estimated_amount_input': show_estimated_amount_input,
+        'form_fields': form_fields,
     }
 
 @register.inclusion_tag('components/payflow/ticket_summary_info.html')

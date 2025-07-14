@@ -28,7 +28,6 @@ class AttachmentView(LoginRequiredMixin, DetailView):
             file_type = 'document'
         elif file_extension in ['xls', 'xlsx', 'csv']:
             file_type = 'spreadsheet'
-            
         context.update({
             'file_type': file_type,
             'file_extension': file_extension,

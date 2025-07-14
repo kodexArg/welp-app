@@ -1,6 +1,6 @@
 <article class="ticket-input-message">
     <div class="ticket-response-form">
-        <form method="post" enctype="multipart/form-data" action="{{ request.path }}?response_type={{ response_type }}">
+        <form method="post" enctype="multipart/form-data" action="{{ form_action }}">
             {% csrf_token %}
             {% if hidden_fields %}
                 {% for field_name, field_value in hidden_fields.items %}
@@ -8,8 +8,6 @@
                 {% endfor %}
             {% endif %}
 
-            {% get_response_form_fields response_type as form_fields %}
-            
             {% for field in form_fields %}
                 {% if field.field_type == 'textarea' %}
                 <div class="form-group">
@@ -44,8 +42,8 @@
                 </a>
                 {% endif %}
                 <button type="submit" class="response-action-submit">
-                    <i class="fa-solid fa-paper-plane response-action-icon-submit mr-2"></i>
-                    <span class="font-normal capitalize">{{ response_info.action_text }}</span>
+                    <i class="{{ icon_class }} response-action-icon-submit mr-2"></i>
+                    <span class="font-normal capitalize">{{ button_text }}</span>
                 </button>
             </div>
         </form>

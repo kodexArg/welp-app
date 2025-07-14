@@ -9,10 +9,10 @@
     <div class="attachment-header relative z-10 pointer-events-auto">
         <h1 class="attachment-title">{{ attachment.file.name|basename }}</h1>
         
-            <a href="{% url 'welp_payflow:detail' ticket_id=ticket.id %}" class="detail-back-button">
+            <button type="button" onclick="window.history.back()" class="detail-back-button">
                 <i class="fa-solid fa-arrow-left mr-2"></i>
-                Volver al Ticket
-            </a>
+                Volver
+            </button>
             <a href="{% url 'welp_payflow:list' %}" class="detail-back-button">
                 <i class="fa-solid fa-list mr-2"></i>
                 Lista de Solicitudes
