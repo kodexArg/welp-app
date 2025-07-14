@@ -531,24 +531,29 @@
 
     /* Ticket Components - Componentes de Tickets */
     
+    /* use: [ticket message] */
     .ticket-message-body {
         @apply ml-8 mb-2 bg-white border border-earth-200 text-sm p-1.5 rounded-xl text-earth-700;
         font-family: var(--font-ui);
     }
 
+    /* use: [ticket message] */
     .ticket-message-meta {
         @apply text-sm text-gray-500 italic ml-2;
         font-family: var(--font-ui);
     }
 
+    /* use: [ticket message] */
     .ticket-message-meta i {
         @apply not-italic;
     }
 
+    /* use: [ticket message] */
     .ticket-message-header {
         @apply flex justify-between items-center;
     }
 
+    /* use: [ticket message] */
     .ticket-message-date {
         @apply text-sm text-gray-500 ml-auto;
         font-family: var(--font-ui);
@@ -631,44 +636,53 @@
         @apply bg-red-50 border-red-400 text-red-700 px-4 py-3 rounded-lg border-l-4 mb-4 font-sans;
     }
 
+    /* use: [ticket message] */
     .ticket-message {
         @apply mb-3;
     }
 
+    /* use: [ticket message] */
     .message-author {
         @apply text-xs text-forest-600 ml-2 font-sans translate-y-[0.02rem] italic;
     }
 
+    /* use: [ticket message] */
     .user-icon::before {
         content: '●';
         @apply text-xs text-forest-400 mr-0.5;
     }
 
+    /* use: [ticket message] */
     .ticket-message-body {
         @apply ml-8 mb-2 bg-white border border-forest-200 text-sm p-1.5 rounded-xl text-forest-700 font-sans cursor-default;
         @apply relative;
     }
 
+    /* use: [ticket message] */
     .ticket-message-date {
         @apply text-[10px] text-forest-400 italic pointer-events-none font-sans;
         @apply absolute bottom-1.5 right-1.5;
         @apply m-0 p-0;
     }
 
+    /* use: [ticket message] */
     .message-attachments {
         @apply flex flex-col items-end space-y-1 mt-2 mx-4;
     }
 
+    /* use: [ticket message] */
     .attachment-link {
         @apply flex items-center text-[10px] text-forest-400 hover:text-forest-600 no-underline;
         @apply transition-colors duration-200;
     }
 
+    /* use: [ticket message] */
     .attachment-icon::before {
         content: '⚬';
         @apply mr-1 text-[10px];
     }
 
+    /* use: [ticket message] */
     .attachment-name {
         @apply font-mono;
     }

@@ -140,12 +140,8 @@ class ProcessCloseTicketView(LoginRequiredMixin, View):
             messages.error(request, 'Debe proporcionar un motivo para cerrar este ticket.')
             return redirect('welp_payflow:detail', ticket_id=ticket.id)
 
-        close_message = comment or 'Ticket cerrado por el usuario'
-        if not is_owner and comment:
-             close_message = f"Ticket cerrado por {request.user.username}: {comment}"
-
         Message.objects.create(
-            ticket=ticket, status='closed', user=request.user, body=close_message
+            ticket=ticket, status='closed', user=request.user, body=comment
         )
         messages.success(request, 'Ticket cerrado exitosamente')
         return redirect('welp_payflow:list')
@@ -164,11 +160,14 @@ class TransitionTicketView(LoginRequiredMixin, View):
 
         comment_field = f'{target_status}_comment'
         comment = request.POST.get(comment_field, '').strip()
-        status_label = PAYFLOW_STATUSES.get(target_status, {}).get('label', target_status)
-        
-        body = comment or f'Estado cambiado a {status_label}'
-        if comment:
-            body = f'Estado cambiado a {status_label}: {comment}'
+        status_info = PAYFLOW_STATUSES.get(target_status, {})
+        is_comment_required = status_info.get('comment_required', True)
+
+        # Nueva lógica: solo guardar comentario real, nunca texto automático
+        if is_comment_required and not comment:
+            messages.error(request, 'Debe ingresar un comentario para este estado.')
+            return redirect('welp_payflow:detail', ticket_id=ticket.id)
+        body = comment  # Puede ser vacío si no es obligatorio
 
         with transaction.atomic():
             message = Message.objects.create(
@@ -191,5 +190,5 @@ class TransitionTicketView(LoginRequiredMixin, View):
                 else:
                     messages.warning(request, f"El archivo {file.name} es demasiado grande y no se ha adjuntado.")
 
-        messages.success(request, f'Ticket cambiado exitosamente a {status_label}')
+        messages.success(request, f'Ticket cambiado exitosamente a {status_info.get('label', target_status)}')
         return redirect('welp_payflow:list')

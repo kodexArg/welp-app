@@ -49,7 +49,7 @@ PAYFLOW_STATUSES = {
         'button_text': 'Autorizar',
         'comment_placeholder': 'Comentario de autorización (opcional)',
         'comment_label': 'Comentario',
-        'comment_required': True,
+        'comment_required': False,
         'show_comment_box': False,
         'show_attachments': False,
     },

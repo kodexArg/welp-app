@@ -1,29 +1,46 @@
 {% load format_tags %}
 {% load payflow_tags %}
 <div class="ticket-message">
-    <span class="message-author">
-        <i class="user-icon"></i>
-        {{ message.status|get_status_label }} por
-        {% if message.user %}
-            {% if message.user.first_name and message.user.last_name %}
-            {{ message.user.first_name }} {{ message.user.last_name }}
+    {% if message.body %}
+        <span class="message-author">
+            <i class="user-icon"></i>
+            {{ message.status|get_status_label }} por
+            {% if message.user %}
+                {% if message.user.first_name and message.user.last_name %}
+                {{ message.user.first_name }} {{ message.user.last_name }}
+                {% else %}
+                    {{ message.user.username }}
+                {% endif %}
             {% else %}
-                {{ message.user.username }}
+                Usuario eliminado
             {% endif %}
-        {% else %}
-            Usuario eliminado
-        {% endif %}
-    </span>
-    <div class="ticket-message-body">
-        {% if message.body %}
-            {{ message.body }}
-        {% else %}
-            (Sin contenido)
-        {% endif %}
-        <span class="ticket-message-date">
-            {{ message.created_on|relative_date }}
         </span>
-    </div>
+        <div class="ticket-message-body">
+            {{ message.body }}
+            <span class="ticket-message-date">
+                {{ message.created_on|relative_date }}
+            </span>
+        </div>
+    {% else %}
+        <div class="flex items-baseline justify-between">
+            <span class="message-author">
+                <i class="user-icon"></i>
+                {{ message.status|get_status_label }} por
+                {% if message.user %}
+                    {% if message.user.first_name and message.user.last_name %}
+                    {{ message.user.first_name }} {{ message.user.last_name }}
+                    {% else %}
+                        {{ message.user.username }}
+                    {% endif %}
+                {% else %}
+                    Usuario eliminado
+                {% endif %}
+            </span>
+            <span class="text-[10px] text-forest-400 italic font-sans mr-2">
+                {{ message.created_on|relative_date }}
+            </span>
+        </div>
+    {% endif %}
     {% if message.attachments.exists %}
         <div class="message-attachments">
             {% for attachment in message.attachments.all %}
