@@ -1,15 +1,14 @@
 <div class="w-full overflow-x-auto">
-  <div class="mermaid min-w-[900px]">
     %% Gráfico con estilos equivalentes a .status-* de components.css y bordes redondeados 25%
     graph LR
         A["🔴 Abierto"] --> B["🟣 Autorizado"]
-        B --> C["🟢 Presupuestado"]
-        C --> D["🔶 Pago Autorizado"]
-        C --> E["🟡 Rechazado"]
-        C --> F["⚫ Cerrado"]
+        B --> C["Presupuestado"]
+        C --> D["Pago Autorizado"]
+        C --> E["Rechazado"]
+        C --> F["Cerrado"]
         E --> C
-        D --> G["💰 Procesando Pago"]
-        G --> H["📦 En Envío/Entrega"]
+        D --> G["Procesando Pago"]
+        G --> H["En Envío/Entrega"]
         H --> F
 
         %% Abierto: bg-red-50 text-red-400 border-red-200
@@ -28,5 +27,4 @@
         style G fill:#cffafe,stroke:#a5f3fc,stroke-width:2px,color:#0891b2,rx:20,ry:20
         %% En Envío: bg-fuchsia-100 text-fuchsia-500 border-fuchsia-200
         style H fill:#fae8ff,stroke:#fbcfe8,stroke-width:2px,color:#d946ef,rx:20,ry:20
-  </div>
 </div> 

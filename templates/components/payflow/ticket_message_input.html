@@ -1,44 +1,22 @@
-<div class="ticket-detail-response-section rounded-2xl border border-forest-200 bg-white shadow-inner p-6 mt-3 mb-3">
+<article class="ticket-input-message">
     <div class="ticket-response-form">
-        <form method="post" enctype="multipart/form-data" action="{{ form_action }}">
+        <form method="post" enctype="multipart/form-data" action="{{ request.path }}?response_type={{ response_type }}">
             {% csrf_token %}
-            
-            {% if not hidden_fields.status %}
-                <input type="hidden" name="status" value="feedback">
+            {% if hidden_fields %}
+                {% for field_name, field_value in hidden_fields.items %}
+                    <input type="hidden" name="{{ field_name }}" value="{{ field_value }}">
+                {% endfor %}
             {% endif %}
+
+            {% get_response_form_fields response_type as form_fields %}
             
-            {% for field_name, field_value in hidden_fields.items %}
-                <input type="hidden" name="{{ field_name }}" value="{{ field_value }}">
-            {% endfor %}
-            
-            {% if show_comment_box %}
+            {% for field in form_fields %}
+                {% if field.field_type == 'textarea' %}
                 <div class="form-group">
-                    <label for="id_response_body" class="form-label">{{ comment_label }}:</label>
-                    <textarea 
-                        id="id_response_body" 
-                        name="{{ comment_field_name }}" 
-                        class="form-input"
-                        rows="4"
-                        placeholder="{{ comment_placeholder }}"
-                        {% if field_required %}required{% endif %}
-                    ></textarea>
+                    <label for="{{ field.id }}" class="form-label">{{ field.label }}:</label>
+                    <textarea id="{{ field.id }}" name="{{ field.name }}" class="form-input" rows="4" placeholder="{{ field.placeholder }}" {% if field.required %}required{% endif %}></textarea>
                 </div>
-                {% if show_estimated_amount_input %}
-                <div class="form-group">
-                    <label for="id_estimated_amount" class="form-label">Monto estimado (USD):</label>
-                    <input 
-                        type="number" 
-                        step="0.01" 
-                        min="0" 
-                        name="estimated_amount" 
-                        id="id_estimated_amount" 
-                        class="form-input"
-                        placeholder="Ej: 1000.00"
-                    >
-                </div>
-                {% endif %}
-                
-                {% if show_attachments %}
+                {% elif field.field_type == 'file' %}
                 <details class="attachment-details">
                     <summary class="attachment-summary">
                         <i class="fa-solid fa-paperclip text-xs mr-2"></i>
@@ -48,37 +26,28 @@
                     <div class="attachment-content">
                         <div id="attachments-container">
                             <div class="attachment-input-row">
-                                <input 
-                                    type="file" 
-                                    name="attachments" 
-                                    class="form-input attachment-input"
-                                    accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg,.gif"
-                                >
-                                <button type="button" class="button-minimal add-attachment">+</button>
-                            </div>
+                                <input type="file" name="attachments" class="form-input attachment-input" accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg,.gif">
+                                
+                            <button type="button" class="button-minimal add-attachment">+</button></div>
                         </div>
                         <p class="form-help">Máximo 50MB por archivo. Formatos: PDF, DOC, XLS, imágenes</p>
                     </div>
                 </details>
                 {% endif %}
-            {% else %}
-                <div class="confirmation-message py-2">
-                    <p class="text-base text-primary">{{ confirmation_message }}</p>
-                </div>
-            {% endif %}
+            {% endfor %}
             
             <div class="ticket-response-actions flex justify-end gap-3 pt-4">
                 {% if cancel_url %}
                 <a href="{{ cancel_url }}" class="response-action-cancel">
                     <i class="response-action-icon-cancel"></i>
-                    <span>{{ cancel_text|default:"Cancelar"|upper }}</span>
+                    <span>{{ cancel_text|upper }}</span>
                 </a>
                 {% endif %}
                 <button type="submit" class="response-action-submit">
-                    <i class="{{ icon_class }} response-action-icon-submit mr-2"></i>
-                    <span class="font-normal capitalize">{{ button_text|default:"Enviar" }}</span>
+                    <i class="fa-solid fa-paper-plane response-action-icon-submit mr-2"></i>
+                    <span class="font-normal capitalize">{{ response_info.action_text }}</span>
                 </button>
             </div>
         </form>
     </div>
-</div>
+</article>

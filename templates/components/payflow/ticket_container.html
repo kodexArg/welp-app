@@ -1,8 +1,9 @@
+{% load i18n %}
 {% load payflow_tags %}
 
 
 {% if expanded %}
-    <article class="ticket-container-detail">
+    <article class="ticket-messages">
         <div class="ticket-summary-detail">
             <div class="ticket-title-detail">
                 {{ ticket.title }}
@@ -38,7 +39,13 @@
                         {{ status_info.current_action }}
                     </span>
                     {% endwith %}
-                    {% ticket_actions ticket %}
+                    <div class="flex items-center gap-2">
+                        {% ticket_actions ticket %}
+                        <a href="{% url 'welp_payflow:detail' ticket.id %}?view_only=true" class="bg-surface border border-border text-text text-xs rounded-full py-1 px-3 inline-flex items-center font-medium hover:brightness-110 no-underline transition-all duration-200">
+                            <i class="fa-solid fa-eye mr-2"></i>
+                            <span>Ver</span>
+                        </a>
+                    </div>
                 </div>
                 {% else %}
                 <div class="ticket-action-row flex justify-end items-center mt-4 mb-2">
@@ -92,7 +99,13 @@
                         {{ status_info.current_action }}
                     </span>
                     {% endwith %}
-                    {% ticket_actions ticket %}
+                    <div class="flex items-center gap-2">
+                        {% ticket_actions ticket %}
+                        <a href="{% url 'welp_payflow:detail' ticket.id %}?view_only=true" class="bg-surface border border-border text-text text-xs rounded-full py-1 px-3 inline-flex items-center font-medium hover:brightness-110 no-underline transition-all duration-200">
+                            <i class="fa-solid fa-eye mr-2"></i>
+                            <span>Ver</span>
+                        </a>
+                    </div>
                 </div>
                 {% else %}
                 <div class="ticket-action-row flex justify-end items-center mt-4 mb-2">

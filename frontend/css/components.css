@@ -561,8 +561,7 @@
 
     /* Ticket Components - 100% CSS Nativo */
     .ticket-container {
-        @apply rounded-2xl p-3 mb-3 font-sans cursor-pointer;
-        @apply transition-all duration-200 ease-out;
+        @apply cursor-pointer transition-all duration-200 ease-out;
         @apply hover:shadow-md hover:bg-gray-50;
     }
 
@@ -853,9 +852,6 @@
     .attachment-content > div {
         @apply overflow-hidden;
     }
-    .ticket-container-detail {
-        @apply rounded-2xl p-3 mb-3 font-sans bg-white border border-forest-200 shadow-sm;
-    }
 
     .ticket-summary-detail {
         @apply flex flex-col md:flex-row justify-between items-start;
@@ -1136,9 +1132,11 @@
     }
 }
 
-/* Mermaid Workflow Container */
-.mermaid-workflow-container {
-    @apply mb-3;
+/* Nuevos componentes de detalle de ticket */
+.ticket-mermaid-workflow,
+.ticket-messages,
+.ticket-input-message {
+    @apply bg-white border border-forest-200 rounded-2xl shadow-sm p-6 mb-3;
 }
 
 /* Mermaid Diagrams - Diagramas Mermaid */

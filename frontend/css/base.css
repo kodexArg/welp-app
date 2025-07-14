@@ -117,8 +117,7 @@
     }
 
     article {
-        @apply mb-8 rounded-lg px-12 pt-5 pb-2 shadow-md overflow-hidden;
-        @apply bg-white border border-border;
+        @apply mb-3;
     }
 
     blockquote {

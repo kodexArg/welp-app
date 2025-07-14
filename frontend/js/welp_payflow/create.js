@@ -95,5 +95,5 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Initialize
     resetAll();
-    htmx.ajax('GET', '/payflow/htmx/create/udn/', '#udn-container');
+    htmx.ajax('GET', '/payflow/htmx/udn/', '#udn-container');
 });

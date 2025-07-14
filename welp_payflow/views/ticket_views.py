@@ -42,7 +42,13 @@ class TicketDetailView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         detail_context = get_ticket_detail_context_data(self.request, self.object)
-        return {**context, **detail_context}
+        
+        final_context = {**context, **detail_context}
+        
+        view_only = self.request.GET.get('view_only', 'false').lower() == 'true'
+        final_context['view_only'] = view_only
+        
+        return final_context
 
     def post(self, request, *args, **kwargs):
         from ..utils import process_ticket_response
