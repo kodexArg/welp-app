@@ -39,7 +39,7 @@ def status_badge(status, label=None, variant=None, system='desk'):
 
 @register.inclusion_tag('components/payflow/ticket_message.html')
 def ticket_message(message):
-    return {'message': message}
+    return {'message': message, 'ticket_id': message.ticket.id}
 
 @register.inclusion_tag('components/payflow/ticket_actions.html', takes_context=True)
 def ticket_actions(context, ticket):
@@ -259,3 +259,7 @@ def ticket_summary_info(ticket):
         'feedback_count': feedback_count,
         'has_estimated_amount': has_estimated_amount,
     }
+
+@register.inclusion_tag('components/payflow/mermaid_workflow.html')
+def mermaid_workflow():
+    return {}

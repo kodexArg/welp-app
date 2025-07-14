@@ -796,7 +796,7 @@
     }
 
     .ticket-detail-response-section {
-        @apply bg-white rounded-lg border border-forest-200 shadow-sm p-6;
+        @apply mb-3;
     }
 
     .ticket-response-form {
@@ -1133,5 +1133,27 @@
     .attachment-preview-note {
         @apply text-sm;
         @apply text-primary font-[var(--font-ui)];
+    }
+}
+
+/* Mermaid Workflow Container */
+.mermaid-workflow-container {
+    @apply mb-3;
+}
+
+/* Mermaid Diagrams - Diagramas Mermaid */
+.mermaid svg {
+    max-width: 100%;
+    height: auto;
+}
+
+.mermaid svg text {
+    text-transform: uppercase;
+}
+
+/* Animations for Mermaid */
+@keyframes dash {
+    to {
+        stroke-dashoffset: 0;
     }
 }
