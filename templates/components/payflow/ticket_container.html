@@ -1,124 +1,31 @@
-{% load i18n %}
 {% load payflow_tags %}
 
+<details class="ticket-container" open>
+    <summary class="ticket-header">
+        <div class="ticket-title">
+            <i class="ticket-caret"></i>
+            {{ ticket.title }}
+        </div>
+        <div class="ticket-info">
+            {% ticket_summary_info ticket %}
+            <span class="ticket-tag ticket-tag--udn">{{ ticket.udn.name }}</span>
+            <span class="ticket-tag ticket-tag--sector">{{ ticket.sector.name }}</span>
+            <span class="ticket-tag ticket-tag--category">{{ ticket.accounting_category.name }}</span>
 
-{% if expanded %}
-    <article class="ticket-messages">
-        <div class="ticket-summary-detail">
-            <div class="ticket-title-detail">
-                {{ ticket.title }}
-            </div>
-            <div class="ticket-info">
-                {% ticket_summary_info ticket %}
-                <span class="tags-ticket-udn">{{ ticket.udn.name }}</span>
-                <span class="tags-ticket-sector">{{ ticket.sector.name }}</span>
-                <span class="tags-ticket-category">{{ ticket.accounting_category.name }}</span>
-                {% with status_info=ticket|get_status_flow %}
-                <span class="status status-{{ ticket.status }} tag" style="color: {{ PAYFLOW_STATUSES|get_item:ticket.status|get_item:'color' }};">
-                    <span class="mr-1">{{ PAYFLOW_STATUSES|get_item:ticket.status|get_item:'icon' }}</span>
-                    {{ ticket.status|get_status_label }}
+            {% with status_info=ticket|get_status_flow %}
+                <span class="ticket-status ticket-status--{{ status_info.status }}">
+                    <i class="{{ status_info.icon }} mr-1"></i>
+                    {{ status_info.label }}
                 </span>
-                {% endwith %}
-            </div>
+            {% endwith %}
         </div>
-        
-        <div class="ticket-details-detail">
-            <div class="ticket-details-content">
-                {% for message in ticket.messages.all %}
-                    {% ticket_message message %}
-                {% empty %}
-                    <div class="ticket-no-messages">
-                        ⚠️ Este ticket no tiene mensajes
-                    </div>
-                {% endfor %}
-                {% if not hide_buttons %}
-                <div class="ticket-action-row flex justify-between items-center gap-2 mt-4 mb-2">
-                    {% with status_info=ticket|get_status_flow %}
-                    <span class="ticket-action-closed">
-                        <i class="ticket-action-icon-closed"></i>
-                        {{ status_info.current_action }}
-                    </span>
-                    {% endwith %}
-                    <div class="flex items-center gap-2">
-                        {% ticket_actions ticket %}
-                        <a href="{% url 'welp_payflow:detail' ticket.id %}?view_only=true" class="bg-surface border border-border text-text text-xs rounded-full py-1 px-3 inline-flex items-center font-medium hover:brightness-110 no-underline transition-all duration-200">
-                            <i class="fa-solid fa-eye mr-2"></i>
-                            <span>Ver</span>
-                        </a>
-                    </div>
-                </div>
-                {% else %}
-                <div class="ticket-action-row flex justify-end items-center mt-4 mb-2">
-                    {% with status_info=ticket|get_status_flow %}
-                    <span class="ticket-action-closed">
-                        <i class="ticket-action-icon-closed"></i>
-                        {{ status_info.current_action }}
-                    </span>
-                    {% endwith %}
-                </div>
-                {% endif %}
-            </div>
+    </summary>
+    <div class="ticket-details">
+        {% for message in ticket.messages.all %}
+            {% include 'components/payflow/ticket_message.html' with message=message %}
+        {% endfor %}
+        <div class="ticket-actions">
+            {% ticket_actions ticket %}
         </div>
-    </article>
-{% else %}
-<article class="ticket-container">
-    <details>
-        <summary class="ticket-summary">
-            <div class="ticket-title">
-                <i class="ticket-caret"></i>
-                {{ ticket.title }}
-            </div>
-            <div class="ticket-info">
-                {% ticket_summary_info ticket %}
-                <span class="tags-ticket-udn">{{ ticket.udn.name }}</span>
-                <span class="tags-ticket-sector">{{ ticket.sector.name }}</span>
-                <span class="tags-ticket-category">{{ ticket.accounting_category.name }}</span>
-                {% with status_info=ticket|get_status_flow %}
-                <span class="status status-{{ ticket.status }} tag" style="color: {{ PAYFLOW_STATUSES|get_item:ticket.status|get_item:'color' }};">
-                    <span class="mr-1">{{ PAYFLOW_STATUSES|get_item:ticket.status|get_item:'icon' }}</span>
-                    {{ ticket.status|get_status_label }}
-                </span>
-                {% endwith %}
-            </div>
-        </summary>
-        
-        <div class="ticket-details">
-            <div class="ticket-details-content">
-                {% for message in ticket.messages.all %}
-                    {% ticket_message message %}
-                {% empty %}
-                    <div class="ticket-no-messages">
-                        ⚠️ Este ticket no tiene mensajes
-                    </div>
-                {% endfor %}
-                {% if not hide_buttons %}
-                <div class="ticket-action-row flex justify-between items-center gap-2 mt-4 mb-2">
-                    {% with status_info=ticket|get_status_flow %}
-                    <span class="ticket-action-closed">
-                        <i class="ticket-action-icon-closed"></i>
-                        {{ status_info.current_action }}
-                    </span>
-                    {% endwith %}
-                    <div class="flex items-center gap-2">
-                        {% ticket_actions ticket %}
-                        <a href="{% url 'welp_payflow:detail' ticket.id %}?view_only=true" class="bg-surface border border-border text-text text-xs rounded-full py-1 px-3 inline-flex items-center font-medium hover:brightness-110 no-underline transition-all duration-200">
-                            <i class="fa-solid fa-eye mr-2"></i>
-                            <span>Ver</span>
-                        </a>
-                    </div>
-                </div>
-                {% else %}
-                <div class="ticket-action-row flex justify-end items-center mt-4 mb-2">
-                    {% with status_info=ticket|get_status_flow %}
-                    <span class="ticket-action-closed">
-                        <i class="ticket-action-icon-closed"></i>
-                        {{ status_info.current_action }}
-                    </span>
-                    {% endwith %}
-                </div>
-                {% endif %}
-            </div>
-        </div>
-    </details>
-</article>
-{% endif %}
+    </div>
+</details>

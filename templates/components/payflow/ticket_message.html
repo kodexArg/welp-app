@@ -1,60 +1,22 @@
 {% load format_tags %}
 {% load payflow_tags %}
 <div class="ticket-message">
-    {% if message.body %}
-        <span class="message-author">
-            <i class="user-icon"></i>
-            {{ message.status|get_status_label }} por
-            {% if message.user %}
-                {% if message.user.first_name and message.user.last_name %}
-                {{ message.user.first_name }} {{ message.user.last_name }}
-                {% else %}
-                    {{ message.user.username }}
-                {% endif %}
-            {% else %}
-                Usuario eliminado
-            {% endif %}
+    <span class="ticket-message__author">
+        <i class="ticket-message__author-icon fa-solid fa-user"></i>
+        {{ message.author.get_full_name|default:message.author.username }}
+    </span>
+    <div class="ticket-message__body">
+        {{ message.body }}
+        <span class="ticket-message__date">
+            {{ message.created_on|timesince }}
         </span>
-        <div class="ticket-message-body">
-            {{ message.body }}
-            <span class="ticket-message-date">
-                {{ message.created_on|relative_date }}
-            </span>
-        </div>
-    {% else %}
-        <div class="flex items-baseline justify-between">
-            <span class="message-author">
-                <i class="user-icon"></i>
-                {{ message.status|get_status_label }} por
-                {% if message.user %}
-                    {% if message.user.first_name and message.user.last_name %}
-                    {{ message.user.first_name }} {{ message.user.last_name }}
-                    {% else %}
-                        {{ message.user.username }}
-                    {% endif %}
-                {% else %}
-                    Usuario eliminado
-                {% endif %}
-            </span>
-            <span class="text-[10px] text-forest-400 italic font-sans mr-2">
-                {{ message.created_on|relative_date }}
-            </span>
-        </div>
-    {% endif %}
+    </div>
     {% if message.attachments.exists %}
         <div class="message-attachments">
             {% for attachment in message.attachments.all %}
-                <a href="{% url 'welp_payflow:attachment' ticket_id attachment.id %}" class="attachment-link">
-                    <i class="fa-solid fa-paperclip attachment-icon mr-1"></i>
-                    <span class="attachment-name">
-                        {% with basename=attachment.file.name|basename %}
-                            {% if basename|length > 30 %}
-                                {{ basename|slice:":25" }}...{{ basename|slice:"-5:" }}
-                            {% else %}
-                                {{ basename }}
-                            {% endif %}
-                        {% endwith %}
-                    </span>
+                <a href="{{ attachment.file.url }}" class="attachment-link" target="_blank">
+                    <i class="attachment-icon"></i>
+                    <span class="attachment-name">{{ attachment.file.name|basename }}</span>
                 </a>
             {% endfor %}
         </div>

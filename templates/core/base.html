@@ -9,7 +9,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Welp App{% endblock %}</title>
+    <title>{% block title %}Welp{% endblock %}</title>
     <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
     
     <!-- PRELOAD CRÍTICO: Fuente del logo para evitar FOUC -->
@@ -21,6 +21,14 @@
     
     <link rel="stylesheet" href="{% vite_asset_url 'frontend/main.css' %}">
     
+    {% vite_asset 'frontend/css/variables.css' %}
+    {% vite_asset 'frontend/css/themes.css' %}
+    {% vite_asset 'frontend/css/base.css' %}
+    {% vite_asset 'frontend/css/components.css' %}
+    {% vite_asset 'frontend/css/components/ticket.css' %}
+    {% vite_asset 'frontend/css/navbar.css' %}
+    {% vite_asset 'frontend/css/dev.css' %}
+    {% vite_asset 'frontend/css/animations.css' %}
     
     {% vite_hmr_client %}
     {% vite_asset 'frontend/main.js' %}

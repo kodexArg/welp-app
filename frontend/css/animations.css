@@ -26,28 +26,6 @@
     animation-delay: 1000ms;
 }
 
-@utility button-effects {
-    @apply hover:scale-[1.05] hover:brightness-110;
-    @apply active:scale-95;
-    @apply transition-all duration-300;
-}
-
-@utility button-effects-minimal {
-    @apply hover:scale-[1.02];
-    @apply active:scale-98;
-    @apply transition-all duration-200;
-}
-
-@utility card-hover-lift {
-    @apply hover:shadow-lg hover:-translate-y-0.5;
-    @apply transition-all duration-200;
-}
-
-@utility app-hover-scale {
-    @apply hover:scale-[1.02];
-    @apply transition-all duration-300;
-}
-
 @utility dev-content-slide {
     @apply overflow-hidden;
 }
