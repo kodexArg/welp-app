@@ -3,7 +3,7 @@ from django.urls import reverse
 
 register = template.Library()
 
-@register.inclusion_tag('components/core/brand-logo.html')
+@register.inclusion_tag('core/components/brand-logo.html')
 def brand_logo(show_text=True, current_namespace=None):
     """
     Componente de logo de marca con animación
@@ -25,7 +25,7 @@ def brand_logo(show_text=True, current_namespace=None):
         'brand_text': brand_text,
     }
 
-@register.inclusion_tag('components/core/nav-link.html')
+@register.inclusion_tag('core/components/nav-link.html')
 def nav_link(link, icon, label, current_view=None, always_show_label=False):
     """
     Componente de enlace de navegación que se ilumina cuando está seleccionado
@@ -52,7 +52,7 @@ def nav_link(link, icon, label, current_view=None, always_show_label=False):
         'always_show_label': always_show_label,
     }
 
-@register.inclusion_tag('components/core/logout.html')
+@register.inclusion_tag('core/components/logout.html')
 def logout_link(user=None, active=False):
     """
     Componente de enlace de logout
@@ -67,7 +67,7 @@ def logout_link(user=None, active=False):
         'active': active,
     }
 
-@register.inclusion_tag('components/core/separator.html')
+@register.inclusion_tag('core/components/separator.html')
 def separator(custom_classes=""):
     """
     Componente separador para navbar
@@ -80,7 +80,7 @@ def separator(custom_classes=""):
         'custom_classes': custom_classes,
     }
 
-@register.inclusion_tag('components/core/button.html')
+@register.inclusion_tag('core/components/button.html')
 def button(text, variant='primary', href=None, icon=None, onclick=None, type='button', target=None, disabled=False, extra_classes=""):
     """
     Componente de botón genérico

@@ -7,7 +7,7 @@ from welp_payflow.utils import get_ticket_actions_context
 
 register = template.Library()
 
-@register.inclusion_tag('components/payflow/radio-button.html')
+@register.inclusion_tag('welp_payflow/components/radio-button.html')
 def radio_button(target, id, label, next_target, visible=True):
     """Componente radio-button HTMX usado en Welp Payflow."""
     try:
@@ -23,7 +23,7 @@ def radio_button(target, id, label, next_target, visible=True):
         'visible': visible,
     }
 
-@register.inclusion_tag('components/payflow/status-badge.html')
+@register.inclusion_tag('welp_payflow/components/status-badge.html')
 def status_badge(status, label=None, variant=None, system='desk'):
     """Badge de estado para tickets."""
     if system == 'payflow':
@@ -37,11 +37,11 @@ def status_badge(status, label=None, variant=None, system='desk'):
         'system': system,
     }
 
-@register.inclusion_tag('components/payflow/mermaid_workflow.html')
+@register.inclusion_tag('welp_payflow/components/mermaid_workflow.html')
 def mermaid_workflow():
     return {}
 
-@register.inclusion_tag('components/payflow/action-button.html')
+@register.inclusion_tag('welp_payflow/components/action-button.html')
 def payflow_action_button(ticket, action_type, user_can_transition=True, is_owner=False):
     action_info = PAYFLOW_STATUSES.get(action_type, {}).get('ui', {})
     if not action_info:

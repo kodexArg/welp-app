@@ -7,11 +7,11 @@ from welp_desk.constants import DESK_STATUSES
 
 register = template.Library()
 
-@register.inclusion_tag('components/payflow/ticket_message.html')
+@register.inclusion_tag('welp_payflow/components/ticket_message.html')
 def ticket_message(message):
     return {'message': message, 'ticket_id': message.ticket.id}
 
-@register.inclusion_tag('components/payflow/ticket_message_input.html', takes_context=True)
+@register.inclusion_tag('welp_payflow/components/ticket_message_input.html', takes_context=True)
 def ticket_message_input(context, ticket, response_type, user_can_transition=True, is_owner=False, comment_value='', cancel_url=None, cancel_text="Cancelar", hidden_fields=None):
     request = context['request']
     ui_key = response_type
@@ -81,12 +81,12 @@ def ticket_message_input(context, ticket, response_type, user_can_transition=Tru
         'form_fields': form_fields,
     }
 
-@register.inclusion_tag('components/payflow/ticket_actions.html', takes_context=True)
+@register.inclusion_tag('welp_payflow/components/ticket_actions.html', takes_context=True)
 def ticket_actions(context, ticket):
     user = context.get('request').user
     return get_ticket_actions_context(user, ticket)
 
-@register.inclusion_tag('components/payflow/ticket_container.html', takes_context=True)
+@register.inclusion_tag('welp_payflow/components/ticket_container.html', takes_context=True)
 def ticket_container(context, ticket, expanded=False, hide_buttons=False):
     return {
         'ticket': ticket,
@@ -95,11 +95,11 @@ def ticket_container(context, ticket, expanded=False, hide_buttons=False):
         'request': context.get('request'),
     }
 
-@register.inclusion_tag('components/payflow/ticket_empty.html')
+@register.inclusion_tag('welp_payflow/components/ticket_empty.html')
 def ticket_empty():
     return {}
 
-@register.inclusion_tag('components/payflow/ticket_status.html')
+@register.inclusion_tag('welp_payflow/components/ticket_status.html')
 def ticket_status(ticket):
     status = ticket.status or 'open'
     status_info = PAYFLOW_STATUSES.get(status, {})
@@ -156,7 +156,7 @@ def ticket_comment_count(ticket):
         return format_html('<span class="ml-2 align-middle text-xs text-sky-400"><i class="fa fa-comments"></i><sub>{}</sub></span>', count)
     return format_html('')
 
-@register.inclusion_tag('components/payflow/ticket_summary_info.html')
+@register.inclusion_tag('welp_payflow/components/ticket_summary_info.html')
 def ticket_summary_info(ticket):
     feedback_count = ticket.messages.filter(status='feedback').count()
     has_estimated_amount = ticket.estimated_amount and ticket.estimated_amount > 0
