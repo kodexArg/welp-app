@@ -74,9 +74,14 @@
 
     .nav-link-label {
         font-family: var(--font-ui);
-        @apply ml-1.5 text-2xl tracking-wide uppercase;
+        @apply ml-1.5 text-sm font-medium tracking-wider uppercase;
     }
     
+    .nav-link-brand {
+        font-family: var(--font-brand);
+        @apply ml-1.5 text-3xl tracking-wide uppercase;
+    }
+
     .nav-link-label-special {
         @apply hidden md:inline font-bold tracking-[0.025em] normal-case antialiased transform translate-y-[0.1em];
         font-family: var(--font-brand) !important;
@@ -85,7 +90,7 @@
 
     .logout-link-label {
         font-family: var(--font-ui);
-        @apply ml-1.5 align-middle text-2xl tracking-wide normal-case;
+        @apply ml-1.5 align-middle text-sm font-medium tracking-wider uppercase;
     }
 
     .nav-separator {
