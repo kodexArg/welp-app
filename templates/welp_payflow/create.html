@@ -28,9 +28,13 @@
 
             <div id="fields-body-container"></div>
 
-            <div class="component-buttons">
-                <button type="button" class="button button-cancel" id="reset-form-btn">Cancelar</button>
-                <button type="submit" form="payflow-form" class="button">Crear Solicitud</button>
+            <div class="component-buttons max-w-sm mx-auto mt-12">
+                <button type="button" class="button button-cancel" id="reset-form-btn">
+                    <i class="fa fa-times mr-2" aria-hidden="true"></i>Cancelar
+                </button>
+                <button type="submit" form="payflow-form" class="button">
+                    <i class="fa fa-clipboard-check mr-2" aria-hidden="true"></i>Crear Solicitud
+                </button>
             </div>
             
             {% if form.non_field_errors %}

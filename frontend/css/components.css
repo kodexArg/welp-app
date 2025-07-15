@@ -43,10 +43,9 @@
        Buttons
        ========================================================================== */
     .button {
-        @apply inline-flex items-center justify-center bg-transparent border-none;
-        @apply uppercase font-medium text-lg text-zinc-500 tracking-wide;
+        @apply uppercase text-zinc-500 tracking-wide;
         @apply transition-transform duration-500 ease-in-out;
-        font-family: 'Noto Sans local';
+        font-family: var(--font-ui);
         text-shadow: 0 1px 2px rgb(0 0 0 / 0.1);
         font-stretch: 85%;
     }
