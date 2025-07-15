@@ -29,12 +29,12 @@
             <div id="fields-body-container"></div>
 
             <div class="component-buttons">
-                <button type="button" class="button-secondary" id="reset-form-btn">Limpiar</button>
-                <button type="submit" form="payflow-form" class="button-primary">Crear Solicitud</button>
+                <button type="button" class="button button-cancel" id="reset-form-btn">Cancelar</button>
+                <button type="submit" form="payflow-form" class="button">Crear Solicitud</button>
             </div>
             
             {% if form.non_field_errors %}
-            <div class="component-buttons mx-auto mt-4">
+            <div class="component-buttons">
                 {{ form.non_field_errors }}
             </div>
             {% endif %}

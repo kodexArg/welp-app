@@ -1,4 +1,7 @@
 @layer components {
+    .component-buttons {
+        @apply flex flex-col sm:flex-row gap-4 justify-between;
+    }
     /* ==========================================================================
        Font & Text
        ========================================================================== */
@@ -39,95 +42,41 @@
     /* ==========================================================================
        Buttons
        ========================================================================== */
-    .button-primary {
-        @apply px-6 py-2 rounded-lg;
-        @apply bg-primary text-white;
-        @apply uppercase tracking-wide font-medium font-ui;
-        @apply transition-all duration-300 hover:scale-[1.05] hover:brightness-110 active:scale-95 cursor-pointer border-none;
+    .button {
+        @apply inline-flex items-center justify-center bg-transparent border-none;
+        @apply uppercase font-medium text-lg text-zinc-500 tracking-wide;
+        @apply transition-transform duration-500 ease-in-out;
+        font-family: 'Noto Sans local';
+        text-shadow: 0 1px 2px rgb(0 0 0 / 0.1);
+        font-stretch: 85%;
     }
 
-    .button-primary:disabled {
-        @apply opacity-50 cursor-not-allowed hover:scale-100 hover:brightness-100 active:scale-100 transition-none;
+    .button:not(:disabled) {
+        @apply cursor-pointer;
     }
 
-    .button-secondary {
-        @apply px-6 py-2 rounded-lg font-medium border-2 cursor-pointer;
-        @apply bg-transparent text-primary border-primary;
-        @apply transition-all duration-300;
-        @apply hover:scale-[1.02] hover:brightness-110;
-        @apply active:scale-98;
+    .button:hover:not(:disabled) {
+        @apply transform scale-125;
     }
 
-    .button-secondary:hover {
-        @apply bg-primary text-white;
+    .button:active:not(:disabled) {
+        @apply transform translate-y-0 scale-[1.02] shadow-sm;
     }
 
-    .button-secondary:disabled {
-        @apply opacity-50 cursor-not-allowed;
-        @apply hover:scale-100 hover:brightness-100;
-        @apply active:scale-100;
-        @apply transition-none;
-        @apply hover:bg-transparent hover:text-primary;
+    .button:disabled {
+        @apply opacity-60 cursor-not-allowed;
     }
     
-    .button-success {
-        @apply px-6 py-2 rounded-lg font-medium border-none cursor-pointer;
-        @apply bg-green-600 text-white;
-        @apply transition-all duration-300;
-        @apply hover:scale-[1.05] hover:brightness-110;
-        @apply active:scale-95;
-    }
-
-    .button-success:disabled {
-        @apply opacity-50 cursor-not-allowed;
-        @apply hover:scale-100 hover:brightness-100;
-        @apply active:scale-100;
-        @apply transition-none;
-    }
-
-    .button-success[disabled] {
-        @apply text-zinc-500 cursor-not-allowed opacity-50;
-        @apply bg-gray-600;
-    }
-
     .button-cancel {
-        @apply px-6 py-2 rounded-lg font-medium border-2 cursor-pointer;
-        @apply bg-transparent text-accent border-accent;
-        @apply transition-all duration-300;
-        @apply hover:scale-[1.02] hover:brightness-110;
-        @apply active:scale-98;
-    }
-
-    .button-cancel:hover {
-        @apply bg-accent text-white;
-    }
-
-    .button-cancel:disabled {
-        @apply opacity-50 cursor-not-allowed;
-        @apply hover:scale-100 hover:brightness-100;
-        @apply active:scale-100;
-        @apply transition-none;
-        @apply hover:bg-transparent hover:text-accent;
+        @apply text-earth-700;
     }
 
     .button-minimal {
-        @apply px-4 py-2 rounded-lg font-medium border-none cursor-pointer;
-        @apply bg-transparent text-primary border border-transparent;
-        @apply transition-all duration-200;
-        @apply hover:scale-[1.02] hover:brightness-110;
-        @apply active:scale-98;
+        @apply bg-transparent text-primary;
     }
 
-    .button-minimal:hover {
-        @apply bg-surface border-border;
-    }
-
-    .button-minimal:disabled {
-        @apply opacity-50 cursor-not-allowed;
-        @apply hover:scale-100;
-        @apply active:scale-100;
-        @apply transition-none;
-        @apply hover:bg-transparent hover:border-transparent;
+    .button-minimal:hover:not(:disabled) {
+        @apply bg-surface;
     }
 
     .form-label {
