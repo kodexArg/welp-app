@@ -11,10 +11,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Welp App{% endblock %}</title>
     <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+
+    <link rel="preload" href="{% static 'fonts/webfonts/fa-brands-400.woff2' %}" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="{% static 'fonts/webfonts/fa-solid-900.woff2' %}" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="{% static 'fonts/webfonts/fa-regular-400.woff2' %}" as="font" type="font/woff2" crossorigin>
+
+    <style>
+        .no-fouc { visibility: hidden; opacity: 0; }
+    </style>
+    <script>
+        document.documentElement.classList.add('no-fouc');
+        document.addEventListener('DOMContentLoaded', () => {
+            document.documentElement.classList.remove('no-fouc');
+        });
+    </script>
     
     {% vite_asset 'frontend/main.css' %}
     {% vite_hmr_client %}
-    {% vite_asset 'frontend/main.js' %}
     
     <meta name="htmx-config" content='{"headers": {"X-CSRFToken": "{{ csrf_token }}"}}'>
     {% htmx_script %}
@@ -39,6 +52,7 @@
         {% block footer %}{% endblock %}
     </footer>
     
+    {% vite_asset 'frontend/main.js' defer=True %}
     {% block scripts %}{% endblock %}
 </body>
 </html> 

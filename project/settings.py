@@ -52,7 +52,7 @@ CSRF_USE_SESSIONS = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 INSTALLED_APPS = [
-    'core',
+    'django_vite',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -62,7 +62,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'rest_framework',
     'django_htmx',
-    'django_vite',
+    'core',
     'django_extensions',
     'storages',
     'api',
