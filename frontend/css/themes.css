@@ -14,11 +14,11 @@
   /* ========================================================================
      Tipografía semántica
      ======================================================================== */
-  --font-brand: 'Grandstander local', 'Grandstander', 'Comic Sans MS', 'Marker Felt', cursive;
-  --font-body: 'Lato local', sans-serif;
-  --font-title: 'Roboto Condensed local', sans-serif;
-  --font-ui: 'Roboto Condensed local', sans-serif;
-  --font-mono: 'Roboto Mono local', monospace;
+  --font-brand: 'Grandstander local';
+  --font-body: 'Lato local';
+  --font-title: 'Nunito local';
+  --font-ui: 'Roboto Condensed local';
+  --font-mono: 'Roboto Mono local';
 
   /* ========================================================================
      Tamaños de fuente y alturas de línea (line-height)

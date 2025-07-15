@@ -12,12 +12,6 @@
         font-synthesis: none;
     }
 
-    .brand-text-override {
-        @apply font-bold tracking-[0.025em] normal-case antialiased;
-        font-family: var(--font-brand) !important;
-        font-feature-settings: 'liga' 1 !important;
-    }
-
     @keyframes brief-glow {
         0%, 4%, 100% {
             filter: brightness(1) drop-shadow(0 0 0 white);
@@ -60,6 +54,42 @@
     }
     nav::-webkit-scrollbar-thumb:hover {
         @apply bg-[var(--color-accent)];
+    }
+
+    .nav-link {
+        @apply relative inline-flex items-center justify-center px-1.5 py-1 no-underline transition-colors duration-200;
+    }
+
+    .nav-link-content {
+        @apply flex items-center text-[var(--navbar-link-text)] transition-colors duration-200 group-hover:text-[var(--navbar-link-hover)];
+    }
+
+    .nav-link-content.active {
+        @apply !text-[var(--navbar-link-active)] translate-x-[-0.05rem] translate-y-[0.05rem];
+    }
+
+    .nav-link-icon {
+        @apply align-middle text-xl sm:text-2xl md:text-xl;
+    }
+
+    .nav-link-label {
+        font-family: var(--font-ui);
+        @apply ml-1.5 text-2xl tracking-wide uppercase;
+    }
+    
+    .nav-link-label-special {
+        @apply hidden md:inline font-bold tracking-[0.025em] normal-case antialiased leading-[1.2] min-h-[1.2em];
+        font-family: var(--font-brand) !important;
+        font-feature-settings: 'liga' 1 !important;
+    }
+
+    .logout-link-label {
+        font-family: var(--font-ui);
+        @apply ml-1.5 align-middle text-2xl tracking-wide normal-case;
+    }
+
+    .nav-separator {
+        @apply mx-2 font-light text-base text-white opacity-90 sm:mx-2;
     }
 
 }

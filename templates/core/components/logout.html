@@ -1,7 +1,7 @@
-<a href="#" onclick="event.preventDefault();document.getElementById('logout-form').submit();" class="group relative inline-flex items-center justify-center px-1.5 py-1 font-ui transition-colors duration-200 no-underline">
-    <div class="flex items-center text-[var(--navbar-link-text)] group-hover:text-[var(--navbar-link-hover)] transition-colors duration-200">
-        <i class="text-xl sm:text-2xl md:text-xl fa fa-sign-out-alt align-middle"></i>
-        <span class="ml-1.5 text-xl font-semibold align-middle tracking-wide">
+<a href="#" onclick="event.preventDefault();document.getElementById('logout-form').submit();" class="nav-link group">
+    <div class="nav-link-content">
+        <i class="nav-link-icon fa fa-sign-out-alt"></i>
+        <span class="logout-link-label">
             {% if user and user.first_name %}
                 {% if user.first_name|length > 8 %}
                     {{ user.first_name|slice:":6" }}...

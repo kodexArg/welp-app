@@ -36,9 +36,9 @@
                 
             {% comment %} Navbar general (Core o sin namespace específico) {% endcomment %}
             {% else %}
-                {% nav_link "welp_desk:index" "fa fa-headset" "WelpDesk" current_view=request.resolver_match.view_name %}
+                {% nav_link "welp_desk:index" "fa fa-headset" "Desk" current_view=request.resolver_match.view_name %}
                 {% separator %}
-                {% nav_link "welp_payflow:index" "fa fa-user-check" "Welp Payflow" current_view=request.resolver_match.view_name %}
+                {% nav_link "welp_payflow:index" "fa fa-user-check" "Payflow" current_view=request.resolver_match.view_name %}
                 {% separator %}
                 {% if user.is_staff %}
                     {% nav_link "core:dev" "fa fa-tools" "Dev" current_view=request.resolver_match.view_name %}
