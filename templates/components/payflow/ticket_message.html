@@ -3,7 +3,11 @@
 <div class="ticket-message">
     <span class="ticket-message__author">
         <i class="ticket-message__author-icon fa-solid fa-user"></i>
-        {{ message.author.get_full_name|default:message.author.username }}
+        {% if message.user %}
+            {{ message.user.get_full_name|default:message.user.username }}
+        {% else %}
+            Usuario eliminado
+        {% endif %}
     </span>
     <div class="ticket-message__body">
         {{ message.body }}
