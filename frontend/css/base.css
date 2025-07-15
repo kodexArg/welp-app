@@ -117,7 +117,7 @@
 
     article {
         @apply mb-3 px-3 pt-2 pb-3;
-        @apply bg-white rounded-2xl border border-border shadow-sm;
+        @apply bg-white rounded-2xl border-border shadow-md;
         @apply flex flex-col justify-center;
     }
 

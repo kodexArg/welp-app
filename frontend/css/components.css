@@ -21,7 +21,7 @@
        Radio Button
        ========================================================================== */
     .radio-button-group {
-        @apply flex flex-wrap w-full gap-x-3 gap-y-1.5;
+        @apply flex flex-wrap w-full gap-x-2 gap-y-0.5;
     }
 
     .radio-button-group > div {
@@ -30,9 +30,9 @@
 
     .radio-button {
         @apply inline-flex items-center justify-center w-full select-none;
-        @apply px-5 py-3 rounded border shadow-md;
-        @apply bg-surface text-text border-border;
-        @apply uppercase whitespace-nowrap tracking-wider text-lg font-semibold font-ui;
+        @apply px-5 py-3 rounded border shadow-sm;
+        @apply bg-bg text-text border-border;
+        @apply uppercase whitespace-nowrap tracking-wider text-lg font-ui;
         @apply transition-all duration-200 cursor-pointer hover:shadow-lg hover:scale-[1.03] hover:brightness-90 active:scale-95;
     }
     .radio-button.peer-checked, .peer:checked + .radio-button {
