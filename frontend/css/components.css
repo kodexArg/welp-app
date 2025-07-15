@@ -1,18 +1,3 @@
-@layer utilities {
-    .button-effects {
-        @apply transition-all duration-300 hover:scale-[1.05] hover:brightness-110 active:scale-95;
-    }
-    .button-effects-minimal {
-        @apply transition-all duration-200 hover:scale-[1.02] active:scale-98;
-    }
-    .card-hover-lift {
-        @apply transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5;
-    }
-    .app-hover-scale {
-        @apply transition-all duration-300 hover:scale-[1.02];
-    }
-}
-
 @layer components {
     /* ==========================================================================
        Font & Text
@@ -58,7 +43,7 @@
         @apply px-6 py-2 rounded-lg;
         @apply bg-primary text-white;
         @apply uppercase tracking-wide font-medium font-ui;
-        @apply button-effects cursor-pointer border-none;
+        @apply transition-all duration-300 hover:scale-[1.05] hover:brightness-110 active:scale-95 cursor-pointer border-none;
     }
 
     .button-primary:disabled {
@@ -219,7 +204,7 @@
     .card {
         @apply rounded-lg;
         @apply bg-white border border-border shadow-md;
-        @apply card-hover-lift;
+        @apply transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5;
     }
 
     .card-header {
