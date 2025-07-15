@@ -3,184 +3,167 @@
 {% block title %}{% if user.is_authenticated %}Dashboard{% else %}Bienvenido{% endif %} - Welp App{% endblock %}
 
 {% block content %}
-{% if user.is_authenticated %}
-    <section class="animate-fade-in">
-        <div class="animate-slide-in-bottom animate-delay-200 space-y-6 mt-10">
-            <h3 class="font-title">Aplicaciones</h3>
-            
-            <div class="app-card">
-                <a href="{% url 'welp_desk:index' %}" class="app-card-link">
-                    <div class="app-icon welp-desk">
-                        <i class="fa fa-headset"></i>
-                    </div>
-                    <div class="app-content">
-                        <div class="app-badge">
-                            <h4 class="app-title welp-desk brand-text-override">WelpDesk</h4>
-                        </div>
-                        <p class="app-description">Sistema de soporte y tickets con 6 estados codificados por colores: rojo (abierto), azul (comentado), verde (solucionado), verde claro (autorizado), amarillo (rechazado), gris (cerrado)</p>
-                    </div>
-                </a>
-            </div>
+<div class="bg-slate-950 min-h-screen pb-16">
+    <section class="mb-12">
+        <p class="text-lg text-slate-200 max-w-2xl mx-auto mb-8">Welp App integra soporte técnico y gestión de compras/pagos en una sola plataforma, optimizando los flujos de trabajo de tu organización.</p>
+    </section>
 
-            <div class="app-card">
-                <a href="{% url 'welp_payflow:index' %}" class="app-card-link">
-                    <div class="app-icon welp-payflow">
-                        <i class="fa fa-user-check"></i>
-                    </div>
-                    <div class="app-content">
-                        <div class="app-badge">
-                            <h4 class="app-title welp-payflow brand-text-override">Welp Payflow</h4>
-                        </div>
-                        <p class="app-description">Sistema de pagos y facturación - Se activará automáticamente el tema verde</p>
-                    </div>
-                </a>
+    <section class="mb-16">
+        <h2 class="font-title mb-8 text-slate-100 text-3xl tracking-tight">Aplicaciones Principales</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="app-card bg-white/90 border-2 border-sky-300 rounded-2xl shadow-md p-7 flex flex-col gap-3">
+                <div class="flex items-center gap-3 mb-2">
+                    <span class="inline-flex items-center justify-center bg-sky-100 text-sky-700 rounded-full w-10 h-10 text-2xl"><i class="fa fa-headset"></i></span>
+                    <h3 class="text-2xl font-bold text-sky-400 tracking-tight">Welp Desk</h3>
+                </div>
+                <p class="text-sky-900">Gestión de incidencias técnicas y soporte al cliente. Reporta problemas, sigue su resolución y comunícate con el equipo técnico.</p>
+                <ul class="text-sm text-sky-700 list-disc list-inside mb-2">
+                    <li>Estados: Abierto (rojo), Solucionado (verde), Rechazado (amarillo), Cerrado (gris).</li>
+                    <li>Flujo ágil y simplificado.</li>
+                </ul>
+                <a href="{% url 'welp_desk:index' %}" class="inline-block mt-2 px-4 py-2 rounded-lg bg-sky-600 text-white font-semibold hover:bg-sky-700 transition">Ir a Welp Desk</a>
             </div>
-
-            <div class="app-card">
-                <a href="{% url 'core:dashboard' %}" class="app-card-link">
-                    <div class="app-icon profile">
-                        <i class="fa fa-user"></i>
-                    </div>
-                    <div class="app-content">
-                        <h4 class="app-title profile">Mi Perfil</h4>
-                        <p class="app-description">Configuración de cuenta y perfil</p>
-                    </div>
-                </a>
+            <div class="app-card bg-white/90 border-2 border-forest-400 rounded-2xl shadow-md p-7 flex flex-col gap-3">
+                <div class="flex items-center gap-3 mb-2">
+                    <span class="inline-flex items-center justify-center bg-forest-100 text-forest-700 rounded-full w-10 h-10 text-2xl"><i class="fa fa-user-check"></i></span>
+                    <h3 class="text-2xl font-bold text-forest-600 tracking-tight">Welp Payflow</h3>
+                </div>
+                <p class="text-forest-900">Solicitudes de pago, compras y facturación automatizada. Controla el proceso desde la requisición hasta el pago final.</p>
+                <ul class="text-sm text-forest-700 list-disc list-inside mb-2">
+                    <li>Fases: Abierto, Autorizado, Presupuestado, Rechazado, Pago Autorizado, Procesando Pago, En Envío/Entrega, Cerrado.</li>
+                    <li>Control financiero con múltiples aprobaciones.</li>
+                </ul>
+                <a href="{% url 'welp_payflow:index' %}" class="inline-block mt-2 px-4 py-2 rounded-lg bg-forest-700 text-white font-semibold hover:bg-forest-800 transition">Ir a Welp Payflow</a>
             </div>
-
-            {% if user.is_staff %}
-            <div class="app-card">
-                <a href="/admin/" class="app-card-link">
-                    <div class="app-icon admin">
-                        <i class="fa fa-cog"></i>
-                    </div>
-                    <div class="app-content">
-                        <h4 class="app-title admin">Administración</h4>
-                        <p class="app-description">Panel de administración del sistema</p>
-                    </div>
-                </a>
-            </div>
-
-            <div class="app-card">
-                <a href="{% url 'core:dev' %}" class="app-card-link">
-                    <div class="app-icon dev">
-                        <i class="fa fa-code"></i>
-                    </div>
-                    <div class="app-content">
-                        <h4 class="app-title dev">Desarrollo</h4>
-                        <p class="app-description">Herramientas de desarrollo y testing del sistema de temas</p>
-                    </div>
-                </a>
-            </div>
-            {% endif %}
-        </div>
-
-        <div class="animate-slide-in-bottom animate-delay-200 space-y-6 mt-10">
-            <h3 class="font-title">Info del sistema</h3>
-            <table>
-                <tr>
-                    <th>Entorno</th>
-                    <td>{{ environment }}</td>
-                </tr>
-                <tr>
-                    <th>Django</th>
-                    <td>{{ django_version }}</td>
-                </tr>
-                <tr>
-                    <th>Python</th>
-                    <td>{{ python_version }}</td>
-                </tr>
-                <tr>
-                    <th>Almacenamiento</th>
-                    <td>{{ storage_backend }}</td>
-                </tr>
-                <tr>
-                    <th>Servidor</th>
-                    <td>{{ server_info }}</td>
-                </tr>
-                <tr>
-                    <th>Región AWS</th>
-                    <td>{{ aws_region }}</td>
-                </tr>
-                <tr>
-                    <th>CDN</th>
-                    <td>
-                        {% if cdn_enabled %}
-                            <span class="tag tag-sector">Habilitado</span>
-                        {% else %}
-                            <span class="tag">Deshabilitado</span>
-                        {% endif %}
-                    </td>
-                </tr>
-                <tr>
-                    <th>HTMX</th>
-                    <td>
-                        {% if htmx_enabled %}
-                            <span class="tag tag-sector">Activo</span>
-                        {% else %}
-                            <span class="tag">Inactivo</span>
-                        {% endif %}
-                    </td>
-                </tr>
-                <tr>
-                    <th>Sistema de Temas</th>
-                    <td>
-                        <span class="tag tag-sector">Activo</span>
-                        <small>(Cambio automático por app)</small>
-                    </td>
-                </tr>
-            </table>
         </div>
     </section>
 
-{% else %}
-    <section class="animate-fade-in">
-        
-        <div class="animate-slide-in-bottom animate-delay-200 space-y-6 mt-10">
-            <div class="app-card">
-                <a href="{% url 'core:login' %}" class="app-card-link">
-                    <div class="app-icon login">
-                        <i class="fa fa-sign-in-alt"></i>
-                    </div>
-                    <div class="app-content">
-                        <h4 class="app-title login">Iniciar Sesión</h4>
-                        <p class="app-description">Accede a tu cuenta para usar todas las aplicaciones</p>
-                    </div>
-                </a>
+    <section class="mb-16">
+        <h2 class="font-title mb-8 text-slate-100 text-2xl tracking-tight">Flujo de Tickets y Roles</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="bg-sky-50 border border-sky-200 rounded-xl p-6 flex flex-col gap-2 shadow-sm">
+                <div class="flex items-center gap-2 mb-1">
+                    <span class="text-sky-600 text-lg"><i class="fa fa-user"></i></span>
+                    <span class="font-semibold text-sky-800">Usuario Final</span>
+                </div>
+                <p class="text-sky-900 text-sm">Crea y sigue sus propias solicitudes, añade comentarios y confirma la recepción de servicios o productos.</p>
+            </div>
+            <div class="bg-sky-100 border border-sky-300 rounded-xl p-6 flex flex-col gap-2 shadow-sm">
+                <div class="flex items-center gap-2 mb-1">
+                    <span class="text-sky-700 text-lg"><i class="fa fa-tools"></i></span>
+                    <span class="font-semibold text-sky-900">Técnico</span>
+                </div>
+                <p class="text-sky-900 text-sm">Gestiona y resuelve incidencias técnicas, adjunta presupuestos y actualiza el estado de los tickets.</p>
+            </div>
+            <div class="bg-slate-100 border border-slate-300 rounded-xl p-6 flex flex-col gap-2 shadow-sm">
+                <div class="flex items-center gap-2 mb-1">
+                    <span class="text-slate-600 text-lg"><i class="fa fa-user-tie"></i></span>
+                    <span class="font-semibold text-slate-800">Supervisor de Área</span>
+                </div>
+                <p class="text-slate-900 text-sm">Aprueba o rechaza solicitudes iniciales y supervisa el flujo de trabajo de su sector.</p>
+            </div>
+            <div class="bg-forest-50 border border-forest-200 rounded-xl p-6 flex flex-col gap-2 shadow-sm">
+                <div class="flex items-center gap-2 mb-1">
+                    <span class="text-forest-600 text-lg"><i class="fa fa-briefcase"></i></span>
+                    <span class="font-semibold text-forest-800">Gestor de Compras</span>
+                </div>
+                <p class="text-forest-900 text-sm">Adjunta presupuestos, procesa pagos y coordina entregas para solicitudes autorizadas.</p>
+            </div>
+            <div class="bg-slate-200 border border-slate-400 rounded-xl p-6 flex flex-col gap-2 shadow-sm">
+                <div class="flex items-center gap-2 mb-1">
+                    <span class="text-slate-700 text-lg"><i class="fa fa-user-tie"></i></span>
+                    <span class="font-semibold text-slate-900">Gerente</span>
+                </div>
+                <p class="text-slate-900 text-sm">Aprueba pagos finales y cierra tickets, con visión completa de todas las operaciones.</p>
+            </div>
+            <div class="bg-slate-900 border border-slate-700 rounded-xl p-6 flex flex-col gap-2 shadow-sm">
+                <div class="flex items-center gap-2 mb-1">
+                    <span class="text-yellow-400 text-lg"><i class="fa fa-user-secret"></i></span>
+                    <span class="font-semibold text-yellow-100">Director</span>
+                </div>
+                <p class="text-yellow-100 text-sm">Puede ver todos los artículos que ya han sido presupuestados y su firma es requerida para avanzar en el flujo de pagos de importes grandes.</p>
             </div>
         </div>
-        
-        <div class="animate-slide-in-bottom animate-delay-300 space-y-6 mt-10">
-            <h3 class="font-title">Nuestras Aplicaciones</h3>
-            
-            <div class="app-card">
-                <div class="app-card-link">
-                    <div class="app-icon welp-desk">
-                        <i class="fa fa-headset"></i>
-                    </div>
-                    <div class="app-content">
-                        <div class="app-badge">
-                            <h4 class="app-title welp-desk brand-text-override">WelpDesk</h4>
-                        </div>
-                        <p class="app-description">Sistema completo de soporte al cliente con gestión de tickets y estados</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="app-card">
-                <div class="app-card-link">
-                    <div class="app-icon welp-payflow">
-                        <i class="fa fa-user-check"></i>
-                    </div>
-                    <div class="app-content">
-                        <div class="app-badge">
-                            <h4 class="app-title welp-payflow brand-text-override">Welp Payflow</h4>
-                        </div>
-                        <p class="app-description">Solución de pagos y facturación automatizada</p>
-                    </div>
-                </div>
-            </div>
+        <div class="mt-10 max-w-2xl mx-auto">
+            <p class="text-slate-300 text-center text-sm">Las solicitudes se organizan por Unidad de Negocio (UDN) y Sector. Los permisos se heredan automáticamente, simplificando la administración y garantizando que cada solicitud llegue al responsable adecuado.</p>
         </div>
     </section>
-{% endif %}
+
+    <section class="mb-16">
+        <h2 class="font-title mb-8 text-slate-100 text-2xl tracking-tight">Tecnología y Arquitectura</h2>
+        <div class="bg-white/90 border-2 border-slate-400 rounded-2xl shadow-md p-7 flex flex-col gap-3 max-w-2xl mx-auto">
+            <div class="flex items-center gap-3 mb-2">
+                <span class="inline-flex items-center justify-center bg-slate-200 text-slate-700 rounded-full w-10 h-10 text-2xl"><i class="fa fa-cubes"></i></span>
+                <h3 class="text-xl font-bold text-slate-800">Stack Tecnológico</h3>
+            </div>
+            <ul class="text-slate-800 list-disc list-inside mb-2">
+                <li><strong>Backend:</strong> Python 3.11, Django, Gunicorn</li>
+                <li><strong>Base de datos:</strong> PostgreSQL (RDS)</li>
+                <li><strong>Almacenamiento:</strong> S3 + CloudFront</li>
+                <li><strong>Despliegue:</strong> AWS App Runner</li>
+                <li><strong>Frontend:</strong> Vite, Tailwind v4, HTMX, Django Components</li>
+            </ul>
+            <a href="/core/readme" class="text-slate-700 underline text-xs mt-1">Ver README.md para detalles técnicos</a>
+        </div>
+    </section>
+
+    {% if user.is_staff %}
+    <section class="mb-16">
+        <h2 class="font-title mb-8 text-slate-100 text-2xl tracking-tight">Detalles del entorno</h2>
+        <table class="max-w-2xl mx-auto bg-white/90 border border-slate-400 rounded-xl shadow-sm text-sm">
+            <tr>
+                <th class="py-2 px-3 text-left font-bold border-b-2 bg-slate-100 border-slate-300 uppercase tracking-wide text-slate-700">Entorno</th>
+                <td class="py-2 px-3 border-b border-slate-100 text-slate-800">{{ environment }}</td>
+            </tr>
+            <tr>
+                <th class="py-2 px-3 text-left font-bold border-b-2 bg-slate-100 border-slate-300 uppercase tracking-wide text-slate-700">Django</th>
+                <td class="py-2 px-3 border-b border-slate-100 text-slate-800">{{ django_version }}</td>
+            </tr>
+            <tr>
+                <th class="py-2 px-3 text-left font-bold border-b-2 bg-slate-100 border-slate-300 uppercase tracking-wide text-slate-700">Python</th>
+                <td class="py-2 px-3 border-b border-slate-100 text-slate-800">{{ python_version }}</td>
+            </tr>
+            <tr>
+                <th class="py-2 px-3 text-left font-bold border-b-2 bg-slate-100 border-slate-300 uppercase tracking-wide text-slate-700">Almacenamiento</th>
+                <td class="py-2 px-3 border-b border-slate-100 text-slate-800">{{ storage_backend }}</td>
+            </tr>
+            <tr>
+                <th class="py-2 px-3 text-left font-bold border-b-2 bg-slate-100 border-slate-300 uppercase tracking-wide text-slate-700">Servidor</th>
+                <td class="py-2 px-3 border-b border-slate-100 text-slate-800">{{ server_info }}</td>
+            </tr>
+            <tr>
+                <th class="py-2 px-3 text-left font-bold border-b-2 bg-slate-100 border-slate-300 uppercase tracking-wide text-slate-700">Región AWS</th>
+                <td class="py-2 px-3 border-b border-slate-100 text-slate-800">{{ aws_region }}</td>
+            </tr>
+            <tr>
+                <th class="py-2 px-3 text-left font-bold border-b-2 bg-slate-100 border-slate-300 uppercase tracking-wide text-slate-700">CDN</th>
+                <td class="py-2 px-3 border-b border-slate-100 text-slate-800">
+                    {% if cdn_enabled %}
+                        <span class="inline-block px-2 py-1 rounded bg-emerald-100 text-emerald-700">Habilitado</span>
+                    {% else %}
+                        <span class="inline-block px-2 py-1 rounded bg-slate-100 text-slate-500">Deshabilitado</span>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th class="py-2 px-3 text-left font-bold border-b-2 bg-slate-100 border-slate-300 uppercase tracking-wide text-slate-700">HTMX</th>
+                <td class="py-2 px-3 border-b border-slate-100 text-slate-800">
+                    {% if htmx_enabled %}
+                        <span class="inline-block px-2 py-1 rounded bg-emerald-100 text-emerald-700">Activo</span>
+                    {% else %}
+                        <span class="inline-block px-2 py-1 rounded bg-slate-100 text-slate-500">Inactivo</span>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th class="py-2 px-3 text-left font-bold border-b-2 bg-slate-100 border-slate-300 uppercase tracking-wide text-slate-700">Sistema de Temas</th>
+                <td class="py-2 px-3 border-b border-slate-100 text-slate-800">
+                    <span class="inline-block px-2 py-1 rounded bg-sky-100 text-sky-700">Activo</span>
+                    <small class="text-slate-400">(Cambio automático por app)</small>
+                </td>
+            </tr>
+        </table>
+    </section>
+    {% endif %}
+</div>
 {% endblock %}
