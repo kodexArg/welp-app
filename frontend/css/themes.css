@@ -1,57 +1,47 @@
 @theme {
+  /* ========================================================================
+     Asignación de colores semánticos
+     ======================================================================== */
   --color-primary: var(--color-forest-700);
   --color-secondary: var(--color-forest-600);
-  --color-bg: var(--color-forest-50);
-  --color-text: var(--color-forest-400);
   --color-accent: var(--color-earth-400);
+  --color-bg: var(--color-forest-50);
   --color-surface: var(--color-forest-100);
   --color-border: var(--color-forest-300);
+  --color-text: var(--color-forest-400);
   --color-light: #ffffff;
   
+  /* ========================================================================
+     Tipografía semántica
+     ======================================================================== */
+  --font-brand: 'Grandstander local', 'Grandstander', 'Comic Sans MS', 'Marker Felt', cursive;
+  --font-body: 'Lato local', sans-serif;
+  --font-title: 'Roboto Condensed local', sans-serif;
+  --font-ui: 'Roboto Condensed local', sans-serif;
+  --font-mono: 'Roboto Mono local', monospace;
 
+  /* ========================================================================
+     Tamaños de fuente y alturas de línea (line-height)
+     ======================================================================== */
+  --font-size-xs: 0.75rem;
+  --line-height-xs: calc(1 / 0.75);
+  --font-size-sm: 0.875rem;
+  --line-height-sm: calc(1.25 / 0.875);
+  --font-size-base: 1rem;
+  --line-height-base: calc(1.5 / 1);
+  --font-size-lg: 1.125rem;
+  --line-height-lg: calc(1.75 / 1.125);
+  --font-size-xl: 1.25rem;
+  --line-height-xl: calc(1.75 / 1.25);
 
-  /* Tipografía - Tailwind 4 Font Families */
-  --font-sans: 'Roboto Condensed', 'Arial Narrow', 'Liberation Sans Narrow', sans-serif;
-  --font-serif: 'Nunito', serif;
-  --font-mono: 'Roboto Mono', monospace;
-  --font-lato: 'Lato', sans-serif;
-  
-  /* Custom Font Variables */
-  --font-brand: 'Grandstander-local', 'Grandstander', 'Comic Sans MS', 'Marker Felt', cursive;
-  --font-p: 'Inter', sans-serif;
-  --font-ui: var(--font-sans);
-  --font-title: var(--font-serif);
-
-  /* Layout y espaciados */
-  --header-height: 8vh;
-  --aside-width: 16rem;
-  --spacing: 0.25rem;
-
-  /* Breakpoints */
-  --breakpoint-sm: 640px;
-  --breakpoint-md: 768px;
-  --breakpoint-lg: 1024px;
-
-  /* Radios de borde */
-  --radius-xs: 0.125rem;
-  --radius-sm: 0.25rem;
-  --radius-md: 0.375rem;
-  --radius-lg: 0.5rem;
-
-  /* Sombreados */
-  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-
-  /* Tamaños de fuente y line-height */
-  --text-xs: 0.75rem;
-  --text-xs--line-height: calc(1 / 0.75);
-  --text-sm: 0.875rem;
-  --text-sm--line-height: calc(1.25 / 0.875);
-  --text-base: 1rem;
-  --text-base--line-height: calc(1.5 / 1);
-  --text-lg: 1.125rem;
-  --text-lg--line-height: calc(1.75 / 1.125);
-  --text-xl: 1.25rem;
-  --text-xl--line-height: calc(1.75 / 1.25);
+  /* ========================================================================
+     Variables de la barra de navegación (Navbar)
+     ======================================================================== */
+  --navbar-bg: var(--color-forest-600);
+  --navbar-text: var(--color-forest-50);
+  --navbar-active: var(--color-forest-50);
+  --navbar-hover: var(--color-forest-50);
+  --navbar-link-text: var(--color-forest-50);
+  --navbar-link-hover: var(--color-forest-100);
+  --navbar-link-active: var(--color-light);
 }

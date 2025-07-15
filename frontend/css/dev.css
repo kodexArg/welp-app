@@ -6,23 +6,27 @@
 
     .section-title {
         @apply text-xl font-medium mb-6;
-        @apply text-text font-[var(--font-ui)];
+        color: #4a724a;
+        font-family: 'Roboto Condensed local', 'Arial Narrow', 'Liberation Sans Narrow', sans-serif;
     }
 
     .hierarchy-flow {
         @apply flex flex-wrap items-center justify-center gap-3 p-6 rounded-lg;
-        @apply bg-surface border border-border;
+        background-color: #d1dbd1;
+        border: 1px solid #759575;
     }
 
     .flow-item {
         @apply px-4 py-2 rounded-md font-medium;
-        @apply bg-white text-text border border-border;
-        @apply font-[var(--font-ui)];
+        background-color: #ffffff;
+        color: #4a724a;
+        border: 1px solid #759575;
+        font-family: 'Roboto Condensed local', 'Arial Narrow', 'Liberation Sans Narrow', sans-serif;
     }
 
     .flow-arrow {
         @apply text-lg font-bold;
-        @apply text-primary;
+        color: #243824;
     }
 
     @media (max-width: 640px) {
@@ -49,8 +53,10 @@
 
     .workflow-section-title {
         @apply text-lg font-semibold mb-4 text-center;
-        @apply text-text font-[var(--font-ui)];
-        @apply pb-2 border-b-2 border-border;
+        color: #4a724a;
+        font-family: 'Roboto Condensed local', 'Arial Narrow', 'Liberation Sans Narrow', sans-serif;
+        @apply pb-2 border-b-2;
+        border-color: #759575;
     }
 
     .workflow-step {
@@ -69,7 +75,7 @@
 
     .step-header {
         @apply font-semibold text-gray-900 mb-2;
-        @apply font-[var(--font-ui)];
+        font-family: 'Roboto Condensed local', 'Arial Narrow', 'Liberation Sans Narrow', sans-serif;
     }
 
     .actor-row {
@@ -78,8 +84,10 @@
 
     .actor-tag {
         @apply text-xs font-medium py-1 px-3 rounded-full border;
-        @apply bg-surface text-primary border-primary;
-        @apply font-[var(--font-ui)];
+        background-color: #d1dbd1;
+        color: #243824;
+        border-color: #243824;
+        font-family: 'Roboto Condensed local', 'Arial Narrow', 'Liberation Sans Narrow', sans-serif;
     }
 
     .attachment-note {
@@ -117,12 +125,12 @@
 
     .task-item {
         @apply text-sm text-gray-600 py-1;
-        @apply font-[var(--font-ui)];
+        font-family: 'Roboto Condensed local', 'Arial Narrow', 'Liberation Sans Narrow', sans-serif;
     }
 
     .waiting-note {
         @apply text-sm text-gray-600 mt-2;
-        @apply font-[var(--font-ui)];
+        font-family: 'Roboto Condensed local', 'Arial Narrow', 'Liberation Sans Narrow', sans-serif;
     }
 
     .transversal-note {
@@ -131,12 +139,12 @@
 
     .transversal-note h4 {
         @apply font-semibold text-green-800 mb-2;
-        @apply font-[var(--font-ui)];
+        font-family: 'Roboto Condensed local', 'Arial Narrow', 'Liberation Sans Narrow', sans-serif;
     }
 
     .transversal-note p {
         @apply text-sm text-green-700;
-        @apply font-[var(--font-ui)];
+        font-family: 'Roboto Condensed local', 'Arial Narrow', 'Liberation Sans Narrow', sans-serif;
     }
 
     .tag-container {
@@ -144,13 +152,14 @@
     }
 
     .tag-udn:hover {
-        @apply bg-yellow-200 border-accent cursor-pointer;
+        @apply bg-yellow-200 cursor-pointer;
+        border-color: #e27b2c;
         @apply -translate-y-px;
     }
 
     .tag-sector:hover {
-        @apply bg-primary text-white;
-        @apply cursor-pointer -translate-y-px;
+        background-color: #243824;
+        @apply text-white cursor-pointer -translate-y-px;
     }
 
     .tag-category:hover {
@@ -160,14 +169,20 @@
 
     .tag-sector-mini {
         @apply py-1 px-2 rounded-full border;
-        @apply bg-surface text-primary border-primary;
-        @apply font-[var(--font-ui)] text-[10px] opacity-80;
+        background-color: #d1dbd1;
+        color: #243824;
+        border-color: #243824;
+        font-family: 'Roboto Condensed local', 'Arial Narrow', 'Liberation Sans Narrow', sans-serif;
+        @apply text-[10px] opacity-80;
     }
 
     .tag-udn-mini {
         @apply py-1 px-2 rounded-full border;
-        @apply bg-yellow-100 text-accent border-yellow-300;
-        @apply font-[var(--font-ui)] text-[10px];
+        @apply bg-yellow-100;
+        color: #e27b2c;
+        border-color: #fde68a;
+        font-family: 'Roboto Condensed local', 'Arial Narrow', 'Liberation Sans Narrow', sans-serif;
+        @apply text-[10px];
     }
 
     .category-list {
@@ -184,7 +199,8 @@
 
     .category-separator {
         @apply h-px my-4;
-        @apply bg-border opacity-30;
+        background-color: #759575;
+        @apply opacity-30;
     }
 
     .sector-list {
@@ -201,7 +217,8 @@
 
     .sector-separator {
         @apply h-px my-4;
-        @apply bg-border opacity-50;
+        background-color: #759575;
+        @apply opacity-50;
     }
 
     .dev-nav-container {
@@ -210,22 +227,28 @@
 
     .dev-nav-button {
         @apply w-full p-6 rounded-lg border-2 cursor-pointer;
-        @apply bg-white border border-border;
+        @apply bg-white;
+        border-color: #759575;
         @apply transition-all duration-300 ease-in-out;
         @apply flex items-center gap-4 justify-between;
     }
 
     .dev-nav-button:hover {
-        @apply bg-bg border-border shadow-sm;
+        background-color: #e8ede8;
+        border-color: #759575;
+        @apply shadow-sm;
     }
 
     .dev-nav-button.active {
-        @apply bg-secondary text-white border-secondary shadow-lg;
+        background-color: #304c30;
+        @apply text-white;
+        border-color: #304c30;
+        @apply shadow-lg;
     }
 
     .dev-nav-button.active .dev-nav-icon {
-        background: var(--color-surface);
-        color: var(--color-primary);
+        background: #d1dbd1;
+        color: #243824;
         @apply scale-110;
     }
 
@@ -247,26 +270,29 @@
 
     .dev-nav-title {
         @apply text-lg font-medium mb-1;
-        @apply text-text font-[var(--font-ui)];
-        @apply pb-2 border-b-2 border-border;
+        color: #4a724a;
+        font-family: 'Roboto Condensed local', 'Arial Narrow', 'Liberation Sans Narrow', sans-serif;
+        @apply pb-2 border-b-2;
+        border-color: #759575;
     }
 
     .dev-nav-description {
         @apply text-sm;
-        @apply text-primary font-[var(--font-p)];
+        color: #243824;
+        font-family: 'Inter local', sans-serif;
     }
 
     .dev-nav-icon {
         @apply w-12 h-12 flex items-center justify-center rounded-lg;
-        background: var(--color-surface);
-        color: var(--color-primary);
+        background: #d1dbd1;
+        color: #243824;
         @apply text-2xl;
         @apply transition-all duration-300;
     }
 
     .dev-nav-toggle {
         @apply flex items-center justify-center w-8 h-8;
-        @apply text-primary;
+        color: #243824;
         @apply transition-all duration-300;
     }
 
@@ -293,7 +319,8 @@
 
     .dev-content-area:not(:empty) {
         @apply p-6 rounded-lg shadow-sm;
-        @apply bg-white border border-border;
+        @apply bg-white;
+        border: 1px solid #759575;
     }
 
     .dev-content-area.wl-dev-htmx-content {
@@ -309,7 +336,8 @@
 
     .dev-content-placeholder {
         @apply text-center py-8;
-        @apply text-primary font-[var(--font-ui)];
+        color: #243824;
+        font-family: 'Roboto Condensed local', 'Arial Narrow', 'Liberation Sans Narrow', sans-serif;
     }
 
 }

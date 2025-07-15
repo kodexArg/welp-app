@@ -12,16 +12,13 @@
     <title>{% block title %}Welp App{% endblock %}</title>
     <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
     
-    <!-- PRELOAD CRÍTICO: Fuente del logo para evitar FOUC -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- PRELOAD CRÍTICO: Fuentes para evitar FOUC (Flash of Unstyled Content) -->
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Grandstander:wght@700&display=block" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Grandstander:wght@700&display=block"></noscript>
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400;1,700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400;1,700&display=swap"></noscript>
     
-    <link rel="stylesheet" href="{% vite_asset_url 'frontend/main.css' %}">
-    
-    
+    {% vite_asset 'frontend/main.css' %}
     {% vite_hmr_client %}
     {% vite_asset 'frontend/main.js' %}
     

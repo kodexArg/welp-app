@@ -1,40 +1,37 @@
-@layer components {
+@layer utilities {
     .button-effects {
-        @apply hover:scale-[1.05] hover:brightness-110;
-        @apply active:scale-95;
-        @apply transition-all duration-300;
+        @apply transition-all duration-300 hover:scale-[1.05] hover:brightness-110 active:scale-95;
     }
-    
     .button-effects-minimal {
-        @apply hover:scale-[1.02];
-        @apply active:scale-98;
-        @apply transition-all duration-200;
+        @apply transition-all duration-200 hover:scale-[1.02] active:scale-98;
     }
-    
     .card-hover-lift {
-        @apply hover:shadow-lg hover:-translate-y-0.5;
-        @apply transition-all duration-200;
+        @apply transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5;
     }
-    
     .app-hover-scale {
-        @apply hover:scale-[1.02];
-        @apply transition-all duration-300;
+        @apply transition-all duration-300 hover:scale-[1.02];
     }
+}
+
+@layer components {
+    /* ==========================================================================
+       Font & Text
+       ========================================================================== */
     .font-ui {
-        @apply uppercase tracking-wide;
         font-family: var(--font-ui);
         font-feature-settings: 'kern' 1, 'liga' 1;
         -webkit-font-smoothing: antialiased;
+        @apply uppercase tracking-wide;
     }
 
-    .text-gradient {
-        @apply bg-gradient-to-br from-primary to-accent bg-clip-text text-transparent;
-    }
-
+    .text-gradient,
     .title-gradient {
         @apply bg-gradient-to-br from-primary to-accent bg-clip-text text-transparent;
     }
 
+    /* ==========================================================================
+       Radio Button
+       ========================================================================== */
     .radio-button-group {
         @apply flex flex-wrap w-full gap-x-3 gap-y-1.5;
     }
@@ -45,35 +42,35 @@
 
     .radio-button {
         @apply inline-flex items-center justify-center w-full select-none;
-        @apply px-5 py-3 rounded border font-semibold font-ui;
-        @apply uppercase whitespace-nowrap tracking-wider text-lg;
-        @apply shadow-md transition-all duration-200 cursor-pointer;
-        @apply hover:shadow-lg hover:scale-[1.03] hover:brightness-90;
-        @apply active:scale-95;
+        @apply px-5 py-3 rounded border shadow-md;
         @apply bg-surface text-text border-border;
+        @apply uppercase whitespace-nowrap tracking-wider text-lg font-semibold font-ui;
+        @apply transition-all duration-200 cursor-pointer hover:shadow-lg hover:scale-[1.03] hover:brightness-90 active:scale-95;
     }
     .radio-button.peer-checked, .peer:checked + .radio-button {
         @apply bg-primary text-light border-primary;
     }
 
+    /* ==========================================================================
+       Buttons
+       ========================================================================== */
     .button-primary {
-        @apply px-6 py-2 rounded-lg font-medium border-none cursor-pointer;
-        @apply uppercase tracking-wide font-[var(--font-ui)];
+        @apply px-6 py-2 rounded-lg;
         @apply bg-primary text-white;
-        @apply button-effects;
+        @apply uppercase tracking-wide font-medium font-ui;
+        @apply button-effects cursor-pointer border-none;
     }
 
     .button-primary:disabled {
-        @apply opacity-50 cursor-not-allowed;
-        @apply hover:scale-100 hover:brightness-100;
-        @apply active:scale-100;
-        @apply transition-none;
+        @apply opacity-50 cursor-not-allowed hover:scale-100 hover:brightness-100 active:scale-100 transition-none;
     }
 
     .button-secondary {
         @apply px-6 py-2 rounded-lg font-medium border-2 cursor-pointer;
         @apply bg-transparent text-primary border-primary;
-        @apply button-effects flex justify-center items-center;
+        @apply transition-all duration-300;
+        @apply hover:scale-[1.02] hover:brightness-110;
+        @apply active:scale-98;
     }
 
     .button-secondary:hover {
@@ -91,7 +88,9 @@
     .button-success {
         @apply px-6 py-2 rounded-lg font-medium border-none cursor-pointer;
         @apply bg-green-600 text-white;
-        @apply button-effects;
+        @apply transition-all duration-300;
+        @apply hover:scale-[1.05] hover:brightness-110;
+        @apply active:scale-95;
     }
 
     .button-success:disabled {
@@ -109,7 +108,9 @@
     .button-cancel {
         @apply px-6 py-2 rounded-lg font-medium border-2 cursor-pointer;
         @apply bg-transparent text-accent border-accent;
-        @apply button-effects;
+        @apply transition-all duration-300;
+        @apply hover:scale-[1.02] hover:brightness-110;
+        @apply active:scale-98;
     }
 
     .button-cancel:hover {
@@ -127,7 +128,9 @@
     .button-minimal {
         @apply px-4 py-2 rounded-lg font-medium border-none cursor-pointer;
         @apply bg-transparent text-primary border border-transparent;
-        @apply button-effects-minimal;
+        @apply transition-all duration-200;
+        @apply hover:scale-[1.02] hover:brightness-110;
+        @apply active:scale-98;
     }
 
     .button-minimal:hover {
@@ -210,15 +213,18 @@
         @apply bg-primary text-white;
     }
 
+    /* ==========================================================================
+       Card
+       ========================================================================== */
     .card {
-        @apply rounded-lg shadow-md;
-        @apply bg-white border border-border;
+        @apply rounded-lg;
+        @apply bg-white border border-border shadow-md;
         @apply card-hover-lift;
     }
 
     .card-header {
-        @apply px-6 py-4 border-b;
-        @apply border-border text-text;
+        @apply px-6 py-4 border-b border-border;
+        @apply text-text;
     }
 
     .card-body {
@@ -227,14 +233,16 @@
     }
 
     .card-footer {
-        @apply px-6 py-4 border-t;
-        @apply border-border bg-surface;
-
+        @apply px-6 py-4 border-t border-border;
+        @apply bg-surface;
     }
 
+    /* ==========================================================================
+       Alert
+       ========================================================================== */
     .alert {
         @apply px-4 py-3 rounded-lg border-l-4 mb-4;
-        @apply font-[var(--font-ui)];
+        @apply font-ui;
     }
 
     .alert-success {
@@ -248,7 +256,8 @@
     .app-card {
         @apply rounded-lg shadow-md overflow-hidden;
         @apply bg-white border border-border;
-        @apply app-hover-scale;
+        @apply transition-all duration-300;
+        @apply hover:scale-[1.02];
     }
 
     .app-card-link {
