@@ -1,5 +1,6 @@
 {% extends "core/base.html" %}
 {% load payflow_tags %}
+{% load ticket_message_tags %}
 {% load django_vite %}
 
 {% block title %}{{ ticket.title }} - Welp Payflow{% endblock %}
@@ -24,7 +25,7 @@
     {% ticket_container ticket expanded=True hide_buttons=False %}
 
     {% if not view_only %}
-        {% payflow_response_form ticket=ticket response_type=response_type is_owner=is_owner cancel_url=cancel_url cancel_text="Cancelar" hidden_fields=hidden_fields %}
+        {% ticket_message_input ticket=ticket response_type=response_type is_owner=is_owner cancel_url=cancel_url cancel_text="Cancelar" hidden_fields=hidden_fields %}
     {% endif %}
 </section>
 

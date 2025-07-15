@@ -1,4 +1,5 @@
 {% load payflow_tags %}
+{% load ticket_message_tags %}
 
 <details class="ticket-container" open>
     <summary class="ticket-header">
@@ -12,7 +13,7 @@
             <span class="ticket-tag ticket-tag--sector">{{ ticket.sector.name }}</span>
             <span class="ticket-tag ticket-tag--category">{{ ticket.accounting_category.name }}</span>
 
-            {% with status_info=ticket|get_status_flow %}
+            {% with status_info=ticket|ticket_status_flow %}
                 <span class="ticket-status ticket-status--{{ status_info.status }}">
                     <i class="{{ status_info.icon }} mr-1"></i>
                     {{ status_info.label }}
@@ -22,7 +23,7 @@
     </summary>
     <div class="ticket-details">
         {% for message in ticket.messages.all %}
-            {% include 'components/payflow/ticket_message.html' with message=message %}
+            {% ticket_message message %}
         {% endfor %}
         <div class="ticket-actions">
             {% ticket_actions ticket %}
