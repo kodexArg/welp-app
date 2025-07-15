@@ -84,6 +84,7 @@
 
     .nav-link-label-special {
         @apply hidden md:inline font-bold tracking-[0.025em] normal-case antialiased transform translate-y-[0.1em];
+        @apply text-2xl;
         font-family: var(--font-brand) !important;
         font-feature-settings: 'liga' 1 !important;
     }
