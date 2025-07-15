@@ -1,5 +1,6 @@
 {% extends "core/base.html" %}
 {% load i18n %}
+{% load django_vite %}
 
 {% block title %}Manual de Usuario: Workflow de Compras - Herramientas de Desarrollo{% endblock %}
 
@@ -115,4 +116,6 @@
 
 </section>
 {% endblock %}
-{% block scripts %}{% endblock %} 
+{% block scripts %}
+    {% vite_asset 'frontend/js/mermaid-init.js' %}
+{% endblock %} 

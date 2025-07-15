@@ -1,30 +1,30 @@
-<div class="w-full overflow-x-auto">
-    %% Gráfico con estilos equivalentes a .status-* de components.css y bordes redondeados 25%
-    graph LR
-        A["🔴 Abierto"] --> B["🟣 Autorizado"]
-        B --> C["Presupuestado"]
-        C --> D["Pago Autorizado"]
-        C --> E["Rechazado"]
-        C --> F["Cerrado"]
-        E --> C
-        D --> G["Procesando Pago"]
-        G --> H["En Envío/Entrega"]
-        H --> F
+<div class="mermaid">
+%% Gráfico con estilos equivalentes a .status-* de components.css y bordes redondeados 25%
+graph LR
+    A["🔴 Abierto"] --> B["🟣 Autorizado"]
+    B --> C["Presupuestado"]
+    C --> D["Pago Autorizado"]
+    C --> E["Rechazado"]
+    C --> F["Cerrado"]
+    E --> C
+    D --> G["Procesando Pago"]
+    G --> H["En Envío/Entrega"]
+    H --> F
 
-        %% Abierto: bg-red-50 text-red-400 border-red-200
-        style A fill:#fef2f2,stroke:#fecaca,stroke-width:2px,color:#dc2626,rx:20,ry:20
-        %% Autorizado: bg-purple-100 text-purple-500 border-purple-200
-        style B fill:#f3e8ff,stroke:#e9d5ff,stroke-width:2px,color:#a855f7,rx:20,ry:20
-        %% Presupuestado: bg-emerald-50 text-emerald-500 border-emerald-200
-        style C fill:#f0fdf4,stroke:#bbf7d0,stroke-width:2px,color:#10b981,rx:20,ry:20
-        %% Pago Autorizado: bg-purple-100 text-purple-600 border-purple-200
-        style D fill:#f3e8ff,stroke:#e9d5ff,stroke-width:2px,color:#7c3aed,rx:20,ry:20
-        %% Rechazado: bg-amber-100 text-amber-600 border-amber-200
-        style E fill:#fef3c7,stroke:#fde68a,stroke-width:2px,color:#d97706,rx:20,ry:20
-        %% Cerrado: bg-slate-100 text-slate-400 border-slate-200
-        style F fill:#f1f5f9,stroke:#e2e8f0,stroke-width:2px,color:#94a3b8,rx:20,ry:20
-        %% Procesando Pago: bg-cyan-100 text-cyan-600 border-cyan-200
-        style G fill:#cffafe,stroke:#a5f3fc,stroke-width:2px,color:#0891b2,rx:20,ry:20
-        %% En Envío: bg-fuchsia-100 text-fuchsia-500 border-fuchsia-200
-        style H fill:#fae8ff,stroke:#fbcfe8,stroke-width:2px,color:#d946ef,rx:20,ry:20
+    %% Abierto: bg-red-50 text-red-400 border-red-200
+    style A fill:#fef2f2,stroke:#fecaca,stroke-width:2px,color:#dc2626,rx:20,ry:20
+    %% Autorizado: bg-purple-100 text-purple-500 border-purple-200
+    style B fill:#f3e8ff,stroke:#e9d5ff,stroke-width:2px,color:#a855f7,rx:20,ry:20
+    %% Presupuestado: bg-emerald-50 text-emerald-500 border-emerald-200
+    style C fill:#f0fdf4,stroke:#bbf7d0,stroke-width:2px,color:#10b981,rx:20,ry:20
+    %% Pago Autorizado: bg-purple-100 text-purple-600 border-purple-200
+    style D fill:#f3e8ff,stroke:#e9d5ff,stroke-width:2px,color:#7c3aed,rx:20,ry:20
+    %% Rechazado: bg-amber-100 text-amber-600 border-amber-200
+    style E fill:#fef3c7,stroke:#fde68a,stroke-width:2px,color:#d97706,rx:20,ry:20
+    %% Cerrado: bg-slate-100 text-slate-400 border-slate-200
+    style F fill:#f1f5f9,stroke:#e2e8f0,stroke-width:2px,color:#94a3b8,rx:20,ry:20
+    %% Procesando Pago: bg-cyan-100 text-cyan-600 border-cyan-200
+    style G fill:#cffafe,stroke:#a5f3fc,stroke-width:2px,color:#0891b2,rx:20,ry:20
+    %% En Envío: bg-fuchsia-100 text-fuchsia-500 border-fuchsia-200
+    style H fill:#fae8ff,stroke:#fbcfe8,stroke-width:2px,color:#d946ef,rx:20,ry:20
 </div> 

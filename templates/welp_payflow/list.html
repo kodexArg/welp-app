@@ -22,4 +22,6 @@
 {% endblock %}
 
 {% block scripts %}
+    {# Precarga mermaid.js para navegación fluida a detail.html sin ejecutarlo aquí #}
+    {% vite_asset 'frontend/js/mermaid-init.js' %}
 {% endblock %} 
