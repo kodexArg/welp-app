@@ -115,4 +115,57 @@
         @apply bg-gray-100 border border-gray-200;
         @apply text-gray-400;
     }
+
+    /* Ticket Messages */
+    .ticket-message {
+        @apply mb-3;
+    }
+
+    .ticket-message__author {
+        @apply ml-2;
+        @apply text-gray-500;
+        @apply text-xs italic;
+        @apply translate-y-px;
+    }
+
+    .ticket-message__author-icon {
+        @apply mr-1;
+        @apply text-gray-400;
+    }
+
+    .ticket-message__body {
+        @apply relative ml-8 mb-2 p-2 rounded-xl;
+        @apply bg-white border border-border;
+        @apply text-text;
+        @apply text-sm;
+        @apply cursor-default;
+    }
+
+    .ticket-message__date {
+        @apply absolute bottom-2 right-2;
+        @apply text-gray-400;
+        @apply text-xxs italic;
+        @apply pointer-events-none;
+    }
+
+    .message-attachments {
+        @apply flex flex-col items-end space-y-1 mt-2 mx-4;
+    }
+
+    .attachment-link {
+        @apply flex items-center;
+        @apply text-gray-400 hover:text-gray-600;
+        @apply text-xxs;
+        @apply no-underline transition-colors duration-200;
+    }
+
+    .attachment-icon::before {
+        @apply mr-1;
+        @apply text-xxs;
+        @apply content-['⚬'];
+    }
+
+    .attachment-name {
+        @apply font-mono;
+    }
 }
