@@ -7,6 +7,13 @@ from welp_payflow.utils import get_ticket_actions_context
 
 register = template.Library()
 
+@register.inclusion_tag('welp_payflow/components/ticket_container.html')
+def ticket_container(ticket):
+    """
+    Renders the main ticket container component.
+    """
+    return {'ticket': ticket}
+
 @register.inclusion_tag('welp_payflow/components/radio-button.html')
 def radio_button(target, id, label, next_target, visible=True):
     """Componente radio-button HTMX usado en Welp Payflow."""

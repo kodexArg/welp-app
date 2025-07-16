@@ -9,12 +9,21 @@
             Usuario eliminado
         {% endif %}
     </span>
-    <div class="ticket-message__body">
-        {{ message.body }}
-        <span class="ticket-message__date">
+
+    {% if message.body %}
+        <div class="ticket-message__body">
+            {{ message.body }}
+            <span class="ticket-message__date-inline">
+                {{ message.created_on|timesince }}
+            </span>
+        </div>
+    {% else %}
+        <div class="ticket-message__body"></div>
+        <span class="ticket-message__date-standalone">
             {{ message.created_on|timesince }}
         </span>
-    </div>
+    {% endif %}
+
     {% if message.attachments.exists %}
         <div class="message-attachments">
             {% for attachment in message.attachments.all %}

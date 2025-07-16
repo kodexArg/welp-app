@@ -141,11 +141,19 @@
         @apply cursor-default;
     }
 
-    .ticket-message__date {
+    .ticket-message__body:empty {
+        @apply hidden;
+    }
+
+    .ticket-message__date-inline {
         @apply absolute bottom-2 right-2;
-        @apply text-gray-400;
-        @apply text-xxs italic;
+        @apply text-gray-400 text-xxs italic;
         @apply pointer-events-none;
+    }
+
+    .ticket-message__date-standalone {
+        @apply block text-right -mt-4 mr-2;
+        @apply text-gray-400 text-xxs italic;
     }
 
     .message-attachments {
@@ -154,8 +162,8 @@
 
     .attachment-link {
         @apply flex items-center;
-        @apply text-gray-400 hover:text-gray-600;
-        @apply text-xxs;
+        @apply text-earth-400 hover:text-earth-600;
+        @apply text-xs;
         @apply no-underline transition-colors duration-200;
     }
 
