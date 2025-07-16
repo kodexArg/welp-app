@@ -1,41 +1,23 @@
 @utility transition-form {
     transition: border-color 0.2s ease, background-color 0.3s ease, color 0.3s ease;
 }
-
 @utility transition-interactive {
     transition: all 0.2s ease;
 }
-
 @utility animate-delay-100 {
     animation-delay: 100ms;
 }
-
 @utility animate-delay-200 {
     animation-delay: 200ms;
 }
-
 @utility animate-delay-300 {
     animation-delay: 300ms;
 }
-
 @utility animate-delay-500 {
     animation-delay: 500ms;
 }
-
 @utility animate-delay-1000 {
     animation-delay: 1000ms;
-}
-
-@utility dev-content-slide {
-    @apply overflow-hidden;
-}
-
-@utility loading-content {
-    @apply flex items-center justify-center p-8 text-primary;
-}
-
-@utility error-content {
-    @apply flex items-center justify-center p-8 text-red-500 font-medium;
 }
 
 @layer components {

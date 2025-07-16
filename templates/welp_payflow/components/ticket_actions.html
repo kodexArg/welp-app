@@ -2,33 +2,12 @@
 {% with last_message=ticket.messages.last %}
     {% if last_message.status != 'closed' %}
         <div class="ticket-actions">
-            <!-- Botones de transición de estado -->
             {% for action_data in actions %}
-                <a
-                    href="{{ action_data.href }}"
-                    class="
-                        bg-surface
-                        border
-                        border-border
-                        text-text
-                        text-xs
-                        rounded-full
-                        py-1
-                        px-3
-                        inline-flex
-                        items-center
-                        font-medium
-                        hover:brightness-110
-                        no-underline
-                        transition-all
-                        duration-200
-                    "
-                >
+                <a href="{{ action_data.href }}" class="ticket-action-button">
                     <i class="mr-2 {{ action_data.fa_icon }}"></i>
                     <span>{{ action_data.label }}</span>
                 </a>
             {% endfor %}
-            
         </div>
     {% endif %}
 {% endwith %}
