@@ -25,7 +25,7 @@
         @apply block w-0 h-0;
         @apply border-l-[6px] border-l-text border-t-[4px] border-t-transparent border-b-[4px] border-b-transparent;
         @apply content-[''];
-        @apply origin-center;
+        @apply origin-center translate-y-0.5;
         @apply transition-transform duration-200;
     }
 
@@ -33,8 +33,6 @@
         @apply rotate-90;
         @apply transition-transform duration-200;
     }
-
-    .ticket-info {}
 
     .ticket-details {
         @apply rounded-xl p-3 mt-4;
@@ -76,11 +74,45 @@
     }
 
     /* Ticket Status */
-    .ticket-status {}
-    .ticket-status--open {}
-    .ticket-status--closed {}
-    .ticket-status--authorized {}
-    .ticket-status--rejected {}
-    .ticket-status--processing {}
-    .ticket-status--delivered {}
+    .ticket-status {
+        @apply py-0.5 px-2 border rounded-full;
+        @apply font-ui text-xxs font-medium uppercase tracking-wide;
+        @apply select-none pointer-events-none;
+    }
+    .ticket-status--open {
+        @apply bg-red-50 border border-red-200;
+        @apply text-red-400;
+    }
+    .ticket-status--authorized {
+        @apply bg-purple-100 border border-purple-200;
+        @apply text-purple-500;
+    }
+    .ticket-status--budgeted {
+        @apply bg-emerald-50 border border-emerald-200;
+        @apply text-emerald-500;
+    }
+    .ticket-status--rejected {
+        @apply bg-amber-100 border border-amber-200;
+        @apply text-amber-600;
+    }
+    .ticket-status--payment_authorized {
+        @apply bg-orange-50 border border-orange-200;
+        @apply text-orange-500;
+    }
+    .ticket-status--processing_payment {
+        @apply bg-cyan-100 border border-cyan-200;
+        @apply text-cyan-600;
+    }
+    .ticket-status--shipping {
+        @apply bg-fuchsia-100 border border-fuchsia-200;
+        @apply text-fuchsia-500;
+    }
+    .ticket-status--closed {
+        @apply bg-slate-100 border border-slate-200;
+        @apply text-slate-400;
+    }
+    .ticket-status--unknown {
+        @apply bg-gray-100 border border-gray-200;
+        @apply text-gray-400;
+    }
 }

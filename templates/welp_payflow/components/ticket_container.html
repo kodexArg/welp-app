@@ -7,7 +7,7 @@
             <i class="ticket-caret"></i>
             {{ ticket.title }}
         </div>
-        <div class="ticket-info">
+        <div>
             {% ticket_summary_info ticket %}<span class="ticket-tag ticket-tag--udn">{{ ticket.udn.name }}</span><span class="ticket-tag ticket-tag--sector">{{ ticket.sector.name }}</span><span class="ticket-tag ticket-tag--category">{{ ticket.accounting_category.name }}</span>
 
             {% with status_info=ticket|ticket_status_flow %}
