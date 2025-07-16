@@ -11,6 +11,40 @@ register = template.Library()
 def ticket_message(message):
     return {'message': message, 'ticket_id': message.ticket.id}
 
+@register.inclusion_tag('welp_payflow/components/_ticket_message_user_line.html')
+def ticket_message_user_line(message):
+    """
+    Prepara el contexto para la línea de usuario de un mensaje de ticket,
+    incluyendo el verbo de la acción y los iconos correspondientes.
+    """
+    user_name = "Usuario eliminado"
+    if message.user:
+        user_name = message.user.get_full_name() or message.user.username
+
+    action_key = message.status
+    
+    # Valores por defecto
+    verb = None
+    action_icon_class = None
+
+    if action_key == 'feedback':
+        verb = "Comentario de"
+        action_icon_class = FA_ICONS.get('feedback')
+    else:
+        action_info = PAYFLOW_STATUSES.get(action_key, {})
+        action_verb = action_info.get('action_verb')
+        
+        if action_verb and action_verb != 'Comentado':
+            verb = f"{action_verb} por"
+            action_icon_class = FA_ICONS.get(action_key)
+
+    return {
+        'user_name': user_name,
+        'verb': verb,
+        'action_icon_class': action_icon_class,
+    }
+
+
 @register.inclusion_tag('welp_payflow/components/ticket_message_input.html', takes_context=True)
 def ticket_message_input(context, ticket, response_type, user_can_transition=True, is_owner=False, comment_value='', cancel_url=None, cancel_text="Cancelar", hidden_fields=None):
     request = context['request']

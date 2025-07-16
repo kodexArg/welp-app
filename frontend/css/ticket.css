@@ -119,18 +119,37 @@
     /* Ticket Messages */
     .ticket-message {
         @apply mb-3;
+        @apply cursor-default;
     }
 
-    .ticket-message__author {
+    .ticket-message__user {
+        @apply flex items-center;
         @apply ml-2;
         @apply text-gray-500;
         @apply text-xs italic;
         @apply translate-y-px;
     }
 
-    .ticket-message__author-icon {
+    .ticket-message__action-icon {
+        @apply mr-1.5 not-italic;
+    }
+
+    .ticket-message__action-verb {
         @apply mr-1;
+    }
+    
+    .ticket-message__user-info {
+        @apply inline-flex items-center;
+    }
+
+    .ticket-message__user-icon {
+        @apply mr-0.5 not-italic;
         @apply text-gray-400;
+    }
+
+    /* Separación extra solo si hay mensaje */
+    .ticket-message__user + .ticket-message__body {
+        @apply mt-1;
     }
 
     .ticket-message__body {
@@ -152,7 +171,7 @@
     }
 
     .ticket-message__date-standalone {
-        @apply block text-right -mt-4 mr-2;
+        @apply block text-right -mt-4 mr-2 mb-4;
         @apply text-gray-400 text-xxs italic;
     }
 
@@ -167,10 +186,8 @@
         @apply no-underline transition-colors duration-200;
     }
 
-    .attachment-icon::before {
+    .attachment-icon {
         @apply mr-1;
-        @apply text-xxs;
-        @apply content-['⚬'];
     }
 
     .attachment-name {

@@ -1,34 +1,29 @@
 {% load format_tags %}
 {% load ticket_message_tags %}
 <div class="ticket-message">
-    <span class="ticket-message__author">
-        <i class="ticket-message__author-icon fa-solid fa-user"></i>
-        {% if message.user %}
-            {{ message.user.get_full_name|default:message.user.username }}
-        {% else %}
-            Usuario eliminado
-        {% endif %}
-    </span>
+    <div class="ticket-message__user">
+        {% ticket_message_user_line message %}
+    </div>
 
     {% if message.body %}
         <div class="ticket-message__body">
             {{ message.body }}
             <span class="ticket-message__date-inline">
-                {{ message.created_on|timesince }}
+                {{ message.created_on|relative_date }}
             </span>
         </div>
     {% else %}
         <div class="ticket-message__body"></div>
         <span class="ticket-message__date-standalone">
-            {{ message.created_on|timesince }}
+            {{ message.created_on|relative_date }}
         </span>
     {% endif %}
 
     {% if message.attachments.exists %}
         <div class="message-attachments">
             {% for attachment in message.attachments.all %}
-                <a href="{{ attachment.file.url }}" class="attachment-link" target="_blank">
-                    <i class="attachment-icon"></i>
+                <a href="{% url 'welp_payflow:attachment' ticket_id=message.ticket.id attachment_id=attachment.id %}" class="attachment-link">
+                    <i class="attachment-icon fa-solid fa-paperclip"></i>
                     <span class="attachment-name">{{ attachment.file.name|basename }}</span>
                 </a>
             {% endfor %}

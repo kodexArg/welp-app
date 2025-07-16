@@ -8,7 +8,6 @@ PAYFLOW_STATUSES = {
     'open': {
         'label': 'Abierto',
         'color': '#dc2626',
-        'icon': '🔴',
         'color_name': 'red',
         'description': 'Solicitud creada, esperando autorización inicial',
         'is_active': True,
@@ -22,6 +21,7 @@ PAYFLOW_STATUSES = {
             'is_waiting': True,
             'priority': 'high',
         },
+        'action_verb': 'Solicitado',
         'show_comment_box': False,
         'show_attachments': False,
         'comment_required': False,
@@ -29,7 +29,6 @@ PAYFLOW_STATUSES = {
     'authorized': {
         'label': 'Autorizado',
         'color': '#a855f7',
-        'icon': '🟣',
         'color_name': 'purple',
         'description': 'Solicitud autorizada, esperando presupuestos',
         'is_active': True,
@@ -44,6 +43,7 @@ PAYFLOW_STATUSES = {
             'priority': 'medium',
         },
         'action_label': 'Autorizar',
+        'action_verb': 'Solicitud autorizada',
         'color_class': 'text-purple-500',
         'confirmation_message': 'Confirmar autorización.',
         'button_text': 'Autorizar',
@@ -56,7 +56,6 @@ PAYFLOW_STATUSES = {
     'budgeted': {
         'label': 'Presupuestado',
         'color': '#16a34a',
-        'icon': '🟢',
         'color_name': 'green',
         'description': 'Presupuestos adjuntados, esperando autorización de pago',
         'is_active': True,
@@ -71,6 +70,7 @@ PAYFLOW_STATUSES = {
             'priority': 'high',
         },
         'action_label': 'Presupuestar',
+        'action_verb': 'Presupuestado',
         'color_class': 'text-green-600',
         'confirmation_message': '¿Confirmar presupuestos? Esto autoriza la preparación para el pago.',
         'confirmation_style': {'bg': 'bg-green-50', 'border': 'border-green-400', 'text': 'text-green-700'},
@@ -84,7 +84,6 @@ PAYFLOW_STATUSES = {
     'rejected': {
         'label': 'Rechazado',
         'color': '#eab308',
-        'icon': '🟡',
         'color_name': 'yellow',
         'description': 'Presupuestos rechazados, requieren revisión',
         'is_active': True,
@@ -99,6 +98,7 @@ PAYFLOW_STATUSES = {
             'priority': 'high',
         },
         'action_label': 'Rechazar',
+        'action_verb': 'Rechazado',
         'color_class': 'text-yellow-600',
         'confirmation_message': '¿Rechazar presupuestos? Se notificará al proveedor y se solicitará una nueva propuesta.',
         'confirmation_style': {'bg': 'bg-yellow-50', 'border': 'border-yellow-400', 'text': 'text-yellow-700'},
@@ -112,7 +112,6 @@ PAYFLOW_STATUSES = {
     'payment_authorized': {
         'label': 'Pago Autorizado',
         'color': '#f97316',
-        'icon': '🔶',
         'color_name': 'orange',
         'description': 'Pago autorizado, esperando proceso de facturación',
         'is_active': True,
@@ -127,6 +126,7 @@ PAYFLOW_STATUSES = {
             'priority': 'medium',
         },
         'action_label': 'Autorizar Pago',
+        'action_verb': 'Pago autorizado',
         'color_class': 'text-orange-500',
         'confirmation_message': '¿Autorizar pago? Esto inicia el proceso de facturación y desembolso.',
         'confirmation_style': {'bg': 'bg-orange-50', 'border': 'border-orange-400', 'text': 'text-orange-700'},
@@ -140,7 +140,6 @@ PAYFLOW_STATUSES = {
     'processing_payment': {
         'label': 'Procesando Pago',
         'color': '#06b6d4',
-        'icon': '💰',
         'color_name': 'cyan',
         'description': 'Procesando pago/facturación',
         'is_active': True,
@@ -155,6 +154,7 @@ PAYFLOW_STATUSES = {
             'priority': 'low',
         },
         'action_label': 'Procesar Pago',
+        'action_verb': 'Enviado a `Pagos y Proveedores`',
         'color_class': 'text-cyan-600',
         'confirmation_message': '¿Confirmar pago procesado? Esto marca el final del proceso de facturación.',
         'confirmation_style': {'bg': 'bg-cyan-50', 'border': 'border-cyan-400', 'text': 'text-cyan-700'},
@@ -168,7 +168,6 @@ PAYFLOW_STATUSES = {
     'shipping': {
         'label': 'En Envío',
         'color': '#8b5cf6',
-        'icon': '📦',
         'color_name': 'violet',
         'description': 'En proceso de envío/entrega',
         'is_active': True,
@@ -183,6 +182,7 @@ PAYFLOW_STATUSES = {
             'priority': 'low',
         },
         'action_label': 'Envío',
+        'action_verb': 'Envío gestionado',
         'color_class': 'text-violet-600',
         'confirmation_message': '¿Confirmar envío? Se notificará al usuario final para la recepción.',
         'confirmation_style': {'bg': 'bg-violet-50', 'border': 'border-violet-400', 'text': 'text-violet-700'},
@@ -196,7 +196,6 @@ PAYFLOW_STATUSES = {
     'closed': {
         'label': 'Cerrado',
         'color': '#6b7280',
-        'icon': '⚫',
         'color_name': 'forest',
         'description': 'Solicitud finalizada',
         'is_active': False,
@@ -211,6 +210,7 @@ PAYFLOW_STATUSES = {
             'priority': None,
         },
         'action_label': 'Cerrar',
+        'action_verb': 'Cerrado',
         'color_class': 'text-gray-500',
         'owner_message': 'Está cerrando su propio ticket.',
         'non_owner_message': 'Está cerrando un ticket creado por otro usuario.',
@@ -227,6 +227,7 @@ PAYFLOW_STATUSES = {
     # Tipos especiales para acciones de UI que no son estados reales de ticket.
     'comment': {
         'action_label': 'Comentar',
+        'action_verb': 'Comentado',
         'color_class': 'text-gray-400',
         'button_text': 'Comentar',
         'comment_required': True,
@@ -238,7 +239,6 @@ PAYFLOW_STATUSES = {
     'unknown': {
         'label': 'Desconocido',
         'color': '#d1d5db',
-        'icon': '❓',
         'color_name': 'gray',
         'description': 'Estado desconocido',
         'is_active': False,
@@ -314,12 +314,13 @@ TREEMAP_MIN_ITEMS = 3
 TREEMAP_MAX_ITEMS = 50 
 
 FA_ICONS = {
-    'feedback': 'fa-brands fa-telegram-plane',
+    'open': 'fa-solid fa-file-signature',
+    'feedback': 'fa-solid fa-comment-dots',
     'authorized': 'fa-solid fa-check',
     'budgeted': 'fa-solid fa-file-invoice-dollar',
     'rejected': 'fa-solid fa-ban',
-    'payment_authorized': 'fa-solid fa-credit-card',
-    'processing_payment': 'fa-solid fa-money-bill-transfer',
-    'shipping': 'fa-solid fa-truck',
+    'payment_authorized': 'fa-solid fa-user-shield',
+    'processing_payment': 'fa-solid fa-cash-register',
+    'shipping': 'fa-solid fa-truck-fast',
     'close': 'fa-solid fa-lock',
 } 
