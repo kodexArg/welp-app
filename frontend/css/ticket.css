@@ -6,10 +6,6 @@
         @apply cursor-pointer select-none;
     }
 
-    details.ticket-container:not([open]) {
-        @apply pb-1.5;
-    }
-
     .ticket-header {
         @apply flex items-center justify-between;
     }
@@ -27,7 +23,7 @@
 
     .ticket-caret::before {
         @apply block w-0 h-0;
-        @apply border-l-[6px] border-l-primary border-t-[4px] border-t-transparent border-b-[4px] border-b-transparent;
+        @apply border-l-[6px] border-l-gray-500 border-t-[4px] border-t-transparent border-b-[4px] border-b-transparent;
         @apply origin-center;
         @apply transition-transform duration-200;
         @apply content-[''];
@@ -35,7 +31,7 @@
 
     details[open] .ticket-caret::before {
         @apply rotate-90;
-        @apply transition-transform duration-[180ms];
+        @apply transition-transform duration-200;
     }
 
     .ticket-info {}
@@ -44,6 +40,7 @@
         @apply rounded-xl p-3 mt-4;
         @apply bg-bg border border-border shadow-inner;
     }
+
 
     .ticket-actions {
         @apply flex justify-end gap-2 mt-4;
