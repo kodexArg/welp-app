@@ -11,7 +11,19 @@ register = template.Library()
 def radio_button(target, id, label, next_target, visible=True):
     """Componente radio-button HTMX usado en Welp Payflow."""
     try:
-        full_url = reverse(f'welp_payflow:htmx-{next_target}', kwargs={target: id})
+        kwarg_key = target
+        url_name = f'welp_payflow:htmx-{next_target}'
+        if next_target == 'sector':
+            kwarg_key = 'udn'
+            url_name = 'welp_payflow:load_sectors'
+        elif next_target == 'accounting-category':
+            kwarg_key = 'sector'
+            url_name = 'welp_payflow:load_categories'
+        elif next_target == 'fields-body':
+            kwarg_key = 'accounting_category'
+            url_name = 'welp_payflow:htmx_fields_body'
+        
+        full_url = reverse(url_name, kwargs={kwarg_key: id})
     except Exception:
         full_url = ''
     return {
