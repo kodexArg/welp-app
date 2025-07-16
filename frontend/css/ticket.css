@@ -12,8 +12,8 @@
 
     .ticket-title {
         @apply flex items-center flex-grow pr-2 w-full md:w-auto;
-        @apply font-medium text-base;
         @apply text-text;
+        @apply font-medium text-base;
     }
 
     .ticket-caret {
@@ -23,10 +23,10 @@
 
     .ticket-caret::before {
         @apply block w-0 h-0;
-        @apply border-l-[6px] border-l-gray-500 border-t-[4px] border-t-transparent border-b-[4px] border-b-transparent;
+        @apply border-l-[6px] border-l-text border-t-[4px] border-t-transparent border-b-[4px] border-b-transparent;
+        @apply content-[''];
         @apply origin-center;
         @apply transition-transform duration-200;
-        @apply content-[''];
     }
 
     details[open] .ticket-caret::before {
@@ -41,34 +41,29 @@
         @apply bg-bg border border-border shadow-inner;
     }
 
-
     .ticket-actions {
         @apply flex justify-end gap-2 mt-4;
     }
 
     .ticket-action-button {
         @apply inline-flex items-center py-1 px-3 rounded-full;
-        @apply bg-surface border border-border;
-        @apply text-text text-xs font-medium;
+        @apply bg-surface border border-border shadow-md;
+        @apply text-xs font-medium;
+        @apply text-text;
         @apply no-underline transition-all duration-200;
     }
 
-    .ticket-action-button {
-        @apply shadow-md;
-        @apply transition-all duration-200;
-    }
     .ticket-action-button:hover {
-        @apply brightness-90;
-        @apply shadow-sm;
         @apply translate-y-0.5;
+        @apply shadow-sm;
+        @apply brightness-90;
     }
 
     /* Ticket Tags */
     .ticket-tag {
-        @apply py-0.5 px-2 border border-border;
-        @apply bg-surface text-text;
-        @apply text-xxs font-medium uppercase tracking-wide;
-        @apply cursor-default select-none pointer-events-none;
+        @apply py-0.5 px-2 border border-gray-300;
+        @apply bg-gray-100 text-gray-500;
+        @apply font-ui text-xxs font-medium uppercase;
     }
     .ticket-tag--udn {
         @apply rounded-l-full border-r-0;
