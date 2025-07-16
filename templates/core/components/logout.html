@@ -1,7 +1,7 @@
 <a href="#" onclick="event.preventDefault();document.getElementById('logout-form').submit();" class="nav-link group">
     <div class="nav-link-content">
         <i class="nav-link-icon fa fa-sign-out-alt"></i>
-        <span class="logout-link-label">
+        <span class="nav-link-label">
             {% if user and user.first_name %}
                 {% if user.first_name|length > 8 %}
                     {{ user.first_name|slice:":6" }}...

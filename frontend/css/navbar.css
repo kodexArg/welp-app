@@ -74,7 +74,7 @@
 
     .nav-link-label {
         font-family: var(--font-ui);
-        @apply ml-1.5 text-sm font-medium tracking-wider uppercase;
+        @apply ml-1.5 text-xl font-semibold tracking-wider uppercase;
     }
     
     .nav-link-brand {
@@ -87,11 +87,6 @@
         @apply text-2xl;
         font-family: var(--font-brand) !important;
         font-feature-settings: 'liga' 1 !important;
-    }
-
-    .logout-link-label {
-        font-family: var(--font-ui);
-        @apply ml-1.5 align-middle text-sm font-medium tracking-wider uppercase;
     }
 
     .nav-separator {
