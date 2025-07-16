@@ -1,0 +1,20 @@
+@layer components {
+    .ticket-container {}
+    .ticket-header {}
+    .ticket-title {}
+    .ticket-caret {}
+    .ticket-info {}
+    .ticket-tag {}
+    .ticket-tag--udn {}
+    .ticket-tag--sector {}
+    .ticket-tag--category {}
+    .ticket-status {}
+    .ticket-status--open {}
+    .ticket-status--closed {}
+    .ticket-status--authorized {}
+    .ticket-status--rejected {}
+    .ticket-status--processing {}
+    .ticket-status--delivered {}
+    .ticket-details {}
+    .ticket-actions {}
+}
