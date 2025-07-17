@@ -130,12 +130,12 @@ Los permisos se asignan únicamente a nivel **UDN** y **Sector**. Todas las cate
    - **Responsable**: Manager (primera firma)
 
 4. **🔶 Autorizado por Manager** (`authorized_by_manager`) ⭐ **NUEVO**
-   - Primera firma completada, esperando segunda firma
-   - **Responsable**: Director (segunda firma)
+   - Manager ha firmado, esperando autorización del Director
+   - **Responsable**: Director (autorización paralela)
 
 5. **💎 Autorizado por Director** (`authorized_by_director`) ⭐ **NUEVO**
-   - Segunda firma completada
-   - **Sistema**: Automáticamente pasa a "Pago Autorizado"
+   - Director ha firmado, esperando autorización del Manager
+   - **Responsable**: Manager (autorización paralela)
 
 6. **✅ Pago Autorizado** (`payment_authorized`)
    - **Estado automático** cuando se completan ambas firmas
@@ -167,14 +167,32 @@ Los permisos se asignan únicamente a nivel **UDN** y **Sector**. Todas las cate
 | `open` | `authorized` | Supervisor, Manager, Director | Primera validación |
 | `open` | `closed` | Supervisor, Manager, Director | Cancelación |
 | `authorized` | `budgeted` | Responsable de Compras, Técnico | Adjuntar presupuestos |
-| `budgeted` | `authorized_by_manager` | Manager | Primera firma |
+| `budgeted` | `authorized_by_manager` | Manager | Autorización Manager |
+| `budgeted` | `authorized_by_director` | Director | Autorización Director |
 | `budgeted` | `rejected` | Supervisor, Manager, Director | Rechazar presupuestos |
-| `authorized_by_manager` | `authorized_by_director` | Director | Segunda firma |
-| `authorized_by_director` | `payment_authorized` | **Sistema (Automático)** | Doble autorización completa |
+| `authorized_by_manager` | `authorized_by_director` | Director | **Autorización paralela** |
+| `authorized_by_manager` | `payment_authorized` | **Sistema (Automático)** | **Si Director ya autorizó** |
+| `authorized_by_director` | `authorized_by_manager` | Manager | **Autorización paralela** |
+| `authorized_by_director` | `payment_authorized` | **Sistema (Automático)** | **Si Manager ya autorizó** |
 | `payment_authorized` | `processing_payment` | Responsable de Compras | Iniciar pago |
 | `processing_payment` | `shipping` | Responsable de Compras | Confirmar envío |
 | `shipping` | `closed` | Usuario, Responsable de Compras | Confirmar recepción |
 | `rejected` | `budgeted` | Responsable de Compras, Técnico | Nuevos presupuestos |
+| `rejected` | `closed` | Supervisor, Manager, Director | Cancelación tras rechazo |
+
+### ⚡ Sistema de Autorización Paralela
+
+**Característica Clave**: Manager y Director pueden autorizar **independientemente** y en **cualquier orden**:
+
+1. **Desde Presupuestado**: Ambos pueden autorizar simultáneamente
+2. **Orden Flexible**: No importa quién autoriza primero
+3. **Detección Automática**: El sistema verifica automáticamente si ambas firmas están presentes
+4. **Transición Automática**: Cuando ambas autorizaciones están completas → `payment_authorized`
+
+**Escenarios Posibles**:
+- Manager autoriza → Director autoriza → Sistema autoriza pago
+- Director autoriza → Manager autoriza → Sistema autoriza pago  
+- Ambos autorizan "simultáneamente" → Sistema autoriza pago
 
 ### Estados Especiales de Cancelación
 
@@ -196,18 +214,18 @@ graph TD
     B --> I
     
     C --> D[🔶 Autorizado por Manager]
+    C --> F[💎 Autorizado por Director]
     C --> E[🟡 Rechazado]
     C --> I
     
-    D --> F[💎 Autorizado por Director]
-    
-    F --> G[✅ Pago Autorizado]
+    D --> F
+    F --> D
+    D --> G[✅ Pago Autorizado]
+    F --> G
     
     G --> H[💰 Procesando Pago]
-    G --> I
     
     H --> J[📦 En Envío]
-    H --> I
     
     J --> I
     
@@ -244,9 +262,9 @@ graph TD
 
 4. **👑 Luis (Manager)** revisa presupuestos: "Apruebo Proveedor A. Mejor relación precio-calidad" → **🔶 Autorizado por Manager**
 
-5. **⭐ Roberto (Director)** da segunda firma: "Confirmado. Proceder con Proveedor A" → **💎 Autorizado por Director**
+5. **⭐ Roberto (Director)** también autoriza (paralelo): "Confirmado. Proceder con Proveedor A" → **💎 Autorizado por Director**
 
-6. **🤖 Sistema** automáticamente: "Doble autorización completada. Pago autorizado" → **✅ Pago Autorizado**
+6. **🤖 Sistema** detecta doble autorización: "Ambas firmas completadas. Pago autorizado automáticamente" → **✅ Pago Autorizado**
 
 7. **🛒 María** procesa el pago: "Enviado a Pagos y Proveedores. Orden #PO-2024-0156" → **💰 Procesando Pago**
 
@@ -268,9 +286,27 @@ graph TD
 
 6. **👑 Ana**: "Mejor opción. Aprobado" → **🔶 Autorizado por Manager**
 
-7. **⭐ Director**: "Confirmado" → **💎 Autorizado por Director** → **✅ Pago Autorizado**
+7. **⭐ Director**: "Confirmado" → **💎 Autorizado por Director** 
 
-8. Continúa flujo normal...
+8. **🤖 Sistema** detecta ambas firmas: → **✅ Pago Autorizado**
+
+9. Continúa flujo normal...
+
+### Caso 3: Flujo Paralelo Inverso (Director primero)
+
+1. **👤 Carmen (Usuario Final)**: "Equipamiento de seguridad - $1,200" → **🔴 Abierto**
+
+2. **👔 Pedro (Supervisor)**: "Autorizado para cotizar" → **🟣 Autorizado**
+
+3. **⚙️ Ana (Técnico)** adjunta presupuestos → **🟢 Presupuestado**
+
+4. **⭐ Roberto (Director)** autoriza primero: "Aprobado por Dirección" → **💎 Autorizado por Director**
+
+5. **👑 Luis (Manager)** autoriza después: "Confirmado desde Gerencia" → **🔶 Autorizado por Manager**
+
+6. **🤖 Sistema** detecta doble autorización: → **✅ Pago Autorizado**
+
+7. Continúa flujo normal...
 
 ---
 

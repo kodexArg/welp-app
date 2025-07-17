@@ -1,7 +1,10 @@
 UDNs:
+  - name: "Oficina Espejo"
   - name: "Km 1151"
   - name: "Las Bóvedas"
-  - name: "Oficina Espejo"
+  - name: "KCBD"
+  - name: "VW"
+  - name: "AMESUP"
 
 Sectors:
   - name: "Full"
@@ -17,6 +20,9 @@ Sectors:
       - "Km 1151"
       - "Las Bóvedas"
       - "Oficina Espejo"
+      - "KCBD"
+      - "VW"
+      - "AMESUP"
   - name: "Parador"
     udns:
       - "Km 1151"

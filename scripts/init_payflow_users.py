@@ -9,6 +9,7 @@ Asume que las UDN y sectores ya existen (ejecute primero init_payflow.py).
 
 import os
 import sys
+import yaml
 import django
 import logging
 from django.db import transaction
@@ -20,194 +21,126 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-USERS_DATA = [
-    {
-        'username': 'pato.moro', 'first_name': 'Pato', 'last_name': 'Moro',
-        'role': 'end_user', 'udn': 'KM 1151', 'sector': 'Administración'
-    },
-    {
-        'username': 'vino.tes', 'first_name': 'Vino', 'last_name': 'Tes',
-        'role': 'end_user', 'udn': 'KM 1151', 'sector': 'Operaciones'
-    },
-    {
-        'username': 'coco.zen', 'first_name': 'Coco', 'last_name': 'Zen',
-        'role': 'end_user', 'udn': 'Las Bóvedas', 'sector': 'Administración'
-    },
-    {
-        'username': 'lili.per', 'first_name': 'Lili', 'last_name': 'Per',
-        'role': 'end_user', 'udn': 'Las Bóvedas', 'sector': 'Operaciones'
-    },
-    {
-        'username': 'pepe.kid', 'first_name': 'Pepe', 'last_name': 'Kid',
-        'role': 'end_user', 'udn': 'Parador', 'sector': 'Parrilla'
-    },
-    {
-        'username': 'pili.box', 'first_name': 'Pili', 'last_name': 'Box',
-        'role': 'end_user', 'udn': 'KCBD', 'sector': 'Operaciones'
-    },
-    {
-        'username': 'yoyo.vis', 'first_name': 'Yoyo', 'last_name': 'Vis',
-        'role': 'end_user', 'udn': 'Espejo', 'sector': 'Sistemas'
-    },
-    {
-        'username': 'colo.yin', 'first_name': 'Colo', 'last_name': 'Yin',
-        'role': 'end_user', 'udn': 'VW', 'sector': 'Campo'
-    },
-    {
-        'username': 'luna.mani', 'first_name': 'Luna', 'last_name': 'Mani',
-        'role': 'technician', 'udn': 'KM 1151', 'sector': 'Administración'
-    },
-    {
-        'username': 'tito.ban', 'first_name': 'Tito', 'last_name': 'Ban',
-        'role': 'technician', 'udn': 'KM 1151', 'sector': 'Operaciones'
-    },
-    {
-        'username': 'dani.tux', 'first_name': 'Dani', 'last_name': 'Tux',
-        'role': 'technician', 'udn': 'Las Bóvedas', 'sector': 'Operaciones'
-    },
-    {
-        'username': 'riko.caz', 'first_name': 'Riko', 'last_name': 'Caz',
-        'role': 'technician', 'udn': 'Parador', 'sector': 'Mantenimiento'
-    },
-    {
-        'username': 'riki.lux', 'first_name': 'Riki', 'last_name': 'Lux',
-        'role': 'supervisor', 'udn': 'KM 1151', 'sector': 'Administración'
-    },
-    {
-        'username': 'lola.pox', 'first_name': 'Lola', 'last_name': 'Pox',
-        'role': 'supervisor', 'udn': 'KM 1151', 'sector': 'Operaciones'
-    },
-    {
-        'username': 'mimo.san', 'first_name': 'Mimo', 'last_name': 'San',
-        'role': 'supervisor', 'udn': 'Las Bóvedas', 'sector': 'Administración'
-    },
-    {
-        'username': 'nana.hup', 'first_name': 'Nana', 'last_name': 'Hup',
-        'role': 'supervisor', 'udn': 'Parador', 'sector': 'Mantenimiento'
-    },
-    {
-        'username': 'teo.mor', 'first_name': 'Teo', 'last_name': 'Mor',
-        'role': 'manager', 'udn': 'KM 1151', 'sector': None
-    },
-    {
-        'username': 'jupi.vec', 'first_name': 'Jupi', 'last_name': 'Vec',
-        'role': 'manager', 'udn': 'Las Bóvedas', 'sector': None
-    },
-    {
-        'username': 'melo.tux', 'first_name': 'Melo', 'last_name': 'Tux',
-        'role': 'manager', 'udn': 'Espejo', 'sector': None
-    },
-    {
-        'username': 'natalia.cobucci', 'first_name': 'Natalia', 'last_name': 'Cobucci',
-        'role': 'purchase_manager', 'udn': None, 'sector': None
-    },
-]
-
-
 def setup_django():
     project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     sys.path.append(project_root)
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'project.settings')
     django.setup()
 
+def load_user_data():
+    """Carga los datos de usuarios desde el archivo YAML."""
+    yaml_path = os.path.join(os.path.dirname(__file__), 'payflow_users.yaml')
+    with open(yaml_path, 'r', encoding='utf-8') as file:
+        return yaml.safe_load(file).get('users', [])
 
-def create_users():
+def create_or_update_user(user_data):
+    """Crea o actualiza un usuario. Devuelve el objeto User y si fue creado."""
     from core.models import User
-    from welp_payflow.models import UDN, Sector, Roles
+    username = user_data['username']
+    
+    user, created = User.objects.update_or_create(
+        username=username,
+        defaults={
+            'first_name': user_data['first_name'],
+            'last_name': user_data['last_name'],
+            'email': f"{username}@example.com",
+        }
+    )
+    if created:
+        user.set_password(username)
+        user.save()
+        logger.info(f"  ✓ Usuario creado: {username}")
+    else:
+        logger.info(f"  → Usuario actualizado: {username}")
+        
+    return user, created
 
-    with transaction.atomic():
-        logger.info("Borrando usuarios de PayFlow anteriores...")
-        Roles.objects.all().delete()
-        User.objects.filter(is_superuser=False).delete()
+def assign_roles(user, user_data, udn_map, sector_map):
+    """Asigna roles a un usuario basándose en los datos del YAML."""
+    from welp_payflow.models import Roles
+    
+    role_type = user_data['role']
+    udns_to_process = []
+    
+    if user_data.get('udns') == 'all':
+        udns_to_process = list(udn_map.values())
+    elif 'udns' in user_data:
+        udns_to_process = [udn_map[name] for name in user_data['udns'] if name in udn_map]
+    elif 'udn' in user_data:
+        udn_name = user_data['udn']
+        if udn_name in udn_map:
+            udns_to_process = [udn_map[udn_name]]
+    
+    specific_sector = sector_map.get(user_data.get('sector'))
 
-        # Obtener todas las UDN y sectores
-        all_udns = list(UDN.objects.all())
-        all_sectors = list(Sector.objects.all())
-        udn_sectors_map = {udn.name: [] for udn in all_udns}
-        for sector in all_sectors:
-            for udn in sector.udn.all():
-                udn_sectors_map[udn.name].append(sector)
-
-        for data in USERS_DATA:
-            user = User.objects.create_user(
-                username=data['username'],
-                password=data['username'],
-                first_name=data['first_name'],
-                last_name=data['last_name'],
-                email=f"{data['username']}@example.com",
+    for udn in udns_to_process:
+        sectors_in_udn = [s for s in udn.payflow_sectors.all()]
+        sectors_to_assign = []
+        
+        if specific_sector:
+            if specific_sector in sectors_in_udn:
+                sectors_to_assign = [specific_sector]
+            else:
+                logger.warning(f"    ⚠️  Sector '{specific_sector.name}' no está asociado a la UDN '{udn.name}' para '{user.username}'. No se asignará rol.")
+        else:
+            # Roles como 'manager' o globales, asignan todos los sectores de la UDN
+            sectors_to_assign = sectors_in_udn
+            
+        for sector in sectors_to_assign:
+            role, created = Roles.objects.update_or_create(
+                user=user,
+                udn=udn,
+                sector=sector,
             )
+            role.set_permissions_from_role_type(role_type)
+            role.save()
+            log_msg = f"    ✓ Rol '{role_type}' asignado en {udn.name}/{sector.name}"
+            if not created:
+                log_msg = f"    → Rol '{role_type}' actualizado en {udn.name}/{sector.name}"
+            logger.info(log_msg)
 
-            role_type = data['role']
-            user_udn = data['udn']
-            user_sector = data['sector']
+def create_users_and_roles():
+    """Función principal para crear usuarios y asignar roles."""
+    from welp_payflow.models import UDN, Sector, Roles
+    from core.models import User
 
-            if role_type == 'end_user':
-                # Un UDN, varios sectores (2 sectores si hay, incluyendo el original)
-                sectors = [s for s in udn_sectors_map.get(user_udn, [])]
-                if user_sector and user_sector in [s.name for s in sectors]:
-                    # Prioriza el sector original y uno más si existe
-                    sector_objs = [s for s in sectors if s.name == user_sector]
-                    extra_sectors = [s for s in sectors if s.name != user_sector]
-                    sector_objs += extra_sectors[:1]  # máximo 2 sectores
-                else:
-                    sector_objs = sectors[:2]
-                for sector in sector_objs:
-                    role = Roles(user=user, udn=sector.udn.first(), sector=sector)
-                    role.set_permissions_from_role_type(role_type)
-                    role.save()
-                    logger.info(f"  ✓ Creado {user.username} como {role_type} en {sector.udn.first().name}/{sector.name}")
+    users_data = load_user_data()
+    
+    try:
+        with transaction.atomic():
+            logger.info("Borrando roles de PayFlow anteriores...")
+            Roles.objects.all().delete()
+            
+            # Borrar solo los usuarios que están en el YAML para no afectar a superusuarios
+            usernames_in_yaml = {data['username'] for data in users_data}
+            User.objects.filter(username__in=usernames_in_yaml, is_superuser=False).delete()
+            logger.info("Usuarios de PayFlow anteriores borrados.")
 
-            elif role_type == 'supervisor':
-                # Un UDN, varios sectores (hasta 3 sectores si hay)
-                sectors = [s for s in udn_sectors_map.get(user_udn, [])]
-                if user_sector and user_sector in [s.name for s in sectors]:
-                    sector_objs = [s for s in sectors if s.name == user_sector]
-                    extra_sectors = [s for s in sectors if s.name != user_sector]
-                    sector_objs += extra_sectors[:2]  # máximo 3 sectores
-                else:
-                    sector_objs = sectors[:3]
-                for sector in sector_objs:
-                    role = Roles(user=user, udn=sector.udn.first(), sector=sector)
-                    role.set_permissions_from_role_type(role_type)
-                    role.save()
-                    logger.info(f"  ✓ Creado {user.username} como {role_type} en {sector.udn.first().name}/{sector.name}")
+            udn_map = {udn.name: udn for udn in UDN.objects.all()}
+            sector_map = {sector.name: sector for sector in Sector.objects.all()}
+            
+            created_count = 0
+            for user_data in users_data:
+                user, created = create_or_update_user(user_data)
+                if created:
+                    created_count += 1
+                assign_roles(user, user_data, udn_map, sector_map)
 
-            elif role_type == 'technician':
-                # Acceso a todas las combinaciones UDN/Sector
-                for udn in all_udns:
-                    for sector in udn_sectors_map[udn.name]:
-                        role = Roles(user=user, udn=udn, sector=sector)
-                        role.set_permissions_from_role_type(role_type)
-                        role.save()
-                logger.info(f"  ✓ Creado {user.username} como {role_type} en TODAS las UDN y sectores")
+            logger.info(f"\nResumen:")
+            logger.info(f"  ✓ {created_count} usuarios nuevos creados.")
+            logger.info(f"  → {len(users_data) - created_count} usuarios existentes actualizados.")
+            logger.info(f"  ✓ Roles asignados: {Roles.objects.count()}")
 
-            elif role_type == 'manager':
-                # Un UDN, todos los sectores de ese UDN
-                sectors = udn_sectors_map.get(user_udn, [])
-                for sector in sectors:
-                    role = Roles(user=user, udn=sector.udn.first(), sector=sector)
-                    role.set_permissions_from_role_type(role_type)
-                    role.save()
-                logger.info(f"  ✓ Creado {user.username} como {role_type} en {user_udn} (todos los sectores)")
-
-            elif role_type == 'purchase_manager':
-                # Acceso a todas las combinaciones UDN/Sector
-                for udn in all_udns:
-                    for sector in udn_sectors_map[udn.name]:
-                        role = Roles(user=user, udn=udn, sector=sector)
-                        role.set_permissions_from_role_type(role_type)
-                        role.save()
-                logger.info(f"  ✓ Creado {user.username} como {role_type} en TODAS las UDN y sectores")
-
-        logger.info(f"Total de usuarios creados: {len(USERS_DATA)} (con roles múltiples según corresponda)")
-
+    except Exception as e:
+        logger.error(f"\n✗ Error durante la creación de usuarios y roles: {e}")
+        raise
 
 def main():
-    logger.info("Inicializando usuarios de ejemplo para PayFlow...")
+    """Punto de entrada del script."""
+    logger.info("Iniciando script de creación de usuarios para PayFlow...")
     setup_django()
-    create_users()
-    logger.info("✓ Usuarios de ejemplo listos. Contraseña= username")
-
+    create_users_and_roles()
+    logger.info("\n✓ Creación de usuarios de PayFlow completada. Contraseña = username")
 
 if __name__ == '__main__':
     main()

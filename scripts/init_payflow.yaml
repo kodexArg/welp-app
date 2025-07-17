@@ -11,8 +11,10 @@ Sectors:
     udns:
       - "KM 1151"
       - "Las Bóvedas"
+      - "Parador"
       - "Espejo"
       - "VW"
+      - "KCBD"
   - name: "Operaciones"
     udns:
       - "KM 1151"
@@ -69,5 +71,9 @@ AccountingCategories:
     description: "Maquinaria y herramientas no-TI"
   - name: "Señalética"
     description: "Carteles, señalización, branding físico"
-  - name: "Telefonía"
+  - name: "Comunicaciones"
     description: "Teléfonos fijos, IP, móviles corporativos" 
+  - name: "Servicios"
+    description: "Servicios de terceros"
+  - name: "Otros"
+    description: "Otros gastos"
