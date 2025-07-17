@@ -22,24 +22,32 @@ document.addEventListener('DOMContentLoaded', function() {
         
         rows.forEach((row, index) => {
             const input = row.querySelector('input[type="file"]');
-            const hasFile = input.files && input.files.length > 0;
-            
-            // Si es la última fila Y no hemos llegado al máximo, mostrar botón +
-            if (index === rows.length - 1 && attachmentCount < maxAttachments) {
-                const addButton = document.createElement('button');
-                addButton.type = 'button';
-                addButton.className = 'button-minimal add-attachment';
-                addButton.textContent = '+';
-                row.appendChild(addButton);
+            let fileLabel = row.querySelector('.attachment-file-label');
+            if (!fileLabel) {
+                fileLabel = document.createElement('span');
+                fileLabel.className = 'attachment-file-label text-xs text-earth-400 ml-0 bg-white border border-earth-100 rounded-lg px-3 py-2 w-full block';
+                input.insertAdjacentElement('afterend', fileLabel);
+                fileLabel.addEventListener('click', function() {
+                    input.click();
+                });
+            }
+            if (input.files && input.files.length > 0) {
+                fileLabel.textContent = input.files[0].name;
+                fileLabel.classList.remove('text-earth-400');
+                fileLabel.classList.add('text-earth-700');
+            } else {
+                fileLabel.textContent = 'Seleccionar archivo...';
+                fileLabel.classList.remove('text-earth-700');
+                fileLabel.classList.add('text-earth-400');
             }
             
-            // Si tiene archivo O no es la primera fila, mostrar botón ×
-            if (hasFile || index > 0) {
-                const removeButton = document.createElement('button');
-                removeButton.type = 'button';
-                removeButton.className = 'button-minimal remove-attachment';
-                removeButton.textContent = '×';
-                row.appendChild(removeButton);
+            // Sólo mostrar el link de borrar si hay archivo o no es la primera fila
+            if ((input.files && input.files.length > 0) || index > 0) {
+                const removeLink = document.createElement('a');
+                removeLink.href = '#';
+                removeLink.className = 'attachment-action-link remove-attachment';
+                removeLink.innerHTML = '<i class="fa fa-trash"></i>Borrar';
+                row.appendChild(removeLink);
             }
         });
     }
@@ -81,7 +89,28 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Actualizar botones cuando se selecciona un archivo
     container.addEventListener('change', function(e) {
-        if (e.target.type === 'file') {
+        if (e.target.type === 'file' && e.target.files && e.target.files.length > 0) {
+            // Actualizar botones para mostrar el archivo seleccionado
+            updateButtons();
+            
+            // Si no hemos llegado al máximo, agregar automáticamente una nueva fila
+            if (attachmentCount < maxAttachments) {
+                attachmentCount++;
+                const newRow = document.createElement('div');
+                newRow.className = 'attachment-input-row';
+                newRow.innerHTML = `
+                    <input 
+                        type="file" 
+                        name="attachments" 
+                        class="form-input attachment-input"
+                        accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg,.gif"
+                    >
+                `;
+                container.appendChild(newRow);
+                updateButtons();
+            }
+        } else if (e.target.type === 'file') {
+            // Si no se seleccionó archivo, solo actualizar botones
             updateButtons();
         }
     });

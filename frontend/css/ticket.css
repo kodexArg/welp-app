@@ -209,27 +209,54 @@
 
     /* Attachment Management */
     .attachment-details {
-        
+        @apply border border-transparent bg-white rounded-lg p-2 mt-2;
     }
-
+    details[open].attachment-details, details[open] .attachment-details {
+        @apply bg-earth-50 border-earth-100;
+    }
     .attachment-summary {
-        
+        @apply flex items-center cursor-pointer text-earth-400 hover:text-earth-600 font-ui text-sm gap-2 min-h-[1.5rem];
     }
-
-    .attachment-input-row {
-        
+    .attachment-summary > i {
+        @apply text-base text-earth-300 mr-2;
     }
-
-    .attachment-input {
-        
+    .attachment-content {
+        @apply p-2 bg-white border border-earth-100 rounded-lg mt-2 min-h-0;
     }
-
-    .add-attachment {
-        
-    }
-
     .form-help {
-        
+        @apply text-xs text-earth-400 mt-1;
+    }
+    .attachment-input-row {
+        @apply flex items-center gap-2 mt-2 text-xs min-h-0;
+        align-items: center;
+    }
+    .attachment-action-link {
+        @apply inline-flex items-center gap-1 px-0 py-0 text-earth-600 text-sm font-ui bg-transparent border-0 shadow-none cursor-pointer transition-all duration-150;
+        text-decoration: none;
+    }
+    .attachment-action-link .fa {
+        @apply text-xs mr-0.5;
+    }
+    .attachment-action-link:hover {
+        @apply text-earth-800;
+        text-decoration: underline;
+    }
+    .attachment-input-row input[type="file"] {
+        @apply absolute w-0 h-0 opacity-0 overflow-hidden;
+        position: absolute;
+        width: 0;
+        height: 0;
+        opacity: 0;
+        overflow: hidden;
+    }
+    .attachment-file-label {
+        @apply inline-block cursor-pointer text-xs font-ui text-earth-400 ml-2 transition-colors duration-150;
+    }
+    .attachment-file-label.text-earth-700 {
+        @apply text-earth-700;
+    }
+    .attachment-file-label:hover {
+        @apply text-earth-800 underline;
     }
 
     /* Response Actions */
