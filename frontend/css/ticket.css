@@ -57,6 +57,10 @@
         @apply brightness-90;
     }
 
+    .ticket-action-button--solo {
+        @apply text-xl border-2;
+    }
+
     /* Ticket Tags */
     .ticket-tag {
         @apply py-0.5 px-2 border border-gray-300;

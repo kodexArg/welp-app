@@ -7,7 +7,9 @@
 
 {% block content %}
 <section class="max-w-3xl mx-auto">
-    <h2 class="text-2xl font-bold">{{ response_info.action_label }}</h2>
+    <h2 class="text-2xl font-bold">
+        <i class="{{ icon_class }} mr-2"></i>{{ response_info.action_label }}
+    </h2>
     
     {% if response_type == 'close' %}
         <div class="{{ confirmation_info.style.bg }} border-l-4 {{ confirmation_info.style.border }} p-4 mb-6 rounded-r-lg">

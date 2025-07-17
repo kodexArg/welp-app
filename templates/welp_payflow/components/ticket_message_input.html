@@ -1,6 +1,28 @@
+{% if form_fields|length == 0 %}
+    <form method="post" enctype="multipart/form-data" action="{{ form_action }}" id="ticket-message-input-form">
+        {% csrf_token %}
+        {% if hidden_fields %}
+            {% for field_name, field_value in hidden_fields.items %}
+                <input type="hidden" name="{{ field_name }}" value="{{ field_value }}">
+            {% endfor %}
+        {% endif %}
+        <div class="flex justify-end gap-3 pt-4 mr-ticket-btn-solo">
+            {% if cancel_url %}
+            <a href="{{ cancel_url }}" class="ticket-action-button text-base-b2">
+                <i class="fa fa-times response-action-icon-cancel mr-2" aria-hidden="true"></i>
+                <span class="font-normal">{{ cancel_text }}</span>
+            </a>
+            {% endif %}
+            <button type="submit" class="ticket-action-button text-base-b2">
+                <i class="{{ icon_class }} response-action-icon-submit mr-2"></i>
+                <span class="font-normal capitalize">{{ button_text }}</span>
+            </button>
+        </div>
+    </form>
+{% else %}
 <article class="ticket-input-message">
     <div class="ticket-response-form">
-        <form method="post" enctype="multipart/form-data" action="{{ form_action }}">
+        <form method="post" enctype="multipart/form-data" action="{{ form_action }}" id="ticket-message-input-form">
             {% csrf_token %}
             {% if hidden_fields %}
                 {% for field_name, field_value in hidden_fields.items %}
@@ -48,3 +70,4 @@
         </form>
     </div>
 </article>
+{% endif %}
