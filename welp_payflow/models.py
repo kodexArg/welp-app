@@ -190,7 +190,7 @@ class Message(models.Model):
     ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE, related_name="messages", verbose_name="Ticket")
     status = models.CharField(
         max_length=STATUS_MAX_LENGTH,
-        choices=[(key, value['label']) for key, value in PAYFLOW_STATUSES.items() if 'is_final' in value],
+        choices=[(key, value['label']) for key, value in PAYFLOW_STATUSES.items() if key != 'comment'],
         default='open',
         verbose_name="Estado"
     )
@@ -205,7 +205,7 @@ class Message(models.Model):
         verbose_name="Tipo de Mensaje"
     )
     reported_on = models.DateTimeField(null=True, blank=True, verbose_name="Fecha Reportada")
-    created_on = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de Creación")
+    created_on = models.DateTimeField(default=timezone.now, verbose_name="Fecha de Creación")
     user = models.ForeignKey('core.User', on_delete=models.SET_NULL, null=True, blank=True, related_name="payflow_messages", verbose_name="Usuario")
     body = models.TextField(verbose_name="Cuerpo del Mensaje", blank=True, null=True)
 

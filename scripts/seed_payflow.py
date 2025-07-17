@@ -107,7 +107,8 @@ def create_message_from_data(ticket, msg_data):
             status=msg_data['status'],
             body=msg_data.get('comment', ''),
             message_type='status',
-            reported_on=msg_data['post_date']
+            reported_on=msg_data['post_date'],
+            created_on=msg_data['post_date']
         )
         logger.info(f"    ✓ Mensaje creado [Status: {message.status}, User: {user.username}]")
 
