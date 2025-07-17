@@ -3,54 +3,51 @@
 {% block title %}Iniciar Sesión - Welp App{% endblock %}
 
 {% block content %}
-<section class="flex items-center justify-center min-h-[calc(100vh-var(--header-height)-2rem)] animate-fade-in">
-    <div class="card w-full max-w-sm shadow-xl">
-        <form method="post" class="w-full">
+<section class="flex justify-center items-center min-h-[calc(100vh-var(--header-height))]">
+    <div class="bg-white rounded-2xl border border-border shadow-md w-full max-w-xs mx-auto p-6">
+        <form method="post" class="flex flex-col gap-4">
             {% csrf_token %}
 
-            <div class="card-header text-center">
-                <h2 class="text-2xl font-bold">Ingresar</h2>
-            </div>
-    
-            <div class="card-body">
-                
-                <div class="form-group">
-                    <label for="username" class="form-label">USUARIO</label>
+            <h2 class="text-xl font-bold text-center text-primary">Ingresar</h2>
+
+            <div class="flex flex-col gap-3">
+                <div>
+                    <label for="username" class="form-label text-xs">USUARIO</label>
                     <input 
                         id="username" 
                         name="username" 
                         type="text" 
                         required 
-                        class="form-input"
-                        placeholder="Ingresa tu usuario"
+                        placeholder="Tu usuario"
                         value="{{ request.POST.username|default:'' }}"
                         autofocus
+                        class="form-input py-1.5"
                     >
                 </div>
-
-                <div class="form-group mb-2">
-                    <label for="password" class="form-label">CONTRASEÑA</label>
+                <div>
+                    <label for="password" class="form-label text-xs">CONTRASEÑA</label>
                     <input 
                         id="password" 
                         name="password" 
                         type="password" 
                         required 
-                        class="form-input"
-                        placeholder="Contraseña"
+                        placeholder="••••••••"
+                        class="form-input py-1.5"
                     >
                 </div>
             </div>
-    
-            <div class="card-footer flex items-center justify-between">
-                <a href="/admin/" class="button-minimal text-sm font-medium">
-                    <i class="fa fa-user-shield mr-1"></i>
-                    Admin
-                </a>
-                <button type="submit" class="button-primary">
-                    <i class="fa fa-sign-in-alt mr-2"></i>
-                    INICIAR SESIÓN
-                </button>
-            </div>
+
+            <a href="/admin/" class="text-secondary hover:text-accent text-xs flex items-center justify-center gap-2">
+                <i class="fa fa-user-shield"></i>
+                Ingresar como Administrador
+            </a>
+            <hr class="my-1 border-border/50">
+            
+            <button type="submit" class="button ">
+                <i class="fa fa-sign-in-alt"></i>
+                INICIAR SESIÓN
+            </button>
+            
         </form>
     </div>
 </section>
@@ -58,51 +55,23 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.querySelector('form');
-    const usernameField = document.getElementById('username');
-    const passwordField = document.getElementById('password');
     const submitBtn = form.querySelector('button[type="submit"]');
-    
-    // Mejorar experiencia del campo usuario
-    if (usernameField && usernameField.value.trim() === '') {
-        // Seleccionar todo el texto cuando se hace clic en el campo vacío
-        usernameField.addEventListener('click', function() {
-            if (this.value.trim() !== '') {
-                this.select();
-            }
-        });
-        
-        // Seleccionar todo al recibir foco si tiene contenido
-        usernameField.addEventListener('focus', function() {
-            if (this.value.trim() !== '') {
-                // Pequeño delay para asegurar que la selección funcione
-                setTimeout(() => this.select(), 10);
-            }
-        });
-    }
-    
-    // Mejorar experiencia del campo contraseña
-    passwordField.addEventListener('focus', function() {
-        // Limpiar el campo si es la primera vez que se enfoca
-        if (!this.hasAttribute('data-touched')) {
-            this.value = '';
-            this.setAttribute('data-touched', 'true');
-        }
-    });
-    
-    // Manejo del envío del formulario
+
     if (form) {
         form.addEventListener('submit', function() {
             if (submitBtn && !submitBtn.disabled) {
                 submitBtn.disabled = true;
-                submitBtn.innerHTML = '<i class="fa fa-spinner fa-spin mr-2"></i>Iniciando...';
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fa fa-spinner fa-spin mr-2"></i>Validando...';
                 submitBtn.classList.add('opacity-75', 'cursor-not-allowed');
+
             }
         });
     }
-    
-    // Auto-focus en contraseña si usuario ya está lleno
-    if (usernameField && usernameField.value.trim() !== '') {
-        passwordField.focus();
+
+    const usernameField = document.getElementById('username');
+    if (usernameField && usernameField.value) {
+        document.getElementById('password').focus();
     }
 });
 </script>
