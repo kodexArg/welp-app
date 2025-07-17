@@ -12,7 +12,7 @@
 
     <div id="tickets-container">
         {% for ticket in tickets %}
-            {% ticket_container ticket %}
+            {% ticket_container ticket expanded=False %}
         {% empty %}
             {% ticket_empty %}
         {% endfor %}

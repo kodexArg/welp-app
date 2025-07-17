@@ -1,7 +1,11 @@
 {% load payflow_tags %}
 {% load ticket_message_tags %}
 
+{% if expanded %}
 <details class="ticket-container" open>
+{% else %}
+<details class="ticket-container">
+{% endif %}
     <summary class="ticket-header">
         <div class="ticket-title">
             <i class="ticket-caret"></i>

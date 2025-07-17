@@ -285,3 +285,10 @@
         stroke-dashoffset: 0;
     }
 }
+
+.ticket-mermaid-workflow {
+    @apply max-h-96 overflow-y-auto my-4;
+}
+.ticket-mermaid-workflow .mermaid {
+    @apply flex justify-center items-center p-4;
+}
