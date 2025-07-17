@@ -1,43 +1,51 @@
 # Usuarios de ejemplo para PayFlow
 
-Este documento describe los usuarios ficticios creados por `init_payflow_users.py`.
-Ejecute el script con:
+Este documento describe los usuarios ficticios creados por `init_app.py`.
+Toda la configuración de UDNs, Sectores, Categorías Contables y Usuarios se carga desde `init_payflow.yaml`.
+
+Para poblar la base de datos, ejecute el script con:
 
 ```bash
-uv run scripts/init_payflow_users.py
+uv run scripts/init_app.py
 ```
 
-Cada usuario se crea con contraseña igual a su nombre de usuario. Se asume que las UDN y sectores ya fueron cargados con `init_payflow.py`.
+Cada usuario se crea con una contraseña igual a su nombre de usuario.
 
-> **Nota:** Algunos usuarios tienen acceso a múltiples sectores y/o UDN según su rol. Los técnicos y la gestora de compras tienen acceso total a todas las combinaciones de UDN y sector. Los managers acceden a todos los sectores de su UDN. Los supervisores y usuarios finales pueden tener varios sectores en una misma UDN.
+> **Nota:** Los usuarios con roles `technician`, `purchase_manager` y `director` tienen acceso a todas las UDNs y sectores. Los managers acceden a múltiples UDNs especificadas. Los supervisores y usuarios finales tienen acceso a una UDN y sector específicos.
 
-| Usuario            | Nombre completo      | UDN(s)         | Sector(es)                        | Rol              |
-|--------------------|---------------------|---------------|------------------------------------|------------------|
-| pato.moro          | Pato Moro           | KM 1151       | Administración, Operaciones        | end_user         |
-| vino.tes           | Vino Tes            | KM 1151       | Operaciones, Administración        | end_user         |
-| coco.zen           | Coco Zen            | KM 1151       | Administración, Operaciones        | end_user         |
-| lili.per           | Lili Per            | Las Bóvedas   | Operaciones, Administración        | end_user         |
-| pepe.kid           | Pepe Kid            | Parador       | Parrilla, Mantenimiento           | end_user         |
-| pili.box           | Pili Box            | KCBD          | Operaciones                        | end_user         |
-| yoyo.vis           | Yoyo Vis            | Espejo        | Sistemas                           | end_user         |
-| colo.yin           | Colo Yin            | VW            | Campo                              | end_user         |
-| luna.mani          | Luna Mani           | Todas         | Todos                              | technician       |
-| tito.ban           | Tito Ban            | Todas         | Todos                              | technician       |
-| dani.tux           | Dani Tux            | Todas         | Todos                              | technician       |
-| riko.caz           | Riko Caz            | Todas         | Todos                              | technician       |
-| riki.lux           | Riki Lux            | KM 1151       | Administración, Operaciones, Otro* | supervisor       |
-| lola.pox           | Lola Pox            | KM 1151       | Operaciones, Administración, Otro* | supervisor       |
-| mimo.san           | Mimo San            | Las Bóvedas   | Administración, Operaciones, Otro* | supervisor       |
-| nana.hup           | Nana Hup            | Parador       | Mantenimiento, Parrilla, Otro*     | supervisor       |
-| teo.mor            | Teo Mor             | KM 1151       | Todos los sectores                 | manager          |
-| jupi.vec           | Jupi Vec            | Las Bóvedas   | Todos los sectores                 | manager          |
-| melo.tux           | Melo Tux            | Espejo        | Todos los sectores                 | manager          |
-| natalia.cobucci    | Natalia Cobucci     | Todas         | Todos                              | purchase_manager |
+| Usuario            | Nombre completo      | UDN(s)              | Sector(es)             | Rol              |
+|--------------------|---------------------|---------------------|------------------------|------------------|
+| ana.cruz           | Ana Cruz            | KM 1151             | Administración         | end_user         |
+| leo.gil            | Leo Gil             | KM 1151             | Operaciones            | end_user         |
+| paz.diaz           | Paz Diaz            | Las Bóvedas         | Administración         | end_user         |
+| juan.rios          | Juan Rios           | Las Bóvedas         | Operaciones            | end_user         |
+| ines.soler         | Inés Soler          | Parador             | Parrilla               | end_user         |
+| teo.vega           | Teo Vega            | Parador             | Mantenimiento          | end_user         |
+| alex.rey           | Alex Rey            | Espejo              | Sistemas               | end_user         |
+| sol.diaz           | Sol Diaz            | Espejo              | Compras                | end_user         |
+| hugo.ruiz          | Hugo Ruiz           | VW                  | Campo                  | end_user         |
+| nico.cruz          | Nico Cruz           | VW                  | Administración         | end_user         |
+| dani.sanz          | Dani Sanz           | KCBD                | Operaciones            | end_user         |
+| mora.rey           | Mora Rey            | KCBD                | Administración         | end_user         |
+| martin.garcia      | Martín Garcia       | KM 1151             | Operaciones            | supervisor       |
+| sofia.torres       | Sofía Torres        | Las Bóvedas         | Administración         | supervisor       |
+| lucas.lopez        | Lucas Lopez         | Parador             | Mantenimiento          | supervisor       |
+| elena.ramos        | Elena Ramos         | Espejo              | Sistemas               | supervisor       |
+| santiago.fernandez | Santiago Fernandez  | KM 1151, Las Bóvedas| Todos los sectores     | manager          |
+| natalia.fernandez  | Natalia Fernandez   | Todas               | Todos                  | manager          |
+| felix.soto         | Felix Soto          | Todas               | Todos                  | technician       |
+| julia.vega         | Julia Vega          | Todas               | Todos                  | technician       |
+| catalina.rojas     | Catalina Rojas      | Todas               | Todos                  | purchase_manager |
+| natalia.cobucci    | Natalia Cobucci     | Todas               | Todos                  | purchase_manager |
+| mateo.vila         | Mateo Vila          | Todas               | Todos                  | director         |
 
-*"Otro" indica que el usuario tiene acceso a un sector adicional dentro de la misma UDN, elegido aleatoriamente para simular variedad.
+## Descripción de Roles
 
-- Los técnicos y la gestora de compras tienen acceso a todas las UDN y sectores (roles múltiples).
-- Los managers tienen acceso a todos los sectores de su UDN (roles múltiples).
-- Supervisores y usuarios finales pueden tener hasta 2 o 3 sectores en la misma UDN.
+- **end_user**: Acceso a una UDN y sector específicos para crear y gestionar sus propias solicitudes de pago
+- **supervisor**: Acceso a una UDN y sector específicos con permisos adicionales de supervisión
+- **manager**: Acceso completo a una o más UDNs específicas y todos sus sectores
+- **technician**: Acceso técnico global a todas las UDNs y sectores
+- **purchase_manager**: Gestión de compras con acceso global a todas las UDNs y sectores
+- **director**: Acceso directivo completo a todas las UDNs y sectores del sistema
 
-Natalia Cobucci es la única compradora (purchase manager) para todo el proyecto.
+Catalina Rojas y Natalia Cobucci son las compradoras (purchase managers) para todo el proyecto.

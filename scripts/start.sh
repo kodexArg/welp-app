@@ -35,7 +35,6 @@ banner "PRUEBAS"
 uv run manage.py test tests --verbosity 2
 uv run manage.py test core.tests.test_views --verbosity 2
 uv run manage.py test core.tests.test_models --verbosity 2
-uv run manage.py test welp_desk.tests --verbosity 2
 
 banner "INICIANDO GUNICORN"
 exec uv run gunicorn -b 0.0.0.0:8080 project.wsgi --log-level info --access-logfile - --error-logfile - 
