@@ -1,9 +1,7 @@
 ---
-description: Estándares para Tailwind 4 y Vite en welp-app
-globs: ["frontend/**/*", "tailwind.config.js", "vite.config.js", "package.json", "**/*.css", "postcss.config.js"]
+globs: *.html,*.css
 alwaysApply: false
 ---
-
 # Frontend Stack - Tailwind 4 y Vite Standards
 
 # Tailwind 4 Design System
