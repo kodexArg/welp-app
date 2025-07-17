@@ -1,7 +1,7 @@
 import os
 from django.conf import settings
 
-STATUS_MAX_LENGTH = 20
+STATUS_MAX_LENGTH = 25
 
 PAYFLOW_STATUSES = {
     # Los estados se ordenan según el flujo de trabajo natural.
