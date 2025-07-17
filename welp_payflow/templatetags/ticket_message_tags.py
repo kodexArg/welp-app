@@ -70,7 +70,7 @@ def ticket_message_input(context, ticket, response_type, user_can_transition=Tru
     else:
         form_action = reverse('welp_payflow:transition', kwargs={'ticket_id': ticket.id, 'target_status': response_type})
     icon_class = FA_ICONS.get(response_type, 'fa-solid fa-paper-plane')
-    final_cancel_url = cancel_url or reverse('welp_payflow:detail', kwargs={'ticket_id': ticket.id})
+    final_cancel_url = reverse('welp_payflow:list')
     show_estimated_amount_input = (response_type == 'budgeted')
     form_fields = []
     if action_info.get('show_comment_box', True):

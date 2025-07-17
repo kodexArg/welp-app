@@ -207,6 +207,10 @@
         
     }
 
+    .form-label {
+        @apply block text-base font-semibold text-primary ml-4 mb-1 font-ui tracking-wide capitalize;
+    }
+
     /* Attachment Management */
     .attachment-details {
         @apply border border-transparent bg-white rounded-lg p-2 mt-2;

@@ -76,7 +76,7 @@ PAYFLOW_STATUSES = {
         'confirmation_style': {'bg': 'bg-green-50', 'border': 'border-green-400', 'text': 'text-green-700'},
         'button_text': 'Enviar presupuesto',
         'comment_placeholder': 'Detalles del presupuesto adjuntado',
-        'comment_label': 'Comentario',
+        'comment_label': 'Detalles del presupuesto',
         'comment_required': True,
         'show_comment_box': True,
         'show_attachments': True,

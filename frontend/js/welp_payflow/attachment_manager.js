@@ -35,19 +35,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 fileLabel.textContent = input.files[0].name;
                 fileLabel.classList.remove('text-earth-400');
                 fileLabel.classList.add('text-earth-700');
-            } else {
-                fileLabel.textContent = 'Seleccionar archivo...';
-                fileLabel.classList.remove('text-earth-700');
-                fileLabel.classList.add('text-earth-400');
-            }
-            
-            // Sólo mostrar el link de borrar si hay archivo o no es la primera fila
-            if ((input.files && input.files.length > 0) || index > 0) {
+                // Mostrar el link de borrar solo si hay archivo seleccionado
                 const removeLink = document.createElement('a');
                 removeLink.href = '#';
                 removeLink.className = 'attachment-action-link remove-attachment';
                 removeLink.innerHTML = '<i class="fa fa-trash"></i>Borrar';
                 row.appendChild(removeLink);
+            } else {
+                fileLabel.textContent = 'Seleccionar archivo...';
+                fileLabel.classList.remove('text-earth-700');
+                fileLabel.classList.add('text-earth-400');
             }
         });
     }
