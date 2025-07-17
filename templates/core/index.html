@@ -21,7 +21,7 @@
                     <span class="inline-flex items-center justify-center bg-forest-100 text-forest-700 rounded-full w-10 h-10 text-2xl"><i class="fa fa-user-check"></i></span>
                     <h3 class="text-2xl font-bold text-forest-600 tracking-tight">Welp Payflow</h3>
                 </div>
-                <p class="text-forest-900">Circuito de solicitudes para elementos y servicios internos de la empresa. Acelera el sistema de compras (presupuestos, autorizaciones), manteniendo informada a toda la cadena operativa.</p>
+                <p class="text-forest-900">Circuito de solicitudes para elementos y servicios internos de la empresa. Sistema de <strong>doble autorización</strong> (Manager + Director) que acelera las compras y presupuestos, manteniendo control financiero y trazabilidad completa.</p>
                 <div class="flex-grow"></div>
                 <a href="{% url 'welp_payflow:index' %}" class="inline-block mt-4 px-4 py-2 rounded-lg bg-forest-700 text-white font-semibold hover:bg-forest-800 transition">Ir a Welp Payflow</a>
             </div>
@@ -56,23 +56,23 @@
             <div class="bg-earth-400 border border-earth-700 rounded-xl p-6 flex flex-col gap-2 shadow-sm">
                 <div class="flex items-center gap-2 mb-1">
                     <span class="text-earth-900 text-lg"><i class="fa fa-shopping-cart"></i></span>
-                    <span class="font-semibold text-earth-50">Gestor de Compras</span>
+                    <span class="font-semibold text-earth-50">Responsable de Compras</span>
                 </div>
-                <p class="text-earth-100 text-sm">Rol específico encargado del sistema de pagos y de la gestión de presupuestos.</p>
+                <p class="text-earth-100 text-sm">Rol específico encargado del sistema de pagos y de la gestión de presupuestos con proveedores.</p>
             </div>
-            <div class="bg-slate-900 border border-slate-700 rounded-xl p-6 flex flex-col gap-2 shadow-sm">
+            <div class="bg-slate-800 border border-slate-600 rounded-xl p-6 flex flex-col gap-2 shadow-sm">
                 <div class="flex items-center gap-2 mb-1">
                     <span class="text-slate-200 text-lg"><i class="fa fa-user-tie"></i></span>
                     <span class="font-semibold text-slate-100">Manager</span>
                 </div>
-                <p class="text-slate-200 text-sm">Gerente de UDN o CEO. Autoriza el pago final y tiene control por UDN o total.</p>
+                <p class="text-slate-200 text-sm">Gerente de UDN. Realiza la <strong>primera firma</strong> obligatoria para autorización de pagos.</p>
             </div>
             <div class="bg-slate-900 border border-slate-700 rounded-xl p-6 flex flex-col gap-2 shadow-sm">
                 <div class="flex items-center gap-2 mb-1">
                     <span class="text-yellow-400 text-lg"><i class="fa fa-user-secret"></i></span>
-                    <span class="font-semibold text-yellow-100">Director</span>
+                    <span class="font-semibold text-yellow-100">Director ⭐</span>
                 </div>
-                <p class="text-yellow-100 text-sm">Grupo especial con la capacidad de actuar como segunda firma para autorizaciones.</p>
+                <p class="text-yellow-100 text-sm">Nivel ejecutivo. Realiza la <strong>segunda firma obligatoria</strong> para autorización de pagos. Control total del sistema.</p>
             </div>
         </div>
         <div class="mt-10 max-w-2xl mx-auto">
