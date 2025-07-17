@@ -36,12 +36,12 @@
             
             <div class="ticket-response-actions flex justify-end gap-3 pt-4">
                 {% if cancel_url %}
-                <a href="{{ cancel_url }}" class="response-action-cancel">
-                    <i class="response-action-icon-cancel"></i>
-                    <span>{{ cancel_text|upper }}</span>
+                <a href="{{ cancel_url }}" class="ticket-action-button">
+                    <i class="fa fa-times response-action-icon-cancel mr-2" aria-hidden="true"></i>
+                    <span class="font-normal">{{ cancel_text }}</span>
                 </a>
                 {% endif %}
-                <button type="submit" class="response-action-submit">
+                <button type="submit" class="ticket-action-button">
                     <i class="{{ icon_class }} response-action-icon-submit mr-2"></i>
                     <span class="font-normal capitalize">{{ button_text }}</span>
                 </button>
