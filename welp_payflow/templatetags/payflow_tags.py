@@ -50,8 +50,34 @@ def status_badge(status, label=None, variant=None, system='desk'):
     }
 
 @register.inclusion_tag('welp_payflow/components/mermaid_workflow.html')
-def mermaid_workflow():
-    return {}
+def mermaid_workflow(ticket):
+    """
+    Genera el diagrama de flujo de Mermaid con estilos condicionales.
+    Por defecto, todos los nodos son grises. Solo se colorean los nodos
+    correspondientes a los estados que existen en el historial de mensajes del ticket.
+    """
+    styles = {}
+    gray_style = "fill:#f3f4f6,stroke:#e5e7eb,stroke-width:2px,color:#9ca3b9,rx:20,ry:20"
+
+    # 1. Inicializar todos los nodos del gráfico en gris.
+    workflow_nodes = {
+        data['mermaid_node']: gray_style
+        for slug, data in PAYFLOW_STATUSES.items() if 'mermaid_node' in data
+    }
+    
+    # 2. Obtener los estados únicos del historial de mensajes del ticket.
+    message_statuses = set(ticket.messages.values_list('status', flat=True))
+    
+    # 3. Sobrescribir el estilo gris con el estilo de color para los estados existentes.
+    for status_slug in message_statuses:
+        if status_slug in PAYFLOW_STATUSES:
+            status_info = PAYFLOW_STATUSES[status_slug]
+            if 'mermaid_node' in status_info and 'mermaid_style' in status_info:
+                node_id = status_info['mermaid_node']
+                workflow_nodes[node_id] = status_info['mermaid_style']
+    
+    return {'styles': workflow_nodes}
+
 
 @register.inclusion_tag('welp_payflow/components/action-button.html')
 def payflow_action_button(ticket, action_type, user_can_transition=True, is_owner=False):

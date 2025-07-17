@@ -142,9 +142,6 @@ def get_user_ticket_transitions(user, ticket):
 def get_ticket_action_data(action, ticket_id=None):
     if action == 'feedback':
         status_info = PAYFLOW_STATUSES.get('comment', {})
-    elif action == 'view':
-        # Caso especial para el botón "Ver"
-        status_info = {'action_label': 'Ver'}
     else:
         status_info = PAYFLOW_STATUSES.get(action, {})
     
@@ -161,8 +158,6 @@ def get_ticket_action_data(action, ticket_id=None):
         try:
             if action == 'feedback':
                 href = reverse('welp_payflow:detail', kwargs={'ticket_id': ticket_id}) + '?response_type=comment'
-            elif action == 'view':
-                href = reverse('welp_payflow:detail', kwargs={'ticket_id': ticket_id})
             else:
                 href = reverse('welp_payflow:detail', kwargs={'ticket_id': ticket_id}) + f'?response_type={action}'
         except Exception:
@@ -218,11 +213,6 @@ def get_ticket_actions_context(user, ticket):
     if comment_action:
         final_actions.append(comment_action)
     
-    # Agregar siempre el botón "Ver" al final
-    view_action = get_ticket_action_data('view', ticket.id)
-    if view_action:
-        final_actions.append(view_action)
-    
     return {
         'ticket': ticket,
         'actions': final_actions
@@ -233,15 +223,12 @@ def get_ticket_detail_context_data(request, ticket):
     """Prepara el contexto para la vista de detalle del ticket."""
     from django.urls import reverse
 
-    response_type = request.GET.get('response_type', 'view')
+    response_type = request.GET.get('response_type', 'comment')
     ui_key = response_type
     if ui_key == 'close':
         ui_key = 'closed'
     elif ui_key == 'feedback':
         ui_key = 'comment'
-    elif ui_key == 'view':
-        # Caso especial para solo ver: sin formulario
-        ui_key = 'comment'  # Usar configuración básica pero sin mostrar elementos
 
     status_info = PAYFLOW_STATUSES.get(ui_key, {})
 

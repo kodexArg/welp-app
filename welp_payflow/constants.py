@@ -6,6 +6,8 @@ STATUS_MAX_LENGTH = 20
 PAYFLOW_STATUSES = {
     # Los estados se ordenan según el flujo de trabajo natural.
     'open': {
+        'mermaid_node': 'A',
+        'mermaid_style': 'fill:#fef2f2,stroke:#fecaca,stroke-width:2px,color:#dc2626,rx:20,ry:20',
         'label': 'Abierto',
         'color': '#dc2626',
         'color_name': 'red',
@@ -27,6 +29,8 @@ PAYFLOW_STATUSES = {
         'comment_required': False,
     },
     'authorized': {
+        'mermaid_node': 'B',
+        'mermaid_style': 'fill:#f3e8ff,stroke:#e9d5ff,stroke-width:2px,color:#a855f7,rx:20,ry:20',
         'label': 'Autorizado',
         'color': '#a855f7',
         'color_name': 'purple',
@@ -54,6 +58,8 @@ PAYFLOW_STATUSES = {
         'show_attachments': False,
     },
     'budgeted': {
+        'mermaid_node': 'C',
+        'mermaid_style': 'fill:#f0fdf4,stroke:#bbf7d0,stroke-width:2px,color:#10b981,rx:20,ry:20',
         'label': 'Presupuestado',
         'color': '#16a34a',
         'color_name': 'green',
@@ -82,6 +88,8 @@ PAYFLOW_STATUSES = {
         'show_attachments': True,
     },
     'rejected': {
+        'mermaid_node': 'E',
+        'mermaid_style': 'fill:#fef3c7,stroke:#fde68a,stroke-width:2px,color:#d97706,rx:20,ry:20',
         'label': 'Rechazado',
         'color': '#eab308',
         'color_name': 'yellow',
@@ -110,6 +118,8 @@ PAYFLOW_STATUSES = {
         'show_attachments': False,
     },
     'payment_authorized': {
+        'mermaid_node': 'D',
+        'mermaid_style': 'fill:#f3e8ff,stroke:#e9d5ff,stroke-width:2px,color:#7c3aed,rx:20,ry:20',
         'label': 'Pago Autorizado',
         'color': '#f97316',
         'color_name': 'orange',
@@ -138,6 +148,8 @@ PAYFLOW_STATUSES = {
         'show_attachments': False,
     },
     'processing_payment': {
+        'mermaid_node': 'G',
+        'mermaid_style': 'fill:#cffafe,stroke:#a5f3fc,stroke-width:2px,color:#0891b2,rx:20,ry:20',
         'label': 'Procesando Pago',
         'color': '#06b6d4',
         'color_name': 'cyan',
@@ -166,6 +178,8 @@ PAYFLOW_STATUSES = {
         'show_attachments': False,
     },
     'shipping': {
+        'mermaid_node': 'H',
+        'mermaid_style': 'fill:#eef2ff,stroke:#c7d2fe,stroke-width:2px,color:#6366f1,rx:20,ry:20',
         'label': 'En Envío',
         'color': '#8b5cf6',
         'color_name': 'violet',
@@ -194,6 +208,8 @@ PAYFLOW_STATUSES = {
         'show_attachments': True,
     },
     'closed': {
+        'mermaid_node': 'F',
+        'mermaid_style': 'fill:#f1f5f9,stroke:#e2e8f0,stroke-width:2px,color:#94a3b8,rx:20,ry:20',
         'label': 'Cerrado',
         'color': '#6b7280',
         'color_name': 'forest',
@@ -314,9 +330,9 @@ TREEMAP_MIN_ITEMS = 3
 TREEMAP_MAX_ITEMS = 50 
 
 FA_ICONS = {
-    'open': 'fa-solid fa-file-signature',
-    'feedback': 'fa-solid fa-comment-dots',
-    'authorized': 'fa-solid fa-check',
+    "open": "fa-solid fa-file-signature",
+    "feedback": "fa-solid fa-comment-dots",
+    "authorized": "fa-solid fa-check",
     'budgeted': 'fa-solid fa-file-invoice-dollar',
     'rejected': 'fa-solid fa-ban',
     'payment_authorized': 'fa-solid fa-user-shield',
