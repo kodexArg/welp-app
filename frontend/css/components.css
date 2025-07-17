@@ -159,12 +159,6 @@
         @apply font-[var(--font-ui)];
     }
 
-    .treemap-container {
-        @apply flex flex-wrap gap-2 p-4 min-h-[120px];
-        @apply bg-transparent;
-    }
-
-
 
     .app-wide-button {
         @apply w-full flex items-center justify-center gap-4 py-8 px-6 rounded-lg border-2 cursor-pointer;

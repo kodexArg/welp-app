@@ -45,7 +45,9 @@ class TicketDetailView(LoginRequiredMixin, DetailView):
         
         final_context = {**context, **detail_context}
         
-        view_only = self.request.GET.get('view_only', 'false').lower() == 'true'
+        # Si response_type es 'view', activar view_only automáticamente
+        response_type = self.request.GET.get('response_type', 'view')
+        view_only = (response_type == 'view') or (self.request.GET.get('view_only', 'false').lower() == 'true')
         final_context['view_only'] = view_only
         
         return final_context

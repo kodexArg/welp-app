@@ -193,4 +193,63 @@
     .attachment-name {
         @apply font-mono;
     }
+
+    /* Ticket Message Input */
+    .ticket-input-message {
+        
+    }
+
+    .ticket-response-form {
+        
+    }
+
+    .form-group {
+        
+    }
+
+    /* Attachment Management */
+    .attachment-details {
+        
+    }
+
+    .attachment-summary {
+        
+    }
+
+    .attachment-input-row {
+        
+    }
+
+    .attachment-input {
+        
+    }
+
+    .add-attachment {
+        
+    }
+
+    .form-help {
+        
+    }
+
+    /* Response Actions */
+    .ticket-response-actions {
+        
+    }
+
+    .response-action-cancel {
+        
+    }
+
+    .response-action-submit {
+        
+    }
+
+    .response-action-icon-cancel {
+        
+    }
+
+    .response-action-icon-submit {
+        
+    }
 }

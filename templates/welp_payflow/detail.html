@@ -22,7 +22,7 @@
 
     {% mermaid_workflow %}
     
-    {% ticket_container ticket expanded=True hide_buttons=False %}
+    {% ticket_container ticket=ticket expanded=True hide_buttons=False show_actions=False %}
 
     {% if not view_only %}
         {% ticket_message_input ticket=ticket response_type=response_type is_owner=is_owner cancel_url=cancel_url cancel_text="Cancelar" hidden_fields=hidden_fields %}

@@ -323,4 +323,5 @@ FA_ICONS = {
     'processing_payment': 'fa-solid fa-cash-register',
     'shipping': 'fa-solid fa-truck-fast',
     'close': 'fa-solid fa-lock',
+    'view': 'fa-solid fa-eye',
 } 

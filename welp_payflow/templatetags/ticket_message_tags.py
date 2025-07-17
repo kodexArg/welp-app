@@ -121,11 +121,12 @@ def ticket_actions(context, ticket):
     return get_ticket_actions_context(user, ticket)
 
 @register.inclusion_tag('welp_payflow/components/ticket_container.html', takes_context=True)
-def ticket_container(context, ticket, expanded=False, hide_buttons=False):
+def ticket_container(context, ticket, expanded=False, hide_buttons=False, show_actions=True):
     return {
         'ticket': ticket,
         'expanded': expanded,
         'hide_buttons': hide_buttons,
+        'show_actions': show_actions,
         'request': context.get('request'),
     }
 
