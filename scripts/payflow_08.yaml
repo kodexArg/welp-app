@@ -1,0 +1,17 @@
+# Flujo para un octavo ticket: "Compra de herramientas para taller"
+
+- ticket: "Compra de herramientas para taller"
+  user: "teo.vega"
+  status: "open"
+  post_date: "2025-09-10T09:00:00Z"
+  udn: "Parador"
+  sector: "Mantenimiento"
+  category: "Herramientas"
+  estimated_amount: 300.00
+  comment: "Se necesita un nuevo juego de llaves de tubo para el taller de mantenimiento."
+
+- ticket: "Compra de herramientas para taller"
+  user: "lucas.lopez"
+  status: "authorized"
+  post_date: "2025-09-10T11:00:00Z"
+  comment: "Autorizado. Buscar proveedor local." 
