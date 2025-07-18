@@ -8,20 +8,7 @@
 <section>
     <h1>Crear Nueva Solicitud</h1>
 
-    <!-- Sistema de mensajes de error mejorado -->
     <div id="form-messages" class="space-y-4 mb-6">
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} flex items-start space-x-3" role="alert">
-                    <i class="fa fa-{% if message.tags == 'error' %}exclamation-triangle{% elif message.tags == 'warning' %}exclamation-circle{% elif message.tags == 'success' %}check-circle{% else %}info-circle{% endif %} mt-1" aria-hidden="true"></i>
-                    <div class="flex-1">
-                        <p class="font-medium">{{ message }}</p>
-                    </div>
-                </div>
-            {% endfor %}
-        {% endif %}
-        
-        <!-- Contenedor para errores HTMX -->
         <div id="htmx-errors" class="hidden">
             <div class="alert alert-error flex items-start space-x-3" role="alert">
                 <i class="fa fa-exclamation-triangle mt-1" aria-hidden="true"></i>
@@ -32,14 +19,12 @@
             </div>
         </div>
         
-        <!-- Contenedor para errores de validación del formulario -->
         <div id="form-validation-errors" class="hidden">
             <div class="alert alert-error flex items-start space-x-3" role="alert">
                 <i class="fa fa-exclamation-triangle mt-1" aria-hidden="true"></i>
                 <div class="flex-1">
                     <p class="font-medium">Errores en el formulario</p>
                     <ul class="text-sm mt-1 list-disc list-inside" id="validation-error-list">
-                        <!-- Los errores se insertarán aquí dinámicamente -->
                     </ul>
                 </div>
             </div>
