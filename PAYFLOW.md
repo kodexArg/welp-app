@@ -192,7 +192,6 @@ Los permisos se asignan únicamente a nivel **UDN** y **Sector**. Todas las cate
 **Escenarios Posibles**:
 - Manager autoriza → Director autoriza → Sistema autoriza pago
 - Director autoriza → Manager autoriza → Sistema autoriza pago  
-- Ambos autorizan "simultáneamente" → Sistema autoriza pago
 
 ### Estados Especiales de Cancelación
 

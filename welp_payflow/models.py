@@ -1,4 +1,9 @@
-from django.db import models
+import os
+import hashlib
+import zoneinfo
+from datetime import datetime
+from django.conf import settings
+from django.db import models, transaction
 from django.db.models import Q
 from django.urls import reverse
 from django.utils import timezone
@@ -220,18 +225,33 @@ class Message(models.Model):
 
     def save(self, *args, **kwargs):
         if self.reported_on is None:
-            from django.conf import settings
-            import zoneinfo
             tz = zoneinfo.ZoneInfo(settings.TIME_ZONE)
             self.reported_on = timezone.now().astimezone(tz)
-        super().save(*args, **kwargs)
+
+        with transaction.atomic():
+            super().save(*args, **kwargs)
+
+            if self.status not in ['authorized_by_manager', 'authorized_by_director']:
+                return
+
+            ticket = Ticket.objects.select_for_update().get(pk=self.ticket.pk)
+
+            if ticket.messages.filter(status='payment_authorized').exists():
+                return
+
+            has_manager_auth = ticket.messages.filter(status='authorized_by_manager').exists()
+            has_director_auth = ticket.messages.filter(status='authorized_by_director').exists()
+
+            if has_manager_auth and has_director_auth:
+                Message.objects.create(
+                    ticket=ticket,
+                    status='payment_authorized',
+                    message_type='system',
+                    user=None
+                )
 
 
 def attachment_upload_path(instance, filename):
-    import os
-    import hashlib
-    from datetime import datetime
-    
     now = datetime.now()
     date_path = f"{now.year}/{now.month:02d}/{now.day:02d}"
     
