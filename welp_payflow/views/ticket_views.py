@@ -1,11 +1,14 @@
+import logging
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, DetailView, CreateView, View
 from django.contrib import messages
 from django.db import transaction
 from django.urls import reverse
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from decimal import Decimal, InvalidOperation
+
+logger = logging.getLogger('welp_payflow')
 
 from ..models import Ticket, Message, Attachment
 from ..forms import PayflowTicketCreationForm
@@ -81,21 +84,44 @@ class CreateTicketView(LoginRequiredMixin, CreateView):
         return context
 
     def form_valid(self, form):
-        with transaction.atomic():
-            self.object = form.save()
-            
-            first_message = Message.objects.create(
-                ticket=self.object,
-                status='open',
-                user=self.request.user,
-                body=form.cleaned_data['description']
-            )
+        logger.info(f"Usuario {self.request.user.username} intenta crear ticket")
+        try:
+            with transaction.atomic():
+                self.object = form.save()
+                
+                first_message = Message.objects.create(
+                    ticket=self.object,
+                    status='open',
+                    user=self.request.user,
+                    body=form.cleaned_data['description']
+                )
 
-            for file in form.cleaned_data.get('attachments', []):
-                Attachment.objects.create(file=file, message=first_message)
+                for file in form.cleaned_data.get('attachments', []):
+                    Attachment.objects.create(file=file, message=first_message)
+            
+            logger.info(f"Ticket #{self.object.id} creado exitosamente por {self.request.user.username}")
+            messages.success(self.request, f'Solicitud #{self.object.id} creada exitosamente')
+            return redirect(self.get_success_url())
+            
+        except Exception as e:
+            logger.error(f"Error creando ticket para usuario {self.request.user.username}: {str(e)}", exc_info=True)
+            messages.error(self.request, 'Error interno del servidor. Contacte al administrador.')
+            return self.form_invalid(form)
+
+    def form_invalid(self, form):
+        logger.warning(f"Formulario inválido para usuario {self.request.user.username}. Errores: {form.errors}")
         
-        messages.success(self.request, f'Solicitud #{self.object.id} creada exitosamente')
-        return redirect(self.get_success_url())
+        # Agregar mensajes específicos para cada error
+        for field, errors in form.errors.items():
+            if field == '__all__':
+                for error in errors:
+                    messages.error(self.request, f"Error general: {error}")
+            else:
+                field_label = form.fields[field].label if field in form.fields else field
+                for error in errors:
+                    messages.error(self.request, f"{field_label}: {error}")
+        
+        return super().form_invalid(form)
 
     def get_success_url(self):
         return reverse('welp_payflow:success', kwargs={'ticket_id': self.object.id})
