@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, DetailView, CreateView, View
 from django.contrib import messages
-from django.db import transaction
+from django.db import transaction, models
 from django.urls import reverse
 from django.http import HttpResponse, JsonResponse
 from decimal import Decimal, InvalidOperation
@@ -27,7 +27,9 @@ class TicketListView(LoginRequiredMixin, ListView):
             'udn', 'sector', 'accounting_category'
         ).prefetch_related(
             'messages__user', 'messages__attachments'
-        ).order_by('-id')
+        ).annotate(
+            last_message_timestamp=models.Max('messages__created_on')
+        ).order_by('-last_message_timestamp')
 
 
 class TicketDetailView(LoginRequiredMixin, DetailView):
@@ -52,6 +54,10 @@ class TicketDetailView(LoginRequiredMixin, DetailView):
         response_type = self.request.GET.get('response_type', 'view')
         view_only = (response_type == 'view') or (self.request.GET.get('view_only', 'false').lower() == 'true')
         final_context['view_only'] = view_only
+        
+        # Añadir fechas de inicio y fin al contexto
+        final_context['start_date'] = self.object.start_date
+        final_context['last_updated_date'] = self.object.last_updated_date
         
         return final_context
 

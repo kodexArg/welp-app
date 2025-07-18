@@ -171,6 +171,37 @@ class Ticket(models.Model):
         last_valid = self.messages.filter(status__in=valid_statuses).order_by('-created_on').first()
         return last_valid.status if last_valid else 'unknown'
 
+    @property
+    def start_date(self):
+        """Devuelve la fecha de creación del primer mensaje."""
+        try:
+            return self.messages.earliest('created_on').created_on
+        except self.messages.model.DoesNotExist:
+            return None
+
+    @property
+    def last_updated_date(self):
+        """Devuelve la fecha de creación del último mensaje."""
+        try:
+            return self.messages.latest('created_on').created_on
+        except self.messages.model.DoesNotExist:
+            return None
+
+    @property
+    def status_history(self):
+        """
+        Devuelve una lista única de todos los estados por los que ha pasado el ticket,
+        ordenada según la definición en PAYFLOW_STATUSES.
+        """
+        message_statuses = set(self.messages.values_list('status', flat=True))
+        
+        ordered_statuses = [
+            status for status in PAYFLOW_STATUSES
+            if status in message_statuses
+        ]
+        
+        return ordered_statuses
+
     def can_transition_to_status(self, new_status):
         current_status = self.status
         if not current_status:
@@ -224,31 +255,33 @@ class Message(models.Model):
         return f"Mensaje de {username} en {self.ticket.title}"
 
     def save(self, *args, **kwargs):
-        if self.reported_on is None:
-            tz = zoneinfo.ZoneInfo(settings.TIME_ZONE)
-            self.reported_on = timezone.now().astimezone(tz)
+        # Primero, guardar el mensaje para que forme parte del queryset del ticket
+        super().save(*args, **kwargs)
 
-        with transaction.atomic():
-            super().save(*args, **kwargs)
+        # La lógica de transición automática solo se aplica a estos estados
+        if self.status in ['authorized_by_manager', 'authorized_by_director']:
+            with transaction.atomic():
+                # Bloquear el ticket para evitar condiciones de carrera
+                ticket = Ticket.objects.select_for_update().get(pk=self.ticket.pk)
+                
+                # Obtener el historial de estados del ticket. Se recalcula aquí,
+                # incluyendo el mensaje que acabamos de guardar.
+                ticket_statuses = ticket.status_history
+                
+                # Comprobar si ya existe una autorización de pago para no duplicarla
+                if 'payment_authorized' in ticket_statuses:
+                    return
 
-            if self.status not in ['authorized_by_manager', 'authorized_by_director']:
-                return
-
-            ticket = Ticket.objects.select_for_update().get(pk=self.ticket.pk)
-
-            if ticket.messages.filter(status='payment_authorized').exists():
-                return
-
-            has_manager_auth = ticket.messages.filter(status='authorized_by_manager').exists()
-            has_director_auth = ticket.messages.filter(status='authorized_by_director').exists()
-
-            if has_manager_auth and has_director_auth:
-                Message.objects.create(
-                    ticket=ticket,
-                    status='payment_authorized',
-                    message_type='system',
-                    user=None
-                )
+                # Comprobar si ambas firmas están presentes
+                required_statuses = {'authorized_by_manager', 'authorized_by_director'}
+                if required_statuses.issubset(set(ticket_statuses)):
+                    # Crear el mensaje de transición automática a 'payment_authorized'
+                    Message.objects.create(
+                        ticket=ticket,
+                        status='payment_authorized',
+                        message_type='system',
+                        user=None  # Mensaje generado por el sistema
+                    )
 
 
 def attachment_upload_path(instance, filename):

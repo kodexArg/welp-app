@@ -6,7 +6,7 @@ from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.views.generic import TemplateView
 
-from ..models import UDN, Sector, AccountingCategory, Ticket
+from ..models import UDN, Sector, AccountingCategory, Ticket, Message
 from ..utils import get_user_udns, get_user_sectors, get_user_accounting_categories
 from ..forms import PayflowTicketCreationForm
 
@@ -14,7 +14,11 @@ logger = logging.getLogger('welp_payflow')
 
 @login_required(login_url='login')
 def htmx_list_content(request):
-    tickets = Ticket.objects.get_queryset(request.user).annotate(
+    tickets = Ticket.objects.get_queryset(request.user).select_related(
+        'udn', 'sector', 'accounting_category'
+    ).prefetch_related(
+        'messages__user', 'messages__attachments'
+    ).annotate(
         last_message_timestamp=models.Max('messages__created_on')
     ).order_by('-last_message_timestamp')
     return render(
