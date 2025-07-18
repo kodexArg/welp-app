@@ -61,7 +61,7 @@ class TicketDetailView(LoginRequiredMixin, DetailView):
         success, message = process_ticket_response(request, ticket)
         if success:
             messages.success(request, message)
-            return redirect('welp_payflow:list')
+            return redirect('welp_payflow:detail', ticket_id=ticket.id)
 
         messages.error(request, message)
         return redirect('welp_payflow:detail', ticket_id=ticket.id)
@@ -177,7 +177,7 @@ class ProcessCloseTicketView(LoginRequiredMixin, View):
             ticket=ticket, status='closed', user=request.user, body=comment
         )
         messages.success(request, 'Ticket cerrado exitosamente')
-        return redirect('welp_payflow:list')
+        return redirect('welp_payflow:detail', ticket_id=ticket.id)
 
 
 class TransitionTicketView(LoginRequiredMixin, View):
@@ -224,4 +224,4 @@ class TransitionTicketView(LoginRequiredMixin, View):
                     messages.warning(request, f"El archivo {file.name} es demasiado grande y no se ha adjuntado.")
 
         messages.success(request, f'Ticket cambiado exitosamente a {status_info.get('label', target_status)}')
-        return redirect('welp_payflow:list')
+        return redirect('welp_payflow:detail', ticket_id=ticket.id)

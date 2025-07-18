@@ -11,12 +11,12 @@
     }
 
     .ticket-header {
-        @apply flex items-center justify-between gap-3;
+        @apply flex items-center justify-between gap-3
     }
 
     .ticket-title {
         @apply flex items-center flex-1 min-w-0 pr-2;
-        @apply text-text text-sm;
+        @apply text-text text-base;
         @apply overflow-hidden;
     }
 
