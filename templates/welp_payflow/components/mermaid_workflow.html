@@ -4,15 +4,17 @@
         graph LR
             A["ABIERTO"] --> B["AUTORIZADO"]
             B --> C["PRESUPUESTADO"]
-            C --> D["PAGO AUTORIZADO"]
+            C --> I["MANAGER"]
+            C --> J["DIRECTOR"]
             C --> E["RECHAZADO"]
-            C --> F["CERRADO"]
+            I --> D["PAGO AUTORIZADO"]
+            J --> D["PAGO AUTORIZADO"]
             E --> C
             D --> G["PROCESANDO PAGO"]
             G --> H["EN ENVÍO/ENTREGA"]
-            H --> F
+            H --> F["CERRADO"]
 
-            linkStyle 0,1,2,3,4,5,6,7,8 stroke:#E0E0E0,stroke-width:2px;
+            linkStyle 0,1,2,3,4,5,6,7,8,9,10 stroke:#E0E0E0,stroke-width:2px;
 
             {% for node, style in styles.items %}
             style {{ node }} {{ style }}
