@@ -6,6 +6,10 @@
         @apply cursor-pointer select-none;
     }
 
+    .ticket-container[open] {   
+        @apply pb-3;
+    }
+
     .ticket-header {
         @apply flex items-center justify-between gap-3;
     }
@@ -35,10 +39,6 @@
         @apply w-full order-2 justify-start mt-2;
     }
 
-    details[open] .ticket-caret {
-        @apply self-start mt-0.5;
-    }
-
     .ticket-tags-container {
         @apply flex items-center gap-1 flex-shrink-0;
         @apply flex-nowrap;
@@ -55,13 +55,14 @@
     .ticket-caret {
         @apply mr-2 flex-shrink-0;
         @apply pointer-events-none select-none;
+        @apply flex items-center;
     }
 
     .ticket-caret::before {
         @apply block w-0 h-0;
         @apply border-l-[6px] border-l-text border-t-[4px] border-t-transparent border-b-[4px] border-b-transparent;
         @apply content-[''];
-        @apply origin-center translate-y-0.5;
+        @apply origin-center;
         @apply transition-transform duration-200;
     }
 
