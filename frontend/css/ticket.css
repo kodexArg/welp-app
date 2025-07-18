@@ -161,7 +161,7 @@
 
     /* Ticket Messages */
     .ticket-message {
-        @apply mb-3;
+        @apply pb-4;
         @apply cursor-default;
     }
 
