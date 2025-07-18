@@ -15,13 +15,13 @@ def radio_button(target, id, label, next_target, visible=True):
         url_name = f'welp_payflow:htmx-{next_target}'
         if next_target == 'sector':
             kwarg_key = 'udn'
-            url_name = 'welp_payflow:load_sectors'
+            url_name = 'welp_payflow:htmx-sector'
         elif next_target == 'accounting-category':
             kwarg_key = 'sector'
-            url_name = 'welp_payflow:load_categories'
+            url_name = 'welp_payflow:htmx-accounting-category'
         elif next_target == 'fields-body':
             kwarg_key = 'accounting_category'
-            url_name = 'welp_payflow:htmx_fields_body'
+            url_name = 'welp_payflow:htmx-fields-body'
         
         full_url = reverse(url_name, kwargs={kwarg_key: id})
     except Exception:

@@ -141,6 +141,28 @@
         @apply file:transition-all file:duration-200;
     }
 
+    /* ==========================================================================
+       Selection Fields Container
+       ========================================================================== */
+    .select-selection-container {
+        @apply bg-white rounded-lg border border-border shadow-sm;
+        @apply p-6 space-y-4;
+    }
+    
+    .select-selection-container label {
+        @apply block text-sm font-medium;
+        @apply text-text font-[var(--font-ui)];
+    }
+    
+    .select-selection-container .radio-button-group {
+    
+    }
+    
+    .select-selection-container .selected-value {
+        @apply text-sm text-primary font-medium;
+        @apply font-[var(--font-ui)];
+    }
+
     .select-field {
         @apply w-full;
     }

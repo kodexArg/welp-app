@@ -1,7 +1,7 @@
 {% load payflow_tags %}
 
 {% if categories.count > 1 %}
-    <article>
+    <article class="select-selection-container">
         <label>Categoría Contable:</label>
         <div class="radio-button-group">
             {% for category in categories %}
@@ -11,7 +11,7 @@
     </article>
 {% elif categories.count == 1 %}
     {% with categories|first as category %}
-        <article id="accounting-category-container">
+        <article class="select-selection-container" id="accounting-category-container">
             <label>Categoría Contable:</label>
             <p class="selected-value">{{ category.name }} (seleccionada automáticamente)</p>
             <input type="hidden" name="accounting_category" value="{{ category.pk }}" />
@@ -24,7 +24,7 @@
         </article>
     {% endwith %}
 {% else %}
-    <article id="accounting-category-container">
+    <article class="select-selection-container" id="accounting-category-container">
         <p>No hay categorías contables disponibles para el sector seleccionado.</p>
     </article>
 {% endif %} 

@@ -1,7 +1,7 @@
 {% load payflow_tags %}
 
 {% if sectors.count > 1 %}
-    <article>
+    <article class="select-selection-container">
         <label>Sector:</label>
         <div class="radio-button-group">
             {% for sector in sectors %}
@@ -11,7 +11,7 @@
     </article>
 {% elif sectors.count == 1 %}
     {% with sectors|first as sector %}
-        <article id="sector-container">
+        <article class="select-selection-container" id="sector-container">
             <label>Sector:</label>
             <p class="selected-value">{{ sector.name }} (seleccionado automáticamente)</p>
             <input type="hidden" name="sector" value="{{ sector.pk }}" />
@@ -24,7 +24,7 @@
         </article>
     {% endwith %}
 {% else %}
-    <article id="sector-container">
+    <article class="select-selection-container" id="sector-container">
         <p>No hay sectores disponibles para la UDN seleccionada.</p>
     </article>
 {% endif %}

@@ -23,9 +23,9 @@ urlpatterns = [
 
     # HTMX partials
     path('htmx/udn/', htmx_udn, name='htmx_udn'),
-    path('htmx/sectors/<int:udn>/', htmx_sector, name='load_sectors'),
-    path('htmx/categories/<int:sector>/', htmx_accounting_category, name='load_categories'),
-    path('htmx/fields-body/<int:accounting_category>/', htmx_fields_body, name='htmx_fields_body'),
+    path('htmx/sectors/<int:udn>/', htmx_sector, name='htmx-sector'),
+    path('htmx/categories/<int:sector>/', htmx_accounting_category, name='htmx-accounting-category'),
+    path('htmx/fields-body/<int:accounting_category>/', htmx_fields_body, name='htmx-fields-body'),
     path('htmx/list-content/', htmx_list_content, name='htmx_list_content'),
     path('htmx/ticket-status/<int:ticket_id>/', ticket_status_htmx, name='htmx_ticket_status'),
 ]

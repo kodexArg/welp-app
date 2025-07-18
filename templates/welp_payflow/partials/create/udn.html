@@ -1,7 +1,7 @@
 {% load payflow_tags %}
 
 {% if udns.count > 1 %}
-    <article>
+    <article class="select-selection-container">
         <label>UDN:</label>
         <div class="radio-button-group">
             {% for udn in udns %}
@@ -11,7 +11,7 @@
     </article>
 {% elif udns.count == 1 %}
     {% with udns|first as udn %}
-        <article id="udn-container">
+        <article class="select-selection-container" id="udn-container">
             <label>UDN:</label>
             <p class="selected-value">{{ udn.name }} (seleccionada automáticamente)</p>
             <input type="hidden" name="udn" value="{{ udn.pk }}" />
@@ -24,7 +24,7 @@
         </article>
     {% endwith %}
 {% else %}
-    <article id="udn-container">
+    <article class="select-selection-container" id="udn-container">
         <p class="no-udns-message">No tienes UDNs asignadas.</p>
     </article>
 {% endif %}
