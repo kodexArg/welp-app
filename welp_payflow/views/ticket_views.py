@@ -100,7 +100,6 @@ class CreateTicketView(LoginRequiredMixin, CreateView):
                     Attachment.objects.create(file=file, message=first_message)
             
             logger.info(f"Ticket #{self.object.id} creado exitosamente por {self.request.user.username}")
-            messages.success(self.request, f'Solicitud #{self.object.id} creada exitosamente')
             return redirect(self.get_success_url())
             
         except Exception as e:
