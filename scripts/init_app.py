@@ -146,12 +146,15 @@ def create_user_and_assign_roles(user_data, udn_map, sector_map):
     
     if user_data.get('udns') == 'all':
         udns_to_process = list(udn_map.values())
-    elif 'udns' in user_data:
+    elif isinstance(user_data.get('udns'), list):
         udns_to_process = [udn_map[name] for name in user_data['udns'] if name in udn_map]
     elif 'udn' in user_data:
         udn_name = user_data['udn']
         if udn_name in udn_map:
             udns_to_process = [udn_map[udn_name]]
+    else:
+        logger.warning(f"  ⚠️  Usuario '{username}' no tiene UDN asignada. Saltando.")
+        return
     
     specific_sector = sector_map.get(user_data.get('sector'))
 
@@ -172,9 +175,8 @@ def create_user_and_assign_roles(user_data, udn_map, sector_map):
                 user=user,
                 udn=udn,
                 sector=sector,
+                defaults={'role': role_type}
             )
-            role.set_permissions_from_role_type(role_type)
-            role.save()
             log_msg = f"    ✓ Rol '{role_type}' asignado en {udn.name}/{sector.name}"
             if not r_created:
                 log_msg = f"    → Rol '{role_type}' actualizado en {udn.name}/{sector.name}"

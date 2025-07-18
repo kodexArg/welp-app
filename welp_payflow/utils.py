@@ -88,10 +88,10 @@ def can_user_close_ticket(user, ticket):
     if user == ticket_owner:
         return True
 
-    user_roles = {role.get_role_type() for role in user.payflow_roles.all()}
+    user_roles = {role.role for role in user.payflow_roles.all()}
 
     owner_roles_queryset = getattr(ticket_owner, 'payflow_roles', None)
-    owner_roles = {role.get_role_type() for role in owner_roles_queryset.all()} if owner_roles_queryset else set()
+    owner_roles = {role.role for role in owner_roles_queryset.all()} if owner_roles_queryset else set()
 
     if 'supervisor' in user_roles and 'end_user' in owner_roles:
         return True
@@ -121,8 +121,11 @@ def can_user_transition_ticket(user, ticket, target_status):
     if not allowed_roles:
         return False
 
-    user_role_types = {role.get_role_type() for role in user.payflow_roles.all()}
+    # Obtener los roles explícitos del usuario
+    user_roles = user.payflow_roles.all()
+    user_role_types = {role.role for role in user_roles}
 
+    # Verificar si el usuario tiene alguno de los roles permitidos
     if user_role_types.intersection(allowed_roles):
         return True
 

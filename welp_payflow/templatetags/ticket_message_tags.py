@@ -27,7 +27,12 @@ def ticket_message_user_line(message):
     verb = None
     action_icon_class = None
 
-    if action_key == 'feedback':
+    # Caso especial: mensaje del sistema para payment_authorized
+    if action_key == 'payment_authorized' and message.user is None:
+        verb = "Pago autorizado"
+        action_icon_class = FA_ICONS.get(action_key)
+        user_name = ""  # No mostrar nombre de usuario para mensajes del sistema
+    elif action_key == 'feedback':
         verb = "Comentario de"
         action_icon_class = FA_ICONS.get('feedback')
     else:
@@ -35,7 +40,11 @@ def ticket_message_user_line(message):
         action_verb = action_info.get('action_verb')
         
         if action_verb and action_verb != 'Comentado':
-            verb = f"{action_verb} por"
+            # Si el action_verb ya termina con "por", no agregarlo de nuevo
+            if action_verb.endswith(' por'):
+                verb = action_verb
+            else:
+                verb = f"{action_verb} por"
             action_icon_class = FA_ICONS.get(action_key)
 
     return {

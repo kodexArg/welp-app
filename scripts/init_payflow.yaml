@@ -96,7 +96,7 @@ users:
   # === Supervisors (UDN y Sector específicos) ===
   - {username: 'martin.garcia', first_name: 'Martín', last_name: 'Garcia', role: 'supervisor', udn: 'KM 1151', sector: 'Operaciones'}
   - {username: 'sofia.torres', first_name: 'Sofía', last_name: 'Torres', role: 'supervisor', udn: 'Las Bóvedas', sector: 'Administración'}
-  - {username: 'lucas.lopez', first_name: 'Lucas', last_name: 'Lopez', role: 'supervisor', udn: 'Parador', 'sector': 'Mantenimiento'}
+  - {username: 'lucas.lopez', first_name: 'Lucas', last_name: 'Lopez', role: 'supervisor', udn: 'Parador', sector: 'Mantenimiento'}
   - {username: 'elena.ramos', first_name: 'Elena', last_name: 'Ramos', role: 'supervisor', udn: 'Espejo', sector: 'Sistemas'}
 
   # === Manager (acceso a una o más UDNs completas) ===

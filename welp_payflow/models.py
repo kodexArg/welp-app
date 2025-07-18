@@ -48,10 +48,25 @@ class AccountingCategory(models.Model):
 
 
 class Roles(models.Model):
+    class RoleType(models.TextChoices):
+        DIRECTOR = 'director', 'Director'
+        MANAGER = 'manager', 'Manager'
+        SUPERVISOR = 'supervisor', 'Supervisor'
+        PURCHASE_MANAGER = 'purchase_manager', 'Gestor de Compras'
+        TECHNICIAN = 'technician', 'Técnico'
+        END_USER = 'end_user', 'Usuario Final'
+
     user = models.ForeignKey('core.User', on_delete=models.CASCADE, related_name='payflow_roles')
     udn = models.ForeignKey(UDN, on_delete=models.CASCADE, null=True, blank=True)
     sector = models.ForeignKey(Sector, on_delete=models.CASCADE, null=True, blank=True)
     
+    role = models.CharField(
+        max_length=20,
+        choices=RoleType.choices,
+        default=RoleType.END_USER,
+        verbose_name="Rol Explícito"
+    )
+
     can_open = models.BooleanField(default=False, verbose_name="Puede Abrir")
     can_comment = models.BooleanField(default=False, verbose_name="Puede Comentar")
     can_solve = models.BooleanField(default=False, verbose_name="Puede Gestionar Presupuestos")
@@ -84,25 +99,17 @@ class Roles(models.Model):
         perm_str = f"[{'/'.join(permissions)}]" if permissions else "[Sin permisos]"
         return f"{' - '.join(parts)} {perm_str}"
     
+    def save(self, *args, **kwargs):
+        self.set_permissions_from_role_type(self.role)
+        super().save(*args, **kwargs)
+
     def set_permissions_from_role_type(self, role_type):
         permissions = get_permissions_for_role_type(role_type)
         for perm, value in permissions.items():
             setattr(self, perm, value)
     
     def get_role_type(self):
-        if self.can_process_payment and not self.can_authorize:
-            return 'purchase_manager'
-        elif self.can_authorize and self.can_close:
-            if self.can_process_payment:
-                return 'manager'
-            else:
-                return 'supervisor'
-        elif self.can_solve and self.can_comment:
-            return 'technician'
-        elif self.can_open and not self.can_comment:
-            return 'end_user'
-        else:
-            return 'custom'
+        return self.role
 
 
 class TicketManager(models.Manager):

@@ -2,7 +2,7 @@
 Este template renderiza la línea de información del usuario en un mensaje de ticket.
 Recibe el contexto del tag 'ticket_message_user_line'.
 - Muestra el icono y verbo de la acción si están presentes.
-- Siempre muestra el icono y nombre del usuario.
+- Muestra el icono y nombre del usuario solo si hay un usuario asociado.
 {% endcomment %}
 
 {% if action_icon_class %}
@@ -13,7 +13,9 @@ Recibe el contexto del tag 'ticket_message_user_line'.
     <span class="ticket-message__action-verb">{{ verb }}</span>
 {% endif %}
 
+{% if user_name %}
 <span class="ticket-message__user-info">
     <i class="ticket-message__user-icon fa-solid fa-user"></i>
     <span class="ticket-message__user-name">{{ user_name }}</span>
-</span> 
+</span>
+{% endif %} 
