@@ -169,7 +169,7 @@
         @apply flex items-center;
         @apply ml-2;
         @apply text-gray-500;
-        @apply text-xs italic;
+        @apply text-sm italic;
         @apply translate-y-px;
     }
 
