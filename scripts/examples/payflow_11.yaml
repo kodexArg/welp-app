@@ -1,0 +1,53 @@
+- ticket: "Compra de EPP para personal de Operaciones"
+  user: "leo.gil"
+  status: "open"
+  post_date: "2025-05-15T09:00:00Z"
+  udn: "KM 1151"
+  sector: "Operaciones"
+  category: "Seguridad & CCTV"
+  estimated_amount: 850.00
+  comment: "Se requiere la compra de equipo de protección personal (cascos, guantes, calzado de seguridad) para 5 nuevos ingresos en el área de Operaciones."
+
+- ticket: "Compra de EPP para personal de Operaciones"
+  user: "martin.garcia"
+  status: "authorized"
+  post_date: "2025-05-15T16:30:00Z"
+  comment: "Autorizado. Proceder con la compra a la brevedad."
+
+- ticket: "Compra de EPP para personal de Operaciones"
+  user: "catalina.rojas"
+  status: "budgeted"
+  post_date: "2025-05-16T12:00:00Z"
+  comment: "Se adjunta presupuesto de proveedor de EPP. Monto requiere doble firma."
+  attachments:
+    - "presupuesto_01.pdf"
+
+- ticket: "Compra de EPP para personal de Operaciones"
+  user: "santiago.fernandez"
+  status: "authorized_by_manager"
+  post_date: "2025-05-17T10:00:00Z"
+  comment: "Autorizado por Gerencia."
+
+- ticket: "Compra de EPP para personal de Operaciones"
+  user: "mateo.vila"
+  status: "authorized_by_director"
+  post_date: "2025-05-17T11:00:00Z"
+  comment: "Confirmado por Dirección. Proceder."
+
+- ticket: "Compra de EPP para personal de Operaciones"
+  user: "catalina.rojas"
+  status: "processing_payment"
+  post_date: "2025-05-20T14:00:00Z"
+  comment: "Pago procesado y orden de compra #PO-2025-0215 enviada al proveedor."
+
+- ticket: "Compra de EPP para personal de Operaciones"
+  user: "catalina.rojas"
+  status: "shipping"
+  post_date: "2025-05-28T17:00:00Z"
+  comment: "El proveedor ha confirmado el envío. Se estima la entrega en 48hs."
+
+- ticket: "Compra de EPP para personal de Operaciones"
+  user: "leo.gil"
+  status: "closed"
+  post_date: "2025-06-02T10:00:00Z"
+  comment: "Equipos recibidos y distribuidos al personal. Todo correcto." 

@@ -139,8 +139,8 @@
         @apply text-amber-600;
     }
     .ticket-status--payment_authorized {
-        @apply bg-orange-50 border border-orange-200;
-        @apply text-orange-500;
+        @apply bg-purple-100 border border-purple-200;
+        @apply text-purple-500;
     }
     .ticket-status--processing_payment {
         @apply bg-cyan-100 border border-cyan-200;

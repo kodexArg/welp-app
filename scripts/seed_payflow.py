@@ -46,7 +46,8 @@ def process_scenarios(grouped_scenarios):
     logger.info(f"Limpiando {len(ticket_titles)} ticket(s) existentes antes de la carga...")
     
     existing_tickets = Ticket.objects.filter(title__in=ticket_titles)
-    deleted_count, _ = existing_tickets.delete()
+    with transaction.atomic():
+        deleted_count, _ = existing_tickets.delete()
     logger.info(f"  → {deleted_count} ticket(s) eliminados.")
 
     logger.info("\nIniciando carga de nuevos tickets...")
@@ -71,17 +72,39 @@ def process_single_ticket(title, messages_data):
         sector = Sector.objects.get(name=first_message_data['sector'])
         category = AccountingCategory.objects.get(name=first_message_data['category'])
 
-        ticket = Ticket.objects.create(
-            title=title,
-            udn=udn,
-            sector=sector,
-            accounting_category=category,
-            estimated_amount=first_message_data.get('estimated_amount')
-        )
+        with transaction.atomic():
+            ticket = Ticket.objects.create(
+                title=title,
+                udn=udn,
+                sector=sector,
+                accounting_category=category,
+                estimated_amount=first_message_data.get('estimated_amount')
+            )
         logger.info(f"  ✓ Ticket creado con ID: {ticket.id}")
         
-        for msg_data in messages_data:
-            create_message_from_data(ticket, msg_data)
+        for i, msg_data in enumerate(messages_data):
+            logger.info("\n" + "="*50)
+            logger.info(f"Paso {i+1}/{len(messages_data)}: Procesando siguiente mensaje...")
+            logger.info(f"  - Ticket: {title}")
+            logger.info(f"  - Usuario: {msg_data['user']}")
+            logger.info(f"  - Estado: {msg_data['status']}")
+            logger.info(f"  - Fecha: {msg_data['post_date']}")
+            if msg_data.get('comment'):
+                logger.info(f"  - Comentario: {msg_data['comment']}")
+            if msg_data.get('attachments'):
+                logger.info(f"  - Adjuntos: {', '.join(msg_data['attachments'])}")
+
+            user_input = input("\nPresione [Enter] para aplicar este paso, [s] para saltar, [q] para salir: ").lower()
+            
+            if user_input == 'q':
+                logger.warning("Proceso detenido por el usuario. El ticket quedará incompleto.")
+                return
+            elif user_input == 's':
+                logger.info("  → Mensaje saltado por el usuario.")
+                continue
+
+            with transaction.atomic():
+                create_message_from_data(ticket, msg_data)
 
     except UDN.DoesNotExist:
         logger.error(f"  ✗ UDN '{first_message_data['udn']}' no encontrada. Omitiendo ticket '{title}'.")
@@ -159,8 +182,7 @@ def main():
     
     # Procesar todo dentro de una transacción
     try:
-        with transaction.atomic():
-            process_scenarios(grouped_scenarios)
+        process_scenarios(grouped_scenarios)
     except Exception as e:
         logger.error(f"Error durante la transacción, se revirtieron los cambios: {e}")
         sys.exit(1)
