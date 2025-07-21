@@ -184,8 +184,8 @@ PAYFLOW_STATUSES = {
         'comment_placeholder': 'Comentario de autorización de pago (opcional)',
         'comment_label': 'Comentario',
         'comment_required': False,
-        'show_comment_box': False,
-        'show_attachments': False,
+        'show_comment_box': True,
+        'show_attachments': True,
     },
     'processing_payment': {
         'mermaid_node': 'G',
@@ -214,8 +214,8 @@ PAYFLOW_STATUSES = {
         'comment_placeholder': 'Detalles del proceso de pago/facturación',
         'comment_label': 'Comentario',
         'comment_required': False,
-        'show_comment_box': False,
-        'show_attachments': False,
+        'show_comment_box': True,
+        'show_attachments': True,
     },
     'shipping': {
         'mermaid_node': 'H',

@@ -12,7 +12,7 @@
   user: "santiago.fernandez"
   status: "authorized"
   post_date: "2025-07-18T09:15:00Z"
-  comment: "Autorizado. Contactar al proveedor de servicio técnico de inmediato."
+  comment: null
 
 - ticket: "Reparación de cinta transportadora en sector de carga"
   user: "catalina.rojas"
@@ -25,23 +25,22 @@
 - ticket: "Reparación de cinta transportadora en sector de carga"
   user: "santiago.fernandez"
   status: "authorized_by_manager"
-  post_date: "2025-07-20T14:00:00Z"
-  comment: "Aprobado."
+  post_date: "2025-07-19T14:00:00Z"
 
 - ticket: "Reparación de cinta transportadora en sector de carga"
   user: "mateo.vila"
   status: "authorized_by_director"
-  post_date: "2025-07-21T15:30:00Z"
+  post_date: "2025-07-19T15:30:00Z"
   comment: "Confirmado. Proceder."
 
 - ticket: "Reparación de cinta transportadora en sector de carga"
   user: "catalina.rojas"
   status: "processing_payment"
-  post_date: "2025-07-21T10:00:00Z"
+  post_date: "2025-07-20T10:00:00Z"
   comment: "Pago procesado para el proveedor. OC #PO-2025-0230. Se coordinó la visita del técnico."
 
 - ticket: "Reparación de cinta transportadora en sector de carga"
   user: "juan.rios"
   status: "closed"
-  post_date: "2025-07-21T16:00:00Z"
+  post_date: "2025-07-20T16:00:00Z"
   comment: "El servicio técnico ha finalizado la reparación. La cinta transportadora está nuevamente operativa. Se cierra el ticket." 

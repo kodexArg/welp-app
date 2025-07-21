@@ -1,0 +1,27 @@
+- ticket: "Productos de limpieza KM 1151"
+  user: "ana.cruz"
+  status: "open"
+  post_date: "2025-07-12T07:30:00Z"
+  udn: "KM 1151"
+  sector: "Administración"
+  category: "Insumos"
+  estimated_amount: 320.00
+  comment: "Necesitamos reponer productos de limpieza: detergente, desinfectante, papel higiénico y toallas de papel."
+
+- ticket: "Productos de limpieza KM 1151"
+  user: "martin.garcia"
+  status: "authorized"
+  post_date: "2025-07-12T09:45:00Z"
+  comment: "Autorizado. Comprar en el proveedor habitual."
+
+- ticket: "Productos de limpieza KM 1151"
+  user: "catalina.rojas"
+  status: "processing_payment"
+  post_date: "2025-07-12T13:20:00Z"
+  comment: "Compra realizada. OC #PO-2025-0232. Entrega programada para hoy tarde."
+
+- ticket: "Productos de limpieza KM 1151"
+  user: "ana.cruz"
+  status: "closed"
+  post_date: "2025-07-12T16:00:00Z"
+  comment: "Productos recibidos y almacenados correctamente." 

@@ -1,0 +1,27 @@
+- ticket: "Mantenimiento sistema de aire acondicionado Espejo"
+  user: "teo.vega"
+  status: "open"
+  post_date: "2025-07-17T07:45:00Z"
+  udn: "Espejo"
+  sector: "Mantenimiento"
+  category: "Mantenimiento"
+  estimated_amount: 800.00
+  comment: "El sistema de aire acondicionado requiere mantenimiento preventivo. Incluye limpieza de filtros y revisión general."
+
+- ticket: "Mantenimiento sistema de aire acondicionado Espejo"
+  user: "elena.ramos"
+  status: "authorized"
+  post_date: "2025-07-17T09:30:00Z"
+  comment: "Autorizado. Contactar al proveedor de servicio técnico."
+
+- ticket: "Mantenimiento sistema de aire acondicionado Espejo"
+  user: "catalina.rojas"
+  status: "processing_payment"
+  post_date: "2025-07-17T11:00:00Z"
+  comment: "Servicio contratado. OC #PO-2025-0236. Técnico programado para mañana."
+
+- ticket: "Mantenimiento sistema de aire acondicionado Espejo"
+  user: "teo.vega"
+  status: "closed"
+  post_date: "2025-07-18T14:00:00Z"
+  comment: "Mantenimiento completado. Sistema funcionando correctamente." 
