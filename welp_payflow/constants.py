@@ -267,7 +267,7 @@ PAYFLOW_STATUSES = {
         },
         'action_label': 'Cerrar',
         'action_verb': 'Cerrado por',
-        'color_class': 'text-gray-500',
+        'color_class': 'text-earth-700 hover:text-earth-500',
         'owner_message': 'Está cerrando su propio ticket.',
         'non_owner_message': 'Está cerrando un ticket creado por otro usuario.',
         'confirmation_style': {'bg': 'bg-yellow-50', 'border': 'border-yellow-400', 'text': 'text-yellow-700'},
@@ -389,6 +389,6 @@ FA_ICONS = {
     'payment_authorized': 'fa-solid fa-check',
     'processing_payment': 'fa-solid fa-cash-register',
     'shipping': 'fa-solid fa-truck-fast',
-    'close': 'fa-solid fa-lock',
+    'close': 'fa-solid fa-times',
     'view': 'fa-solid fa-eye',
 } 

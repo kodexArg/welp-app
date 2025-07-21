@@ -4,8 +4,8 @@
         <div class="ticket-actions">
             {% for action_data in actions %}
                 <a href="{{ action_data.href }}" class="ticket-action-button">
-                    <i class="mr-2 {{ action_data.fa_icon }}"></i>
-                    <span>{{ action_data.label }}</span>
+                    <i class="mr-2 {{ action_data.fa_icon }} {{ action_data.icon_color }}"></i>
+                    <span class="{{ action_data.text_color }}">{{ action_data.label }}</span>
                 </a>
             {% endfor %}
         </div>
