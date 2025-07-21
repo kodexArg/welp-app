@@ -271,30 +271,4 @@ def get_ticket_detail_context_data(request, ticket):
     
     context['cancel_url'] = reverse('welp_payflow:detail', kwargs={'ticket_id': ticket.id})
 
-    return context
-
-
-def process_ticket_response(request, ticket):
-    """Procesa la respuesta del usuario en un ticket."""
-    response_type = request.POST.get('response_type', 'comment')
-    if response_type != 'comment':
-        return False, "Tipo de respuesta no soportado."
-
-    comment_body = request.POST.get('response_body', '').strip()
-    if not comment_body:
-        return False, "El comentario no puede estar vacío."
-
-    try:
-        with transaction.atomic():
-            message = Message.objects.create(
-                ticket=ticket,
-                user=request.user,
-                body=comment_body,
-                status='feedback'
-            )
-            files = request.FILES.getlist('attachments')
-            for file in files:
-                Attachment.objects.create(file=file, message=message)
-        return True, "Comentario añadido exitosamente."
-    except Exception as e:
-        return False, f"Error al guardar el comentario: {str(e)}" 
+    return context 

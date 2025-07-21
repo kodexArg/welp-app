@@ -62,15 +62,34 @@ class TicketDetailView(LoginRequiredMixin, DetailView):
         return final_context
 
     def post(self, request, *args, **kwargs):
-        from ..utils import process_ticket_response
         ticket = self.get_object()
-        success, message = process_ticket_response(request, ticket)
-        if success:
-            messages.success(request, message)
+        
+        response_type = request.POST.get('response_type', 'comment')
+        if response_type != 'comment':
+            messages.error(request, "Tipo de respuesta no soportado.")
             return redirect('welp_payflow:detail', ticket_id=ticket.id)
 
-        messages.error(request, message)
-        return redirect('welp_payflow:detail', ticket_id=ticket.id)
+        comment_body = request.POST.get('response_body', '').strip()
+        if not comment_body:
+            messages.error(request, "El comentario no puede estar vacío.")
+            return redirect('welp_payflow:detail', ticket_id=ticket.id)
+
+        try:
+            with transaction.atomic():
+                message = Message.objects.create(
+                    ticket=ticket,
+                    user=request.user,
+                    body=comment_body,
+                    status='feedback'
+                )
+                files = request.FILES.getlist('attachments')
+                for file in files:
+                    Attachment.objects.create(file=file, message=message)
+            messages.success(request, "Comentario añadido exitosamente.")
+            return redirect('welp_payflow:detail', ticket_id=ticket.id)
+        except Exception as e:
+            messages.error(request, f"Error al guardar el comentario: {str(e)}")
+            return redirect('welp_payflow:detail', ticket_id=ticket.id)
 
 
 class CreateTicketView(LoginRequiredMixin, CreateView):
