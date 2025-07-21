@@ -20,55 +20,53 @@ def get_permissions_for_role_type(role_type):
     return PAYFLOW_ROLE_PERMISSIONS.get(role_type, {})
 
 
+def _get_user_accessible_ids(user):
+    """Obtiene los IDs de UDNs y Sectores a los que un usuario tiene acceso."""
+    user_roles = user.payflow_roles.filter(can_open=True)
+    udn_ids, sector_ids = set(), set()
+
+    for role in user_roles:
+        if role.sector:
+            sector_ids.add(role.sector.id)
+            udn_ids.update(role.sector.udn.all().values_list('id', flat=True))
+        elif role.udn:
+            udn_ids.add(role.udn.id)
+            sector_ids.update(role.udn.payflow_sectors.values_list('id', flat=True))
+            
+    return {'udn_ids': udn_ids, 'sector_ids': sector_ids}
+
+
 def get_user_udns(user):
+    """Obtiene las UDNs a las que el usuario tiene acceso."""
     if user.is_superuser:
         return UDN.objects.all()
-    user_roles = user.payflow_roles.filter(
-        can_open=True
-    )
-    udn_ids = set()
-    for role in user_roles:
-        if role.udn:
-            udn_ids.add(role.udn.id)
-        elif role.sector:
-            udn_ids.update(role.sector.udn.values_list('id', flat=True))
-    return UDN.objects.filter(id__in=udn_ids)
+    accessible_ids = _get_user_accessible_ids(user)
+    return UDN.objects.filter(id__in=accessible_ids['udn_ids'])
 
 
 def get_user_sectors(user, udn=None):
+    """Obtiene los Sectores a los que el usuario tiene acceso, opcionalmente filtrados por UDN."""
     if user.is_superuser:
-        if udn:
-            return Sector.objects.filter(udn=udn)
-        return Sector.objects.all()
-    user_roles = user.payflow_roles.filter(
-        can_open=True
-    )
-    sector_ids = set()
-    for role in user_roles:
-        if udn:
-            if role.udn and role.udn == udn:
-                if role.sector:
-                    sector_ids.add(role.sector.id)
-                else:
-                    sector_ids.update(udn.payflow_sectors.values_list('id', flat=True))
-            elif role.sector and role.sector.udn.filter(id=udn.id).exists():
-                sector_ids.add(role.sector.id)
-        else:
-            if role.sector:
-                sector_ids.add(role.sector.id)
-            elif role.udn:
-                sector_ids.update(role.udn.payflow_sectors.values_list('id', flat=True))
-    return Sector.objects.filter(id__in=sector_ids)
+        qs = Sector.objects.all()
+        return qs.filter(udn=udn) if udn else qs
+
+    accessible_ids = _get_user_accessible_ids(user)
+    qs = Sector.objects.filter(id__in=accessible_ids['sector_ids'])
+    return qs.filter(udn=udn) if udn else qs
 
 
 def get_user_accounting_categories(user, sector=None):
+    """Obtiene las Categorías Contables a las que el usuario tiene acceso."""
     if user.is_superuser:
-        if sector:
-            return AccountingCategory.objects.filter(sector=sector)
-        return AccountingCategory.objects.all()
+        qs = AccountingCategory.objects.all()
+        return qs.filter(sector=sector) if sector else qs
+
+    accessible_sectors = get_user_sectors(user)
+    
     if sector:
-        return AccountingCategory.objects.filter(sector=sector)
-    return AccountingCategory.objects.all()
+        accessible_sectors = accessible_sectors.filter(pk=sector.pk)
+
+    return AccountingCategory.objects.filter(sector__in=accessible_sectors)
 
 
 def can_user_create_ticket_in_context(user, udn, sector):
