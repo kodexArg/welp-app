@@ -8,7 +8,6 @@ from django.db.models import Q
 from django.urls import reverse
 from django.utils import timezone
 from .constants import PAYFLOW_STATUSES, STATUS_MAX_LENGTH, PAYFLOW_ROLE_PERMISSIONS
-from .utils import get_available_payflow_transitions, get_permissions_for_role_type
 
 
 class UDN(models.Model):
@@ -104,7 +103,7 @@ class Roles(models.Model):
         super().save(*args, **kwargs)
 
     def set_permissions_from_role_type(self, role_type):
-        permissions = get_permissions_for_role_type(role_type)
+        permissions = PAYFLOW_ROLE_PERMISSIONS.get(role_type, {})
         for perm, value in permissions.items():
             setattr(self, perm, value)
     
@@ -218,7 +217,7 @@ class Ticket(models.Model):
     
     def get_available_status_transitions(self):
         current_status = self.status
-        return get_available_payflow_transitions(current_status) if current_status else ['open']
+        return PAYFLOW_STATUSES.get(current_status, {}).get('transitions', []) if current_status else ['open']
     
     @property
     def is_active(self):
