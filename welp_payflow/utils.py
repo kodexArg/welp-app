@@ -22,6 +22,12 @@ def get_permissions_for_role_type(role_type):
 
 def _get_user_accessible_ids(user):
     """Obtiene los IDs de UDNs y Sectores a los que un usuario tiene acceso."""
+    if user.is_superuser:
+        return {
+            'udn_ids': set(UDN.objects.values_list('id', flat=True)),
+            'sector_ids': set(Sector.objects.values_list('id', flat=True))
+        }
+
     user_roles = user.payflow_roles.filter(can_open=True)
     udn_ids, sector_ids = set(), set()
 
@@ -33,40 +39,42 @@ def _get_user_accessible_ids(user):
             udn_ids.add(role.udn.id)
             sector_ids.update(role.udn.payflow_sectors.values_list('id', flat=True))
             
-    return {'udn_ids': udn_ids, 'sector_ids': sector_ids}
+    return {'udn_ids': udn_ids, 'sector_ids': sector_ide}
 
 
 def get_user_udns(user):
-    """Obtiene las UDNs a las que el usuario tiene acceso."""
-    if user.is_superuser:
-        return UDN.objects.all()
+    """Obtiene el queryset de UDNs a las que el usuario tiene acceso."""
     accessible_ids = _get_user_accessible_ids(user)
-    return UDN.objects.filter(id__in=accessible_ids['udn_ids'])
+    queryset = UDN.objects.filter(id__in=accessible_ids['udn_ids'])
+    return queryset
 
 
 def get_user_sectors(user, udn=None):
-    """Obtiene los Sectores a los que el usuario tiene acceso, opcionalmente filtrados por UDN."""
-    if user.is_superuser:
-        qs = Sector.objects.all()
-        return qs.filter(udn=udn) if udn else qs
-
+    """Obtiene el queryset de Sectores a los que el usuario tiene acceso, opcionalmente filtrados por UDN."""
     accessible_ids = _get_user_accessible_ids(user)
-    qs = Sector.objects.filter(id__in=accessible_ids['sector_ids'])
-    return qs.filter(udn=udn) if udn else qs
+    queryset = Sector.objects.filter(id__in=accessible_ids['sector_ids'])
+    
+    if udn:
+        queryset = queryset.filter(udn=udn)
+        
+    return queryset
 
 
 def get_user_accounting_categories(user, sector=None):
-    """Obtiene las Categorías Contables a las que el usuario tiene acceso."""
+    """Obtiene el queryset de Categorías Contables a las que el usuario tiene acceso."""
     if user.is_superuser:
-        qs = AccountingCategory.objects.all()
-        return qs.filter(sector=sector) if sector else qs
+        queryset = AccountingCategory.objects.all()
+        if sector:
+            queryset = queryset.filter(sector=sector)
+        return queryset
 
     accessible_sectors = get_user_sectors(user)
     
     if sector:
         accessible_sectors = accessible_sectors.filter(pk=sector.pk)
 
-    return AccountingCategory.objects.filter(sector__in=accessible_sectors)
+    queryset = AccountingCategory.objects.filter(sector__in=accessible_sectors)
+    return queryset
 
 
 def can_user_create_ticket_in_context(user, udn, sector):
@@ -109,15 +117,14 @@ def can_user_close_ticket(user, ticket):
 
 
 def can_user_transition_ticket(user, ticket, target_status):
+    if user.is_superuser:
+        return True
     if not user or not user.is_authenticated:
         return False
     current_status = ticket.status
     possible_transitions = PAYFLOW_STATUSES.get(current_status, {}).get('transitions', [])
     if target_status not in possible_transitions:
         return False
-
-    if user.is_superuser:
-        return True
 
     if target_status == 'closed':
         return can_user_close_ticket(user, ticket)
@@ -137,6 +144,10 @@ def can_user_transition_ticket(user, ticket, target_status):
 def get_user_ticket_transitions(user, ticket):
     current_status = ticket.status
     transitions = PAYFLOW_STATUSES.get(current_status, {}).get('transitions', [])
+    
+    if user.is_superuser:
+        return transitions
+
     allowed = []
     for target_status in transitions:
         if can_user_transition_ticket(user, ticket, target_status):
