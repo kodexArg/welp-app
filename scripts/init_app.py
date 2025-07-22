@@ -40,83 +40,70 @@ def populate_database(data):
 
     try:
         with transaction.atomic():
-            logger.info("Limpiando datos existentes de welp_payflow...")
-            Roles.objects.all().delete()
-            AccountingCategory.objects.all().delete()
-            Sector.objects.all().delete()
-            UDN.objects.all().delete()
-            
-            # Borrar solo los usuarios que están en el YAML para no afectar a superusuarios
-            usernames_in_yaml = {u['username'] for u in data.get('users', [])}
-            User.objects.filter(username__in=usernames_in_yaml, is_superuser=False).delete()
-            logger.info("Usuarios de PayFlow anteriores borrados.")
+            logger.info("Sincronizando UDNs, Sectores y Categorías de Payflow...")
 
             udns_map = {}
-            logger.info("\nCreando UDNs de Payflow...")
             for udn_data in data.get('UDNs', []):
-                udn_name = udn_data['name']
-                udn = UDN.objects.create(name=udn_name)
-                udns_map[udn_name] = udn
-                logger.info(f"  ✓ UDN creada: {udn_name}")
+                udn, created = UDN.objects.update_or_create(
+                    name=udn_data['name'],
+                    defaults={'name': udn_data['name']}
+                )
+                udns_map[udn.name] = udn
+                if created:
+                    logger.info(f"  ✓ UDN creada: {udn.name}")
 
             sectors_map = {}
-            logger.info("\nCreando Sectores de Payflow...")
             for sector_data in data.get('Sectors', []):
-                sector_name = sector_data['name']
-                sector = Sector.objects.create(name=sector_name)
-                sectors_map[sector_name] = sector
-                
-                for udn_name in sector_data.get('udns', []):
-                    if udn_name in udns_map:
-                        sector.udn.add(udns_map[udn_name])
-                    else:
-                        logger.warning(f"    ⚠️  UDN '{udn_name}' no encontrada para sector '{sector_name}'")
-                logger.info(f"  ✓ Sector creado: {sector_name}")
-
-            logger.info("\nCreando Categorías Contables...")
-            for category_data in data.get('AccountingCategories', []):
-                category_name = category_data['name']
-                category_description = category_data.get('description', '')
-                category = AccountingCategory.objects.create(
-                    name=category_name,
-                    description=category_description
+                sector, created = Sector.objects.update_or_create(
+                    name=sector_data['name'],
+                    defaults={'name': sector_data['name']}
                 )
+                sectors_map[sector.name] = sector
+                if created:
+                    logger.info(f"  ✓ Sector creado: {sector.name}")
                 
-                for sector in sectors_map.values():
-                    category.sector.add(sector)
+                # Sincronizar UDNs asociadas
+                current_udns = {udn.name for udn in sector.udn.all()}
+                target_udns = set(sector_data.get('udns', []))
                 
-                logger.info(f"  ✓ Categoría creada: {category_name} (disponible para todos los sectores)")
-                if 'description' in category_data:
-                    logger.info(f"    {category_data['description']}")
+                udns_to_add = [udns_map[name] for name in target_udns - current_udns if name in udns_map]
+                if udns_to_add:
+                    sector.udn.add(*udns_to_add)
 
-            logger.info("\nResumen de la inicialización de Payflow:")
-            logger.info(f"  ✓ UDNs creadas: {UDN.objects.count()}")
-            logger.info(f"  ✓ Sectores creados: {Sector.objects.count()}")
-            logger.info(f"  ✓ Categorías Contables creadas: {AccountingCategory.objects.count()}")
+            for category_data in data.get('AccountingCategories', []):
+                category, created = AccountingCategory.objects.update_or_create(
+                    name=category_data['name'],
+                    defaults={
+                        'name': category_data['name'],
+                        'description': category_data.get('description', '')
+                    }
+                )
+                if created:
+                    logger.info(f"  ✓ Categoría creada: {category.name}")
+                
+                # Las categorías son globales para todos los sectores
+                all_sectors = Sector.objects.all()
+                category.sector.set(all_sectors)
 
-            logger.info("\nResumen de relaciones:")
-            logger.info("UDNs por Sector:")
-            for sector in Sector.objects.all():
-                udn_names = [udn.name for udn in sector.udn.all()]
-                logger.info(f"  • {sector.name}: {', '.join(udn_names)}")
-            
-            logger.info(f"\nCategorías Contables:")
-            logger.info(f"  • Todas las {AccountingCategory.objects.count()} categorías están disponibles para todos los {Sector.objects.count()} sectores")
-            
-            # --- Creación de Usuarios y Roles ---
-            logger.info("\nCreando usuarios y asignando roles...")
+            logger.info("\nSincronización de datos base completada.")
+            logger.info(f"  • UDNs: {UDN.objects.count()} | Sectores: {Sector.objects.count()} | Categorías: {AccountingCategory.objects.count()}")
+
+            # --- Sincronización de Usuarios y Roles ---
+            logger.info("\nSincronizando usuarios y asignando roles...")
             udn_map_for_users = {udn.name: udn for udn in UDN.objects.all()}
             sector_map_for_users = {sector.name: sector for sector in Sector.objects.all()}
+            
+            # Limpiar roles existentes de usuarios del YAML para evitar duplicados
+            usernames_in_yaml = {u['username'] for u in data.get('users', [])}
+            Roles.objects.filter(user__username__in=usernames_in_yaml).delete()
             
             for user_data in data.get('users', []):
                 create_user_and_assign_roles(user_data, udn_map_for_users, sector_map_for_users)
 
-            logger.info("\nResumen de Usuarios y Roles:")
-            logger.info(f"  ✓ Usuarios en YAML procesados: {len(data.get('users', []))}")
-            logger.info(f"  ✓ Total de roles creados: {Roles.objects.count()}")
+            logger.info(f"\n✓ {len(data.get('users', []))} usuarios procesados. Total de roles: {Roles.objects.count()}")
 
     except Exception as e:
-        logger.error(f"\n✗ Error durante la población de la base de datos: {str(e)}")
+        logger.error(f"\n✗ Error durante la sincronización de la base de datos: {str(e)}")
         raise
 
 def create_user_and_assign_roles(user_data, udn_map, sector_map):

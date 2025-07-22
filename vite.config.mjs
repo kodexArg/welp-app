@@ -19,6 +19,7 @@ export default defineConfig({
         styles: 'frontend/main.css',
         favicon: 'frontend/favicon.ico',
         'dev-content': 'frontend/js/dev/dev-content.js',
+        'mermaid-init': 'frontend/js/mermaid-init.js',
         'payflow-create': 'frontend/js/welp_payflow/create.js',
         'payflow-success': 'frontend/js/welp_payflow/success.js',
       },

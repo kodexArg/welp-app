@@ -13,6 +13,10 @@ trap cleanup SIGINT SIGTERM
 
 echo -e "\033[0;36mIniciando servicios de desarrollo...\033[0m"
 
+# Inicializar/actualizar la base de datos de desarrollo
+echo -e "\033[0;34mInicializando/actualizando base de datos de PayFlow...\033[0m"
+uv run scripts/init_app.py
+
 # Iniciar npm run dev en background
 echo -e "\033[0;32mServidor npm iniciando...\033[0m"
 npm run dev &
