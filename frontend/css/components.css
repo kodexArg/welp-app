@@ -25,7 +25,7 @@
     }
 
     .radio-button-group > div {
-        @apply flex flex-1;
+        @apply flex basis-30 grow shrink-0;
     }
 
     .radio-button {
