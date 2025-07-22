@@ -37,6 +37,8 @@ run:
   env:
     - name: DEBUG
       value: "True" #atención con esto!
+    - name: IS_LOCAL
+      value: "False"
     - name: TIMEZONE
       value: "America/Argentina/Mendoza"
     - name: DB_HOST
