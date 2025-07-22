@@ -169,6 +169,8 @@ DJANGO_VITE = {
         "dev_server_protocol": "http",
         "manifest_path": VITE_ASSETS_PATH / "manifest.json",
         "static_url_prefix": "",
+        "assets_path": VITE_ASSETS_PATH,
+        "cache_manifest": not IS_LOCAL,
     }
 }
 
