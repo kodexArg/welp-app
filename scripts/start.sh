@@ -19,7 +19,7 @@ uv run manage.py makemigrations
 
 # Aplicar todas las migraciones (BD limpia, sin conflictos)
 echo "Aplicando migraciones en base de datos limpia..."
-uv run manage.py migrate
+uv run manage.py migrate --verbosity=2
 
 banner "ARCHIVOS ESTÁTICOS"
 uv run manage.py collectstatic --noinput
