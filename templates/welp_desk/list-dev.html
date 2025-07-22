@@ -7,7 +7,6 @@
     <div class="flex justify-between items-center mb-6">
         <div>
             <h1>Tickets del Sistema</h1>
-            <h2>Welp Desk</h2>
         </div>
         <a href="{% url 'welp_desk:index' %}" class="button-secondary">
             <i class="fa fa-arrow-left mr-2"></i>
@@ -89,8 +88,8 @@
                                                                 <div class="mt-1">
                                                                     <img src="{{ attachment.file.url }}" 
                                                                          alt="Imagen" 
-                                                                         class="max-w-full h-auto max-h-24 rounded border cursor-pointer"
-                                                                         onclick="window.open('{{ attachment.file.url }}', '_blank')">
+                                                                         class="attachment-image max-w-full h-auto max-h-24 rounded border cursor-pointer"
+                                                                         data-url="{{ attachment.file.url }}">
                                                                 </div>
                                                             {% endif %}
                                                         </div>

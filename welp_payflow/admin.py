@@ -109,7 +109,7 @@ class MessageInline(admin.StackedInline):
 class TicketAdmin(admin.ModelAdmin):
     list_display = ('id', 'title', 'udn', 'sector', 'accounting_category', 'status_badge', 'estimated_amount', 'created_by', 'created_on')
     list_filter = ('udn', 'sector', 'accounting_category', 'created_on')
-    search_fields = ('title', 'description')
+    search_fields = ('title',)
     readonly_fields = ('created_on', 'created_by', 'status', 'is_active', 'is_final')
     inlines = [MessageInline]
     date_hierarchy = 'created_on'
@@ -117,7 +117,7 @@ class TicketAdmin(admin.ModelAdmin):
     
     fieldsets = (
         ('Información Básica', {
-            'fields': ('title', 'description', 'estimated_amount')
+            'fields': ('title', 'estimated_amount')
         }),
         ('Clasificación', {
             'fields': ('udn', 'sector', 'accounting_category')

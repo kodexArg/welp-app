@@ -1,0 +1,16 @@
+<div class="brand-logo flex items-center h-full">
+    <a href="{{ home_url }}" 
+       class="brand-logo-link flex pt-2 items-center justify-center h-full font-brand font-bold text-3xl tracking-wide text-white/95 hover:text-white no-underline transition-all duration-300 hover:brightness-105">
+        {% if show_text %}
+            <span class="brand-text hidden min-[30rem]:inline mr-0.5 text-white/95 hover:text-white transition-colors duration-300">Welp</span>
+        {% endif %}
+        <div class="relative">
+            <i class="brand-icon-glow absolute left-0 top-0 text-4xl fa fa-headset translate-x-[-0.5] translate-y-[0.5] opacity-50 text-white"></i>
+            <i class="brand-icon-glow absolute left-0 top-0 text-4xl fa fa-headset translate-x-[-0.5] translate-y-[0.5] opacity-20 text-white"></i>
+            <i class="brand-icon-main relative text-4xl fa fa-headset translate-x-[-0.5] translate-y-[-0.5] icon-glow drop-shadow-sm text-white"></i>
+        </div>
+        {% if show_text %}
+            <span class="brand-text hidden min-[30rem]:inline ml-0.5 text-white/95 hover:text-white transition-colors duration-300">{{ brand_text }}</span>
+        {% endif %}
+    </a>
+</div> 

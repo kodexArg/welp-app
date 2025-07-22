@@ -1,6 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from .models import UDN, Sector, IssueCategory, Issue
+from .constants import MAX_FILE_SIZE
 
 
 class TicketCreationForm(forms.Form):
@@ -41,6 +42,75 @@ class AttachmentForm(forms.Form):
     def clean_file(self):
         file = self.cleaned_data.get('file')
         if file:
-            if file.size > 52428800:  # 50MB
+            if file.size > MAX_FILE_SIZE:
                 raise forms.ValidationError("El archivo no puede superar los 50MB.")
         return file
+
+
+class CreateIssueForm(forms.ModelForm):
+    
+    attachments = forms.FileField(
+        required=False, 
+        widget=forms.ClearableFileInput(attrs={'allow_multiple_selected': True}),
+        help_text="Puedes adjuntar múltiples archivos"
+    )
+    
+    class Meta:
+        model = Issue
+        fields = ['name', 'description', 'issue_category']
+        widgets = {
+            'name': forms.TextInput(attrs={
+                'placeholder': 'Título del ticket'
+            }),
+            'description': forms.Textarea(attrs={
+                'placeholder': 'Describe el problema...',
+                'rows': 4
+            }),
+            'issue_category': forms.Select(attrs={
+                'class': 'form-select'
+            })
+        }
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+        
+        if self.user and hasattr(self.user, 'role_set'):
+            pass
+
+    def clean_attachments(self):
+        files = self.files.getlist('attachments')
+        
+        for file in files:
+            if file.size > MAX_FILE_SIZE:
+                raise ValidationError(f'El archivo {file.name} es demasiado grande. Máximo permitido: 50MB')
+                
+        return files
+
+
+class CommentForm(forms.Form):
+    comment = forms.CharField(
+        widget=forms.Textarea(attrs={
+            'placeholder': 'Escribe tu comentario...',
+            'rows': 3,
+            'class': 'form-textarea'
+        }),
+        max_length=1000,
+        required=True,
+        help_text="Máximo 1000 caracteres"
+    )
+    
+    attachments = forms.FileField(
+        required=False, 
+        widget=forms.ClearableFileInput(attrs={'allow_multiple_selected': True}),
+        help_text="Puedes adjuntar múltiples archivos"
+    )
+
+    def clean_attachments(self):
+        files = self.files.getlist('attachments')
+        
+        for file in files:
+            if file.size > MAX_FILE_SIZE:
+                raise ValidationError(f'El archivo {file.name} es demasiado grande. Máximo permitido: 50MB')
+                
+        return files

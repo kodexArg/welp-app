@@ -1,493 +1,330 @@
 @layer components {
-    
-    /* ===============================================
-       OPTIMIZACIÓN DE FUENTES - ANTI-FOUC
-       =============================================== */
-    
-    /* ⚠️ IMPORTANTE: No modificar esta definición - Fuente de marca para Welp Desk */
-    /* Definición local de Grandstander para evitar FOUC */
-    @font-face {
-        font-family: 'Grandstander-local';
-        font-style: normal;
-        font-weight: 700;
-        font-display: block; /* Evitar FOUC crítico en logo */
-        src: local('Grandstander Bold'), local('Grandstander-Bold');
+    .component-buttons {
+        @apply flex flex-col sm:flex-row gap-4 justify-between;
     }
-    
-    /* ===============================================
-       CONTENEDORES Y UTILIDADES GENERALES
-       =============================================== */
-    
-    .hidden-container {
-        @apply hidden;
-    }
-
-    /* ⚠️ IMPORTANTE: No modificar esta clase - Fuente de marca para Welp Desk */
-    .font-brand {
-        font-family: var(--font-brand);
-        /* Anti-FOUC: Mantener espacio consistente */
-        min-height: 1.2em;
-        line-height: 1.2;
-        font-weight: 700;
-        /* Placeholder hasta que cargue Grandstander */
-        font-synthesis: none;
-        -webkit-font-smoothing: antialiased;
-    }
-
-    /* Fuente UI siempre uppercase y condensada */
+    /* ==========================================================================
+       Font & Text
+       ========================================================================== */
     .font-ui {
         font-family: var(--font-ui);
-        @apply uppercase tracking-wide;
         font-feature-settings: 'kern' 1, 'liga' 1;
         -webkit-font-smoothing: antialiased;
+        @apply uppercase tracking-wide;
     }
 
-    /* Excepción: Fuente brand para textos de marca específicos */
-    .brand-text-override {
-        font-family: var(--font-brand) !important;
-        text-transform: none !important;
-        letter-spacing: 0.025em !important;
-        font-weight: 700 !important;
-        font-feature-settings: 'liga' 1 !important;
-        -webkit-font-smoothing: antialiased;
+    .text-gradient,
+    .title-gradient {
+        @apply bg-gradient-to-br from-primary to-accent bg-clip-text text-transparent;
     }
 
-
-    .text-gradient {
-        background: linear-gradient(135deg, var(--theme-primary), var(--theme-accent));
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-
-    .border-gradient {
-        border: 2px solid transparent;
-        background: linear-gradient(var(--theme-surface), var(--theme-surface)), linear-gradient(135deg, var(--theme-primary), var(--theme-accent));
-        background-clip: padding-box, border-box;
-    }
-
-    /* ===============================================
-       SISTEMA DE BOTONES CON VARIABLES DINÁMICAS
-       =============================================== */
-    
+    /* ==========================================================================
+       Radio Button
+       ========================================================================== */
     .radio-button-group {
-        @apply flex flex-wrap w-full gap-x-3 gap-y-1.5;
+        @apply flex flex-wrap w-full gap-x-2 gap-y-0.5;
     }
 
-    .button-primary {
-        @apply px-6 py-2 rounded-lg font-medium border-none cursor-pointer;
-        @apply uppercase tracking-wide font-[var(--font-ui)];
-        @apply bg-[var(--theme-primary)] text-[var(--theme-surface)];
-        @apply button-effects;
+    .radio-button-group > div {
+        @apply flex basis-30 grow shrink-0;
     }
 
-    .button-secondary {
-        @apply px-6 py-2 rounded-lg font-medium border-2 cursor-pointer;
-        @apply bg-transparent text-[var(--theme-primary)] border-[var(--theme-primary)];
-        @apply button-effects;
+    .radio-button {
+        @apply inline-flex items-center justify-center w-full select-none;
+        @apply px-5 py-3 rounded border shadow-sm;
+        @apply bg-bg text-text border-border;
+        @apply uppercase whitespace-nowrap tracking-wider text-lg font-ui;
+        @apply transition-all duration-200 cursor-pointer hover:shadow-lg hover:scale-[1.03] hover:brightness-90 active:scale-95;
+    }
+    .radio-button.peer-checked, .peer:checked + .radio-button {
+        @apply bg-primary text-light border-primary;
     }
 
-    .button-secondary:hover {
-        @apply bg-[var(--theme-primary)] text-[var(--theme-surface)];
+    /* ==========================================================================
+       Buttons
+       ========================================================================== */
+    .button {
+        @apply uppercase text-zinc-500 tracking-wide;
+        @apply transition-transform duration-500 ease-in-out;
+        font-family: var(--font-ui);
+        text-shadow: 0 1px 2px rgb(0 0 0 / 0.1);
+        font-stretch: 85%;
+    }
+
+    .button:not(:disabled) {
+        @apply cursor-pointer;
+    }
+
+    .button:hover:not(:disabled) {
+        @apply transform scale-125;
+    }
+
+    .button:active:not(:disabled) {
+        @apply transform translate-y-0 scale-[1.02] shadow-sm;
+    }
+
+    .button:disabled {
+        @apply opacity-60 cursor-not-allowed;
     }
     
-    .button-success {
-        @apply px-6 py-2 rounded-lg font-medium border-none cursor-pointer;
-        @apply bg-green-600 text-[var(--theme-surface)];
-        @apply button-effects;
-    }
-
-    .button-danger {
-        @apply px-6 py-2 rounded-lg font-medium border-none cursor-pointer;
-        @apply bg-red-600 text-[var(--theme-surface)];
-        @apply button-effects;
-    }
-    
-    .button-success[disabled] {
-        @apply text-zinc-500 cursor-not-allowed opacity-50;
-        @apply bg-gray-600;
-    }
-
     .button-cancel {
-        @apply px-6 py-2 rounded-lg font-medium border-2 cursor-pointer;
-        @apply bg-transparent text-[var(--theme-accent)] border-[var(--theme-accent)];
-        @apply button-effects;
-    }
-
-    .button-cancel:hover {
-        @apply bg-[var(--theme-accent)] text-[var(--theme-surface)];
+        @apply text-earth-700;
     }
 
     .button-minimal {
-        @apply px-4 py-2 rounded-lg font-medium border-none cursor-pointer;
-        @apply bg-transparent text-[var(--theme-primary)] border border-transparent;
-        @apply button-effects-minimal;
+        @apply bg-transparent text-primary;
     }
 
-    .button-minimal:hover {
-        @apply bg-[var(--theme-primary-light)] border-[var(--theme-border)];
-    }
-    
-    .button-disabled {
-        @apply text-zinc-500 cursor-not-allowed opacity-50;
-        @apply bg-gray-600;
-    }
-
-    /* ===============================================
-       FORMULARIOS Y CONTROLES CON VARIABLES DINÁMICAS
-       =============================================== */
-
-    .form-group {
-        @apply mb-4;
+    .button-minimal:hover:not(:disabled) {
+        @apply bg-surface;
     }
 
     .form-label {
         @apply block text-sm font-medium mb-2;
-        @apply text-[var(--theme-text)] font-[var(--font-ui)];
-        @apply transition-theme;
+        @apply text-text font-[var(--font-ui)];
     }
 
     .form-input {
         @apply w-full px-3 py-2 border rounded-lg;
-        @apply bg-[var(--theme-surface)] text-[var(--theme-text)] border-[var(--theme-border)];
+        @apply bg-white text-text border-border;
         @apply font-[var(--font-ui)];
-        @apply transition-form;
+        @apply transition-all duration-200;
     }
 
     .form-input:focus {
-        @apply outline-none ring-2 border-[var(--theme-primary)];
-        --tw-ring-color: var(--theme-primary-light);
+        @apply outline-none ring-2 border-primary;
+        --tw-ring-color: rgb(226 232 240);
     }
 
     .form-input:invalid {
-        @apply border-red-500;
-    }
-
-    .form-textarea {
-        @apply w-full px-3 py-2 border rounded-lg resize-y min-h-[100px];
-        @apply bg-[var(--theme-surface)] text-[var(--theme-text)] border-[var(--theme-border)];
-        @apply font-[var(--font-ui)];
-        @apply transition-form;
-    }
-
-    .form-textarea:focus {
-        @apply outline-none ring-2 border-[var(--theme-primary)];
-        --tw-ring-color: var(--theme-primary-light);
+        @apply border-border;
     }
 
     .form-select {
         @apply w-full px-3 py-2 border rounded-lg cursor-pointer pr-10;
-        @apply bg-[var(--theme-surface)] text-[var(--theme-text)] border-[var(--theme-border)];
+        @apply bg-white text-text border-border;
         @apply font-[var(--font-ui)];
-        @apply transition-form;
-        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
-        background-position: right 0.5rem center;
-        background-repeat: no-repeat;
-        background-size: 1.5em 1.5em;
+        @apply transition-all duration-200;
     }
 
-    .form-select:focus {
-        @apply outline-none ring-2 border-[var(--theme-primary)];
-        --tw-ring-color: var(--theme-primary-light);
-    }
-
-    /* ===============================================
-       TAGS Y ETIQUETAS CON VARIABLES DINÁMICAS
-       =============================================== */
-
-    .tag {
-        @apply text-xs font-medium py-1 px-1 rounded-full leading-none whitespace-nowrap border-2;
-        @apply font-[var(--font-ui)];
-        @apply transition-theme;
-    }
-
-    .tag-udn {
-        @apply bg-yellow-100 text-amber-600 border-amber-300;
-    }
-
-    .tag-sector {
-        @apply text-xs font-medium py-1 px-1 rounded-full leading-none whitespace-nowrap border-2;
-        @apply bg-[var(--theme-primary-light)] text-[var(--theme-text)] border-[var(--theme-primary)];
-    }
-
-    .tag-category {
-        @apply bg-purple-100 text-purple-600 border-purple-300;
-    }
-
-    .tag-unpressed {
-        @apply bg-gray-100 text-gray-600 border-gray-300;
+    .select-fields-body {
+        @apply bg-white rounded-lg border border-border shadow-sm;
+        @apply p-6 space-y-6;
     }
     
-    .tag-pressed {    
-        @apply bg-[var(--theme-primary-light)] text-[var(--theme-text)] border-[var(--theme-primary)];
+    .select-fields-body .form-group {
+        @apply space-y-2;
+    }
+    
+    .select-fields-body label {
+        @apply block text-sm font-medium;
+        @apply text-text font-[var(--font-ui)];
+    }
+    
+    .select-fields-body input,
+    .select-fields-body textarea {
+        @apply w-full px-3 py-2 border rounded-md;
+        @apply bg-white text-text border-forest-300;
+        @apply focus:outline-none focus:ring-2 focus:border-forest-400;
+        @apply transition-all duration-200;
+        --tw-ring-color: rgb(226 232 240);
+    }
+    
+    .select-fields-body textarea {
+        @apply min-h-[100px] resize-y;
+    }
+    
+    .select-fields-body input[type="file"] {
+        @apply file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0;
+        @apply file:text-sm file:font-medium file:cursor-pointer;
+        @apply file:bg-surface file:text-text;
+        @apply hover:file:bg-primary hover:file:text-white;
+        @apply file:transition-all file:duration-200;
     }
 
-    /* ===============================================
-       STATUS BADGES Y SISTEMA DE COLORES
-       =============================================== */
-
-    /* BADGES BÁSICOS: Fondo suave, ideal para mostrar estado sin distraer */
-    .status {
-        @apply text-xs font-semibold py-1 px-2 rounded-full uppercase tracking-wide;
+    /* ==========================================================================
+       Selection Fields Container
+       ========================================================================== */
+    .select-selection-container {
+        @apply bg-white rounded-lg border border-border shadow-sm;
+        @apply p-6 space-y-4;
     }
-
-    /* Estados individuales con colores específicos por flujo de trabajo:
-       - open (rojo): Requiere atención inmediata
-       - feedback (azul): Conversación en progreso  
-       - solved (verde): Solución propuesta
-       - authorized (verde claro): Solución aprobada
-       - rejected (amarillo): Requiere revisión
-       - closed (gris): Finalizado
-    */
-    .status-open {
-        @apply bg-red-100 text-red-700;
+    
+    .select-selection-container label {
+        @apply block text-sm font-medium;
+        @apply text-text font-[var(--font-ui)];
     }
-
-    .status-feedback {
-        @apply bg-blue-100 text-blue-700;
+    
+    .select-selection-container .radio-button-group {
+    
     }
-
-    .status-solved {
-        @apply bg-green-100 text-green-700;
-    }
-
-    .status-authorized {
-        @apply bg-green-50 text-green-600;
-    }
-
-    .status-rejected {
-        @apply bg-yellow-100 text-yellow-700;
-    }
-
-    .status-closed {
-        @apply bg-gray-100 text-gray-700;
-    }
-
-    /* ===============================================
-       VARIANTES DE STATUS PARA MEJOR CONTRASTE
-       =============================================== */
-
-    /* BADGES SÓLIDOS: Alto contraste, ideal para interfaces oscuras o mayor visibilidad */
-    .status-solid {
-        @apply text-white font-bold shadow-sm;
-    }
-
-    .status-solid.status-open {
-        @apply bg-red-600 text-white;
-    }
-
-    .status-solid.status-feedback {
-        @apply bg-blue-600 text-white;
-    }
-
-    .status-solid.status-solved {
-        @apply bg-green-600 text-white;
-    }
-
-    .status-solid.status-authorized {
-        @apply bg-green-500 text-white;
-    }
-
-    .status-solid.status-rejected {
-        @apply bg-yellow-500 text-black;
-    }
-
-    .status-solid.status-closed {
-        @apply bg-gray-500 text-white;
-    }
-
-    /* ===============================================
-       CLASES UTILITARIAS POR ESTADO
-       =============================================== */
-
-    /* COLORES DE TEXTO: Para aplicar color de estado a cualquier elemento */
-    .text-status-open { @apply text-red-700; }
-    .text-status-feedback { @apply text-blue-700; }
-    .text-status-solved { @apply text-green-700; }
-    .text-status-authorized { @apply text-green-600; }
-    .text-status-rejected { @apply text-yellow-700; }
-    .text-status-closed { @apply text-gray-700; }
-
-    /* COLORES DE FONDO: Para resaltar secciones según estado */
-    .bg-status-open { @apply bg-red-100; }
-    .bg-status-feedback { @apply bg-blue-100; }
-    .bg-status-solved { @apply bg-green-100; }
-    .bg-status-authorized { @apply bg-green-50; }
-    .bg-status-rejected { @apply bg-yellow-100; }
-    .bg-status-closed { @apply bg-gray-100; }
-
-    /* COLORES DE BORDE: Para tarjetas y contenedores */
-    .border-status-open { @apply border-red-300; }
-    .border-status-feedback { @apply border-blue-300; }
-    .border-status-solved { @apply border-green-300; }
-    .border-status-authorized { @apply border-green-200; }
-    .border-status-rejected { @apply border-yellow-300; }
-    .border-status-closed { @apply border-gray-300; }
-
-    /* EFECTOS HOVER: Para elementos interactivos (botones, links) */
-    .hover-status-open:hover { @apply bg-red-50 border-red-400; }
-    .hover-status-feedback:hover { @apply bg-blue-50 border-blue-400; }
-    .hover-status-solved:hover { @apply bg-green-50 border-green-400; }
-    .hover-status-authorized:hover { @apply bg-green-100 border-green-300; }
-    .hover-status-rejected:hover { @apply bg-yellow-50 border-yellow-400; }
-    .hover-status-closed:hover { @apply bg-gray-50 border-gray-400; }
-
-    /* ===============================================
-       CARDS Y CONTENEDORES CON VARIABLES DINÁMICAS
-       =============================================== */
-
-    .card {
-        @apply rounded-lg shadow-md;
-        @apply bg-[var(--theme-surface)] border border-[var(--theme-border)];
-        @apply card-hover-lift;
-    }
-
-    .card-header {
-        @apply px-6 py-4 border-b;
-        @apply border-[var(--theme-border)] text-[var(--theme-text)];
-        @apply transition-theme;
-    }
-
-    .card-body {
-        @apply px-6 py-4;
-        @apply text-[var(--theme-text-secondary)];
-        @apply transition-theme;
-    }
-
-    .card-footer {
-        @apply px-6 py-4 border-t;
-        @apply border-[var(--theme-border)] bg-[var(--theme-primary-light)];
-        @apply transition-theme;
-    }
-
-    /* ===============================================
-       ALERTAS CON VARIABLES DINÁMICAS
-       =============================================== */
-
-    .alert {
-        @apply px-4 py-3 rounded-lg border-l-4 mb-4;
+    
+    .select-selection-container .selected-value {
+        @apply text-sm text-primary font-medium;
         @apply font-[var(--font-ui)];
     }
 
-    .alert-info {
-        @apply bg-[var(--theme-primary-light)] border-[var(--theme-primary)] text-[var(--theme-text)];
+    .select-field {
+        @apply w-full;
     }
 
-    .alert-success {
-        @apply bg-green-50 border-green-400 text-green-700;
+    .select-field-container {
+        @apply bg-white border border-border rounded-lg;
     }
 
-    .alert-warning {
-        @apply bg-yellow-50 border-yellow-400 text-yellow-700;
+    .select-field .loading-state {
+        @apply flex items-center justify-center p-8 text-primary;
+        @apply font-[var(--font-ui)];
     }
 
-    .alert-error {
-        @apply bg-red-50 border-red-400 text-red-700;
+    .select-field .help-text {
+        @apply text-xs text-primary mt-1;
+        @apply font-[var(--font-ui)];
     }
 
-    /* ===============================================
-       APP CARDS - DISEÑO DE APLICACIONES CON BOTONES CUADRADOS
-       =============================================== */
 
-    .app-card {
-        @apply rounded-lg shadow-md overflow-hidden;
-        @apply bg-[var(--theme-surface)] border border-[var(--theme-border)];
-        @apply app-hover-scale;
+    .app-wide-button {
+        @apply w-full flex items-center justify-center gap-4 py-8 px-6 rounded-lg border-2 cursor-pointer;
+        @apply bg-white border-border text-text;
+        @apply hover:bg-surface hover:border-primary;
+        @apply transition-all duration-300 ease-in-out;
+        @apply min-h-[120px] max-w-md mx-auto;
+        @apply no-underline;
     }
 
-    .app-card-link {
-        @apply flex items-center w-full h-full no-underline;
-        color: inherit;
-        text-decoration: none;
+    .app-wide-button:hover {
+        @apply no-underline;
     }
 
-    .app-card-link:hover {
-        color: inherit;
-        text-decoration: none;
+    .app-wide-button.primary {
+        @apply bg-primary text-white border-primary;
+        @apply hover:bg-secondary hover:border-secondary;
     }
 
-    .app-icon {
-        @apply flex items-center justify-center text-white text-2xl pl-3;
-        @apply w-20 h-20 min-w-20;
-        background: linear-gradient(135deg, var(--theme-primary), var(--theme-primary-dark));
+    .app-wide-button.secondary {
+        @apply bg-transparent border-primary text-primary;
+        @apply hover:bg-primary hover:text-white;
     }
 
-    .app-icon.dev {
-        background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+    .app-wide-button-content {
+        @apply flex flex-col items-center justify-center text-center;
     }
 
-    .app-icon.welp-desk {
-        background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    .app-wide-button-icon {
+        @apply text-4xl mb-2;
     }
 
-    .app-icon.welp-payflow {
-        background: linear-gradient(135deg, #10b981, #047857);
+    .app-wide-button-text {
+        @apply text-lg font-ui;
     }
 
-    .app-icon.profile {
-        background: linear-gradient(135deg, #64748b, #334155);
+    .app-wide-actions {
+        @apply grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto my-12;
     }
 
-    .app-icon.admin {
-        background: linear-gradient(135deg, #f97316, #c2410c);
+    @media (max-width: 640px) {
+        .button-secondary {
+            width: 100%;
+        }
     }
 
-    .app-icon.login {
-        background: linear-gradient(135deg, #64748b, #334155);
+    /* Attachment Viewer - Visor de Adjuntos */
+    .attachment-viewer {
+        @apply max-w-4xl mx-auto;
     }
 
-    .app-content {
-        @apply flex-1 p-6;
+    .attachment-header {
+        @apply text-center mb-8;
     }
 
-    .app-title {
-        @apply font-semibold text-lg mb-1;
-        @apply text-[var(--theme-text)] font-[var(--font-ui)];
-        @apply transition-theme;
+    .attachment-title {
+        @apply text-2xl font-bold mb-4;
+        @apply text-text font-[var(--font-title)];
     }
 
-    .app-card:hover .app-title.dev {
-        @apply text-violet-600;
+    .attachment-meta {
+        @apply flex flex-wrap justify-center gap-4 text-sm mb-6;
+        @apply text-primary font-[var(--font-ui)];
     }
 
-    .app-card:hover .app-title.welp-desk {
-        @apply text-blue-600;
+    .attachment-info {
+        @apply bg-surface px-3 py-1 rounded-full border border-border;
     }
 
-    .app-card:hover .app-title.welp-payflow {
-        @apply text-emerald-600;
+    .attachment-content {
+        @apply bg-white rounded-lg border border-border shadow-sm overflow-hidden;
     }
 
-    .app-card:hover .app-title.profile {
-        @apply text-slate-600;
+    .attachment-image-container {
+        @apply flex justify-center items-center p-6;
     }
 
-    .app-card:hover .app-title.admin {
-        @apply text-orange-600;
+    .attachment-image {
+        @apply max-w-full max-h-[70vh] rounded-lg shadow-lg;
+        @apply object-contain;
     }
 
-    .app-card:hover .app-title.login {
-        @apply text-slate-600;
+    .attachment-pdf-container {
+        @apply w-full h-[70vh];
     }
 
-    .app-description {
-        @apply text-[var(--theme-text-secondary)] font-[var(--font-p)];
-        @apply transition-theme;
+    .attachment-pdf {
+        @apply w-full h-full border-0;
     }
 
-    .app-badge {
-        @apply inline-flex items-center gap-3;
+    .attachment-file-preview {
+        @apply text-center p-12;
     }
 
-    .theme-badge {
-        @apply px-2 py-1 text-xs rounded-full;
+    .attachment-file-icon {
+        @apply text-6xl mb-4;
+        @apply text-primary;
     }
 
-    .theme-badge.sky {
-        @apply bg-blue-100 text-blue-700;
+    .attachment-file-type {
+        @apply text-sm mb-4;
+        @apply text-primary font-[var(--font-ui)];
     }
 
-    .theme-badge.forest {
-        @apply bg-green-100 text-green-700;
+    .attachment-preview-note {
+        @apply text-sm;
+        @apply text-primary font-[var(--font-ui)];
     }
-} 
+}
+
+.mermaid {
+    @apply flex justify-center items-center p-4;
+    transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+}
+
+.mermaid:not([data-processed="true"]) {
+    min-height: 80px;
+    max-height: 80px;
+    color: transparent;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cpath fill='%23a855f7' d='M20,38C9.4,38,1,29.6,1,19S9.4,0,20,0c.9,0,1.7.6,1.9,1.4.3,1.3-1,2.5-2.3,2.5-8.5,0-15.5,7-15.5,15.5S11.5,35,20,35c8.5,0,15.5-7,15.5-15.5,0-1.3,1.3-2.4,2.6-2.2,1.3.2,2.3,1.4,2.1,2.7C39.4,29.1,30.7,38,20,38z'%3E%3CanimateTransform attributeName='transform' type='rotate' from='0 20 20' to='360 20 20' dur='0.8s' repeatCount='indefinite'/%3E%3C/path%3E%3C/svg%3E") no-repeat center;
+    background-size: 40px 40px;
+}
+
+.mermaid[data-processed="true"] {
+    max-height: 1000px; 
+    min-height: 0; 
+}
+
+.mermaid svg {
+    max-width: 100%;
+    height: auto;
+}
+
+.mermaid svg text {
+    text-transform: uppercase;
+}
+
+@keyframes dash {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+.ticket-mermaid-workflow {
+    @apply max-h-96 overflow-y-auto my-4;
+}

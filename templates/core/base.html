@@ -1,6 +1,7 @@
 {% load static %}
 {% load django_vite %}
 {% load django_htmx %}
+{% load core_tags %}
 
 <!DOCTYPE html>
 <html lang="es">
@@ -10,17 +11,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Welp App{% endblock %}</title>
     <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+
+    <style>
+        .no-fouc { visibility: hidden; opacity: 0; }
+    </style>
+    <script>
+        document.documentElement.classList.add('no-fouc');
+        document.addEventListener('DOMContentLoaded', () => {
+            document.documentElement.classList.remove('no-fouc');
+        });
+    </script>
     
-    <!-- PRELOAD CRÍTICO: Fuente del logo para evitar FOUC -->
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Grandstander:wght@700&display=block" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Grandstander:wght@700&display=block"></noscript>
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    
-    <link rel="stylesheet" href="{% vite_asset_url 'frontend/main.css' %}">
-    
+    {% vite_asset 'frontend/main.css' %}
     {% vite_hmr_client %}
-    {% vite_asset 'frontend/main.js' %}
     
     <meta name="htmx-config" content='{"headers": {"X-CSRFToken": "{{ csrf_token }}"}}'>
     {% htmx_script %}
@@ -28,16 +31,12 @@
     {% block styles %}{% endblock %}
 </head>
 
-<body data-namespace="{{ request.resolver_match.namespace|default:'core' }}">
+<body>
     <header>
         {% block header %}
             {% include "core/navbar.html" %}
         {% endblock %}
     </header>
-
-    <aside>
-        {% block aside %}{% endblock %}
-    </aside>
     
     <main>
         <div id="app">
@@ -49,7 +48,7 @@
         {% block footer %}{% endblock %}
     </footer>
     
+    {% vite_asset 'frontend/main.js' defer=True %}
     {% block scripts %}{% endblock %}
 </body>
-
 </html> 

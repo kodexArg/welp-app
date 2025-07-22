@@ -1,0 +1,25 @@
+# Flujo para un séptimo ticket: "Instalación Cámara de Seguridad (Acceso Bóvedas)"
+
+- ticket: "Instalación Cámara de Seguridad (Acceso Bóvedas)"
+  user: "paz.diaz"
+  status: "open"
+  post_date: "2025-09-05T09:00:00Z"
+  udn: "Las Bóvedas"
+  sector: "Administración"
+  category: "Seguridad & CCTV"
+  estimated_amount: 450.00
+  comment: "Se necesita instalar una cámara de seguridad adicional en el punto de acceso principal de Las Bóvedas para mejorar la cobertura."
+
+- ticket: "Instalación Cámara de Seguridad (Acceso Bóvedas)"
+  user: "sofia.torres"
+  status: "authorized"
+  post_date: "2025-09-05T11:30:00Z"
+  comment: "Autorizado. Prioridad alta."
+
+- ticket: "Instalación Cámara de Seguridad (Acceso Bóvedas)"
+  user: "catalina.rojas"
+  status: "budgeted"
+  post_date: "2025-09-06T10:00:00Z"
+  comment: "Se adjunta presupuesto del proveedor de seguridad. Incluye equipo e instalación."
+  attachments:
+    - "presupuesto_01.pdf" 

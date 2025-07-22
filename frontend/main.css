@@ -1,46 +1,24 @@
-/* ==========================================================================
-   IMPORTS DE ESTILOS PRINCIPALES
-   ========================================================================== */
-
 @import "tailwindcss";
 
-/* ==========================================================================
-   CONFIGURACIÓN TAILWIND 4 - Fuentes Personalizadas
-   ========================================================================== */
-
-@theme {
-  --font-brand: 'Grandstander-local', 'Grandstander', 'Comic Sans MS', 'Marker Felt', cursive;
-  --font-p: 'Inter', sans-serif;
-  --font-ui: 'Roboto Condensed', sans-serif;
-  --font-mono: 'Roboto Mono', monospace;
-  --font-title: 'Nunito', sans-serif;
-  --font-list: 'Inter', sans-serif;
-}
-
-/* ==========================================================================
-   IMPORTS DE ARCHIVOS CSS MODULARES
-   ========================================================================== */
-
-/* Variables CSS: colores, espaciado, tipografía base */
 @import "./css/variables.css";
-
-/* Animaciones y transiciones: @utility para @apply + @layer components para complejas */
-@import "./css/animations.css";
-
-/* Estilos base: elementos HTML, reset personalizado */
 @import "./css/base.css";
-
-/* Componentes: clases reutilizables de UI */
+@import "./css/themes.css";
+@import "./css/utilities.css";
+@import "./css/ticket.css";
 @import "./css/components.css";
+@import "./css/navbar.css";
+@import "./css/animations.css";
+@import "./fonts/fa/all.min.css";
 
-/* ==========================================================================
-   VERIFICACIÓN TAILWIND 4
-   ========================================================================== */
-
-/* 
- * Las siguientes utilidades están disponibles para @apply:
+/*
+ * Utilidades @utility disponibles para @apply:
  * - transition-theme, transition-form, transition-interactive
- * - animate-delay-100, animate-delay-200, etc.
+ * - animate-delay-100, animate-delay-200, animate-delay-300, animate-delay-500, animate-delay-1000
  * - button-effects, button-effects-minimal
  * - card-hover-lift, app-hover-scale
+ * - dev-content-slide
+ * - loading-content, error-content
  */
+
+/* Forzar reconstrucción de caché */
+

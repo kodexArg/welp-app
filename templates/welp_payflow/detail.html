@@ -1,0 +1,54 @@
+{% extends "core/base.html" %}
+{% load payflow_tags %}
+{% load ticket_message_tags %}
+{% load django_vite %}
+
+{% block title %}{{ ticket.title }} - Welp Payflow{% endblock %}
+
+{% block content %}
+<section class="max-w-3xl mx-auto">
+    {% if view_only %}
+        <h2 class="text-2xl font-bold">
+            <i class="fa-solid fa-eye mr-2"></i>Sólo Lectura
+        </h2>
+    {% else %}
+        <h2 class="text-2xl font-bold">
+            <i class="{{ icon_class }} mr-2"></i>{{ response_info.action_label }}
+        </h2>
+    {% endif %}
+    
+    {% if response_type == 'close' %}
+        <div class="{{ confirmation_info.style.bg }} border-l-4 {{ confirmation_info.style.border }} p-4 mb-6 rounded-r-lg">
+            {% if is_owner %}
+                <p class="{{ confirmation_info.style.text }}">{{ confirmation_info.owner_message }}</p>
+            {% else %}
+                <p class="{{ confirmation_info.style.text }}">{{ confirmation_info.non_owner_message }}</p>
+            {% endif %}
+        </div>
+    {% endif %}
+
+
+    {% mermaid_workflow ticket=ticket %}
+    
+    {% ticket_container ticket=ticket expanded=True hide_buttons=False show_actions=False %}
+
+    {% if view_only %}
+        <div class="mt-6 flex justify-center">
+            <a href="{% url 'welp_payflow:list' %}" class="button button-cancel">
+                <i class="fa-solid fa-arrow-left mr-2"></i>
+                Volver al listado
+            </a>
+        </div>
+    {% endif %}
+
+    {% if not view_only %}
+        {% ticket_message_input ticket=ticket response_type=response_type is_owner=is_owner cancel_url=cancel_url cancel_text="Cancelar" hidden_fields=hidden_fields %}
+    {% endif %}
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+    {% vite_asset 'frontend/js/mermaid-init.js' %}
+    {% vite_asset 'frontend/js/welp_payflow/attachment_manager.js' %}
+{% endblock %}

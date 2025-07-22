@@ -25,7 +25,6 @@ class TimezoneConfigTest(TestCase):
         """
         try:
             tz = zoneinfo.ZoneInfo(settings.TIME_ZONE)
-            # Verificar que se puede crear una instancia válida
             self.assertIsNotNone(tz)
         except zoneinfo.ZoneInfoNotFoundError:
             self.fail(f"El timezone '{settings.TIME_ZONE}' no es válido según zoneinfo")
@@ -42,11 +41,9 @@ class TimezoneConfigTest(TestCase):
         with open(apprunner_path, 'r', encoding='utf-8') as f:
             apprunner_config = yaml.safe_load(f)
         
-        # Verificar que existe la sección run.env
         self.assertIn('run', apprunner_config, "apprunner.yaml debe tener sección 'run'")
         self.assertIn('env', apprunner_config['run'], "apprunner.yaml debe tener 'run.env'")
         
-        # Buscar la variable TIMEZONE en la lista de env
         env_vars = apprunner_config['run']['env']
         timezone_found = False
         timezone_value = None
@@ -70,7 +67,6 @@ class TimezoneConfigTest(TestCase):
         with open(apprunner_path, 'r', encoding='utf-8') as f:
             apprunner_config = yaml.safe_load(f)
         
-        # Extraer el valor de TIMEZONE de apprunner.yaml
         env_vars = apprunner_config['run']['env']
         timezone_value = None
         
@@ -79,7 +75,6 @@ class TimezoneConfigTest(TestCase):
                 timezone_value = env_var.get('value')
                 break
         
-        # Verificar que el timezone es válido
         try:
             tz = zoneinfo.ZoneInfo(timezone_value)
             self.assertIsNotNone(tz)
@@ -97,7 +92,6 @@ class TimezoneConfigTest(TestCase):
         with open(apprunner_path, 'r', encoding='utf-8') as f:
             apprunner_config = yaml.safe_load(f)
         
-        # Extraer timezone de apprunner.yaml
         env_vars = apprunner_config['run']['env']
         apprunner_timezone = None
         
@@ -106,7 +100,6 @@ class TimezoneConfigTest(TestCase):
                 apprunner_timezone = env_var.get('value')
                 break
         
-        # Comparar con settings
         settings_timezone = settings.TIME_ZONE
         
         self.assertEqual(

@@ -1,0 +1,27 @@
+- ticket: "Resmas de papel para Espejo"
+  user: "alex.rey"
+  status: "open"
+  post_date: "2025-07-13T08:00:00Z"
+  udn: "Espejo"
+  sector: "Sistemas"
+  category: "Insumos"
+  estimated_amount: 150.00
+  comment: "Se necesitan 10 resmas de papel A4 para impresoras del sector Sistemas."
+
+- ticket: "Resmas de papel para Espejo"
+  user: "elena.ramos"
+  status: "authorized"
+  post_date: "2025-07-13T10:15:00Z"
+  comment: "Autorizado. Comprar papel de 80g."
+
+- ticket: "Resmas de papel para Espejo"
+  user: "natalia.cobucci"
+  status: "processing_payment"
+  post_date: "2025-07-13T12:30:00Z"
+  comment: "Compra realizada. OC #PO-2025-0233. Entrega mañana."
+
+- ticket: "Resmas de papel para Espejo"
+  user: "alex.rey"
+  status: "closed"
+  post_date: "2025-07-14T09:00:00Z"
+  comment: "Papel recibido y distribuido a las impresoras." 

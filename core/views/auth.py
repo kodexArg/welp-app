@@ -34,8 +34,11 @@ def login_view(request):
 def logout_view(request):
     """Vista de cierre de sesión"""
     if request.method == 'POST':
-        user_name = request.user.get_full_name() or request.user.username if request.user.is_authenticated else 'Usuario'
+        storage = messages.get_messages(request)
+        for _ in storage:
+            pass
+        storage.used = True
+        
         logout(request)
-        messages.info(request, f'¡Hasta luego, {user_name}!')
-        return redirect('core:index')
+        return redirect('core:login')
     return redirect('core:index') 

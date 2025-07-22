@@ -1,86 +1,45 @@
 {% extends "core/base.html" %}
+{% load i18n %}
 
-{% block title %}Dev - Welp App{% endblock %}
+{% block title %}{% trans "Developer Tools" %} - Welp App{% endblock %}
 
 {% block content %}
-<section>
-    <div class="space-y-6 mt-8">
-            <ul class="space-y-2">
-                <li>
-                    <a 
-                        hx-get="{% url 'core:dev_udns' %}"
-                        hx-target="#content"
-                        hx-swap="innerHTML"
-                        href="#"
-                        class="button-minimal flex items-center gap-3 justify-start w-full text-left">
-                        <i class="fa fa-map-marker-alt w-5"></i>
-                        <span>UDNs</span>
-                        <small class="ml-auto text-xs opacity-60">Ubicaciones y centros de operación</small>
-                    </a>
-                </li>
-                <li>
-                    <a 
-                        hx-get="{% url 'core:dev_sectors' %}"
-                        hx-target="#content"
-                        hx-swap="innerHTML"
-                        href="#"
-                        class="button-minimal flex items-center gap-3 justify-start w-full text-left">
-                        <i class="fa fa-building w-5"></i>
-                        <span>Sectores</span>
-                        <small class="ml-auto text-xs opacity-60">Áreas funcionales por ubicación</small>
-                    </a>
-                </li>
-                <li>
-                    <a 
-                        hx-get="{% url 'core:dev_categories' %}"
-                        hx-target="#content"
-                        hx-swap="innerHTML"
-                        href="#"
-                        class="button-minimal flex items-center gap-3 justify-start w-full text-left">
-                        <i class="fa fa-tags w-5"></i>
-                        <span>Categorías</span>
-                        <small class="ml-auto text-xs opacity-60">Tipos de incidencias y tickets</small>
-                    </a>
-                </li>
-                <li>
-                    <a 
-                        hx-get="{% url 'core:dev_hierarchy' %}"
-                        hx-target="#content"
-                        hx-swap="innerHTML"
-                        href="#"
-                        class="button-minimal flex items-center gap-3 justify-start w-full text-left">
-                        <i class="fa fa-sitemap w-5"></i>
-                        <span>Jerarquía</span>
-                        <small class="ml-auto text-xs opacity-60">Estructura organizacional del sistema</small>
-                    </a>
-                </li>
-                <li>
-                    <a 
-                        hx-get="{% url 'core:dev_purchase_workflow' %}"
-                        hx-target="#content"
-                        hx-swap="innerHTML"
-                        href="#"
-                        class="button-minimal flex items-center gap-3 justify-start w-full text-left">
-                        <i class="fa fa-shopping-cart w-5"></i>
-                        <span>Workflow de Compras</span>
-                        <small class="ml-auto text-xs opacity-60">Proceso completo de adquisiciones</small>
-                    </a>
-                </li>
-            </ul>
+<section class="my-12">
+    <div class="text-center mb-12">
+        <h1 class="text-3xl text-text">{% trans "Developer Tools" %}</h1>
+        <p class="text-lg text-primary font-[var(--font-p)] mt-2">{% trans "System documentation, component testing, and technical resources." %}</p>
+    </div>
 
-        <div id="content" class="mt-8">
-            <p class="text-gray-500">Selecciona una sección para ver la documentación</p>
-        </div>
+    <div class="app-wide-actions">
+        <!-- Link 1: Categories & Hierarchy -->
+        <a href="{% url 'core:dev_categories' %}" class="app-wide-button secondary">
+            <div class="app-wide-button-content">
+                <div class="app-wide-button-icon">
+                    <i class="fa fa-sitemap"></i>
+                </div>
+                <p class="app-wide-button-text">{% trans "Categories & Hierarchy" %}</p>
+            </div>
+        </a>
+
+        <!-- Link 2: Purchase Workflow -->
+        <a href="{% url 'core:dev_purchase_workflow' %}" class="app-wide-button secondary">
+            <div class="app-wide-button-content">
+                <div class="app-wide-button-icon">
+                    <i class="fa fa-shopping-cart"></i>
+                </div>
+                <p class="app-wide-button-text">{% trans "Purchase Workflow" %}</p>
+            </div>
+        </a>
+
+        <!-- Link 3: Playground -->
+        <a href="{% url 'core:dev_playground' %}" class="app-wide-button secondary">
+            <div class="app-wide-button-content">
+                <div class="app-wide-button-icon">
+                    <i class="fa fa-flask"></i>
+                </div>
+                <p class="app-wide-button-text">{% trans "Playground" %}</p>
+            </div>
+        </a>
     </div>
 </section>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Cargar UDNs por defecto
-    const firstLink = document.querySelector('.button-minimal');
-    if (firstLink) {
-        firstLink.click();
-    }
-});
-</script>
-{% endblock %} 
+{% endblock %}

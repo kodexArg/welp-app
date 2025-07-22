@@ -3,63 +3,51 @@
 {% block title %}Iniciar Sesión - Welp App{% endblock %}
 
 {% block content %}
-<section class="flex items-center justify-center min-h-[calc(100vh-var(--header-height)-2rem)] animate-fade-in">
-    <div class="card w-full max-w-sm shadow-xl">
-        <form method="post" class="w-full">
+<section class="flex justify-center items-center min-h-[calc(100vh-var(--header-height))]">
+    <div class="bg-white rounded-2xl border border-border shadow-md w-full max-w-xs mx-auto p-6">
+        <form method="post" class="flex flex-col gap-4">
             {% csrf_token %}
 
-            <div class="card-header text-center">
-                <h2 class="text-2xl font-bold">Ingresar</h2>
-            </div>
-    
-            <div class="card-body">
-                {% if messages %}
-                    <div class="mb-4">
-                    {% for message in messages %}
-                        <div class="{% if message.tags == 'error' %}alert-error{% elif message.tags == 'success' %}alert-success{% else %}alert-info{% endif %} text-sm p-3 rounded-md">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                    </div>
-                {% endif %}
-                
-                <div class="form-group">
-                    <label for="username" class="form-label">Usuario</label>
+            <h2 class="text-xl font-bold text-center text-primary">Ingresar</h2>
+
+            <div class="flex flex-col gap-3">
+                <div>
+                    <label for="username" class="form-label text-xs">USUARIO</label>
                     <input 
                         id="username" 
                         name="username" 
                         type="text" 
                         required 
-                        class="form-input"
-                        placeholder="Ingresa tu usuario"
+                        placeholder="Tu usuario"
                         value="{{ request.POST.username|default:'' }}"
                         autofocus
+                        class="form-input py-1.5"
                     >
                 </div>
-
-                <div class="form-group mb-2">
-                    <label for="password" class="form-label">Contraseña</label>
+                <div>
+                    <label for="password" class="form-label text-xs">CONTRASEÑA</label>
                     <input 
                         id="password" 
                         name="password" 
                         type="password" 
                         required 
-                        class="form-input"
-                        placeholder="••••••••••"
+                        placeholder="••••••••"
+                        class="form-input py-1.5"
                     >
                 </div>
             </div>
-    
-            <div class="card-footer flex items-center justify-between">
-                <a href="/admin/" class="button-minimal text-sm font-medium">
-                    <i class="fa fa-user-shield mr-1"></i>
-                    Admin
-                </a>
-                <button type="submit" class="button-primary">
-                    <i class="fa fa-sign-in-alt mr-2"></i>
-                    Iniciar Sesión
-                </button>
-            </div>
+
+            <a href="/admin/" class="text-secondary hover:text-accent text-xs flex items-center justify-center gap-2">
+                <i class="fa fa-user-shield"></i>
+                Ingresar como Administrador
+            </a>
+            <hr class="my-1 border-border/50">
+            
+            <button type="submit" class="button ">
+                <i class="fa fa-sign-in-alt"></i>
+                INICIAR SESIÓN
+            </button>
+            
         </form>
     </div>
 </section>
@@ -67,16 +55,23 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.querySelector('form');
+    const submitBtn = form.querySelector('button[type="submit"]');
+
     if (form) {
-        const submitBtn = form.querySelector('button[type="submit"]');
-        
         form.addEventListener('submit', function() {
             if (submitBtn && !submitBtn.disabled) {
                 submitBtn.disabled = true;
-                submitBtn.innerHTML = '<i class="fa fa-spinner fa-spin mr-2"></i>Iniciando...';
+                const originalText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<i class="fa fa-spinner fa-spin mr-2"></i>Validando...';
                 submitBtn.classList.add('opacity-75', 'cursor-not-allowed');
+
             }
         });
+    }
+
+    const usernameField = document.getElementById('username');
+    if (usernameField && usernameField.value) {
+        document.getElementById('password').focus();
     }
 });
 </script>

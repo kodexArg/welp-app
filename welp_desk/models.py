@@ -2,7 +2,7 @@ from django.db import models
 from django.db.models import Q
 from django.urls import reverse
 from django.utils import timezone
-from .constants import DESK_STATUSES, STATUS_MAX_LENGTH
+from .constants import DESK_STATUSES, STATUS_MAX_LENGTH, DESK_ROLE_PERMISSIONS
 from .utils import get_available_desk_transitions, get_permissions_for_role_type
 
 
@@ -113,25 +113,25 @@ class Roles(models.Model):
 
 
 class TicketManager(models.Manager):
-    
     def get_queryset(self, user=None):
         queryset = super().get_queryset()
         if user and not user.is_superuser:
-            user_roles = user.welp_roles.filter(can_read=True)
-            
-            if not user_roles.exists():
-                return queryset.none()
-            
-            ticket_filters = Q()
-            for role in user_roles:
-                role_filter = Q(udn=role.udn)
-                if role.sector:
-                    role_filter &= Q(sector=role.sector)
-                if hasattr(role, 'issue_category') and role.issue_category:
-                    role_filter &= Q(issue_category=role.issue_category)
-                ticket_filters |= role_filter
-            
-            return queryset.filter(ticket_filters).distinct()
+            own_tickets = Q(messages__user=user)
+            user_roles = user.welp_roles.all()
+            can_view_others = any(DESK_ROLE_PERMISSIONS.get(role.get_role_type(), {}).get('can_view_others_tickets', False) for role in user_roles)
+            if can_view_others:
+                ticket_filters = Q()
+                for role in user_roles:
+                    if DESK_ROLE_PERMISSIONS.get(role.get_role_type(), {}).get('can_view_others_tickets', False):
+                        role_filter = Q(udn=role.udn)
+                        if role.sector:
+                            role_filter &= Q(sector=role.sector)
+                        if hasattr(role, 'issue_category') and role.issue_category:
+                            role_filter &= Q(issue_category=role.issue_category)
+                        ticket_filters |= role_filter
+                return queryset.filter(own_tickets | ticket_filters).distinct()
+            # Otros usuarios: solo sus propios tickets
+            return queryset.filter(own_tickets).distinct()
         return queryset
 
 

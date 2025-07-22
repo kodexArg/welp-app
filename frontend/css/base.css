@@ -1,23 +1,20 @@
-@layer components {
-
-    /* Estilos base del layout */
+@layer base {
     body {
         @apply flex md:flex-col justify-center font-sans;
-        @apply w-screen overflow-y-auto overflow-x-hidden;
-        @apply bg-[var(--theme-background)] text-[var(--theme-text)];
-        @apply transition-theme;
+        @apply w-screen overflow-x-hidden;
+        @apply bg-bg text-text;
+        overflow-y: scroll;
+        scrollbar-gutter: stable;
     }
 
     header {
-        @apply fixed top-0 left-0 right-0 z-10 w-full;
+        @apply fixed top-0 left-0 right-0 z-[9999] w-full;
         @apply h-[var(--header-height)] min-h-[var(--header-height)] max-h-[var(--header-height)];
     }
 
-    /* NAVBAR - Ahora usa variables dinámicas de tema */
     nav {
         @apply flex items-center justify-between w-full h-full px-3 py-1;
-        @apply bg-[var(--navbar-bg)];
-        @apply transition-theme;
+        @apply bg-[var(--navbar-bg)] text-[var(--navbar-text)];
     }
 
     main {
@@ -31,70 +28,58 @@
         @apply w-[var(--aside-width)] h-[calc(100vh-var(--header-height))] z-[1000];
     }
 
-    /* SCROLLBAR - Ahora usa variables dinámicas de tema */
     body::-webkit-scrollbar {
         @apply w-4;
-        @apply bg-[var(--scrollbar-thumb)];
+        background: var(--navbar-bg);
         -webkit-appearance: none;
     }
 
     body::-webkit-scrollbar-track {
-        @apply bg-[var(--scrollbar-track)] mt-[var(--header-height)];
+        background: var(--navbar-bg);
+        margin-top: var(--header-height);
     }
 
     body::-webkit-scrollbar-thumb {
-        @apply rounded-full border-2;
-        @apply bg-[var(--scrollbar-thumb)] border-[var(--scrollbar-border)];
-        @apply transition-theme;
+        @apply rounded-full border-4;
+        background: var(--color-primary);
+        border-color: var(--navbar-bg);
     }
 
     body::-webkit-scrollbar-thumb:hover {
-        @apply bg-[var(--scrollbar-thumb-hover)];
+        background: var(--color-accent);
     }
 
-    /* TÍTULOS - Ahora usan variables dinámicas de tema */
+
     h2, h3, h4 {
         @apply font-bold leading-tight mb-4 text-center;
         @apply font-title;
-        @apply transition-theme;
     }
 
     h1 { 
         @apply text-3xl mb-8 font-bold leading-tight text-center;
         @apply font-title;
-        @apply text-[var(--theme-primary-dark)];
-        @apply transition-theme;
+        @apply text-secondary;
     }
     
     h2 { 
         @apply text-2xl mb-6 font-semibold leading-tight;
-        @apply text-[var(--theme-text-secondary)];
-        @apply transition-theme;
+        @apply text-primary;
     }
     
     h3 { 
         @apply text-xl mb-4 font-medium leading-tight;
-        @apply text-[var(--theme-primary)];
-        @apply transition-theme;
+        @apply text-secondary;
     }
     
     h4 { 
         @apply text-base mb-2;
-        @apply text-[var(--theme-text-secondary)];
+        @apply text-primary;
     }
 
-    /* Clase especial para títulos con gradiente */
-    .title-gradient {
-        background: linear-gradient(135deg, var(--theme-primary), var(--theme-accent));
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
 
     p {
         @apply mb-3;
-        @apply font-[var(--font-p)] text-[var(--theme-text-secondary)];
-        @apply transition-theme;
+        @apply font-[var(--font-body)] text-primary;
     }
 
     span {
@@ -102,100 +87,88 @@
     }
 
     a {
-        @apply text-[var(--theme-primary)];
+        @apply text-secondary;
         @apply transition-colors duration-200;
     }
 
     a:hover {
-        @apply text-[var(--theme-accent)] underline;
+        @apply text-accent;
     }
 
     a:active {
-        @apply text-[var(--theme-primary-dark)];
+        @apply text-primary;
     }
 
     strong, b { @apply font-bold; }
     em, i { @apply italic; }
 
-    /* Listas */
     ul, ol {
         @apply mb-4 pl-5 list-disc;
-        @apply text-[var(--theme-text)];
-        @apply transition-theme;
+        @apply text-text;
     }
 
     ol { @apply list-decimal; }
     li { @apply mb-1; }
 
-    /* Contenedores */
     section {
         @apply py-8 px-4 mx-auto;
         @apply max-w-[var(--breakpoint-sm)];
     }
 
     article {
-        @apply mb-7 rounded-lg p-4 shadow-md overflow-hidden;
-        @apply bg-[var(--theme-surface)] border border-[var(--theme-border)];
-        @apply transition-theme;
+        @apply mb-3 px-3 pt-2 pb-3;
+        @apply bg-white rounded-2xl border-border shadow-md;
+        @apply flex flex-col justify-center;
     }
 
     blockquote {
         @apply pl-4 py-2 my-4 border-l-4 italic;
-        @apply bg-[var(--theme-primary-light)] border-l-[var(--theme-primary)] text-[var(--theme-text)];
-        @apply transition-theme;
+        @apply bg-surface border-l-secondary text-text;
     }
 
-    /* Tablas */
     table {
         @apply w-full mb-4 border-collapse;
     }
 
     th {
         @apply py-2 px-3 text-left font-bold border-b-2 uppercase tracking-wide;
-        @apply bg-[var(--theme-primary-light)] border-[var(--theme-border)] text-[var(--theme-text)];
+        @apply bg-surface border-border text-text;
         @apply font-[var(--font-ui)];
-        @apply transition-theme;
     }
 
     td {
         @apply py-2 px-3 border-b;
-        @apply border-[var(--theme-border)] text-[var(--theme-text-secondary)];
-        @apply transition-theme;
+        @apply border-border text-primary;
     }
 
-    tr:hover td {
-        @apply bg-[var(--theme-primary-light)];
+    hr {
+        @apply my-6 border-t border-border;
     }
 
-    /* Formularios */
+    /* Form Elements - Elementos de Formulario */
     form {
         @apply p-0 m-0;
     }
 
     label {
-        @apply block mb-2 font-medium uppercase tracking-wide;
-        @apply text-[var(--theme-text)] font-[var(--font-ui)];
-        @apply transition-theme;
+        @apply block mb-2 font-medium uppercase tracking-wide text-sm;
+        @apply text-text;
+        font-family: var(--font-ui);
     }
 
     input, textarea, select {
-        @apply w-full px-3 py-2 mb-2 border-2 rounded-md;
-        @apply bg-[var(--theme-surface)] border-[var(--theme-border)] text-[var(--theme-text)];
-        @apply transition-form;
+        @apply w-full px-3 py-2 mb-2 border rounded-md;
+        @apply bg-white border-border text-text;
+        @apply transition-all duration-200;
+        font-family: var(--font-ui);
     }
 
     input:focus, textarea:focus, select:focus {
-        @apply outline-none border-2 border-[var(--theme-primary)];
+        @apply outline-none border-primary ring-2 ring-primary/20;
     }
 
-    /* Elementos adicionales */
     button {
         @apply cursor-pointer;
-    }
-
-    hr {
-        @apply my-6 border-t border-[var(--theme-border)];
-        @apply transition-theme;
     }
 
     code, pre {
@@ -204,21 +177,11 @@
 
     code {
         @apply px-1 py-0.5 rounded text-sm;
-        @apply bg-[var(--theme-primary-light)] text-[var(--theme-text)];
-        @apply transition-theme;
+        @apply bg-surface text-text;
     }
 
     pre {
         @apply p-3 mb-4 rounded overflow-x-auto;
-        @apply bg-[var(--theme-primary-dark)] text-[var(--theme-surface)];
-        @apply transition-theme;
-    }
-
-    /* Gradientes de texto */
-    .text-gradient {
-        background: linear-gradient(135deg, var(--theme-primary), var(--theme-accent));
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+        @apply bg-primary text-white;
     }
 } 

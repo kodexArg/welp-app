@@ -1,0 +1,31 @@
+{% load payflow_tags %}
+{% load ticket_message_tags %}
+
+{% if expanded %}
+<details class="ticket-container" open>
+{% else %}
+<details class="ticket-container">
+{% endif %}
+    <summary class="ticket-header">
+        <div class="ticket-title">
+            <i class="ticket-caret"></i>
+            <span class="truncate">{{ ticket.title }}</span>
+        </div>
+        <div class="ticket-tags-container">
+            {# {% ticket_summary_info ticket %} #}<div class="ticket-tags-group"><span class="ticket-tag ticket-tag--udn">{{ ticket.udn.name }}</span><span class="ticket-tag ticket-tag--sector">{{ ticket.sector.name }}</span><span class="ticket-tag ticket-tag--category">{{ ticket.accounting_category.name }}</span></div>{% with status_info=ticket|ticket_status_flow %}<span class="ticket-status ticket-status--{{ status_info.status }}">
+                <i class="{{ status_info.icon }} mr-1"></i>
+                {{ status_info.label }}
+            </span>{% endwith %}
+        </div>
+    </summary>
+    <div class="ticket-details">
+        {% for message in ticket.messages.all %}
+            {% ticket_message message %}
+        {% endfor %}
+        {% if show_actions %}
+        <div class="ticket-actions">
+            {% ticket_actions ticket %}
+        </div>
+        {% endif %}
+    </div>
+</details>

@@ -6,10 +6,8 @@ from datetime import datetime
 from dotenv import load_dotenv
 from loguru import logger
 
-# Cargar variables de entorno desde .env
 load_dotenv(override=True)
 
-# Configuración de Loguru
 LOGURU_CONFIG = {
     "handlers": [
         {
@@ -20,7 +18,6 @@ LOGURU_CONFIG = {
     ]
 }
 
-# En producción, agregar el handler de S3
 if not os.environ.get('IS_LOCAL') == 'True':
     LOGURU_CONFIG["handlers"].append({
         "sink": f"s3://{os.environ['AWS_STORAGE_BUCKET_NAME']}/logs/app_{datetime.now().strftime('%Y-%m-%d')}.log",
@@ -30,7 +27,6 @@ if not os.environ.get('IS_LOCAL') == 'True':
         "retention": "30 days",
     })
 
-# Configurar Loguru
 logger.configure(**LOGURU_CONFIG)
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -40,33 +36,33 @@ SECRET_KEY = os.environ['SECRET_KEY']
 DEBUG = os.environ['DEBUG'] == 'True'
 IS_LOCAL = os.environ.get('IS_LOCAL') == 'True'
 
-ALLOWED_HOSTS = ['*']  # Acepta cualquier host
+ALLOWED_HOSTS = ['*']
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://*.awsapprunner.com',  # Cubre todos los dominios App Runner
+    'https://*.awsapprunner.com',
     'http://localhost:8080',
     'http://127.0.0.1:8080'
 ]
 
-CSRF_COOKIE_SECURE = True  # Fuerza HTTPS para cookie CSRF
-SESSION_COOKIE_SECURE = True  # Fuerza HTTPS para cookie de sesión
-CSRF_COOKIE_SAMESITE = 'Strict'  # Previene envío de cookie CSRF en peticiones cross-site
-SESSION_COOKIE_SAMESITE = 'Strict'  # Previene envío de cookie de sesión en peticiones cross-site
-CSRF_USE_SESSIONS = True  # Almacena token CSRF en sesión en lugar de cookie
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')  # Detecta HTTPS detrás del proxy de App Runner
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = 'Strict'
+SESSION_COOKIE_SAMESITE = 'Strict'
+CSRF_USE_SESSIONS = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-# === APPS ===
 INSTALLED_APPS = [
-    'core',
+    'django_vite',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.messages',
     'django.contrib.sessions',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     'rest_framework',
     'django_htmx',
-    'django_vite',
+    'core',
     'django_extensions',
     'storages',
     'api',
@@ -74,7 +70,6 @@ INSTALLED_APPS = [
     'welp_payflow',
 ]
 
-# === MIDDLEWARE ===
 MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -143,10 +138,8 @@ USE_TZ = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Modelo de usuario personalizado
 AUTH_USER_MODEL = 'core.User'
 
-# Configuración de S3
 AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
 AWS_S3_REGION_NAME = os.environ.get('AWS_S3_REGION_NAME')
 AWS_S3_FILE_OVERWRITE = False
@@ -156,7 +149,6 @@ AWS_S3_OBJECT_PARAMETERS = json.loads(os.environ.get('AWS_S3_OBJECT_PARAMETERS',
 AWS_S3_SIGNATURE_VERSION = 's3v4'
 AWS_S3_VERIFY = True
 
-# Archivos estáticos y multimedia
 VITE_ASSETS_PATH = BASE_DIR / "static" / "dist"
 
 STATICFILES_FINDERS = [
@@ -218,5 +210,4 @@ else:
     STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
     MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
 
-# Ejecutor de pruebas
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'

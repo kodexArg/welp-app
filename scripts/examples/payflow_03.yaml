@@ -1,0 +1,53 @@
+# Flujo para un tercer ticket: "Faltan teclados en playa"
+
+- ticket: "Faltan teclados en playa"
+  user: "martin.garcia"
+  status: "open"
+  post_date: "2025-08-20T09:00:00Z"
+  udn: "KM 1151"
+  sector: "Operaciones"
+  category: "Equipos IT"
+  estimated_amount: 200.00
+  comment: "Solicitud de 4 teclados para los puntos de venta de la playa de carga. Varios están fallando."
+
+- ticket: "Faltan teclados en playa"
+  user: "santiago.fernandez"
+  status: "authorized"
+  post_date: "2025-08-20T11:00:00Z"
+  comment: "Aprobado. Comprar con urgencia."
+
+- ticket: "Faltan teclados en playa"
+  user: "catalina.rojas"
+  status: "budgeted"
+  post_date: "2025-08-21T10:00:00Z"
+  comment: "Presupuesto obtenido de proveedor de TI. No requiere adjunto por ser compra menor."
+
+- ticket: "Faltan teclados en playa"
+  user: "santiago.fernandez"
+  status: "authorized_by_manager"
+  post_date: "2025-08-21T14:00:00Z"
+  comment: "Autorizado."
+
+- ticket: "Faltan teclados en playa"
+  user: "mateo.vila"
+  status: "authorized_by_director"
+  post_date: "2025-08-21T15:00:00Z"
+  comment: "OK."
+
+- ticket: "Faltan teclados en playa"
+  user: "catalina.rojas"
+  status: "processing_payment"
+  post_date: "2025-08-22T09:30:00Z"
+  comment: "Pago realizado. OC #PO-2025-0195"
+
+- ticket: "Faltan teclados en playa"
+  user: "catalina.rojas"
+  status: "shipping"
+  post_date: "2025-08-23T16:00:00Z"
+  comment: "Enviados a KM 1151."
+
+- ticket: "Faltan teclados en playa"
+  user: "martin.garcia"
+  status: "closed"
+  post_date: "2025-08-24T10:00:00Z"
+  comment: "Recibidos e instalados. Todo en orden." 

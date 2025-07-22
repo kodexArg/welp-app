@@ -9,11 +9,10 @@ class PingSecretTest(TestCase):
         ping_value = os.environ.get('PING')
         self.assertIsNotNone(ping_value, "Variable de entorno PING no encontrada")
         
-        # Verificar si es JSON
+
         try:
             ping_json = json.loads(ping_value)
             if isinstance(ping_json, dict):
-                # Buscar la clave en diferentes formatos (case-insensitive)
                 ping_key = None
                 for key in ping_json.keys():
                     if key.lower() == 'ping':
@@ -27,5 +26,4 @@ class PingSecretTest(TestCase):
             else:
                 self.fail(f"Formato JSON no es diccionario: {ping_json}")
         except json.JSONDecodeError:
-            # Si no es JSON, verificar como string
             self.assertEqual(ping_value.strip().lower(), "pong") 

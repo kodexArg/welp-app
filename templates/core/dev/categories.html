@@ -1,159 +1,190 @@
-<section class="dev-section">
-    <h2 class="section-title">Categorías de Issues</h2>
-    <div class="category-list">
-        <div class="category-item">
-            <span class="tag tag-category">DEBO</span>
-            <div class="category-sectors">
-                <span class="tag tag-sector-mini">Full</span>
-                <span class="tag tag-sector-mini">Playa</span>
-                <span class="tag tag-sector-mini">Administración</span>
+{% extends "core/base.html" %}
+{% load i18n django_vite %}
+
+{% block title %}Categorías y Jerarquía - Herramientas de Desarrollo{% endblock %}
+
+{% block content %}
+<section class="my-6">
+    <div class="text-center mb-12">
+        <h1>Categorías y Jerarquía del Sistema</h1>
+        <p class="text-lg text-primary/80 font-[var(--font-body)] mt-2">Documentación de la estructura organizacional y de datos.</p>
+    </div>
+
+    <div class="space-y-3">
+        <!-- UDNs -->
+        <div class="border border-border rounded-lg">
+            <button data-content="content-udns" class="w-full p-4 flex items-center justify-between cursor-pointer hover:bg-surface" aria-expanded="false" onclick="toggleDevContent(this)">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 flex items-center justify-center rounded-lg bg-surface text-primary text-2xl transition-all duration-300">
+                        <i class="fa fa-map-marker-alt"></i>
+                    </div>
+                    <div class="text-left">
+                        <div class="font-semibold text-text">UDNs (Unidades de Negocio)</div>
+                        <div class="text-sm text-primary/80 font-[var(--font-body)]">Ubicaciones y centros de operación para ambos sistemas.</div>
+                    </div>
+                </div>
+                <div class="text-primary transition-transform duration-300"><i class="fa fa-chevron-down"></i></div>
+            </button>
+            <div id="content-udns" class="dev-content-container hidden p-4 pt-0">
+                <div class="p-6 rounded-lg bg-surface border border-border">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-blue-50 rounded-lg p-4 border border-blue-200">
+                            <h3 class="font-semibold text-blue-800 mb-3">Welp Desk UDNs</h3>
+                            <div class="flex flex-wrap gap-2">
+                                {% for udn in desk_udns %}<span class="tag bg-yellow-100 text-yellow-800 border border-yellow-300 px-3 py-1 rounded-full text-sm font-medium transition-all duration-200 hover:bg-yellow-200 hover:-translate-y-px">{{ udn.name }}</span>{% empty %}<span class="text-gray-500 text-sm">No hay UDNs</span>{% endfor %}
+                            </div>
+                        </div>
+                        <div class="bg-green-50 rounded-lg p-4 border border-green-200">
+                            <h3 class="font-semibold text-green-800 mb-3">Welp Payflow UDNs</h3>
+                            <div class="flex flex-wrap gap-2">
+                                {% for udn in payflow_udns %}<span class="tag bg-yellow-100 text-yellow-800 border border-yellow-300 px-3 py-1 rounded-full text-sm font-medium transition-all duration-200 hover:bg-yellow-200 hover:-translate-y-px">{{ udn.name }}</span>{% empty %}<span class="text-gray-500 text-sm">No hay UDNs</span>{% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="category-separator"></div>
-
-        <div class="category-item">
-            <span class="tag tag-category">YPF</span>
-            <div class="category-sectors">
-                <span class="tag tag-sector-mini">Playa</span>
-                <span class="tag tag-sector-mini">Administración</span>
+        <!-- Sectors -->
+        <div class="border border-border rounded-lg">
+            <button data-content="content-sectors" class="w-full p-4 flex items-center justify-between cursor-pointer hover:bg-surface" aria-expanded="false" onclick="toggleDevContent(this)">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 flex items-center justify-center rounded-lg bg-surface text-primary text-2xl transition-all duration-300">
+                        <i class="fa fa-building"></i>
+                    </div>
+                    <div class="text-left">
+                        <div class="font-semibold text-text">Sectores Operativos</div>
+                        <div class="text-sm text-primary/80 font-[var(--font-body)]">Áreas funcionales por ubicación para ambos sistemas.</div>
+                    </div>
+                </div>
+                <div class="text-primary transition-transform duration-300"><i class="fa fa-chevron-down"></i></div>
+            </button>
+            <div id="content-sectors" class="dev-content-container hidden p-4 pt-0">
+                <div class="p-6 rounded-lg bg-surface border border-border">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-blue-50 rounded-lg p-4 border border-blue-200">
+                             <h3 class="font-semibold text-blue-800 mb-3">Welp Desk Sectores</h3>
+                            <div class="space-y-2">
+                                {% for sector in desk_sectors %}
+                                    <div class="space-y-2">
+                                        <span class="tag bg-primary/10 text-primary border border-primary/20 px-3 py-1 rounded-full text-sm font-medium transition-all duration-200 hover:bg-primary/20 hover:-translate-y-px">{{ sector.name }}</span>
+                                        <div class="flex flex-wrap gap-2 pl-4">
+                                            {% for udn in sector.udn.all %}<span class="tag bg-yellow-100 text-yellow-800 border border-yellow-200 px-2 py-0.5 rounded-full text-xs font-medium">{{ udn.name }}</span>{% empty %}<span class="text-gray-500 text-xs">Sin UDNs</span>{% endfor %}
+                                        </div>
+                                    </div>
+                                {% empty %}<span class="text-gray-500 text-sm">No hay sectores</span>{% endfor %}
+                            </div>
+                        </div>
+                        <div class="bg-green-50 rounded-lg p-4 border border-green-200">
+                            <h3 class="font-semibold text-green-800 mb-3">Welp Payflow Sectores</h3>
+                            <div class="space-y-2">
+                                {% for sector in payflow_sectors %}
+                                    <div class="space-y-2">
+                                        <span class="tag bg-primary/10 text-primary border border-primary/20 px-3 py-1 rounded-full text-sm font-medium transition-all duration-200 hover:bg-primary/20 hover:-translate-y-px">{{ sector.name }}</span>
+                                        <div class="flex flex-wrap gap-2 pl-4">
+                                            {% for udn in sector.udn.all %}<span class="tag bg-yellow-100 text-yellow-800 border border-yellow-200 px-2 py-0.5 rounded-full text-xs font-medium">{{ udn.name }}</span>{% empty %}<span class="text-gray-500 text-xs">Sin UDNs</span>{% endfor %}
+                                        </div>
+                                    </div>
+                                {% empty %}<span class="text-gray-500 text-sm">No hay sectores</span>{% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="category-separator"></div>
-
-        <div class="category-item">
-            <span class="tag tag-category">Soporte IT</span>
-            <div class="category-sectors">
-                <span class="tag tag-sector-mini">Full</span>
-                <span class="tag tag-sector-mini">Playa</span>
-                <span class="tag tag-sector-mini">Administración</span>
-                <span class="tag tag-sector-mini">Parador</span>
+        <!-- Categories -->
+        <div class="border border-border rounded-lg">
+            <button data-content="content-categories" class="w-full p-4 flex items-center justify-between cursor-pointer hover:bg-surface" aria-expanded="false" onclick="toggleDevContent(this)">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 flex items-center justify-center rounded-lg bg-surface text-primary text-2xl transition-all duration-300">
+                        <i class="fa fa-tags"></i>
+                    </div>
+                    <div class="text-left">
+                        <div class="font-semibold text-text">Categorías</div>
+                        <div class="text-sm text-primary/80 font-[var(--font-body)]">Tipos de incidencias y categorías contables.</div>
+                    </div>
+                </div>
+                <div class="text-primary transition-transform duration-300"><i class="fa fa-chevron-down"></i></div>
+            </button>
+            <div id="content-categories" class="dev-content-container hidden p-4 pt-0">
+                <div class="p-6 rounded-lg bg-surface border border-border">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-blue-50 rounded-lg p-4 border border-blue-200">
+                            <h3 class="font-semibold text-blue-800 mb-3">Categorías Welp Desk</h3>
+                            <div class="max-h-96 overflow-y-auto space-y-3 pr-2">
+                                {% for category in desk_categories %}
+                                    <div class="bg-white rounded-lg p-3 border border-blue-200">
+                                        <span class="tag bg-purple-100 text-purple-800 border border-purple-300 px-3 py-1 rounded-full text-sm font-medium transition-all duration-200 hover:bg-purple-200 hover:-translate-y-px">{{ category.name }}</span>
+                                        <div class="flex flex-wrap gap-2 mt-2 pl-4">
+                                            {% for sector in category.sector.all %}<span class="tag bg-primary/10 text-primary border border-primary/20 px-2 py-0.5 rounded-full text-xs font-medium">{{ sector.name }}</span>{% empty %}<span class="text-gray-500 text-xs">Sin sectores</span>{% endfor %}
+                                        </div>
+                                    </div>
+                                {% empty %}<span class="text-gray-500">No hay categorías</span>{% endfor %}
+                            </div>
+                        </div>
+                        <div class="bg-green-50 rounded-lg p-4 border border-green-200">
+                            <h3 class="font-semibold text-green-800 mb-3">Categorías Welp Payflow</h3>
+                             <div class="max-h-96 overflow-y-auto space-y-3 pr-2">
+                                {% for category in payflow_categories %}
+                                    <div class="bg-white rounded-lg p-3 border border-green-200">
+                                        <span class="tag bg-purple-100 text-purple-800 border border-purple-300 px-3 py-1 rounded-full text-sm font-medium transition-all duration-200 hover:bg-purple-200 hover:-translate-y-px">{{ category.name }}</span>
+                                        <div class="flex flex-wrap gap-2 mt-2 pl-4">
+                                            {% for sector in category.sector.all %}<span class="tag bg-primary/10 text-primary border border-primary/20 px-2 py-0.5 rounded-full text-xs font-medium">{{ sector.name }}</span>{% empty %}<span class="text-gray-500 text-xs">Sin sectores</span>{% endfor %}
+                                        </div>
+                                    </div>
+                                {% empty %}<span class="text-gray-500">No hay categorías</span>{% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-
-        <div class="category-separator"></div>
-
-        <div class="category-item">
-            <span class="tag tag-category">Seguridad</span>
-            <div class="category-sectors">
-                <span class="tag tag-sector-mini">Full</span>
-                <span class="tag tag-sector-mini">Playa</span>
-                <span class="tag tag-sector-mini">Parador</span>
-            </div>
-        </div>
-
-        <div class="category-separator"></div>
-
-        <div class="category-item">
-            <span class="tag tag-category">Mantenimiento</span>
-            <div class="category-sectors">
-                <span class="tag tag-sector-mini">Full</span>
-                <span class="tag tag-sector-mini">Playa</span>
-                <span class="tag tag-sector-mini">Administración</span>
-                <span class="tag tag-sector-mini">Parador</span>
-            </div>
-        </div>
-
-        <div class="category-separator"></div>
-
-        <div class="category-item">
-            <span class="tag tag-category">Compras</span>
-            <div class="category-sectors">
-                <span class="tag tag-sector-mini">Full</span>
-                <span class="tag tag-sector-mini">Playa</span>
-                <span class="tag tag-sector-mini">Administración</span>
-                <span class="tag tag-sector-mini">Parador</span>
-            </div>
-        </div>
-
-        <div class="category-separator"></div>
-
-        <div class="category-item">
-            <span class="tag tag-category">Cartelería</span>
-            <div class="category-sectors">
-                <span class="tag tag-sector-mini">Full</span>
-                <span class="tag tag-sector-mini">Playa</span>
-                <span class="tag tag-sector-mini">Parador</span>
-            </div>
-        </div>
-
-        <div class="category-separator"></div>
-
-        <div class="category-item">
-            <span class="tag tag-category">Edilicios</span>
-            <div class="category-sectors">
-                <span class="tag tag-sector-mini">Full</span>
-                <span class="tag tag-sector-mini">Playa</span>
-                <span class="tag tag-sector-mini">Parador</span>
-            </div>
-        </div>
-
-        <div class="category-separator"></div>
-
-        <div class="category-item">
-            <span class="tag tag-category">Telefonía y Comunicación</span>
-            <div class="category-sectors">
-                <span class="tag tag-sector-mini">Full</span>
-                <span class="tag tag-sector-mini">Playa</span>
-                <span class="tag tag-sector-mini">Administración</span>
-                <span class="tag tag-sector-mini">Parador</span>
+        
+        <!-- Hierarchy -->
+        <div class="border border-border rounded-lg">
+            <button data-content="content-hierarchy" class="w-full p-4 flex items-center justify-between cursor-pointer hover:bg-surface" aria-expanded="false" onclick="toggleDevContent(this)">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 flex items-center justify-center rounded-lg bg-surface text-primary text-2xl transition-all duration-300">
+                        <i class="fa fa-sitemap"></i>
+                    </div>
+                    <div class="text-left">
+                        <div class="font-semibold text-text">Jerarquía de Datos</div>
+                        <div class="text-sm text-primary/80 font-[var(--font-body)]">Flujo de datos y relaciones entre modelos.</div>
+                    </div>
+                </div>
+                <div class="text-primary transition-transform duration-300"><i class="fa fa-chevron-down"></i></div>
+            </button>
+            <div id="content-hierarchy" class="dev-content-container hidden p-4 pt-0">
+                <div class="p-6 rounded-lg bg-surface border border-border">
+                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-blue-50 rounded-lg p-4 border border-blue-200">
+                            <h3 class="font-semibold text-blue-800 mb-3 text-center">Jerarquía Welp Desk</h3>
+                            <div class="flex flex-wrap items-center justify-center gap-x-2 gap-y-2 p-4 rounded-lg bg-blue-100/50 border border-blue-200">
+                                <span class="px-3 py-1 rounded-md font-medium bg-white text-blue-800 border border-blue-300">UDN</span><span class="text-lg font-bold text-blue-600">→</span>
+                                <span class="px-3 py-1 rounded-md font-medium bg-white text-blue-800 border border-blue-300">Sector</span><span class="text-lg font-bold text-blue-600">→</span>
+                                <span class="px-3 py-1 rounded-md font-medium bg-white text-blue-800 border border-blue-300">IssueCategory</span><span class="text-lg font-bold text-blue-600">→</span>
+                                <span class="px-3 py-1 rounded-md font-medium bg-white text-blue-800 border border-blue-300">Issue</span><span class="text-lg font-bold text-blue-600">→</span>
+                                <span class="px-3 py-1 rounded-md font-medium bg-white text-blue-800 border border-blue-300">Ticket</span>
+                            </div>
+                        </div>
+                        <div class="bg-green-50 rounded-lg p-4 border border-green-200">
+                             <h3 class="font-semibold text-green-800 mb-3 text-center">Jerarquía Welp Payflow</h3>
+                             <div class="flex flex-wrap items-center justify-center gap-x-2 gap-y-2 p-4 rounded-lg bg-green-100/50 border border-green-200">
+                                <span class="px-3 py-1 rounded-md font-medium bg-white text-green-800 border border-green-300">UDN</span><span class="text-lg font-bold text-green-600">→</span>
+                                <span class="px-3 py-1 rounded-md font-medium bg-white text-green-800 border border-green-300">Sector</span><span class="text-lg font-bold text-green-600">→</span>
+                                <span class="px-3 py-1 rounded-md font-medium bg-white text-green-800 border border-green-300">AccountingCategory</span><span class="text-lg font-bold text-green-600">→</span>
+                                <span class="px-3 py-1 rounded-md font-medium bg-white text-green-800 border border-green-300">Ticket</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </section>
+{% endblock %}
 
-<style>
-    .dev-section {
-        @apply mb-12;
-    }
-
-    .section-title {
-        @apply text-xl font-medium mb-6;
-        color: var(--theme-text-secondary);
-        font-family: var(--font-ui);
-    }
-
-    .tag {
-        @apply text-xs font-medium py-1.5 px-3 rounded-full leading-none whitespace-nowrap border-2 transition-all duration-200;
-        font-family: var(--font-ui);
-    }
-
-    .tag-category {
-        @apply bg-purple-100 text-purple-600 border-purple-300;
-    }
-
-    .tag-category:hover {
-        @apply bg-purple-200 border-purple-400 cursor-pointer;
-        transform: translateY(-1px);
-    }
-
-    .tag-sector-mini {
-        @apply py-1 px-2 rounded-full border;
-        background-color: var(--theme-primary-light);
-        color: var(--theme-primary);
-        border-color: var(--theme-primary);
-        font-family: var(--font-ui);
-        font-size: 10px;
-        font-weight: 500;
-        opacity: 0.8;
-    }
-
-    .category-list {
-        @apply space-y-0;
-    }
-
-    .category-item {
-        @apply flex flex-col gap-3 py-3;
-    }
-
-    .category-sectors {
-        @apply flex flex-wrap gap-2 pl-8;
-    }
-
-    .category-separator {
-        @apply h-px my-4;
-        background-color: var(--theme-border);
-        opacity: 0.3;
-    }
-</style> 
+{% block scripts %}
+    {% vite_asset 'frontend/js/dev/dev-content.js' %}
+{% endblock %} 

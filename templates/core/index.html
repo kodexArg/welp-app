@@ -3,186 +3,113 @@
 {% block title %}{% if user.is_authenticated %}Dashboard{% else %}Bienvenido{% endif %} - Welp App{% endblock %}
 
 {% block content %}
-{% if user.is_authenticated %}
-    <section class="animate-fade-in">
-        <p class="font-content">Bienvenido, {{ user.get_full_name|default:user.username }}</p>
-
-        <div class="animate-slide-in-bottom animate-delay-200 space-y-6 mt-10">
-            <h3 class="font-title">Aplicaciones</h3>
-            
-            <div class="app-card">
-                <a href="{% url 'welp_desk:index' %}" class="app-card-link">
-                    <div class="app-icon welp-desk">
-                        <i class="fa fa-headset"></i>
-                    </div>
-                    <div class="app-content">
-                        <div class="app-badge">
-                            <h4 class="app-title welp-desk brand-text-override">WelpDesk</h4>
-                        </div>
-                        <p class="app-description">Sistema de soporte y tickets con 6 estados codificados por colores: rojo (abierto), azul (comentado), verde (solucionado), verde claro (autorizado), amarillo (rechazado), gris (cerrado)</p>
-                    </div>
-                </a>
+<div class="min-h-screen pb-16">
+    <section class="mb-16">
+        <h2 class="font-title mb-8 text-forest-900 text-3xl tracking-tight">Aplicaciones Principales</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="app-card bg-white/90 border-2 border-sky-300 rounded-2xl shadow-md p-7 flex flex-col gap-3 h-full">
+                <div class="flex items-center gap-3 mb-2">
+                    <span class="inline-flex items-center justify-center bg-sky-100 text-sky-700 rounded-full w-10 h-10 text-2xl"><i class="fa fa-headset"></i></span>
+                    <h3 class="text-2xl font-bold text-sky-400 tracking-tight">Welp Desk</h3>
+                </div>
+                <p class="text-sky-900">Sistema de helpdesk para que técnicos y líderes de área solucionen solicitudes técnicas de los usuarios. Orientado a la solución inmediata y el seguimiento de incidencias recurrentes.</p>
+                <div class="flex-grow"></div>
+                {% if user.is_authenticated %}
+                <a href="{% url 'welp_desk:index' %}" class="inline-block mt-4 px-4 py-2 rounded-lg bg-sky-600 text-white font-semibold hover:bg-sky-700 transition">Ir a Welp Desk</a>
+                {% else %}
+                <div class="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg text-center">
+                    <p class="text-amber-800 text-sm font-medium">Requiere inicio de sesión</p>
+                    <a href="{% url 'core:login' %}" class="inline-block mt-2 px-3 py-1 rounded bg-amber-600 text-white text-xs font-semibold hover:bg-amber-700 transition">Ingresar</a>
+                </div>
+                {% endif %}
             </div>
-
-            <div class="app-card">
-                <a href="{% url 'welp_payflow:index' %}" class="app-card-link">
-                    <div class="app-icon welp-payflow">
-                        <i class="fa fa-user-check"></i>
-                    </div>
-                    <div class="app-content">
-                        <div class="app-badge">
-                            <h4 class="app-title welp-payflow brand-text-override">Welp Payflow</h4>
-                        </div>
-                        <p class="app-description">Sistema de pagos y facturación - Se activará automáticamente el tema verde</p>
-                    </div>
-                </a>
+            <div class="app-card bg-white/90 border-2 border-forest-400 rounded-2xl shadow-md p-7 flex flex-col gap-3 h-full">
+                <div class="flex items-center gap-3 mb-2">
+                    <span class="inline-flex items-center justify-center bg-forest-100 text-forest-700 rounded-full w-10 h-10 text-2xl"><i class="fa fa-user-check"></i></span>
+                    <h3 class="text-2xl font-bold text-forest-600 tracking-tight">Welp Payflow</h3>
+                </div>
+                <p class="text-forest-900">Circuito de solicitudes para elementos y servicios internos de la empresa. Sistema de <strong>doble autorización</strong> (Manager + Director) que acelera las compras y presupuestos, manteniendo control financiero y trazabilidad completa.</p>
+                <div class="flex-grow"></div>
+                {% if user.is_authenticated %}
+                <a href="{% url 'welp_payflow:index' %}" class="inline-block mt-4 px-4 py-2 rounded-lg bg-forest-700 text-white font-semibold hover:bg-forest-800 transition">Ir a Welp Payflow</a>
+                {% else %}
+                <div class="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-lg text-center">
+                    <p class="text-amber-800 text-sm font-medium">Requiere inicio de sesión</p>
+                    <a href="{% url 'core:login' %}" class="inline-block mt-2 px-3 py-1 rounded bg-amber-600 text-white text-xs font-semibold hover:bg-amber-700 transition">Ingresar</a>
+                </div>
+                {% endif %}
             </div>
-
-            <div class="app-card">
-                <a href="{% url 'core:dashboard' %}" class="app-card-link">
-                    <div class="app-icon profile">
-                        <i class="fa fa-user"></i>
-                    </div>
-                    <div class="app-content">
-                        <h4 class="app-title profile">Mi Perfil</h4>
-                        <p class="app-description">Configuración de cuenta y perfil</p>
-                    </div>
-                </a>
-            </div>
-
-            {% if user.is_staff %}
-            <div class="app-card">
-                <a href="/admin/" class="app-card-link">
-                    <div class="app-icon admin">
-                        <i class="fa fa-cog"></i>
-                    </div>
-                    <div class="app-content">
-                        <h4 class="app-title admin">Administración</h4>
-                        <p class="app-description">Panel de administración del sistema</p>
-                    </div>
-                </a>
-            </div>
-
-            <div class="app-card">
-                <a href="{% url 'core:dev' %}" class="app-card-link">
-                    <div class="app-icon dev">
-                        <i class="fa fa-code"></i>
-                    </div>
-                    <div class="app-content">
-                        <h4 class="app-title dev">Desarrollo</h4>
-                        <p class="app-description">Herramientas de desarrollo y testing del sistema de temas</p>
-                    </div>
-                </a>
-            </div>
-            {% endif %}
-        </div>
-
-        <div class="animate-slide-in-bottom animate-delay-200 space-y-6 mt-10">
-            <h3 class="font-title">Info del sistema</h3>
-            <table>
-                <tr>
-                    <th>Entorno</th>
-                    <td>{{ environment }}</td>
-                </tr>
-                <tr>
-                    <th>Django</th>
-                    <td>{{ django_version }}</td>
-                </tr>
-                <tr>
-                    <th>Python</th>
-                    <td>{{ python_version }}</td>
-                </tr>
-                <tr>
-                    <th>Almacenamiento</th>
-                    <td>{{ storage_backend }}</td>
-                </tr>
-                <tr>
-                    <th>Servidor</th>
-                    <td>{{ server_info }}</td>
-                </tr>
-                <tr>
-                    <th>Región AWS</th>
-                    <td>{{ aws_region }}</td>
-                </tr>
-                <tr>
-                    <th>CDN</th>
-                    <td>
-                        {% if cdn_enabled %}
-                            <span class="tag tag-sector">Habilitado</span>
-                        {% else %}
-                            <span class="tag">Deshabilitado</span>
-                        {% endif %}
-                    </td>
-                </tr>
-                <tr>
-                    <th>HTMX</th>
-                    <td>
-                        {% if htmx_enabled %}
-                            <span class="tag tag-sector">Activo</span>
-                        {% else %}
-                            <span class="tag">Inactivo</span>
-                        {% endif %}
-                    </td>
-                </tr>
-                <tr>
-                    <th>Sistema de Temas</th>
-                    <td>
-                        <span class="tag tag-sector">Activo</span>
-                        <small>(Cambio automático por app)</small>
-                    </td>
-                </tr>
-            </table>
         </div>
     </section>
 
-{% else %}
-    <section class="animate-fade-in">
-        
-        <div class="animate-slide-in-bottom animate-delay-200 space-y-6 mt-10">
-            <div class="app-card">
-                <a href="{% url 'core:login' %}" class="app-card-link">
-                    <div class="app-icon login">
-                        <i class="fa fa-sign-in-alt"></i>
-                    </div>
-                    <div class="app-content">
-                        <h4 class="app-title login">Iniciar Sesión</h4>
-                        <p class="app-description">Accede a tu cuenta para usar todas las aplicaciones</p>
-                    </div>
-                </a>
+    <section class="mb-16">
+        <h2 class="font-title mb-8 text-forest-900 text-2xl tracking-tight">Roles del Sistema</h2>
+        <a href="{% url 'core:dev_purchase_workflow' %}" class="block text-center text-sky-600 hover:underline mb-8">Conocer en detalle el flujo de Payflow →</a>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="bg-sky-50 border border-sky-200 rounded-xl p-6 flex flex-col gap-2 shadow-sm">
+                <div class="flex items-center gap-2 mb-1">
+                    <span class="text-sky-600 text-lg"><i class="fa fa-user"></i></span>
+                    <span class="font-semibold text-sky-800">Usuario Final</span>
+                </div>
+                <p class="text-sky-900 text-sm">Operativos, administrativos y todos los empleados de la empresa.</p>
+            </div>
+            <div class="bg-sky-100 border border-sky-300 rounded-xl p-6 flex flex-col gap-2 shadow-sm">
+                <div class="flex items-center gap-2 mb-1">
+                    <span class="text-sky-700 text-lg"><i class="fa fa-tools"></i></span>
+                    <span class="font-semibold text-sky-900">Técnico</span>
+                </div>
+                <p class="text-sky-900 text-sm">Responsables del área de sistemas. Presupuestan y resuelven incidencias.</p>
+            </div>
+            <div class="bg-sky-200 border border-sky-400 rounded-xl p-6 flex flex-col gap-2 shadow-sm">
+                <div class="flex items-center gap-2 mb-1">
+                    <span class="text-sky-700 text-lg"><i class="fa fa-user-tie"></i></span>
+                    <span class="font-semibold text-sky-900">Supervisor</span>
+                </div>
+                <p class="text-sky-900 text-sm">Líder, supervisor o jefe de área. Realiza la primera autorización de solicitudes.</p>
+            </div>
+            <div class="bg-earth-400 border border-earth-700 rounded-xl p-6 flex flex-col gap-2 shadow-sm">
+                <div class="flex items-center gap-2 mb-1">
+                    <span class="text-earth-900 text-lg"><i class="fa fa-shopping-cart"></i></span>
+                    <span class="font-semibold text-earth-50">Responsable de Compras</span>
+                </div>
+                <p class="text-earth-100 text-sm">Rol específico encargado del sistema de pagos y de la gestión de presupuestos con proveedores.</p>
+            </div>
+            <div class="bg-slate-800 border border-slate-600 rounded-xl p-6 flex flex-col gap-2 shadow-sm">
+                <div class="flex items-center gap-2 mb-1">
+                    <span class="text-slate-200 text-lg"><i class="fa fa-user-tie"></i></span>
+                    <span class="font-semibold text-slate-100">Manager</span>
+                </div>
+                <p class="text-slate-200 text-sm">Gerente de UDN. Realiza la <strong>primera firma</strong> obligatoria para autorización de pagos.</p>
+            </div>
+            <div class="bg-slate-900 border border-slate-700 rounded-xl p-6 flex flex-col gap-2 shadow-sm">
+                <div class="flex items-center gap-2 mb-1">
+                    <span class="text-yellow-400 text-lg"><i class="fa fa-user-secret"></i></span>
+                    <span class="font-semibold text-yellow-100">Director ⭐</span>
+                </div>
+                <p class="text-yellow-100 text-sm">Nivel ejecutivo. Realiza la <strong>segunda firma obligatoria</strong> para autorización de pagos. Control total del sistema.</p>
             </div>
         </div>
-        
-        <div class="animate-slide-in-bottom animate-delay-300 space-y-6 mt-10">
-            <h3 class="font-title">Nuestras Aplicaciones</h3>
-            
-            <div class="app-card">
-                <div class="app-card-link">
-                    <div class="app-icon welp-desk">
-                        <i class="fa fa-headset"></i>
-                    </div>
-                    <div class="app-content">
-                        <div class="app-badge">
-                            <h4 class="app-title welp-desk brand-text-override">WelpDesk</h4>
-                        </div>
-                        <p class="app-description">Sistema completo de soporte al cliente con gestión de tickets y estados</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="app-card">
-                <div class="app-card-link">
-                    <div class="app-icon welp-payflow">
-                        <i class="fa fa-user-check"></i>
-                    </div>
-                    <div class="app-content">
-                        <div class="app-badge">
-                            <h4 class="app-title welp-payflow brand-text-override">Welp Payflow</h4>
-                        </div>
-                        <p class="app-description">Solución de pagos y facturación automatizada</p>
-                    </div>
-                </div>
-            </div>
+        <div class="mt-10 max-w-2xl mx-auto">
+            <p class="text-forest-700 text-center text-sm">Los permisos se asignan por UDN y Sector para simplificar la gestión.</p>
         </div>
     </section>
-{% endif %}
+
+    <section class="mb-16">
+        <h2 class="font-title mb-8 text-forest-900 text-2xl tracking-tight">Tecnología y Arquitectura</h2>
+        <div class="bg-white/90 border-2 border-slate-400 rounded-2xl shadow-md p-7 flex flex-col gap-3 max-w-2xl mx-auto">
+            <div class="flex items-center gap-3 mb-2">
+                <span class="inline-flex items-center justify-center bg-slate-200 text-slate-700 rounded-full w-10 h-10 text-2xl"><i class="fa fa-cubes"></i></span>
+                <h3 class="text-xl font-bold text-slate-800">Stack Principal</h3>
+            </div>
+            <ul class="text-slate-800 list-disc list-inside mb-2">
+                <li><strong>Backend:</strong> Python 3.11, Django 5, Gunicorn</li>
+                <li><strong>Base de Datos:</strong> PostgreSQL en AWS RDS</li>
+                <li><strong>Almacenamiento de Archivos:</strong> AWS S3 con CDN CloudFront</li>
+                <li><strong>Despliegue Continuo:</strong> AWS App Runner</li>
+                <li><strong>Frontend Moderno:</strong> Vite, Tailwind CSS v4, HTMX y Django Components</li>
+            </ul>
+            <a href="https://github.com/kodexArg/welp-app/blob/main/README.md" target="_blank" class="text-slate-700 underline text-xs mt-1">Ver README.md para detalles técnicos</a>
+        </div>
+    </section>
+</div>
 {% endblock %}

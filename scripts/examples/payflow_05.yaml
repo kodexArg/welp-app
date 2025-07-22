@@ -1,0 +1,38 @@
+# Flujo para un quinto ticket: "Cableado para nuevas cajas en VW"
+
+- ticket: "Cableado para nuevas cajas en VW"
+  user: "hugo.ruiz"
+  status: "open"
+  post_date: "2025-08-28T11:00:00Z"
+  udn: "VW"
+  sector: "Campo"
+  category: "Insumos"
+  estimated_amount: 120.00
+  comment: "Se requiere cable de red para instalar dos nuevas cajas de facturación en el sector Campo."
+
+- ticket: "Cableado para nuevas cajas en VW"
+  user: "natalia.fernandez" # Manager Global que supervisa VW
+  status: "authorized"
+  post_date: "2025-08-28T14:00:00Z"
+
+- ticket: "Cableado para nuevas cajas en VW"
+  user: "catalina.rojas" # Purchase Manager
+  status: "budgeted"
+  post_date: "2025-08-29T10:30:00Z"
+  comment: "Adquisición directa de proveedor de ferretería industrial. No requiere doble firma."
+
+- ticket: "Cableado para nuevas cajas en VW"
+  user: "natalia.fernandez"
+  status: "authorized_by_manager"
+  post_date: "2025-08-29T16:00:00Z"
+
+- ticket: "Cableado para nuevas cajas en VW"
+  user: "mateo.vila"
+  status: "authorized_by_director"
+  post_date: "2025-08-29T17:00:00Z"
+
+- ticket: "Cableado para nuevas cajas en VW"
+  user: "catalina.rojas"
+  status: "processing_payment"
+  post_date: "2025-08-30T11:00:00Z"
+  comment: "Pago procesado y listo para retiro. OC #PO-2025-0201." 

@@ -1,0 +1,27 @@
+{% extends "core/base.html" %}
+{% load payflow_tags %}
+{% load ticket_message_tags %}
+{% load django_vite %}
+{% load humanize %}
+
+{% block title %}Solicitudes - Welp Payflow{% endblock %}
+
+{% block content %}
+<section>
+    <h1>Lista de Solicitudes</h1>
+
+    <div id="tickets-container">
+        {% for ticket in tickets %}
+            {% ticket_container ticket expanded=False %}
+        {% empty %}
+            {% ticket_empty %}
+        {% endfor %}
+    </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+    {# Precarga mermaid.js para navegación fluida a detail.html sin ejecutarlo aquí #}
+    {% vite_asset 'frontend/js/mermaid-init.js' %}
+{% endblock %} 

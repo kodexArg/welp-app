@@ -1,0 +1,65 @@
+<form method="post" action="{{ transition_url }}" enctype="multipart/form-data" hx-post="{{ transition_url }}" hx-target="#ticket-detail-container" hx-swap="outerHTML" hx-indicator="#loading-indicator">
+    {% csrf_token %}
+
+    {% if response_type == 'close' %}
+        <div class="{{ confirmation_style.bg }} border-l-4 {{ confirmation_style.border }} p-4 mb-4 rounded-r-lg">
+            {% if is_owner %}
+                <p class="{{ confirmation_style.text }}">{{ owner_message }}</p>
+            {% else %}
+                <p class="{{ confirmation_style.text }}">{{ non_owner_message }}</p>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    <div class="form-group mb-4">
+        <label for="{{ field_name }}" class="form-label text-base font-medium text-text">
+            {{ comment_label }}
+            {% if comment_required %}
+                <span class="text-red-500">*</span>
+            {% endif %}
+        </label>
+        <textarea
+            id="{{ field_name }}"
+            name="{{ field_name }}"
+            rows="4"
+            class="form-textarea"
+            placeholder="{{ comment_placeholder }}"
+            {% if comment_required %}required{% endif %}
+        >{{ comment_value }}</textarea>
+    </div>
+
+    {% if show_attachments %}
+        <div class="form-group mb-4">
+            <label class="form-label text-base font-medium text-text">Archivos Adjuntos</label>
+            <div id="attachments-container">
+                <div class="attachment-input-row">
+                    <input
+                        type="file"
+                        name="attachments"
+                        class="form-input attachment-input"
+                        accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg,.gif"
+                        multiple
+                    >
+                </div>
+            </div>
+            <small class="text-gray-600">Puedes adjuntar múltiples archivos (máximo 50MB por archivo)</small>
+        </div>
+    {% endif %}
+
+    {% if hidden_fields %}
+        {% for name, value in hidden_fields.items %}
+            <input type="hidden" name="{{ name }}" value="{{ value }}">
+        {% endfor %}
+    {% endif %}
+
+    <div class="component-buttons mt-6">
+        <button type="submit" class="button-primary">
+            {{ button_text }}
+        </button>
+        {% if cancel_url %}
+            <a href="{{ cancel_url }}" class="button-secondary">
+                {{ cancel_text }}
+            </a>
+        {% endif %}
+    </div>
+</form> 

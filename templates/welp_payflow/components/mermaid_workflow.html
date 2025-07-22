@@ -1,0 +1,28 @@
+<article class="ticket-mermaid-workflow">
+    <div class="mermaid">
+        %%{init: {'theme': 'base', 'themeVariables': { 'arrowheadColor': '#d1d5db'}, 'flowchart': { 'arrowMarkerAbsolute': true }}}%%
+        graph LR
+            A["ABIERTO"] --> B["AUTORIZADO"]
+            B --> C["PRESUPUESTADO"]
+            C --> I["MANAGER"]
+            C --> J["DIRECTOR"]
+            C --> E["RECHAZADO"]
+            I --> D["PAGO AUTORIZADO"]
+            J --> D["PAGO AUTORIZADO"]
+            E --> C
+            D --> G["PROCESANDO PAGO"]
+            G --> H["EN ENVÍO/ENTREGA"]
+            H --> F["CERRADO"]
+
+            linkStyle 0,1,2,3,4,5,6,7,8,9,10 stroke:#E0E0E0,stroke-width:2px;
+
+            {% for node, style in styles.items %}
+            style {{ node }} {{ style }}
+            {% endfor %}
+    </div>
+    <script>
+        if (window.mermaid) {
+            window.mermaid.run();
+        }
+    </script>
+</article> 

@@ -1,0 +1,30 @@
+{% load payflow_tags %}
+
+{% if udns.count > 1 %}
+    <article class="select-selection-container">
+        <label>UDN:</label>
+        <div class="radio-button-group">
+            {% for udn in udns %}
+                {% radio_button target='udn' id=udn.pk label=udn.name next_target='sector' %}
+            {% endfor %}
+        </div>
+    </article>
+{% elif udns.count == 1 %}
+    {% with udns|first as udn %}
+        <article class="select-selection-container" id="udn-container">
+            <label>UDN:</label>
+            <p class="selected-value">{{ udn.name }} (seleccionada automáticamente)</p>
+            <input type="hidden" name="udn" value="{{ udn.pk }}" />
+            <div
+                hx-get="{% url 'welp_payflow:htmx-sector' udn=udn.pk %}"
+                hx-target="#sector-container"
+                hx-swap="outerHTML"
+                hx-trigger="load"
+            ></div>
+        </article>
+    {% endwith %}
+{% else %}
+    <article class="select-selection-container" id="udn-container">
+        <p class="no-udns-message">No tienes UDNs asignadas.</p>
+    </article>
+{% endif %}

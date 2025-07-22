@@ -1,11 +1,302 @@
-from .constants import PAYFLOW_STATUSES, PAYFLOW_ROLE_PERMISSIONS
+from .constants import PAYFLOW_STATUSES, PAYFLOW_ROLE_PERMISSIONS, FA_ICONS
+from .models import UDN, Sector, AccountingCategory, Message, Attachment
+from django.urls import reverse
+from django.db import transaction
+
+
+def has_user_role(user, role_name):
+    if not user or not user.is_authenticated:
+        return False
+    
+    user_roles = {role.role for role in user.payflow_roles.all()}
+    return role_name in user_roles
 
 
 def get_available_payflow_transitions(current_status):
-    """Obtiene las transiciones disponibles para un estado dado"""
     return PAYFLOW_STATUSES.get(current_status, {}).get('transitions', [])
 
 
 def get_permissions_for_role_type(role_type):
-    """Obtiene los permisos por defecto para un tipo de rol específico"""
-    return PAYFLOW_ROLE_PERMISSIONS.get(role_type, {}) 
+    return PAYFLOW_ROLE_PERMISSIONS.get(role_type, {})
+
+
+def _get_user_accessible_ids(user):
+    """Obtiene los IDs de UDNs y Sectores a los que un usuario tiene acceso."""
+    if user.is_superuser:
+        return {
+            'udn_ids': set(UDN.objects.values_list('id', flat=True)),
+            'sector_ids': set(Sector.objects.values_list('id', flat=True))
+        }
+
+    user_roles = user.payflow_roles.filter(can_open=True)
+    udn_ids, sector_ids = set(), set()
+
+    for role in user_roles:
+        if role.sector:
+            sector_ids.add(role.sector.id)
+            udn_ids.update(role.sector.udn.all().values_list('id', flat=True))
+        elif role.udn:
+            udn_ids.add(role.udn.id)
+            sector_ids.update(role.udn.payflow_sectors.values_list('id', flat=True))
+            
+    return {'udn_ids': udn_ids, 'sector_ids': sector_ids}
+
+
+def get_user_udns(user):
+    """Obtiene el queryset de UDNs a las que el usuario tiene acceso."""
+    accessible_ids = _get_user_accessible_ids(user)
+    queryset = UDN.objects.filter(id__in=accessible_ids['udn_ids'])
+    return queryset
+
+
+def get_user_sectors(user, udn=None):
+    """Obtiene el queryset de Sectores a los que el usuario tiene acceso, opcionalmente filtrados por UDN."""
+    accessible_ids = _get_user_accessible_ids(user)
+    queryset = Sector.objects.filter(id__in=accessible_ids['sector_ids'])
+    
+    if udn:
+        queryset = queryset.filter(udn=udn)
+        
+    return queryset
+
+
+def get_user_accounting_categories(user, sector=None):
+    """Obtiene el queryset de Categorías Contables a las que el usuario tiene acceso."""
+    if user.is_superuser:
+        queryset = AccountingCategory.objects.all()
+        if sector:
+            queryset = queryset.filter(sector=sector)
+        return queryset
+
+    accessible_sectors = get_user_sectors(user)
+    
+    if sector:
+        accessible_sectors = accessible_sectors.filter(pk=sector.pk)
+
+    queryset = AccountingCategory.objects.filter(sector__in=accessible_sectors)
+    return queryset
+
+
+def can_user_create_ticket_in_context(user, udn, sector):
+    """Verifica si el usuario puede crear tickets en el contexto dado."""
+    if user.is_superuser:
+        return True
+    user_roles = user.payflow_roles.filter(
+        can_open=True
+    )
+    for role in user_roles:
+        if role.udn and role.udn != udn:
+            continue
+        if role.sector and role.sector != sector:
+            continue
+        if not role.sector and role.udn:
+            if not sector.udn.filter(id=role.udn.id).exists():
+                continue
+        return True
+    return False
+
+
+def can_user_close_ticket(user, ticket):
+    """Verifica si el usuario puede cerrar el ticket."""
+    if not getattr(user, 'is_authenticated', False):
+        return False
+    ticket_owner = ticket.created_by
+    if user == ticket_owner:
+        return True
+
+    owner_roles_queryset = getattr(ticket_owner, 'payflow_roles', None)
+    owner_roles = {role.role for role in owner_roles_queryset.all()} if owner_roles_queryset else set()
+
+    if has_user_role(user, 'supervisor') and 'end_user' in owner_roles:
+        return True
+
+    if has_user_role(user, 'manager') and owner_roles & {'end_user', 'technician', 'supervisor'}:
+        return True
+
+    return False
+
+
+def can_user_transition_ticket(user, ticket, target_status):
+    if user.is_superuser:
+        return True
+    if not user or not user.is_authenticated:
+        return False
+    current_status = ticket.status
+    possible_transitions = PAYFLOW_STATUSES.get(current_status, {}).get('transitions', [])
+    if target_status not in possible_transitions:
+        return False
+
+    if target_status == 'closed':
+        return can_user_close_ticket(user, ticket)
+
+    allowed_roles = PAYFLOW_STATUSES.get(target_status, {}).get('allowed_roles', [])
+
+    if not allowed_roles:
+        return False
+
+    for role_name in allowed_roles:
+        if has_user_role(user, role_name):
+            return True
+
+    return False
+
+
+def get_user_ticket_transitions(user, ticket):
+    current_status = ticket.status
+    transitions = PAYFLOW_STATUSES.get(current_status, {}).get('transitions', [])
+    
+    if user.is_superuser:
+        return transitions
+
+    allowed = []
+    for target_status in transitions:
+        if can_user_transition_ticket(user, ticket, target_status):
+            allowed.append(target_status)
+    return allowed
+
+
+def get_ticket_action_data(action, ticket_id=None):
+    """Genera un diccionario con los datos necesarios para renderizar un botón de acción."""
+    if action == 'feedback':
+        status_key = 'comment'
+    elif action == 'close':
+        status_key = 'closed'
+    else:
+        status_key = action
+        
+    status_info = PAYFLOW_STATUSES.get(status_key, {})
+
+    label = status_info.get('action_label', status_info.get('button_text', action.replace('_', ' ').title()))
+    fa_icon = FA_ICONS.get(action, 'fa-solid fa-circle')
+    
+    primary_color = 'text-forest-700'
+
+    if action == 'close':
+        earth_color = status_info.get('color_class', 'text-earth-700')
+        icon_color = earth_color
+        text_color = earth_color
+    else:
+        icon_color = primary_color
+        text_color = primary_color
+    
+    href = '#'
+    if ticket_id:
+        try:
+            response_type = 'comment' if action == 'feedback' else action
+            base_url = reverse('welp_payflow:detail', kwargs={'ticket_id': ticket_id})
+            href = f"{base_url}?response_type={response_type}"
+        except Exception:
+            href = '#'
+            
+    return {
+        'action': action,
+        'href': href,
+        'label': label,
+        'fa_icon': fa_icon,
+        'icon_color': icon_color,
+        'text_color': text_color,
+    }
+
+
+def get_ticket_actions_context(user, ticket):
+    """Devuelve acciones permitidas para el ticket y usuario.
+    Ejemplo: {'ticket': <Ticket>, 'actions': [{'action': 'close', ...}]}
+    """
+    if not user or not user.is_authenticated or not ticket:
+        return {'ticket': ticket, 'actions': []}
+
+    all_allowed_actions = get_user_ticket_transitions(user, ticket)
+    
+    close_action = None
+    if can_user_close_ticket(user, ticket):
+        close_action = get_ticket_action_data('close', ticket.id)
+
+    comment_action = None
+    other_actions = []
+
+    for action in all_allowed_actions:
+        action_data = get_ticket_action_data(action, ticket.id)
+        if action_data:
+            if action == 'close':
+                # Ya manejado arriba, pero lo mantenemos por si acaso
+                if not close_action:
+                    close_action = action_data
+            elif action == 'feedback':
+                comment_action = action_data
+            elif action != 'closed':
+                other_actions.append(action_data)
+
+    if ticket.status != 'closed':
+        if not comment_action and 'feedback' in PAYFLOW_STATUSES:
+            comment_action = get_ticket_action_data('feedback', ticket.id)
+
+    final_actions = []
+    if close_action:
+        final_actions.append(close_action)
+    
+    final_actions.extend(other_actions)
+
+    if comment_action:
+        final_actions.append(comment_action)
+    
+    return {
+        'ticket': ticket,
+        'actions': final_actions
+    }
+
+
+def get_ticket_detail_context_data(request, ticket):
+    """Prepara el contexto para la vista de detalle del ticket."""
+    response_type = request.GET.get('response_type', 'comment')
+    ui_key = response_type
+    if ui_key == 'close':
+        ui_key = 'closed'
+    elif ui_key == 'feedback':
+        ui_key = 'comment'
+
+    status_info = PAYFLOW_STATUSES.get(ui_key, {})
+
+    show_attachments = status_info.get('show_attachments', False)
+    show_comment_box = status_info.get('show_comment_box', True)
+    field_required = status_info.get('comment_required', False)
+
+    is_owner = (ticket.created_by == request.user) if ticket.created_by else False
+    if response_type == 'close':
+        if is_owner or request.user.is_superuser:
+            field_required = False
+        else:
+            field_required = True
+
+    comment_field_name = 'response_body'
+    if response_type == 'close':
+        comment_field_name = 'close_comment'
+    elif response_type != 'comment':
+        comment_field_name = f'{response_type}_comment'
+
+    context = {
+        'ticket': ticket,
+        'response_type': response_type,
+        'response_info': status_info,
+        'confirmation_message': status_info.get('confirmation_message', ''),
+        'button_text': status_info.get('button_text', 'Enviar'),
+        'comment_placeholder': status_info.get('comment_placeholder', 'Escriba su comentario aquí...'),
+        'comment_label': status_info.get('comment_label', 'Comentario'),
+        'field_required': field_required,
+        'show_attachments': show_attachments,
+        'show_comment_box': show_comment_box,
+        'is_owner': is_owner if response_type == 'close' else False,
+        'hidden_fields': {},
+        'icon_class': FA_ICONS.get(response_type, 'fa-solid fa-paper-plane'),
+        'comment_field_name': comment_field_name,
+    }
+
+    if response_type == 'close':
+        context['form_action'] = reverse('welp_payflow:process_close', kwargs={'ticket_id': ticket.id})
+    elif response_type == 'comment':
+        context['form_action'] = request.get_full_path()
+    else:
+        context['form_action'] = reverse('welp_payflow:transition', kwargs={'ticket_id': ticket.id, 'target_status': response_type})
+    
+    context['cancel_url'] = reverse('welp_payflow:detail', kwargs={'ticket_id': ticket.id})
+
+    return context 

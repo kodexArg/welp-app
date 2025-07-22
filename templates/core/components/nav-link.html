@@ -1,0 +1,10 @@
+<a href="{% url link %}" class="nav-link group">
+    <div class="nav-link-content{% if active %} active{% endif %}">
+        {% if label != 'Desk' and label != 'Payflow' %}
+        <i class="nav-link-icon {{ icon }}"></i>
+        {% endif %}
+        <span class="nav-link-label{% if label == 'Desk' or label == 'Payflow' %} nav-link-label-special{% endif %}">
+            {{ label }}
+        </span>
+    </div>
+</a> 
