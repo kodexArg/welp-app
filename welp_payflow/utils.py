@@ -273,6 +273,33 @@ def get_ticket_detail_context_data(request, ticket):
     elif response_type != 'comment':
         comment_field_name = f'{response_type}_comment'
 
+    # Preparar información de confirmación para el cierre
+    confirmation_info = None
+    if response_type == 'close':
+        confirmation_style = status_info.get('confirmation_style', {})
+        if is_owner:
+            owner_message = status_info.get('owner_message', 'Está cerrando su propio ticket.')
+            non_owner_message = None
+        else:
+            owner_message = None
+            if ticket.created_by:
+                owner_name = ticket.created_by.get_full_name() or ticket.created_by.username
+                non_owner_message = status_info.get('non_owner_message', '').format(
+                    owner_name=owner_name,
+                    owner_username=ticket.created_by.username
+                )
+            else:
+                non_owner_message = status_info.get('non_owner_message', 'Está cerrando un ticket creado por otro usuario.').format(
+                    owner_name='un usuario desconocido',
+                    owner_username='N/A'
+                )
+        
+        confirmation_info = {
+            'style': confirmation_style,
+            'owner_message': owner_message,
+            'non_owner_message': non_owner_message
+        }
+
     context = {
         'ticket': ticket,
         'response_type': response_type,
@@ -288,6 +315,7 @@ def get_ticket_detail_context_data(request, ticket):
         'hidden_fields': {},
         'icon_class': FA_ICONS.get(response_type, 'fa-solid fa-paper-plane'),
         'comment_field_name': comment_field_name,
+        'confirmation_info': confirmation_info,
     }
 
     if response_type == 'close':

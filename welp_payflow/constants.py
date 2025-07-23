@@ -269,7 +269,7 @@ PAYFLOW_STATUSES = {
         'action_verb': 'Cerrado por',
         'color_class': 'text-earth-700 hover:text-earth-500',
         'owner_message': 'Está cerrando su propio ticket.',
-        'non_owner_message': 'Está cerrando un ticket creado por otro usuario.',
+        'non_owner_message': '⚠️ <strong>ADVERTENCIA</strong>: Está cerrando un ticket creado por <strong>{owner_name}</strong> ({owner_username}). Confirme que desea proceder con el cierre.',
         'confirmation_style': {'bg': 'bg-yellow-50', 'border': 'border-yellow-400', 'text': 'text-yellow-700'},
         'confirmation_message': '¿Cerrar ticket? Esto finalizará la solicitud y no se podrán añadir más comentarios ni adjuntos.',
         'button_text': 'Confirmar Cierre',
