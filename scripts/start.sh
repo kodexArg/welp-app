@@ -14,11 +14,7 @@ banner "INSTALACIÓN DE UV"
 pip3 install uv
 
 banner "MIGRACIONES DE DJANGO"
-# Generar migraciones para todas las apps
-uv run manage.py makemigrations
-
-# Aplicar todas las migraciones (BD limpia, sin conflictos)
-echo "Aplicando migraciones en base de datos limpia..."
+echo "Aplicando migraciones en base de datos..."
 uv run manage.py migrate --verbosity=2
 
 banner "ARCHIVOS ESTÁTICOS"
