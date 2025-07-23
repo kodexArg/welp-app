@@ -151,6 +151,28 @@ class PayflowTicketCreationForm(forms.ModelForm):
             error_msg = f"La categoría '{accounting_category.name}' no pertenece al sector '{sector.name}'."
             logger.error(f"Error de validación: {error_msg}")
             raise ValidationError(error_msg)
+
+        # ---------------------------------------------------------------
+        # INICIO: Validación centralizada de permisos de usuario
+        # ---------------------------------------------------------------
+        if self.user:
+            from .utils import get_user_udns, get_user_sectors
+            
+            # 1. Validar permiso sobre la UDN seleccionada
+            user_udns = get_user_udns(self.user)
+            if udn and udn not in user_udns:
+                logger.error(f"Intento de acceso denegado. Usuario '{self.user.username}' no tiene permisos para UDN '{udn.name}'.")
+                self.add_error(None, ValidationError("No tiene permisos para la UDN seleccionada.", code='permission_denied'))
+            
+            # 2. Si la UDN es válida, validar permiso sobre el Sector
+            elif udn and sector:
+                user_sectors = get_user_sectors(self.user, udn)
+                if sector not in user_sectors:
+                    logger.error(f"Intento de acceso denegado. Usuario '{self.user.username}' no tiene permisos para Sector '{sector.name}' en UDN '{udn.name}'.")
+                    self.add_error(None, ValidationError("No tiene permisos para el Sector seleccionado.", code='permission_denied'))
+        # ---------------------------------------------------------------
+        # FIN: Validación de permisos de usuario
+        # ---------------------------------------------------------------
         
         return cleaned_data
 

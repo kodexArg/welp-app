@@ -6,7 +6,7 @@ from .views.ticket_views import (
     TicketListView, TicketDetailView, CreateTicketView,
     ConfirmCloseTicketView, ProcessCloseTicketView, TransitionTicketView
 )
-from .views.utility_views import AttachmentView, SuccessView, HomeView
+from .views.utility_views import AttachmentView, SuccessView, HomeView, PermissionDeniedErrorView
 
 app_name = 'welp_payflow'
 
@@ -16,6 +16,7 @@ urlpatterns = [
     path('ticket/<int:ticket_id>/', TicketDetailView.as_view(), name='detail'),
     path('create/', CreateTicketView.as_view(), name='create'),
     path('success/<int:ticket_id>/', SuccessView.as_view(), name='success'),
+    path('error/permission-denied/', PermissionDeniedErrorView.as_view(), name='permission_denied_error'),
     path('ticket/<int:ticket_id>/attachment/<int:attachment_id>/', AttachmentView.as_view(), name='attachment'),
     path('ticket/<int:ticket_id>/transition/<str:target_status>/', TransitionTicketView.as_view(), name='transition'),
     path('ticket/<int:ticket_id>/close/confirm/', ConfirmCloseTicketView.as_view(), name='confirm_close'),

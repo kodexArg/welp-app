@@ -133,17 +133,20 @@ class CreateTicketView(LoginRequiredMixin, CreateView):
             return self.form_invalid(form)
 
     def form_invalid(self, form):
-        logger.warning(f"Formulario inválido para usuario {self.request.user.username}. Errores: {form.errors}")
-        
-        # Agregar mensajes específicos para cada error
+        logger.warning(f"Formulario inválido para usuario {self.request.user.username}. Errores: {form.errors.as_json()}")
+
+        # Comprobar si hay un error de denegación de permisos
+        for error in form.non_field_errors():
+            if error.code == 'permission_denied':
+                logger.error(f"¡ALERTA DE SEGURIDAD! Usuario '{self.request.user.username}' intentó crear un ticket sin permisos. Detalles: {error}")
+                return redirect('welp_payflow:permission_denied_error')
+
+        # Manejo de errores de validación estándar
         for field, errors in form.errors.items():
-            if field == '__all__':
-                for error in errors:
-                    messages.error(self.request, f"Error general: {error}")
-            else:
-                field_label = form.fields[field].label if field in form.fields else field
-                for error in errors:
-                    messages.error(self.request, f"{field_label}: {error}")
+            field_label = form.fields[field].label if field in form.fields else 'Error General'
+            for error in errors:
+                # Usar un formato más genérico para el mensaje
+                messages.error(self.request, f"{field_label}: {error}")
         
         return super().form_invalid(form)
 

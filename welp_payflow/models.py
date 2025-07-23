@@ -8,6 +8,7 @@ from django.db.models import Q
 from django.urls import reverse
 from django.utils import timezone
 from .constants import PAYFLOW_STATUSES, STATUS_MAX_LENGTH, PAYFLOW_ROLE_PERMISSIONS
+from django.core.exceptions import ValidationError
 
 
 class UDN(models.Model):
@@ -151,6 +152,24 @@ class Ticket(models.Model):
     created_on = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de Creación")
     
     objects = TicketManager()
+
+    def clean(self):
+        """
+        Garantiza la integridad de los datos relacionales del ticket.
+        La validación de permisos de usuario se maneja en el formulario.
+        """
+        super().clean()
+        
+        # Validar la relación jerárquica entre UDN, Sector y Categoría Contable
+        if self.sector and self.udn not in self.sector.udn.all():
+            raise ValidationError({
+                'sector': f"El sector '{self.sector.name}' no está asociado a la UDN '{self.udn.name}'."
+            })
+            
+        if self.accounting_category and self.sector not in self.accounting_category.sector.all():
+            raise ValidationError({
+                'accounting_category': f"La categoría '{self.accounting_category.name}' no está asociada al sector '{self.sector.name}'."
+            })
 
     class Meta:
         verbose_name = "Ticket"

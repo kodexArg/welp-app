@@ -16,17 +16,6 @@
             <i class="{{ icon_class }} mr-2"></i>{{ response_info.action_label }}
         </h2>
     {% endif %}
-    
-    {% if response_type == 'close' %}
-        <div class="{{ confirmation_info.style.bg }} border-l-4 {{ confirmation_info.style.border }} p-4 mb-6 rounded-r-lg">
-            {% if is_owner %}
-                <p class="{{ confirmation_info.style.text }}">{{ confirmation_info.owner_message }}</p>
-            {% else %}
-                <p class="{{ confirmation_info.style.text }}">{{ confirmation_info.non_owner_message|safe }}</p>
-            {% endif %}
-        </div>
-    {% endif %}
-
 
     {% mermaid_workflow ticket=ticket %}
     
@@ -38,6 +27,16 @@
                 <i class="fa-solid fa-arrow-left mr-2"></i>
                 Volver al listado
             </a>
+        </div>
+    {% endif %}
+
+    {% if response_type == 'close' %}
+        <div class="{{ confirmation_info.style.bg }} border-l-4 {{ confirmation_info.style.border }} p-4 mb-6 rounded-r-lg">
+            {% if is_owner %}
+                <p class="{{ confirmation_info.style.text }}">{{ confirmation_info.owner_message }}</p>
+            {% else %}
+                <p class="{{ confirmation_info.style.text }}">{{ confirmation_info.non_owner_message|safe }}</p>
+            {% endif %}
         </div>
     {% endif %}
 

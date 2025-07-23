@@ -41,3 +41,11 @@ class SuccessView(LoginRequiredMixin, DetailView):
     template_name = 'welp_payflow/success.html'
     pk_url_kwarg = 'ticket_id'
     context_object_name = 'ticket'
+
+
+class PermissionDeniedErrorView(LoginRequiredMixin, TemplateView):
+    """
+    Muestra una página de error específica cuando un usuario intenta
+    realizar una acción para la que no tiene permisos.
+    """
+    template_name = 'welp_payflow/permission_denied_error.html'
