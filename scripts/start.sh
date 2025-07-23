@@ -20,6 +20,10 @@ uv run manage.py migrate --verbosity=2
 banner "ARCHIVOS ESTÁTICOS"
 uv run manage.py collectstatic --noinput
 
+banner "INICIALIZACIÓN DE DATOS PAYFLOW"
+echo "Creando UDNs, Sectores, Categorías y Usuarios de Payflow..."
+uv run scripts/init_app.py
+
 banner "VERIFICACIÓN DE SUPERUSUARIO"
 if uv run manage.py shell -c "from django.contrib.auth import get_user_model; User = get_user_model(); print(User.objects.filter(is_superuser=True).exists())" | grep -q "True"; then
     echo "Superusuario ya existe, omitiendo creación."
