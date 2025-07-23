@@ -29,7 +29,6 @@ env/
 db.sqlite3
 /mediafiles/
 /staticfiles/
-*/migrations/*.py
 !*/migrations/__init__.py
 .DS_Store # macOS specific
 

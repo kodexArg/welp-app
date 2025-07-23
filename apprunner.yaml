@@ -46,7 +46,7 @@ run:
     - name: DB_PORT
       value: "5432"
     - name: DB_NAME
-      value: "djdb"
+      value: "welp_db"
     - name: AWS_STORAGE_BUCKET_NAME
       value: "alvs-virginia-s3"
     - name: AWS_S3_REGION_NAME
