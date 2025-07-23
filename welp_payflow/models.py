@@ -55,7 +55,7 @@ class Roles(models.Model):
         TECHNICIAN = 'technician', 'Técnico'
         END_USER = 'end_user', 'Usuario Final'
 
-    user = models.ForeignKey('core.User', on_delete=models.CASCADE, related_name='payflow_roles')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='payflow_roles')
     udn = models.ForeignKey(UDN, on_delete=models.CASCADE, null=True, blank=True)
     sector = models.ForeignKey(Sector, on_delete=models.CASCADE, null=True, blank=True)
     
@@ -248,7 +248,7 @@ class Message(models.Model):
     )
     reported_on = models.DateTimeField(null=True, blank=True, verbose_name="Fecha Reportada")
     created_on = models.DateTimeField(default=timezone.now, verbose_name="Fecha de Creación")
-    user = models.ForeignKey('core.User', on_delete=models.SET_NULL, null=True, blank=True, related_name="payflow_messages", verbose_name="Usuario")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name="payflow_messages", verbose_name="Usuario")
     body = models.TextField(verbose_name="Cuerpo del Mensaje", blank=True, null=True)
 
     class Meta:
