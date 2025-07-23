@@ -22,6 +22,8 @@ export default defineConfig({
         'mermaid-init': 'frontend/js/mermaid-init.js',
         'payflow-create': 'frontend/js/welp_payflow/create.js',
         'payflow-success': 'frontend/js/welp_payflow/success.js',
+        'payflow-attachment-manager': 'frontend/js/welp_payflow/attachment_manager.js',
+        'payflow-attachment-viewer': 'frontend/js/welp_payflow/attachment_viewer.js',
       },
     },
   },
