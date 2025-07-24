@@ -1,10 +1,11 @@
+{% load payflow_tags %}
+{% load ticket_message_tags %}
+{% load core_tags %}
+
 {% for ticket in tickets %}
-    <div hx-get="{% url 'ticket-item' ticket.id %}"
-         hx-trigger="load"
-         hx-swap="outerHTML"
-         hx-target="this"
-         class="htmx-indicator">
-    </div>
+    {% ticket_container ticket expanded=False %}
+{% empty %}
+    {% ticket_empty %}
 {% endfor %}
 
 {% if page_obj.has_other_pages %}
@@ -15,13 +16,21 @@
             color="button-secondary"
             icon="fa fa-angle-double-left"
             action="?page=1{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}"
-            target="#list-container" / %}
+            target="#tickets-container" 
+            hx-get="?page=1{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}"
+            hx-target="#tickets-container"
+            hx-swap="innerHTML"
+            />
         {% component "button"
             label="Anterior"
             color="button-secondary"
             icon="fa fa-angle-left"
             action="?page={{ page_obj.previous_page_number }}{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}"
-            target="#list-container" / %}
+            target="#tickets-container" 
+            hx-get="?page={{ page_obj.previous_page_number }}{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}"
+            hx-target="#tickets-container"
+            hx-swap="innerHTML"
+            />
     {% endif %}
 
     <span class="text-gray-700">
@@ -34,13 +43,21 @@
             color="button-secondary"
             icon="fa fa-angle-right"
             action="?page={{ page_obj.next_page_number }}{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}"
-            target="#list-container" / %}
+            target="#tickets-container"
+            hx-get="?page={{ page_obj.next_page_number }}{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}"
+            hx-target="#tickets-container"
+            hx-swap="innerHTML"
+            />
         {% component "button"
             label="Última"
             color="button-secondary"
             icon="fa fa-angle-double-right"
             action="?page={{ page_obj.paginator.num_pages }}{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}"
-            target="#list-container" / %}
+            target="#tickets-container" 
+            hx-get="?page={{ page_obj.paginator.num_pages }}{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}"
+            hx-target="#tickets-container"
+            hx-swap="innerHTML"
+            />
     {% endif %}
 </div>
 {% endif %}

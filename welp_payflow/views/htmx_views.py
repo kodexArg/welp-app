@@ -14,17 +14,22 @@ logger = logging.getLogger('welp_payflow')
 
 @login_required(login_url='login')
 def htmx_list_content(request):
-    tickets = Ticket.objects.get_queryset(request.user).select_related(
+    tickets_qs = Ticket.objects.get_queryset(request.user).select_related(
         'udn', 'sector', 'accounting_category'
     ).prefetch_related(
         'messages__user', 'messages__attachments'
     ).annotate(
         last_message_timestamp=models.Max('messages__created_on')
     ).order_by('-last_message_timestamp')
+
+    paginator = Paginator(tickets_qs, 10)  # 10 tickets por página
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     return render(
         request,
-        'welp_payflow/partials/list-content.html',
-        {'tickets': tickets}
+        'welp_payflow/partials/view/list-content.html',
+        {'tickets': page_obj, 'page_obj': page_obj}
     )
 
 

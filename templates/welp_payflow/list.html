@@ -10,12 +10,14 @@
 <section>
     <h1>Lista de Solicitudes</h1>
 
-    <div id="tickets-container">
-        {% for ticket in tickets %}
-            {% ticket_container ticket expanded=False %}
-        {% empty %}
-            {% ticket_empty %}
-        {% endfor %}
+    <div id="tickets-container" 
+         hx-get="{% url 'welp_payflow:htmx_list_content' %}" 
+         hx-trigger="load" 
+         hx-swap="innerHTML">
+        {# El contenido se cargará aquí vía HTMX #}
+        <div class="text-center p-8">
+            <i class="fas fa-spinner fa-spin fa-3x text-gray-400"></i>
+        </div>
     </div>
 </section>
 
