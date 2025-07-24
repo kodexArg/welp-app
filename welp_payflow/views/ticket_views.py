@@ -251,5 +251,5 @@ class TransitionTicketView(LoginRequiredMixin, View):
                 else:
                     messages.warning(request, f"El archivo {file.name} es demasiado grande y no se ha adjuntado.")
 
-        messages.success(request, f'Ticket cambiado exitosamente a {status_info.get('label', target_status)}')
+        messages.success(request, f'Ticket cambiado exitosamente a {status_info.get("label", target_status)}')
         return redirect('welp_payflow:detail', ticket_id=ticket.id)
