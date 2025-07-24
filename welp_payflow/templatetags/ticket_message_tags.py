@@ -139,9 +139,12 @@ def ticket_container(context, ticket, expanded=False, hide_buttons=False, show_a
         'request': context.get('request'),
     }
 
-@register.inclusion_tag('welp_payflow/components/ticket_empty.html')
-def ticket_empty():
-    return {}
+@register.inclusion_tag('welp_payflow/components/ticket_empty.html', takes_context=True)
+def ticket_empty(context):
+    needs_attention = context.get('needs_attention', False)
+    return {
+        'needs_attention': needs_attention,
+    }
 
 @register.inclusion_tag('welp_payflow/components/ticket_status.html')
 def ticket_status(ticket):
