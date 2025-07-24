@@ -10,6 +10,10 @@
 <section>
     <h1>Lista de Solicitudes</h1>
 
+    <div class="text-center my-4">
+        {% include 'welp_payflow/partials/filters.html' with needs_attention=True %}
+    </div>
+
     <div id="tickets-container" 
          hx-get="{% url 'welp_payflow:htmx_list_content' %}" 
          hx-trigger="load" 

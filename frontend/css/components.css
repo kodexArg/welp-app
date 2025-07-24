@@ -289,6 +289,22 @@
         @apply text-sm;
         @apply text-primary font-[var(--font-ui)];
     }
+
+    /* Filter Button */
+    .filter-button {
+        @apply inline-flex items-center justify-center select-none;
+        @apply px-3 py-1 rounded-full border-2;
+        @apply uppercase whitespace-nowrap tracking-wider font-ui;
+        @apply text-xs;
+        @apply transition-all duration-200 cursor-pointer;
+        @apply shadow-sm hover:shadow-md;
+        @apply focus:outline-none focus:ring-2 focus:ring-offset-2;
+        @apply transform hover:translate-y-[-1px] active:translate-y-[1px];
+    }
+
+    .filter-button.active {
+        @apply shadow-none;
+    }
 }
 
 .mermaid {

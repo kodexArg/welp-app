@@ -391,4 +391,78 @@ FA_ICONS = {
     'shipping': 'fa-solid fa-truck-fast',
     'close': 'fa-solid fa-times',
     'view': 'fa-solid fa-eye',
+}
+
+# Filter Button Configuration
+PAYFLOW_FILTERS = {
+    'needs_attention': {
+        'label': 'Estos tickets requieren atención',
+        'icon': 'fa-solid fa-exclamation-triangle',
+        'theme': 'earth',
+        'default_active': True,
+        'description': 'Filtra tickets que requieren acción del usuario actual',
+        'url_param': 'needs_attention',
+    },
+    'my_tickets': {
+        'label': 'Mis tickets',
+        'icon': 'fa-solid fa-user',
+        'theme': 'forest',
+        'default_active': False,
+        'description': 'Muestra solo tickets creados por mí',
+        'url_param': 'my_tickets',
+    },
+    'recent': {
+        'label': 'Últimos 7 días',
+        'icon': 'fa-solid fa-clock',
+        'theme': 'sky',
+        'default_active': False,
+        'description': 'Tickets de los últimos 7 días',
+        'url_param': 'recent',
+    },
+}
+
+# Filter Theme Configuration
+FILTER_THEMES = {
+    'earth': {
+        'border': 'border-earth-600',
+        'background': 'bg-earth-50', 
+        'text': 'text-earth-600',
+        'hover_bg': 'hover:bg-earth-100',
+        'hover_border': 'hover:border-earth-700',
+        'focus_ring': 'focus:ring-earth-500',
+        # Estados cuando toggle es verdadero (activo)
+        'active_border': 'border-earth-700',
+        'active_background': 'bg-earth-700',
+        'active_text': 'text-white',
+        'active_hover_bg': 'hover:bg-earth-800',
+        'active_hover_border': 'hover:border-earth-800',
+    },
+    'forest': {
+        'border': 'border-forest-600',
+        'background': 'bg-forest-50',
+        'text': 'text-forest-600', 
+        'hover_bg': 'hover:bg-forest-100',
+        'hover_border': 'hover:border-forest-700',
+        'focus_ring': 'focus:ring-forest-500',
+        # Estados cuando toggle es verdadero (activo)
+        'active_border': 'border-forest-700',
+        'active_background': 'bg-forest-700',
+        'active_text': 'text-white',
+        'active_hover_bg': 'hover:bg-forest-800',
+        'active_hover_border': 'hover:border-forest-800',
+    },
+    'sky': {
+        'border': 'border-sky-600',
+        'background': 'bg-sky-50',
+        'text': 'text-sky-600',
+        'hover_bg': 'hover:bg-sky-100', 
+        'hover_border': 'hover:border-sky-700',
+        'focus_ring': 'focus:ring-sky-500',
+        # Estados cuando toggle es verdadero (activo)
+        'active_border': 'border-sky-700',
+        'active_background': 'bg-sky-700',
+        'active_text': 'text-white',
+        'active_hover_bg': 'hover:bg-sky-800',
+        'active_hover_border': 'hover:border-sky-800',
+    },
 } 

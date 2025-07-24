@@ -2,10 +2,40 @@ from django import template
 from django.urls import reverse
 from django.utils.html import format_html
 from welp_desk.constants import DESK_STATUSES
-from welp_payflow.constants import PAYFLOW_STATUSES, FA_ICONS
+from welp_payflow.constants import PAYFLOW_STATUSES, FA_ICONS, PAYFLOW_FILTERS, FILTER_THEMES
 from welp_payflow.utils import get_ticket_actions_context
 
 register = template.Library()
+
+@register.inclusion_tag('welp_payflow/components/filter_button.html')
+def filter_button(filter_id, is_active=None, request_params=None):
+    """Componente de botón de filtro configurable para Welp Payflow."""
+    filter_config = PAYFLOW_FILTERS.get(filter_id, {})
+    if not filter_config:
+        return {'visible': False}
+    
+    theme_name = filter_config.get('theme', 'earth')
+    theme_config = FILTER_THEMES.get(theme_name, FILTER_THEMES['earth'])
+    
+    # Determinar estado activo
+    if is_active is None:
+        is_active = filter_config.get('default_active', False)
+    
+    # Construir URL de toggle
+    url_param = filter_config.get('url_param', filter_id)
+    toggle_value = 'false' if is_active else 'true'
+    
+    return {
+        'visible': True,
+        'filter_id': filter_id,
+        'label': filter_config.get('label', filter_id.replace('_', ' ').title()),
+        'icon': filter_config.get('icon', 'fa-solid fa-filter'),
+        'description': filter_config.get('description', ''),
+        'is_active': is_active,
+        'url_param': url_param,
+        'toggle_value': toggle_value,
+        'theme': theme_config,
+    }
 
 @register.inclusion_tag('welp_payflow/components/radio-button.html')
 def radio_button(target, id, label, next_target, visible=True):

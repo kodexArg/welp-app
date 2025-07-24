@@ -7,14 +7,18 @@ from django.http import HttpResponse
 from django.views.generic import TemplateView
 
 from ..models import UDN, Sector, AccountingCategory, Ticket, Message
-from ..utils import get_user_udns, get_user_sectors, get_user_accounting_categories
+from ..utils import get_user_udns, get_user_sectors, get_user_accounting_categories, can_user_transition_ticket
 from ..forms import PayflowTicketCreationForm
+from ..constants import PAYFLOW_STATUSES
 
 logger = logging.getLogger('welp_payflow')
 
 @login_required(login_url='login')
 def htmx_list_content(request):
-    tickets_qs = Ticket.objects.get_queryset(request.user).select_related(
+    needs_attention_str = request.GET.get('needs_attention', 'true')
+    needs_attention = needs_attention_str.lower() in ['true', '1']
+
+    base_qs = Ticket.objects.get_queryset(request.user).select_related(
         'udn', 'sector', 'accounting_category'
     ).prefetch_related(
         'messages__user', 'messages__attachments'
@@ -22,14 +26,42 @@ def htmx_list_content(request):
         last_message_timestamp=models.Max('messages__created_on')
     ).order_by('-last_message_timestamp')
 
+    if needs_attention:
+        tickets_requiring_attention_pks = []
+        for ticket in base_qs:
+            current_status = ticket.status
+            transitions = PAYFLOW_STATUSES.get(current_status, {}).get('transitions', [])
+            
+            user_can_act = any(can_user_transition_ticket(request.user, ticket, transition) for transition in transitions)
+
+            if user_can_act:
+                tickets_requiring_attention_pks.append(ticket.pk)
+        
+        tickets_qs = base_qs.filter(pk__in=tickets_requiring_attention_pks)
+    else:
+        tickets_qs = base_qs
+
     paginator = Paginator(tickets_qs, 10)  # 10 tickets por página
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
+    context = {
+        'tickets': page_obj, 
+        'page_obj': page_obj,
+        'needs_attention': needs_attention
+    }
+
+    if 'needs_attention' in request.GET:
+        return render(
+            request,
+            'welp_payflow/partials/list_content_with_filter_oob.html',
+            context
+        )
+
     return render(
         request,
         'welp_payflow/partials/view/list-content.html',
-        {'tickets': page_obj, 'page_obj': page_obj}
+        context
     )
 
 

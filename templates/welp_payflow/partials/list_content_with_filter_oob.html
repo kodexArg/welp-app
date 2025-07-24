@@ -1,0 +1,7 @@
+{% load payflow_tags %}
+
+{% filter_button 'needs_attention' is_active=needs_attention %}
+
+<div id="list-content-inner">
+    {% include 'welp_payflow/partials/view/list-content.html' %}
+</div> 

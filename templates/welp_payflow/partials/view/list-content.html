@@ -17,7 +17,7 @@
             icon="fa fa-angle-double-left"
             action="?page=1{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}"
             target="#tickets-container" 
-            hx-get="?page=1{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}"
+            hx-get="?page=1&needs_attention={{ needs_attention }}"
             hx-target="#tickets-container"
             hx-swap="innerHTML"
             />
@@ -27,7 +27,7 @@
             icon="fa fa-angle-left"
             action="?page={{ page_obj.previous_page_number }}{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}"
             target="#tickets-container" 
-            hx-get="?page={{ page_obj.previous_page_number }}{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}"
+            hx-get="?page={{ page_obj.previous_page_number }}&needs_attention={{ needs_attention }}"
             hx-target="#tickets-container"
             hx-swap="innerHTML"
             />
@@ -44,7 +44,7 @@
             icon="fa fa-angle-right"
             action="?page={{ page_obj.next_page_number }}{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}"
             target="#tickets-container"
-            hx-get="?page={{ page_obj.next_page_number }}{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}"
+            hx-get="?page={{ page_obj.next_page_number }}&needs_attention={{ needs_attention }}"
             hx-target="#tickets-container"
             hx-swap="innerHTML"
             />
@@ -54,7 +54,7 @@
             icon="fa fa-angle-double-right"
             action="?page={{ page_obj.paginator.num_pages }}{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}"
             target="#tickets-container" 
-            hx-get="?page={{ page_obj.paginator.num_pages }}{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}"
+            hx-get="?page={{ page_obj.paginator.num_pages }}&needs_attention={{ needs_attention }}"
             hx-target="#tickets-container"
             hx-swap="innerHTML"
             />
