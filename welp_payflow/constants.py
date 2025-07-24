@@ -424,11 +424,11 @@ PAYFLOW_FILTERS = {
 # Filter Theme Configuration
 FILTER_THEMES = {
     'earth': {
-        'border': 'border-earth-600',
-        'background': 'bg-earth-50', 
-        'text': 'text-earth-600',
-        'hover_bg': 'hover:bg-earth-100',
-        'hover_border': 'hover:border-earth-700',
+        'border': 'border-earth-300',
+        'background': 'bg-white', 
+        'text': 'text-earth-400',
+        'hover_bg': 'hover:bg-earth-50',
+        'hover_border': 'hover:border-earth-400',
         'focus_ring': 'focus:ring-earth-500',
         # Estados cuando toggle es verdadero (activo)
         'active_border': 'border-earth-700',
@@ -438,11 +438,11 @@ FILTER_THEMES = {
         'active_hover_border': 'hover:border-earth-800',
     },
     'forest': {
-        'border': 'border-forest-600',
-        'background': 'bg-forest-50',
-        'text': 'text-forest-600', 
-        'hover_bg': 'hover:bg-forest-100',
-        'hover_border': 'hover:border-forest-700',
+        'border': 'border-forest-300',
+        'background': 'bg-white',
+        'text': 'text-forest-400', 
+        'hover_bg': 'hover:bg-forest-50',
+        'hover_border': 'hover:border-forest-400',
         'focus_ring': 'focus:ring-forest-500',
         # Estados cuando toggle es verdadero (activo)
         'active_border': 'border-forest-700',
@@ -452,11 +452,11 @@ FILTER_THEMES = {
         'active_hover_border': 'hover:border-forest-800',
     },
     'sky': {
-        'border': 'border-sky-600',
-        'background': 'bg-sky-50',
-        'text': 'text-sky-600',
-        'hover_bg': 'hover:bg-sky-100', 
-        'hover_border': 'hover:border-sky-700',
+        'border': 'border-sky-300',
+        'background': 'bg-white',
+        'text': 'text-sky-400',
+        'hover_bg': 'hover:bg-sky-50', 
+        'hover_border': 'hover:border-sky-400',
         'focus_ring': 'focus:ring-sky-500',
         # Estados cuando toggle es verdadero (activo)
         'active_border': 'border-sky-700',
