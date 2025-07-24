@@ -36,19 +36,8 @@
             {% csrf_token %}
 
             <div id="udn-container"></div>
-
-            {% if sectors and sectors|length == 1 %}
-                <input type="hidden" name="sector" value="{{ sectors.0.pk }}" />
-            {% else %}
-                <div id="sector-container"></div>
-            {% endif %}
-
-            {% if categories and categories|length == 1 %}
-                <input type="hidden" name="accounting_category" value="{{ categories.0.pk }}" />
-            {% else %}
-                <div id="accounting-category-container"></div>
-            {% endif %}
-
+            <div id="sector-container"></div>
+            <div id="accounting-category-container"></div>
             <div id="fields-body-container"></div>
 
             <div class="component-buttons max-w-sm mx-auto mt-12">
