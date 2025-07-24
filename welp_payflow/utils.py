@@ -1,3 +1,6 @@
+"""
+Utilidades y funciones de apoyo para la aplicación Payflow.
+"""
 from .constants import PAYFLOW_STATUSES, PAYFLOW_ROLE_PERMISSIONS, FA_ICONS
 from .models import UDN, Sector, AccountingCategory, Message, Attachment
 from django.urls import reverse
@@ -21,36 +24,35 @@ def get_permissions_for_role_type(role_type):
 
 
 def _get_user_accessible_ids(user):
-    """Obtiene los IDs de UDNs y Sectores a los que un usuario tiene acceso."""
     if user.is_superuser:
         return {
             'udn_ids': set(UDN.objects.values_list('id', flat=True)),
             'sector_ids': set(Sector.objects.values_list('id', flat=True))
         }
 
-    user_roles = user.payflow_roles.filter(can_open=True)
+    user_roles = user.payflow_roles.filter(can_open=True).select_related('udn', 'sector')
     udn_ids, sector_ids = set(), set()
 
     for role in user_roles:
-        if role.sector:
-            sector_ids.add(role.sector.id)
-            udn_ids.update(role.sector.udn.all().values_list('id', flat=True))
-        elif role.udn:
+        if role.udn and not role.sector:
             udn_ids.add(role.udn.id)
             sector_ids.update(role.udn.payflow_sectors.values_list('id', flat=True))
+        
+        elif role.udn and role.sector:
+            if role.sector.udn.filter(pk=role.udn.id).exists():
+                udn_ids.add(role.udn.id)
+                sector_ids.add(role.sector.id)
             
     return {'udn_ids': udn_ids, 'sector_ids': sector_ids}
 
 
 def get_user_udns(user):
-    """Obtiene el queryset de UDNs a las que el usuario tiene acceso."""
     accessible_ids = _get_user_accessible_ids(user)
     queryset = UDN.objects.filter(id__in=accessible_ids['udn_ids'])
     return queryset
 
 
 def get_user_sectors(user, udn=None):
-    """Obtiene el queryset de Sectores a los que el usuario tiene acceso, opcionalmente filtrados por UDN."""
     accessible_ids = _get_user_accessible_ids(user)
     queryset = Sector.objects.filter(id__in=accessible_ids['sector_ids'])
     
@@ -61,7 +63,6 @@ def get_user_sectors(user, udn=None):
 
 
 def get_user_accounting_categories(user, sector=None):
-    """Obtiene el queryset de Categorías Contables a las que el usuario tiene acceso."""
     if user.is_superuser:
         queryset = AccountingCategory.objects.all()
         if sector:
@@ -78,7 +79,6 @@ def get_user_accounting_categories(user, sector=None):
 
 
 def can_user_create_ticket_in_context(user, udn, sector):
-    """Verifica si el usuario puede crear tickets en el contexto dado."""
     if user.is_superuser:
         return True
     user_roles = user.payflow_roles.filter(
@@ -97,7 +97,6 @@ def can_user_create_ticket_in_context(user, udn, sector):
 
 
 def can_user_close_ticket(user, ticket):
-    """Verifica si el usuario puede cerrar el ticket."""
     if not getattr(user, 'is_authenticated', False):
         return False
     ticket_owner = ticket.created_by
@@ -156,7 +155,6 @@ def get_user_ticket_transitions(user, ticket):
 
 
 def get_ticket_action_data(action, ticket_id=None):
-    """Genera un diccionario con los datos necesarios para renderizar un botón de acción."""
     if action == 'feedback':
         status_key = 'comment'
     elif action == 'close':
@@ -199,9 +197,6 @@ def get_ticket_action_data(action, ticket_id=None):
 
 
 def get_ticket_actions_context(user, ticket):
-    """Devuelve acciones permitidas para el ticket y usuario.
-    Ejemplo: {'ticket': <Ticket>, 'actions': [{'action': 'close', ...}]}
-    """
     if not user or not user.is_authenticated or not ticket:
         return {'ticket': ticket, 'actions': []}
 
@@ -218,7 +213,6 @@ def get_ticket_actions_context(user, ticket):
         action_data = get_ticket_action_data(action, ticket.id)
         if action_data:
             if action == 'close':
-                # Ya manejado arriba, pero lo mantenemos por si acaso
                 if not close_action:
                     close_action = action_data
             elif action == 'feedback':
@@ -246,7 +240,6 @@ def get_ticket_actions_context(user, ticket):
 
 
 def get_ticket_detail_context_data(request, ticket):
-    """Prepara el contexto para la vista de detalle del ticket."""
     response_type = request.GET.get('response_type', 'comment')
     ui_key = response_type
     if ui_key == 'close':
@@ -273,7 +266,6 @@ def get_ticket_detail_context_data(request, ticket):
     elif response_type != 'comment':
         comment_field_name = f'{response_type}_comment'
 
-    # Preparar información de confirmación para el cierre
     confirmation_info = None
     if response_type == 'close':
         confirmation_style = status_info.get('confirmation_style', {})
