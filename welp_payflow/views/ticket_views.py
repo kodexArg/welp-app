@@ -31,6 +31,24 @@ class TicketListView(LoginRequiredMixin, ListView):
             last_message_timestamp=models.Max('messages__created_on')
         ).order_by('-last_message_timestamp')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        # Calcular el estado por defecto del filtro basado en la cantidad total de tickets
+        total_tickets = self.get_queryset().count()
+        tickets_per_page = 10
+        
+        # Si el total de tickets es menor a la cantidad por página, desactivar filtro por defecto
+        if total_tickets <= tickets_per_page:
+            default_needs_attention = False
+        else:
+            default_needs_attention = True
+        
+        context['needs_attention'] = default_needs_attention
+        context['total_tickets'] = total_tickets
+        
+        return context
+
 
 class TicketDetailView(LoginRequiredMixin, DetailView):
     model = Ticket

@@ -15,9 +15,6 @@ logger = logging.getLogger('welp_payflow')
 
 @login_required(login_url='login')
 def htmx_list_content(request):
-    needs_attention_str = request.GET.get('needs_attention', 'true')
-    needs_attention = needs_attention_str.lower() in ['true', '1']
-
     base_qs = Ticket.objects.get_queryset(request.user).select_related(
         'udn', 'sector', 'accounting_category'
     ).prefetch_related(
@@ -25,6 +22,20 @@ def htmx_list_content(request):
     ).annotate(
         last_message_timestamp=models.Max('messages__created_on')
     ).order_by('-last_message_timestamp')
+
+    # Determinar si el filtro debe estar activo por defecto
+    total_tickets = base_qs.count()
+    tickets_per_page = 10
+    
+    # Si el total de tickets es menor a la cantidad por página, desactivar filtro por defecto
+    if total_tickets <= tickets_per_page:
+        default_needs_attention = False
+    else:
+        default_needs_attention = True
+    
+    # Obtener el valor del filtro, usando el valor por defecto calculado
+    needs_attention_str = request.GET.get('needs_attention', str(default_needs_attention).lower())
+    needs_attention = needs_attention_str.lower() in ['true', '1']
 
     if needs_attention:
         tickets_requiring_attention_pks = []
@@ -41,14 +52,15 @@ def htmx_list_content(request):
     else:
         tickets_qs = base_qs
 
-    paginator = Paginator(tickets_qs, 10)  # 10 tickets por página
+    paginator = Paginator(tickets_qs, tickets_per_page)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
     context = {
         'tickets': page_obj, 
         'page_obj': page_obj,
-        'needs_attention': needs_attention
+        'needs_attention': needs_attention,
+        'total_tickets': total_tickets
     }
 
     if 'needs_attention' in request.GET:
