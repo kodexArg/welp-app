@@ -3,7 +3,7 @@ name = "welp-app"
 version = "0.1.0"
 description = "Welp Application - Django project with Desk and Payflow modules"
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.11"
 dependencies = [
     "asgiref",
     "django",

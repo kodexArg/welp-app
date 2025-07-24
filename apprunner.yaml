@@ -19,7 +19,7 @@ build:
     build:
       - pip3 install uv
       - uv venv .venv
-      - uv pip install -r requirements.txt
+      - uv pip install -e .
   env:
     - name: NODE_VERSION
       value: "20.13.1"
