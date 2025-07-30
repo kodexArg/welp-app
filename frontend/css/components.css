@@ -313,20 +313,15 @@
 
 .ticket-mermaid-container > .mermaid {
   @apply w-full h-full;
-  cursor: grab;
-  user-select: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-}
-
-.ticket-mermaid-container > .mermaid:active {
-  cursor: grabbing;
 }
 
 .ticket-mermaid-container > .mermaid > svg {
   @apply h-full w-auto;
   pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 
 .mermaid svg text {
