@@ -308,7 +308,7 @@
 }
 
 .ticket-mermaid-container {
-  @apply w-full overflow-x-auto overflow-y-hidden h-48;
+  @apply w-full overflow-x-auto overflow-y-hidden h-56;
 }
 
 .ticket-mermaid-container > .mermaid {

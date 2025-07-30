@@ -85,6 +85,7 @@ def mermaid_workflow(ticket):
     Genera el diagrama de flujo de Mermaid con estilos condicionales.
     Por defecto, todos los nodos son grises. Solo se colorean los nodos
     correspondientes a los estados que existen en el historial de mensajes del ticket.
+    Incluye información de usuarios para cada nodo que tenga mensajes asociados.
     """
     styles = {}
     gray_style = "fill:#f3f4f6,stroke:#e5e7eb,stroke-width:2px,color:#9ca3b9,rx:20,ry:20"
@@ -98,7 +99,25 @@ def mermaid_workflow(ticket):
     # 2. Obtener los estados únicos del historial de mensajes del ticket.
     message_statuses = set(ticket.messages.values_list('status', flat=True))
     
-    # 3. Sobrescribir el estilo gris con el estilo de color para los estados existentes.
+    # 3. Crear un diccionario para mapear nodos a usuarios
+    node_users = {}
+    
+    # 4. Obtener información de usuarios para cada estado
+    for status_slug in message_statuses:
+        if status_slug in PAYFLOW_STATUSES:
+            status_info = PAYFLOW_STATUSES[status_slug]
+            if 'mermaid_node' in status_info:
+                node_id = status_info['mermaid_node']
+                # Obtener el último mensaje de este estado para obtener el usuario
+                last_message = ticket.messages.filter(status=status_slug).order_by('-created_on').first()
+                if last_message and last_message.user:
+                    user_name = last_message.user.get_full_name() or last_message.user.username
+                    node_users[node_id] = user_name
+                elif status_slug == 'payment_authorized' and last_message and not last_message.user:
+                    # Caso especial para mensajes del sistema
+                    node_users[node_id] = "Sistema"
+    
+    # 5. Sobrescribir el estilo gris con el estilo de color para los estados existentes.
     for status_slug in message_statuses:
         if status_slug in PAYFLOW_STATUSES:
             status_info = PAYFLOW_STATUSES[status_slug]
@@ -106,7 +125,7 @@ def mermaid_workflow(ticket):
                 node_id = status_info['mermaid_node']
                 workflow_nodes[node_id] = status_info['mermaid_style']
     
-    return {'styles': workflow_nodes}
+    return {'styles': workflow_nodes, 'node_users': node_users}
 
 
 @register.inclusion_tag('welp_payflow/components/action-button.html')
