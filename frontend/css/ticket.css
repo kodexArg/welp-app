@@ -77,7 +77,7 @@
     }
 
     .ticket-actions {
-        @apply flex justify-end gap-2 mt-4;
+        @apply w-full flex justify-end items-center gap-4 mt-4;
     }
 
     .ticket-action-button {
@@ -98,6 +98,10 @@
         @apply text-xl border-2;
     }
 
+    .ticket-action-buttons-group {
+        @apply flex items-center gap-2;
+    }
+
     /* Ticket Tags */
     .ticket-tag {
         @apply flex items-center py-0.5 px-2 border border-gray-300;
@@ -113,6 +117,21 @@
     }
     .ticket-tag--category {
         @apply rounded-r-full border-l-0;
+    }
+
+    .ticket-amount-container {
+        @apply flex flex-col items-center justify-center mr-auto -mb-4 ml-8;
+        @apply text-sm text-gray-600;
+    }
+
+    .ticket-amount-label {
+        @apply font-semibold text-gray-500;
+        @apply text-xxs uppercase;
+    }
+
+    .ticket-amount-value {
+        @apply font-mono text-sm text-gray-800;
+        @apply border-b-2 border-gray-300;
     }
 
     /* Ticket Status */

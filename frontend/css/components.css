@@ -60,7 +60,7 @@
     }
 
     .button:active:not(:disabled) {
-        @apply transform translate-y-0 scale-[1.02] shadow-sm;
+        @apply transform translate-y-0 scale-[1.02];
     }
 
     .button:disabled {

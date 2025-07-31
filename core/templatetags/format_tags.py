@@ -83,3 +83,17 @@ def basename(value):
     Usage: {{ attachment.file.name|basename }}
     """
     return os.path.basename(value) if value else ''
+
+
+@register.filter(name='currency')
+def currency(value):
+    """
+    Formats a number as currency (e.g., $ 1,234.56).
+    """
+    if value is None:
+        return ""
+    try:
+        # Simple formatting, can be replaced with locale-aware formatting if needed
+        return f"$ {value:,.2f}"
+    except (ValueError, TypeError):
+        return str(value)
