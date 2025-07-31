@@ -180,7 +180,12 @@ def create_user_and_assign_roles(user_data, udn_map, sector_map):
         sectors_in_udn = list(udn.payflow_sectors.all())
         sectors_to_assign = []
         
-        if specific_sector:
+        # Lógica especial para supervisores: acceso a todos los sectores
+        if role_type == 'supervisor':
+            # Los supervisores tienen acceso a todos los sectores de la UDN
+            sectors_to_assign = sectors_in_udn
+            logger.info(f"    • Supervisor '{username}' tendrá acceso a todos los sectores de '{udn.name}'")
+        elif specific_sector:
             # Usuario con sector específico
             if specific_sector in sectors_in_udn:
                 sectors_to_assign = [specific_sector]
@@ -225,4 +230,4 @@ def main():
     logger.info("💡 Para crear la estructura de UDNs/Sectores/Categorías, ejecute: uv run scripts/init_app.py")
 
 if __name__ == "__main__":
-    main() 
+    main()

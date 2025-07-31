@@ -11,7 +11,7 @@ uv run scripts/init_app.py
 
 Cada usuario se crea con una contraseña igual a su nombre de usuario.
 
-> **Nota:** Los usuarios con roles `technician`, `purchase_manager` y `director` tienen acceso a todas las UDNs y sectores. Los managers acceden a múltiples UDNs especificadas. Los supervisores y usuarios finales tienen acceso a una UDN y sector específicos.
+> **Nota:** Los usuarios con roles `technician`, `purchase_manager` y `director` tienen acceso a todas las UDNs y sectores. Los managers acceden a múltiples UDNs especificadas. Los supervisores tienen acceso a todos los sectores de su UDN asignada. Los usuarios finales tienen acceso a una UDN y sector específicos.
 
 | Usuario            | Nombre completo      | UDN(s)              | Sector(es)             | Rol              |
 |--------------------|---------------------|---------------------|------------------------|------------------|
@@ -27,10 +27,10 @@ Cada usuario se crea con una contraseña igual a su nombre de usuario.
 | nico.cruz          | Nico Cruz           | VW                  | Administración         | end_user         |
 | dani.sanz          | Dani Sanz           | KCBD                | Operaciones            | end_user         |
 | mora.rey           | Mora Rey            | KCBD                | Administración         | end_user         |
-| martin.garcia      | Martín Garcia       | KM 1151             | Operaciones            | supervisor       |
-| sofia.torres       | Sofía Torres        | Las Bóvedas         | Administración         | supervisor       |
-| lucas.lopez        | Lucas Lopez         | Parador             | Mantenimiento          | supervisor       |
-| elena.ramos        | Elena Ramos         | Espejo              | Sistemas               | supervisor       |
+| martin.garcia      | Martín Garcia       | KM 1151             | Todos los sectores     | supervisor       |
+| sofia.torres       | Sofía Torres        | Las Bóvedas         | Todos los sectores     | supervisor       |
+| lucas.lopez        | Lucas Lopez         | Parador             | Todos los sectores     | supervisor       |
+| elena.ramos        | Elena Ramos         | Espejo              | Todos los sectores     | supervisor       |
 | santiago.fernandez | Santiago Fernandez  | KM 1151, Las Bóvedas| Todos los sectores     | manager          |
 | natalia.fernandez  | Natalia Fernandez   | Todas               | Todos                  | manager          |
 | felix.soto         | Felix Soto          | Todas               | Todos                  | technician       |
@@ -42,7 +42,7 @@ Cada usuario se crea con una contraseña igual a su nombre de usuario.
 ## Descripción de Roles
 
 - **end_user**: Acceso a una UDN y sector específicos para crear y gestionar sus propias solicitudes de pago
-- **supervisor**: Acceso a una UDN y sector específicos con permisos adicionales de supervisión
+- **supervisor**: Acceso a todos los sectores de una UDN específica con permisos adicionales de supervisión
 - **manager**: Acceso completo a una o más UDNs específicas y todos sus sectores
 - **technician**: Acceso técnico global a todas las UDNs y sectores
 - **purchase_manager**: Gestión de compras con acceso global a todas las UDNs y sectores
