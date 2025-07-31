@@ -348,7 +348,7 @@ PAYFLOW_ROLE_PERMISSIONS = {
         'can_authorize': False,
         'can_process_payment': False,
         'can_close': False,
-        'can_view_others_tickets': False,
+        'can_view_others_tickets': True,
     },
     'supervisor': {
         'can_open': True,
