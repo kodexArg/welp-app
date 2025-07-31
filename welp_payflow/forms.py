@@ -56,7 +56,7 @@ class PayflowTicketCreationForm(forms.ModelForm):
         model = Ticket
         fields = [
             'udn', 'sector', 'accounting_category', 'title', 
-            'description', 'estimated_amount'
+            'description', 'estimated_amount', 'attachments'
         ]
         labels = {
             'udn': "UDN",

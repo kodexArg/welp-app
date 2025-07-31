@@ -30,7 +30,7 @@
             {% endif %}
         </div>
         
-        <div id="component-attachments" class="form-group">
+        {% comment %} <div id="component-attachments" class="form-group">
             {{ form.attachments.label_tag }}
             {{ form.attachments }}
             {% if form.attachments.errors %}
@@ -38,6 +38,6 @@
                     {{ form.attachments.errors }}
                 </div>
             {% endif %}
-        </div>
+        </div> {% endcomment %}
     </div>
-</article> 
+</article>

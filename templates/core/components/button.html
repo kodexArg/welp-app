@@ -1,7 +1,7 @@
 <div class="button-wrapper">
     {% if href %}
         <a href="{{ href }}" 
-           class="button button-{{ style|default:'primary' }}{% if full_width %} w-full{% endif %}{% if class %} {{ class }}{% endif %}"
+           class="button button-{{ variant|default:'primary' }}{% if full_width %} w-full{% endif %}{% if extra_classes %} {{ extra_classes }}{% endif %}"
            {% if disabled %}disabled{% endif %}
            {% if data_action %}data-action="{{ data_action }}"{% endif %}
            {% if data_target %}data-target="{{ data_target }}"{% endif %}>
@@ -10,7 +10,7 @@
         </a>
     {% else %}
         <button type="{{ type|default:'button' }}" 
-                class="button button-{{ style|default:'primary' }}{% if full_width %} w-full{% endif %}{% if class %} {{ class }}{% endif %}"
+                class="button button-{{ variant|default:'primary' }}{% if full_width %} w-full{% endif %}{% if extra_classes %} {{ extra_classes }}{% endif %}"
                 {% if disabled %}disabled{% endif %}
                 {% if data_action %}data-action="{{ data_action }}"{% endif %}
                 {% if data_target %}data-target="{{ data_target }}"{% endif %}>
