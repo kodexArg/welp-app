@@ -7,7 +7,7 @@ from django.http import HttpResponse
 from django.views.generic import TemplateView
 
 from ..models import UDN, Sector, AccountingCategory, Ticket, Message
-from ..utils import get_user_udns, get_user_sectors, get_user_accounting_categories, can_user_transition_ticket
+from ..utils import get_user_udns, get_user_sectors, get_user_accounting_categories, can_user_transition_ticket, should_hide_ticket_from_attention
 from ..forms import PayflowTicketCreationForm
 from ..constants import PAYFLOW_STATUSES
 
@@ -40,6 +40,10 @@ def htmx_list_content(request):
     if needs_attention:
         tickets_requiring_attention_pks = []
         for ticket in base_qs:
+            # Verificar si el ticket debe estar oculto para este usuario
+            if should_hide_ticket_from_attention(request.user, ticket):
+                continue
+                
             current_status = ticket.status
             transitions = PAYFLOW_STATUSES.get(current_status, {}).get('transitions', [])
             

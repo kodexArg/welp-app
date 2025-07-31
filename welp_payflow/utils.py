@@ -154,6 +154,41 @@ def get_user_ticket_transitions(user, ticket):
     return allowed
 
 
+def should_hide_ticket_from_attention(user, ticket):
+    """
+    Determina si un ticket debe estar oculto de la lista de 'requiere atención'
+    basándose en los roles del usuario y la configuración 'hidden_from_attention'
+    del estado actual del ticket.
+    
+    Args:
+        user: Usuario actual
+        ticket: Ticket a evaluar
+        
+    Returns:
+        bool: True si el ticket debe estar oculto, False si debe mostrarse
+    """
+    if not user or not user.is_authenticated:
+        return False
+        
+    # Los superusuarios ven todos los tickets
+    if user.is_superuser:
+        return False
+    
+    current_status = ticket.status
+    hidden_roles = PAYFLOW_STATUSES.get(current_status, {}).get('hidden_from_attention', [])
+    
+    # Si no hay roles configurados para ocultar, mostrar el ticket
+    if not hidden_roles:
+        return False
+    
+    # Verificar si el usuario tiene alguno de los roles que deben ocultar este estado
+    for role_name in hidden_roles:
+        if has_user_role(user, role_name):
+            return True
+    
+    return False
+
+
 def get_ticket_action_data(action, ticket_id=None):
     if action == 'feedback':
         status_key = 'comment'
@@ -335,4 +370,4 @@ def get_ticket_detail_context_data(request, ticket):
     
     context['cancel_url'] = reverse('welp_payflow:detail', kwargs={'ticket_id': ticket.id})
 
-    return context 
+    return context

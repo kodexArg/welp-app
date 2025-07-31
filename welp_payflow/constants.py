@@ -4,49 +4,6 @@ from django.conf import settings
 STATUS_MAX_LENGTH = 30
 
 PAYFLOW_STATUSES = {
-    """
-    Configuración de estados del sistema Welp Payflow.
-    
-    Cada estado define la estructura completa para el manejo del flujo de trabajo,
-    incluyendo configuración visual, lógica de negocio y comportamiento de la interfaz.
-    
-    Estructura de cada estado:
-    
-    - mermaid_node: Identificador del nodo (A, B, C, etc.) para diagramas Mermaid
-    - mermaid_style: Estilos CSS para el nodo en diagramas (colores, bordes, formas)
-    - label: Texto legible mostrado en la interfaz de usuario
-    - color: Color hexadecimal para representación visual
-    - color_name: Nombre del color para referencia
-    - description: Descripción del estado para tooltips y ayuda
-    - is_active: Si el estado está activo en el flujo
-    - is_final: Si es un estado terminal del flujo
-    - transitions: Lista de estados a los que puede transicionar
-    - allowed_roles: Roles que pueden realizar transiciones desde este estado
-    
-    - flow: Configuración del flujo de trabajo
-      - current_action: Descripción de la acción actual
-      - next_action: Descripción del siguiente paso
-      - responsible_roles: Roles responsables de la siguiente acción
-      - is_waiting: Si el ticket está esperando acción externa
-      - priority: Nivel de prioridad (high, medium, low)
-    
-    - action_label: Etiqueta para el botón de acción
-    - action_verb: Verbo usado en el historial (ej: "Autorizado por")
-    - color_class: Clases CSS de Tailwind para colores consistentes
-    - confirmation_message: Mensaje mostrado en diálogos de confirmación
-    - confirmation_style: Estilos CSS para cajas de confirmación (bg, border, text)
-    - button_text: Texto mostrado en botones de acción
-    - comment_placeholder: Texto de ayuda en campos de comentario
-    - comment_label: Etiqueta para campos de comentario
-    - comment_required: Si el comentario es obligatorio
-    - show_comment_box: Si mostrar el campo de comentarios
-    - show_attachments: Si permitir adjuntar archivos
-    
-    Estados especiales:
-    - comment: Para acciones de comentario en el historial
-    - view: Para acciones de visualización en el historial
-    - unknown: Estado de fallback para casos no determinados
-    """
     # Los estados se ordenan según el flujo de trabajo natural.
     'open': {
         'mermaid_node': 'A',
@@ -59,6 +16,7 @@ PAYFLOW_STATUSES = {
         'is_final': False,
         'transitions': ['authorized', 'closed'],
         'allowed_roles': [],
+        'hidden_from_attention': ['director'],
         'flow': {
             'current_action': 'Esperando autorización inicial',
             'next_action': 'Autorizar solicitud',
@@ -82,6 +40,7 @@ PAYFLOW_STATUSES = {
         'is_final': False,
         'transitions': ['budgeted', 'closed'],
         'allowed_roles': ['supervisor', 'manager', 'director'],
+        'hidden_from_attention': ['director'],
         'flow': {
             'current_action': 'Esperando presupuestos',
             'next_action': 'Adjuntar presupuestos',
@@ -111,6 +70,7 @@ PAYFLOW_STATUSES = {
         'is_final': False,
         'transitions': ['authorized_by_manager', 'authorized_by_director', 'rejected', 'closed'],
         'allowed_roles': ['purchase_manager', 'technician'],
+        'hidden_from_attention': [],
         'flow': {
             'current_action': 'Esperando autorización de pago (doble firma)',
             'next_action': 'Autorización Manager y Director',
@@ -141,6 +101,7 @@ PAYFLOW_STATUSES = {
         'is_final': False,
         'transitions': ['budgeted', 'closed'],
         'allowed_roles': ['supervisor', 'manager', 'director'],
+        'hidden_from_attention': ['director'],
         'flow': {
             'current_action': 'Presupuestos rechazados',
             'next_action': 'Revisar y adjuntar nuevos presupuestos',
@@ -168,6 +129,7 @@ PAYFLOW_STATUSES = {
         'color_name': 'orange',
         'description': 'Primera firma completada, esperando segunda firma del Director',
         'allowed_roles': ['manager'],
+        'hidden_from_attention': ['director'],
         'action_label': 'Aprobar Pago',
         'action_verb': 'Autorizado por Manager',
         'color_class': 'text-orange-500',
@@ -188,6 +150,7 @@ PAYFLOW_STATUSES = {
         'color_name': 'purple',
         'description': 'Segunda firma completada, pago autorizado automáticamente',
         'allowed_roles': ['director'],
+        'hidden_from_attention': ['director'],
         'action_label': 'Aprobar Pago',
         'action_verb': 'Autorizado por Director',
         'color_class': 'text-purple-500',
@@ -211,6 +174,7 @@ PAYFLOW_STATUSES = {
         'is_final': False,
         'transitions': ['processing_payment'],
         'allowed_roles': ['system'],
+        'hidden_from_attention': ['director'],
         'flow': {
             'current_action': 'Esperando proceso de pago',
             'next_action': 'Procesar facturación',
@@ -241,6 +205,7 @@ PAYFLOW_STATUSES = {
         'is_final': False,
         'transitions': ['shipping'],
         'allowed_roles': ['purchase_manager'],
+        'hidden_from_attention': ['director'],
         'flow': {
             'current_action': 'Procesando pago/facturación',
             'next_action': 'Confirmar envío',
@@ -271,6 +236,7 @@ PAYFLOW_STATUSES = {
         'is_final': False,
         'transitions': ['closed'],
         'allowed_roles': ['purchase_manager', 'technician'],
+        'hidden_from_attention': ['director'],
         'flow': {
             'current_action': 'En proceso de envío/entrega',
             'next_action': 'Confirmar recepción',
@@ -301,6 +267,7 @@ PAYFLOW_STATUSES = {
         'is_final': True,
         'transitions': [],
         'allowed_roles': [],
+        'hidden_from_attention': ['director'],
         'flow': {
             'current_action': 'Solicitud finalizada',
             'next_action': None,
