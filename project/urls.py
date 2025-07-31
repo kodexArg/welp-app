@@ -7,7 +7,8 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('accounts/login/', RedirectView.as_view(url=reverse_lazy('core:login'), query_string=True), name='account_login_redirect'),
-    path('', include('core.urls')),
+    path('', RedirectView.as_view(url=reverse_lazy('welp_payflow:list')), name='home-redirect'),
+    path('home/', include('core.urls')),
     path('desk/', include('welp_desk.urls')),
     path('payflow/', include('welp_payflow.urls')),
     path('api/', include('api.urls')),
