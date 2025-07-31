@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
             validationErrorList.appendChild(li);
         });
         validationErrorContainer.classList.remove('hidden');
-        validationErrorContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        validationErrorContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
     function hideValidationErrors() {
@@ -83,7 +83,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!formData.get('accounting_category')) errors.push('La Categoría Contable es requerida.');
 
         if (!formData.get('title')?.trim()) errors.push('El Título es requerido.');
-        if (!formData.get('description')?.trim()) errors.push('La Descripción es requerida.');
+        
+        const description = formData.get('description')?.trim();
+        if (!description) {
+            errors.push('La Descripción es requerida.');
+        } else if (description.length < 10) {
+            errors.push('La descripción debe tener al menos 10 caracteres.');
+        }
 
         return [...new Set(errors)];
     }

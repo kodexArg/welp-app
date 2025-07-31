@@ -159,14 +159,8 @@ class CreateTicketView(LoginRequiredMixin, CreateView):
                 logger.error(f"¡ALERTA DE SEGURIDAD! Usuario '{self.request.user.username}' intentó crear un ticket sin permisos. Detalles: {error}")
                 return redirect('welp_payflow:permission_denied_error')
 
-        # Manejo de errores de validación estándar
-        for field, errors in form.errors.items():
-            field_label = form.fields[field].label if field in form.fields else 'Error General'
-            for error in errors:
-                # Usar un formato más genérico para el mensaje
-                messages.error(self.request, f"{field_label}: {error}")
-        
-        return super().form_invalid(form)
+        # Instead of using messages framework, pass errors to template context
+        return self.render_to_response(self.get_context_data(form=form))
 
     def get_success_url(self):
         return reverse('welp_payflow:success', kwargs={'ticket_id': self.object.id})

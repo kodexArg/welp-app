@@ -6,28 +6,64 @@
 
 {% block content %}
 <section>
-    <h1>Crear Nueva Solicitud</h1>
+    <h1 class="text-center mb-8">Crear Nueva Solicitud</h1>
 
-    <div id="form-messages" class="space-y-4 mb-6">
-        <div id="htmx-errors" class="hidden">
-            <div class="alert alert-error flex items-start space-x-3" role="alert">
-                <i class="fa fa-exclamation-triangle mt-1" aria-hidden="true"></i>
-                <div class="flex-1">
-                    <p class="font-medium">Error de comunicación con el servidor</p>
-                    <p class="text-sm mt-1">Por favor, verifique su conexión e intente nuevamente.</p>
+    <div class="max-w-2xl mx-auto mb-8">
+        <div id="form-messages" class="space-y-4">
+            <div id="htmx-errors" class="hidden">
+                <div class="bg-[var(--color-earth-100)] border-l-4 border-[var(--color-earth-400)] text-[var(--color-earth-700)] p-4 rounded-lg shadow-sm" role="alert">
+                    <div class="flex items-start">
+                        <i class="fas fa-exclamation-triangle text-[var(--color-earth-400)] mt-1 mr-3" aria-hidden="true"></i>
+                        <div>
+                            <p class="font-bold">Error de comunicación con el servidor</p>
+                            <p class="text-sm mt-1">Por favor, verifique su conexión e intente nuevamente.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        
-        <div id="form-validation-errors" class="hidden">
-            <div class="alert alert-error flex items-start space-x-3" role="alert">
-                <i class="fa fa-exclamation-triangle mt-1" aria-hidden="true"></i>
-                <div class="flex-1">
-                    <p class="font-medium">Errores en el formulario</p>
-                    <ul class="text-sm mt-1 list-disc list-inside" id="validation-error-list">
-                    </ul>
+            
+            <div id="form-validation-errors" class="hidden">
+                <div class="bg-[var(--color-earth-100)] border-l-4 border-[var(--color-earth-400)] text-[var(--color-earth-700)] p-4 rounded-lg shadow-sm" role="alert">
+                    <div class="flex items-start">
+                        <i class="fas fa-exclamation-triangle text-[var(--color-earth-400)] mt-1 mr-3" aria-hidden="true"></i>
+                        <div>
+                            <p class="font-bold mb-2">Errores en el formulario</p>
+                            <ul class="text-sm list-disc list-inside space-y-1" id="validation-error-list">
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
+            
+            {% if form.non_field_errors %}
+                <div class="bg-[var(--color-earth-100)] border-l-4 border-[var(--color-earth-400)] text-[var(--color-earth-700)] p-4 rounded-lg shadow-sm" role="alert">
+                    <div class="flex items-start">
+                        <i class="fas fa-exclamation-triangle text-[var(--color-earth-400)] mt-1 mr-3" aria-hidden="true"></i>
+                        <div>
+                            <p class="font-bold mb-2">Errores de validación</p>
+                            {% for error in form.non_field_errors %}
+                                <p class="text-sm">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            
+            {% if form.errors %}
+                <div class="bg-[var(--color-earth-100)] border-l-4 border-[var(--color-earth-400)] text-[var(--color-earth-700)] p-4 rounded-lg shadow-sm" role="alert">
+                    <div class="flex items-start">
+                        <i class="fas fa-exclamation-triangle text-[var(--color-earth-400)] mt-1 mr-3" aria-hidden="true"></i>
+                        <div>
+                            <p class="font-bold mb-2">Errores en los campos</p>
+                            {% for field, errors in form.errors.items %}
+                                {% if field != '__all__' %}
+                                    <p class="text-sm mb-1"><strong>{{ form.fields.field.label|default:field }}:</strong> {{ errors|join:", " }}</p>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
         </div>
     </div>
 
@@ -48,16 +84,6 @@
                     <i class="fa fa-clipboard-check mr-2" aria-hidden="true"></i>Crear Solicitud
                 </button>
             </div>
-            
-            {% if form.non_field_errors %}
-            <div class="component-buttons">
-                <div class="alert alert-error" role="alert">
-                    {% for error in form.non_field_errors %}
-                        <p>{{ error }}</p>
-                    {% endfor %}
-                </div>
-            </div>
-            {% endif %}
         </form>
     {% else %}
         <div class="alert alert-warning">
@@ -69,4 +95,4 @@
 
 {% block scripts %}
     {% vite_asset 'frontend/js/welp_payflow/create.js' %}
-{% endblock %} 
+{% endblock %}

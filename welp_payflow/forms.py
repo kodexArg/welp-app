@@ -35,7 +35,11 @@ class PayflowTicketCreationForm(forms.ModelForm):
             'class': 'form-textarea'
         }),
         label="Descripción",
-        error_messages={'required': 'La descripción es obligatoria.'}
+        min_length=10,
+        error_messages={
+            'required': 'La descripción es obligatoria.',
+            'min_length': 'La descripción debe tener al menos 10 caracteres.'
+        }
     )
     attachments = forms.FileField(
         required=False,
@@ -216,4 +220,4 @@ class PayflowTicketCreationForm(forms.ModelForm):
         amount = self.cleaned_data.get('estimated_amount')
         if amount is not None and amount < 0:
             raise ValidationError('El monto estimado no puede ser negativo.')
-        return amount 
+        return amount
