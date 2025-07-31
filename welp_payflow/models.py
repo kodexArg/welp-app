@@ -251,7 +251,7 @@ class Message(models.Model):
     ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE, related_name="messages", verbose_name="Ticket")
     status = models.CharField(
         max_length=STATUS_MAX_LENGTH,
-        choices=[(key, value['label']) for key, value in PAYFLOW_STATUSES.items() if key != 'comment'],
+        choices=[(key, value['label']) for key, value in PAYFLOW_STATUSES.items() if key not in ['comment', 'view']],
         default='open',
         verbose_name="Estado"
     )

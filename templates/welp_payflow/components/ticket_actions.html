@@ -1,13 +1,11 @@
 {% load payflow_tags %}
 {% with last_message=ticket.messages.last %}
-    {% if last_message.status != 'closed' %}
-        <div class="ticket-actions">
-            {% for action_data in actions %}
-                <a href="{{ action_data.href }}" class="ticket-action-button">
-                    <i class="mr-2 {{ action_data.fa_icon }} {{ action_data.icon_color }}"></i>
-                    <span class="{{ action_data.text_color }}">{{ action_data.label }}</span>
-                </a>
-            {% endfor %}
-        </div>
-    {% endif %}
+    <div class="ticket-actions">
+        {% for action_data in actions %}
+            <a href="{{ action_data.href }}" class="ticket-action-button">
+                <i class="mr-2 {{ action_data.fa_icon }} {{ action_data.icon_color }}"></i>
+                <span class="{{ action_data.text_color }}">{{ action_data.label }}</span>
+            </a>
+        {% endfor %}
+    </div>
 {% endwith %}

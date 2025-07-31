@@ -291,6 +291,17 @@ PAYFLOW_STATUSES = {
         'show_attachments': True,
     },
 
+    # Acción de visualización
+    'view': {
+        'action_label': 'Ver',
+        'action_verb': 'Visto',
+        'color_class': 'text-gray-600',
+        'button_text': 'Ver',
+        'comment_required': False,
+        'show_comment_box': False,
+        'show_attachments': False,
+    },
+
     # Estado de fallback
     'unknown': {
         'label': 'Desconocido',

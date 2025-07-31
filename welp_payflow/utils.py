@@ -159,6 +159,8 @@ def get_ticket_action_data(action, ticket_id=None):
         status_key = 'comment'
     elif action == 'close':
         status_key = 'closed'
+    elif action == 'view':
+        status_key = 'view'
     else:
         status_key = action
         
@@ -173,6 +175,10 @@ def get_ticket_action_data(action, ticket_id=None):
         earth_color = status_info.get('color_class', 'text-earth-700')
         icon_color = earth_color
         text_color = earth_color
+    elif action == 'view':
+        gray_color = status_info.get('color_class', 'text-gray-600')
+        icon_color = gray_color
+        text_color = gray_color
     else:
         icon_color = primary_color
         text_color = primary_color
@@ -180,7 +186,12 @@ def get_ticket_action_data(action, ticket_id=None):
     href = '#'
     if ticket_id:
         try:
-            response_type = 'comment' if action == 'feedback' else action
+            if action == 'feedback':
+                response_type = 'comment'
+            elif action == 'view':
+                response_type = 'view'
+            else:
+                response_type = action
             base_url = reverse('welp_payflow:detail', kwargs={'ticket_id': ticket_id})
             href = f"{base_url}?response_type={response_type}"
         except Exception:
@@ -232,6 +243,11 @@ def get_ticket_actions_context(user, ticket):
 
     if comment_action:
         final_actions.append(comment_action)
+    
+    # Agregar acción 'ver' al final
+    view_action = get_ticket_action_data('view', ticket.id)
+    if view_action:
+        final_actions.append(view_action)
     
     return {
         'ticket': ticket,

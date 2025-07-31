@@ -22,7 +22,7 @@
         {% for message in ticket.messages.all %}
             {% ticket_message message %}
         {% endfor %}
-        {% if show_actions %}
+        {% if show_actions != False %}
         <div class="ticket-actions">
             {% ticket_actions ticket %}
         </div>
