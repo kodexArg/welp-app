@@ -14,6 +14,9 @@ def has_user_role(user, role_name):
     user_roles = {role.role for role in user.payflow_roles.all()}
     return role_name in user_roles
 
+def can_user_edit_amount(user):
+    return has_user_role(user, 'technician') or has_user_role(user, 'purchase_manager')
+
 
 def get_available_payflow_transitions(current_status):
     return PAYFLOW_STATUSES.get(current_status, {}).get('transitions', [])

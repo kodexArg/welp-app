@@ -22,10 +22,14 @@
     {% ticket_container ticket=ticket expanded=True hide_buttons=False show_actions=False %}
 
     {% if view_only %}
-        <div class="mt-6 flex justify-center">
+        <div class="mt-6 flex justify-center gap-8">
             <a href="{% url 'welp_payflow:list' %}" class="button button-cancel">
                 <i class="fa-solid fa-arrow-left mr-2"></i>
                 Volver al listado
+            </a>
+            <a href="{% url 'welp_payflow:detail' ticket.id %}?response_type=comment" class="button">
+                <i class="fa-solid fa-comment mr-2"></i>
+                Comentar
             </a>
         </div>
     {% endif %}
@@ -40,7 +44,7 @@
         </div>
     {% endif %}
 
-    {% if not view_only %}
+    {% if not view_only or response_type == 'comment' %}
         {% ticket_message_input ticket=ticket response_type=response_type is_owner=is_owner cancel_url=cancel_url cancel_text="Cancelar" hidden_fields=hidden_fields %}
     {% endif %}
 </section>

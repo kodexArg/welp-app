@@ -12,7 +12,7 @@ logger = logging.getLogger('welp_payflow')
 
 from ..models import Ticket, Message, Attachment
 from ..forms import PayflowTicketCreationForm
-from ..utils import get_ticket_detail_context_data, can_user_transition_ticket
+from ..utils import get_ticket_detail_context_data, can_user_transition_ticket, can_user_edit_amount
 from ..constants import PAYFLOW_STATUSES
 
 
@@ -70,8 +70,12 @@ class TicketDetailView(LoginRequiredMixin, DetailView):
         
         # Si response_type es 'view', activar view_only automáticamente
         response_type = self.request.GET.get('response_type', 'view')
-        view_only = (response_type == 'view') or (self.request.GET.get('view_only', 'false').lower() == 'true')
+        if response_type == 'comment':
+            view_only = False
+        else:
+            view_only = (response_type == 'view') or (self.request.GET.get('view_only', 'false').lower() == 'true')
         final_context['view_only'] = view_only
+        final_context['response_type'] = response_type
         
         # Añadir fechas de inicio y fin al contexto
         final_context['start_date'] = self.object.start_date
@@ -247,7 +251,7 @@ class TransitionTicketView(LoginRequiredMixin, View):
                 ticket=ticket, status=target_status, user=request.user, body=body
             )
 
-            if target_status == 'budgeted':
+            if can_user_edit_amount(request.user):
                 estimated_amount_str = request.POST.get('estimated_amount')
                 if estimated_amount_str:
                     try:

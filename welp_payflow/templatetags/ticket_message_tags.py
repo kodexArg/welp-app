@@ -2,7 +2,7 @@ from django import template
 from django.urls import reverse
 from django.utils.html import format_html
 from welp_payflow.constants import FA_ICONS, PAYFLOW_STATUSES
-from welp_payflow.utils import get_ticket_actions_context
+from welp_payflow.utils import get_ticket_actions_context, can_user_edit_amount
 from welp_desk.constants import DESK_STATUSES
 
 register = template.Library()
@@ -80,8 +80,18 @@ def ticket_message_input(context, ticket, response_type, user_can_transition=Tru
         form_action = reverse('welp_payflow:transition', kwargs={'ticket_id': ticket.id, 'target_status': response_type})
     icon_class = FA_ICONS.get(response_type, 'fa-solid fa-paper-plane')
     final_cancel_url = reverse('welp_payflow:list')
-    show_estimated_amount_input = (response_type == 'budgeted')
+    show_estimated_amount_input = can_user_edit_amount(request.user)
     form_fields = []
+    if show_estimated_amount_input:
+        form_fields.append({
+            'id': 'field_estimated_amount',
+            'name': 'estimated_amount',
+            'label': 'Monto Estimado',
+            'placeholder': '0.00',
+            'required': False,
+            'field_type': 'number',
+            'value': ticket.estimated_amount or ''
+        })
     if action_info.get('show_comment_box', True):
         comment_field_name = 'response_body'
         if response_type == 'close':

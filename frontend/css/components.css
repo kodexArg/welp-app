@@ -48,6 +48,7 @@
         font-family: var(--font-ui);
         text-shadow: 0 1px 2px rgb(0 0 0 / 0.1);
         font-stretch: 85%;
+        @apply focus:outline-none focus:ring-0;
     }
 
     .button:not(:disabled) {
@@ -309,6 +310,7 @@
 
 .ticket-mermaid-container {
   @apply w-full overflow-x-hidden overflow-y-hidden h-56 cursor-grab active:cursor-grabbing;
+  @apply border-1;
 }
 
 .ticket-mermaid-container > .mermaid {
