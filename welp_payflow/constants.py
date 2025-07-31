@@ -4,6 +4,49 @@ from django.conf import settings
 STATUS_MAX_LENGTH = 30
 
 PAYFLOW_STATUSES = {
+    """
+    Configuración de estados del sistema Welp Payflow.
+    
+    Cada estado define la estructura completa para el manejo del flujo de trabajo,
+    incluyendo configuración visual, lógica de negocio y comportamiento de la interfaz.
+    
+    Estructura de cada estado:
+    
+    - mermaid_node: Identificador del nodo (A, B, C, etc.) para diagramas Mermaid
+    - mermaid_style: Estilos CSS para el nodo en diagramas (colores, bordes, formas)
+    - label: Texto legible mostrado en la interfaz de usuario
+    - color: Color hexadecimal para representación visual
+    - color_name: Nombre del color para referencia
+    - description: Descripción del estado para tooltips y ayuda
+    - is_active: Si el estado está activo en el flujo
+    - is_final: Si es un estado terminal del flujo
+    - transitions: Lista de estados a los que puede transicionar
+    - allowed_roles: Roles que pueden realizar transiciones desde este estado
+    
+    - flow: Configuración del flujo de trabajo
+      - current_action: Descripción de la acción actual
+      - next_action: Descripción del siguiente paso
+      - responsible_roles: Roles responsables de la siguiente acción
+      - is_waiting: Si el ticket está esperando acción externa
+      - priority: Nivel de prioridad (high, medium, low)
+    
+    - action_label: Etiqueta para el botón de acción
+    - action_verb: Verbo usado en el historial (ej: "Autorizado por")
+    - color_class: Clases CSS de Tailwind para colores consistentes
+    - confirmation_message: Mensaje mostrado en diálogos de confirmación
+    - confirmation_style: Estilos CSS para cajas de confirmación (bg, border, text)
+    - button_text: Texto mostrado en botones de acción
+    - comment_placeholder: Texto de ayuda en campos de comentario
+    - comment_label: Etiqueta para campos de comentario
+    - comment_required: Si el comentario es obligatorio
+    - show_comment_box: Si mostrar el campo de comentarios
+    - show_attachments: Si permitir adjuntar archivos
+    
+    Estados especiales:
+    - comment: Para acciones de comentario en el historial
+    - view: Para acciones de visualización en el historial
+    - unknown: Estado de fallback para casos no determinados
+    """
     # Los estados se ordenan según el flujo de trabajo natural.
     'open': {
         'mermaid_node': 'A',
