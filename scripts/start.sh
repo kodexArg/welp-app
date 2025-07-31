@@ -24,6 +24,10 @@ banner "INICIALIZACIÓN DE DATOS PAYFLOW"
 echo "Creando UDNs, Sectores, Categorías y Usuarios de Payflow..."
 uv run scripts/init_app.py
 
+banner "ACTUALIZACIÓN DE SUPERVISORES"
+echo "Actualizando supervisores para acceso completo a sectores..."
+uv run scripts/update_supervisors.py
+
 banner "VERIFICACIÓN DE SUPERUSUARIO"
 if uv run manage.py shell -c "from django.contrib.auth import get_user_model; User = get_user_model(); print(User.objects.filter(is_superuser=True).exists())" | grep -q "True"; then
     echo "Superusuario ya existe, omitiendo creación."
@@ -37,4 +41,4 @@ uv run manage.py test core.tests.test_views --verbosity 2
 uv run manage.py test core.tests.test_models --verbosity 2
 
 banner "INICIANDO GUNICORN"
-exec uv run gunicorn -b 0.0.0.0:8080 project.wsgi --log-level info --access-logfile - --error-logfile - 
+exec uv run gunicorn -b 0.0.0.0:8080 project.wsgi --log-level info --access-logfile - --error-logfile -
