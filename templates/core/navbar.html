@@ -18,7 +18,7 @@
                 {% endif %}
                 {% nav_link "core:index" "fa fa-home" "Inicio" current_view=request.resolver_match.view_name %}
                 {% separator %}
-                {% logout_link user=user %}
+                {% user_toggle user=user current_view=request.resolver_match.view_name %}
                 
             {% comment %} Navbar específico para Welp Payflow {% endcomment %}
             {% elif request.resolver_match.namespace == 'welp_payflow' %}
@@ -32,7 +32,7 @@
                 {% endif %}
                 {% nav_link "core:index" "fa fa-home" "Inicio" current_view=request.resolver_match.view_name %}
                 {% separator %}
-                {% logout_link user=user %}
+                {% user_toggle user=user current_view=request.resolver_match.view_name %}
                 
             {% comment %} Navbar general (Core o sin namespace específico) {% endcomment %}
             {% else %}
@@ -46,7 +46,7 @@
                 {% endif %}
                 {% nav_link "core:index" "fa fa-home" "Inicio" current_view=request.resolver_match.view_name %}
                 {% separator %}
-                {% logout_link user=user %}
+                {% user_toggle user=user current_view=request.resolver_match.view_name %}
             {% endif %}
         {% else %}
             {% nav_link "core:login" "fa fa-sign-in" "INGRESAR" current_view=request.resolver_match.view_name %}

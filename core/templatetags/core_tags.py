@@ -108,3 +108,50 @@ def button(text, variant='primary', href=None, icon=None, onclick=None, type='bu
         'disabled': disabled,
         'extra_classes': extra_classes,
     }
+
+@register.inclusion_tag('core/components/user-toggle.html')
+def user_toggle(user=None, current_view=None):
+    """
+    Componente de toggle de usuario con dropdown
+    Args:
+        user (User): Usuario actual
+        current_view (str): Vista actual para determinar estado activo
+    Returns:
+        dict: Contexto para el template
+    """
+    # Determinar el rol del usuario
+    user_role = "Usuario"
+    if user and hasattr(user, 'payflow_roles') and user.payflow_roles.exists():
+        role = user.payflow_roles.first()
+        # Usar la clase RoleType del modelo de Payflow para obtener el nombre del rol
+        try:
+            from welp_payflow.models import Roles
+            user_role = dict(Roles.RoleType.choices).get(role.role, 'Usuario')
+        except ImportError:
+            # Fallback si no se puede importar el modelo
+            user_role = role.role.replace('_', ' ').title() if role.role else 'Usuario'
+    elif user and hasattr(user, 'welp_roles') and user.welp_roles.exists():
+        # Para roles de WelpDesk, usar mapeo básico
+        role = user.welp_roles.first()
+        desk_role_mapping = {
+            'end_user': 'Usuario Final',
+            'technician': 'Técnico', 
+            'supervisor': 'Supervisor',
+            'admin': 'Administrador'
+        }
+        user_role = desk_role_mapping.get(role.get_role_type(), 'Usuario')
+
+    # Determinar nombre de usuario
+    user_name = "Usuario"
+    if user:
+        if user.first_name:
+            user_name = user.first_name[:8] + "..." if len(user.first_name) > 8 else user.first_name
+        else:
+            user_name = user.username
+
+    return {
+        'user': user,
+        'user_name': user_name,
+        'user_role': user_role,
+        'active': current_view == 'user-toggle',
+    }

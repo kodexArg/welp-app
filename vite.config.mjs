@@ -25,6 +25,7 @@ export default defineConfig({
         'payflow-attachment-manager': 'frontend/js/welp_payflow/attachment_manager.js',
         'payflow-attachment-viewer': 'frontend/js/welp_payflow/attachment_viewer.js',
         'mermaid-drag-scroll': 'frontend/js/welp_payflow/mermaid-drag-scroll.js',
+        'user-toggle': 'frontend/js/user-toggle.js',
       },
     },
   },

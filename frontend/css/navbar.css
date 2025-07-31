@@ -93,4 +93,56 @@
         @apply mx-2 font-light text-base text-white opacity-90 sm:mx-2;
     }
 
+    .user-toggle-container {
+        @apply relative;
+    }
+
+    .user-toggle-dropdown {
+        @apply absolute right-0 top-full mt-1 w-60 z-50;
+        @apply rounded-lg border border-gray-200 bg-white shadow-lg;
+        min-width: 15rem;
+    }
+
+    .user-toggle-header {
+        @apply border-b border-gray-100 px-4 py-3;
+    }
+
+    .user-profile-info {
+        @apply flex items-center space-x-3;
+    }
+
+    .user-details {
+        @apply min-w-0 flex-1;
+    }
+
+    .user-name {
+        @apply text-sm font-semibold text-gray-900 truncate;
+    }
+
+    .user-role {
+        @apply text-xs text-gray-500;
+    }
+
+    .user-toggle-actions {
+        @apply py-1;
+    }
+
+    .user-toggle-action {
+        @apply flex items-center space-x-3 px-4 py-2;
+        @apply text-sm text-gray-700;
+        @apply hover:bg-gray-50 hover:text-gray-900;
+    }
+
+    .user-toggle-action-icon {
+        @apply text-gray-400 w-4 text-center;
+    }
+
+    .user-toggle-chevron {
+        @apply transition-transform;
+    }
+
+    .user-toggle-chevron-rotated {
+        @apply rotate-180;
+    }
+
 }

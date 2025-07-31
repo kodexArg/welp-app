@@ -465,4 +465,4 @@ FILTER_THEMES = {
         'active_hover_bg': 'hover:bg-sky-800',
         'active_hover_border': 'hover:border-sky-800',
     },
-} 
+}
