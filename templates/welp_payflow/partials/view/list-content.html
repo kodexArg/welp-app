@@ -11,26 +11,22 @@
 {% if page_obj.has_other_pages %}
 <div id="pagination" class="flex flex-row justify-center items-center w-full gap-x-2">
     {% if page_obj.has_previous %}
-        {% component "button"
-            label="Primera"
-            color="button-secondary"
-            icon="fa fa-angle-double-left"
-            action="?page=1{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}"
-            target="#tickets-container" 
-            hx-get="?page=1&needs_attention={{ needs_attention }}"
-            hx-target="#tickets-container"
-            hx-swap="innerHTML"
-            />
-        {% component "button"
-            label="Anterior"
-            color="button-secondary"
-            icon="fa fa-angle-left"
-            action="?page={{ page_obj.previous_page_number }}{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}"
-            target="#tickets-container" 
-            hx-get="?page={{ page_obj.previous_page_number }}&needs_attention={{ needs_attention }}"
-            hx-target="#tickets-container"
-            hx-swap="innerHTML"
-            />
+        <button type="button" 
+                class="button button-secondary"
+                hx-get="{% url 'welp_payflow:htmx_list_content' %}?page=1&needs_attention={{ needs_attention }}"
+                hx-target="#tickets-container"
+                hx-swap="innerHTML">
+            <i class="fa fa-angle-double-left"></i>
+            Primera
+        </button>
+        <button type="button" 
+                class="button button-secondary"
+                hx-get="{% url 'welp_payflow:htmx_list_content' %}?page={{ page_obj.previous_page_number }}&needs_attention={{ needs_attention }}"
+                hx-target="#tickets-container"
+                hx-swap="innerHTML">
+            <i class="fa fa-angle-left"></i>
+            Anterior
+        </button>
     {% endif %}
 
     <span class="text-gray-700">
@@ -38,26 +34,22 @@
     </span>
 
     {% if page_obj.has_next %}
-        {% component "button"
-            label="Siguiente"
-            color="button-secondary"
-            icon="fa fa-angle-right"
-            action="?page={{ page_obj.next_page_number }}{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}"
-            target="#tickets-container"
-            hx-get="?page={{ page_obj.next_page_number }}&needs_attention={{ needs_attention }}"
-            hx-target="#tickets-container"
-            hx-swap="innerHTML"
-            />
-        {% component "button"
-            label="Última"
-            color="button-secondary"
-            icon="fa fa-angle-double-right"
-            action="?page={{ page_obj.paginator.num_pages }}{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}"
-            target="#tickets-container" 
-            hx-get="?page={{ page_obj.paginator.num_pages }}&needs_attention={{ needs_attention }}"
-            hx-target="#tickets-container"
-            hx-swap="innerHTML"
-            />
+        <button type="button" 
+                class="button button-secondary"
+                hx-get="{% url 'welp_payflow:htmx_list_content' %}?page={{ page_obj.next_page_number }}&needs_attention={{ needs_attention }}"
+                hx-target="#tickets-container"
+                hx-swap="innerHTML">
+            <i class="fa fa-angle-right"></i>
+            Siguiente
+        </button>
+        <button type="button" 
+                class="button button-secondary"
+                hx-get="{% url 'welp_payflow:htmx_list_content' %}?page={{ page_obj.paginator.num_pages }}&needs_attention={{ needs_attention }}"
+                hx-target="#tickets-container"
+                hx-swap="innerHTML">
+            <i class="fa fa-angle-double-right"></i>
+            Última
+        </button>
     {% endif %}
 </div>
 {% endif %}
