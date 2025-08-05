@@ -40,6 +40,18 @@
                 <p class="app-wide-button-text">{% trans "Playground" %}</p>
             </div>
         </a>
+
+        {% if user.is_superuser %}
+        <!-- Link 4: Test Users (Solo para superusuarios) -->
+        <a href="{% url 'core:dev_test_users' %}" class="app-wide-button secondary">
+            <div class="app-wide-button-content">
+                <div class="app-wide-button-icon">
+                    <i class="fa fa-users"></i>
+                </div>
+                <p class="app-wide-button-text">{% trans "Usuarios para Pruebas" %}</p>
+            </div>
+        </a>
+        {% endif %}
     </div>
 </section>
 {% endblock %}

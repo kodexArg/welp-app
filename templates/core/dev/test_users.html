@@ -1,0 +1,93 @@
+{% extends "core/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Test Users" %} - Welp App{% endblock %}
+
+{% block content %}
+<section class="my-12">
+    <div class="text-center mb-12">
+        <h1 class="text-3xl text-text">{% trans "Usuarios para Pruebas" %}</h1>
+        <p class="text-lg text-primary font-[var(--font-p)] mt-2">{% trans "Lista de usuarios del sistema con sus credenciales y permisos" %}</p>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4">
+        <!-- Resumen General -->
+        <div class="bg-surface border border-border rounded-lg p-6 mb-8">
+            <h2 class="text-xl font-semibold text-text mb-4">{% trans "Resumen General" %}</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-primary">{{ total_users }}</div>
+                    <div class="text-sm text-muted">{% trans "Total Usuarios" %}</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-primary">{{ total_roles }}</div>
+                    <div class="text-sm text-muted">{% trans "Total Roles" %}</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-primary">{{ unique_role_types|length }}</div>
+                    <div class="text-sm text-muted">{% trans "Tipos de Rol" %}</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lista de Usuarios por Rol -->
+        {% for role_type, users in users_by_role.items %}
+        <div class="bg-surface border border-border rounded-lg p-6 mb-6">
+            <h2 class="text-xl font-semibold text-text mb-4 capitalize">
+                {% trans "Rol:" %} {{ role_type|title }}
+                <span class="text-sm text-muted font-normal">({{ users|length }} {% trans "usuarios" %})</span>
+            </h2>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full border-collapse">
+                    <thead>
+                        <tr class="border-b border-border">
+                            <th class="text-left py-3 px-4 font-medium text-text">{% trans "Usuario" %}</th>
+                            <th class="text-left py-3 px-4 font-medium text-text">{% trans "Nombre Completo" %}</th>
+                            <th class="text-left py-3 px-4 font-medium text-text">{% trans "Contraseña" %}</th>
+                            <th class="text-left py-3 px-4 font-medium text-text">{% trans "UDNs" %}</th>
+                            <th class="text-left py-3 px-4 font-medium text-text">{% trans "Sectores" %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                        <tr class="border-b border-border hover:bg-muted/20">
+                            <td class="py-3 px-4">
+                                <code class="bg-muted/30 px-2 py-1 rounded text-sm">{{ user.username }}</code>
+                            </td>
+                            <td class="py-3 px-4 text-text">{{ user.first_name }} {{ user.last_name }}</td>
+                            <td class="py-3 px-4">
+                                <code class="bg-accent/20 px-2 py-1 rounded text-sm text-accent">{{ user.username }}</code>
+                                <span class="text-xs text-muted ml-2">(inicial)</span>
+                            </td>
+                            <td class="py-3 px-4">
+                                {% for udn in user.user_udns %}
+                                    <span class="inline-block bg-primary/20 text-primary px-2 py-1 rounded text-xs mr-1 mb-1">{{ udn }}</span>
+                                {% endfor %}
+                            </td>
+                            <td class="py-3 px-4">
+                                {% for sector in user.user_sectors %}
+                                    <span class="inline-block bg-secondary/20 text-secondary px-2 py-1 rounded text-xs mr-1 mb-1">{{ sector }}</span>
+                                {% endfor %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endfor %}
+
+        <!-- Información Adicional -->
+        <div class="bg-surface border border-border rounded-lg p-6">
+            <h2 class="text-xl font-semibold text-text mb-4">{% trans "Información Importante" %}</h2>
+            <div class="space-y-2 text-sm text-muted">
+                <p><strong>{% trans "Contraseñas:" %}</strong> {% trans "Todas las contraseñas iniciales son iguales al nombre de usuario" %}</p>
+                <p><strong>{% trans "Acceso:" %}</strong> {% trans "Los usuarios pueden acceder con username/password en la página de login" %}</p>
+                <p><strong>{% trans "Roles:" %}</strong> {% trans "Cada usuario puede tener múltiples roles en diferentes UDNs y sectores" %}</p>
+                <p><strong>{% trans "Actualización:" %}</strong> {% trans "Para regenerar usuarios, ejecute: python scripts/init_users.py" %}</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

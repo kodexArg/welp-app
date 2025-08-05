@@ -9,7 +9,8 @@ from .views.dev import (
     dev_view, 
     dev_categories_view, 
     dev_purchase_workflow_view,
-    dev_playground_view
+    dev_playground_view,
+    dev_test_users_view
 )
 
 app_name = 'core'
@@ -31,4 +32,5 @@ urlpatterns = [
     path('dev/categories/', dev_categories_view, name='dev_categories'),
     path('dev/purchase-workflow/', dev_purchase_workflow_view, name='dev_purchase_workflow'),
     path('dev/playground/', dev_playground_view, name='dev_playground'),
+    path('dev/test-users/', dev_test_users_view, name='dev_test_users'),
 ]

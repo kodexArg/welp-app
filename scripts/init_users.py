@@ -151,67 +151,94 @@ def create_user_and_assign_roles(user_data, udn_map, sector_map):
     else:
         logger.info(f"  → Usuario actualizado: {username}")
 
-    # Determinar UDNs a procesar
-    role_type = user_data['role']
-    udns_to_process = []
+    # Normalizar roles a lista
+    roles = user_data.get('role', [])
+    if isinstance(roles, str):
+        roles = [roles]
+    elif not isinstance(roles, list):
+        logger.warning(f"  ⚠️  Usuario '{username}' tiene rol inválido. Saltando.")
+        return user_created, 0
     
+    # Normalizar UDNs a lista
+    udns_to_process = []
     if user_data.get('udns') == 'all':
         udns_to_process = list(udn_map.values())
-        logger.info(f"    • Asignando rol '{role_type}' a todas las UDNs")
+        logger.info(f"    • Asignando roles a todas las UDNs")
     elif isinstance(user_data.get('udns'), list):
         udns_to_process = [udn_map[name] for name in user_data['udns'] if name in udn_map]
-        logger.info(f"    • Asignando rol '{role_type}' a UDNs específicas: {user_data['udns']}")
+        logger.info(f"    • Asignando roles a UDNs específicas: {user_data['udns']}")
     elif 'udn' in user_data:
         udn_name = user_data['udn']
         if udn_name in udn_map:
             udns_to_process = [udn_map[udn_name]]
-            logger.info(f"    • Asignando rol '{role_type}' a UDN: {udn_name}")
+            logger.info(f"    • Asignando roles a UDN: {udn_name}")
+    elif 'udns' in user_data:
+        # Caso donde udns es un string específico
+        udn_name = user_data['udns']
+        if udn_name in udn_map:
+            udns_to_process = [udn_map[udn_name]]
+            logger.info(f"    • Asignando roles a UDN: {udn_name}")
     else:
         logger.warning(f"  ⚠️  Usuario '{username}' no tiene UDN asignada. Saltando.")
         return user_created, 0
     
-    # Determinar sector específico (si aplica)
-    specific_sector = sector_map.get(user_data.get('sector'))
-    
     roles_created = 0
     
-    # Crear roles para cada UDN
-    for udn in udns_to_process:
-        sectors_in_udn = list(udn.payflow_sectors.all())
-        sectors_to_assign = []
-        
-        # Lógica especial para supervisores: acceso a todos los sectores
-        if role_type == 'supervisor':
-            # Los supervisores tienen acceso a todos los sectores de la UDN
-            sectors_to_assign = sectors_in_udn
-            logger.info(f"    • Supervisor '{username}' tendrá acceso a todos los sectores de '{udn.name}'")
-        elif specific_sector:
-            # Usuario con sector específico
-            if specific_sector in sectors_in_udn:
-                sectors_to_assign = [specific_sector]
+    # Crear roles para cada combinación de role x udn x sector
+    for role_type in roles:
+        for udn in udns_to_process:
+            # Obtener sectores disponibles en esta UDN
+            sectors_in_udn = list(udn.payflow_sectors.all())
+            sectors_to_assign = []
+            
+            # Determinar sectores a asignar
+            if user_data.get('sector') == 'all':
+                # Todos los sectores de esta UDN
+                sectors_to_assign = sectors_in_udn
+                logger.info(f"    • Rol '{role_type}' en '{udn.name}' para todos los sectores")
+            elif isinstance(user_data.get('sector'), list):
+                # Lista específica de sectores
+                for sector_name in user_data['sector']:
+                    if sector_name in sector_map:
+                        sector = sector_map[sector_name]
+                        if sector in sectors_in_udn:
+                            sectors_to_assign.append(sector)
+                        else:
+                            logger.warning(f"    ⚠️  Sector '{sector_name}' no está en UDN '{udn.name}' para '{username}'")
+                logger.info(f"    • Rol '{role_type}' en '{udn.name}' para sectores: {user_data['sector']}")
+            elif 'sector' in user_data:
+                # Sector específico
+                sector_name = user_data['sector']
+                if sector_name in sector_map:
+                    sector = sector_map[sector_name]
+                    if sector in sectors_in_udn:
+                        sectors_to_assign = [sector]
+                        logger.info(f"    • Rol '{role_type}' en '{udn.name}' para sector: {sector_name}")
+                    else:
+                        logger.warning(f"    ⚠️  Sector '{sector_name}' no está en UDN '{udn.name}' para '{username}'")
+                        continue
             else:
-                logger.warning(f"    ⚠️  Sector '{specific_sector.name}' no está asociado a la UDN '{udn.name}' para '{username}'. No se asignará rol.")
-                continue
-        else:
-            # Usuario con acceso a todos los sectores de la UDN
-            sectors_to_assign = sectors_in_udn
-            
-        # Crear rol para cada sector
-        for sector in sectors_to_assign:
-            role, role_created = Roles.objects.update_or_create(
-                user=user,
-                udn=udn,
-                sector=sector,
-                defaults={'role': role_type}
-            )
-            
-            if role_created:
-                log_msg = f"    ✓ Rol '{role_type}' asignado en {udn.name}/{sector.name}"
-                roles_created += 1
-            else:
-                log_msg = f"    → Rol '{role_type}' actualizado en {udn.name}/{sector.name}"
-            
-            logger.info(log_msg)
+                # Sin sector específico, usar todos los sectores de la UDN
+                sectors_to_assign = sectors_in_udn
+                logger.info(f"    • Rol '{role_type}' en '{udn.name}' para todos los sectores (por defecto)")
+                
+            # Crear rol para cada sector
+            for sector in sectors_to_assign:
+                role, role_created = Roles.objects.update_or_create(
+                    user=user,
+                    udn=udn,
+                    sector=sector,
+                    role=role_type,
+                    defaults={}
+                )
+                
+                if role_created:
+                    log_msg = f"    ✓ Rol '{role_type}' asignado en {udn.name}/{sector.name}"
+                    roles_created += 1
+                else:
+                    log_msg = f"    → Rol '{role_type}' actualizado en {udn.name}/{sector.name}"
+                
+                logger.info(log_msg)
     
     return user_created, roles_created
 

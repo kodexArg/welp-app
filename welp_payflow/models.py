@@ -77,7 +77,7 @@ class Roles(models.Model):
     class Meta:
         verbose_name = "Rol y Permiso"
         verbose_name_plural = "Roles y Permisos"
-        unique_together = ['user', 'udn', 'sector']
+        unique_together = ['user', 'udn', 'sector', 'role']
     
     def __str__(self):
         parts = [self.user.username]
@@ -346,4 +346,4 @@ class Attachment(models.Model):
         return f"Archivo {self.get_attachment_type_display()} - Ticket #{self.message.ticket.id}" 
 
 
-# Eliminar la función can_user_close_ticket de este archivo 
+# Eliminar la función can_user_close_ticket de este archivo
