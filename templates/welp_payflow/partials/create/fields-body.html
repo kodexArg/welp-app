@@ -1,0 +1,43 @@
+<article class="select-fields-body" id="fields-body-container">
+    <div class="space-y-6">
+        <div id="component-title" class="form-group">
+            {{ form.title.label_tag }}
+            {{ form.title }}
+            {% if form.title.errors %}
+                <div class="field-errors" role="alert" aria-live="polite">
+                    {{ form.title.errors }}
+                </div>
+            {% endif %}
+        </div>
+        
+        <div id="component-description" class="form-group">
+            {{ form.description.label_tag }}
+            {{ form.description }}
+            {% if form.description.errors %}
+                <div class="field-errors" role="alert" aria-live="polite">
+                    {{ form.description.errors }}
+                </div>
+            {% endif %}
+        </div>
+        
+        <div id="component-amount" class="form-group">
+            {{ form.estimated_amount.label_tag }}
+            {{ form.estimated_amount }}
+            {% if form.estimated_amount.errors %}
+                <div class="field-errors" role="alert" aria-live="polite">
+                    {{ form.estimated_amount.errors }}
+                </div>
+            {% endif %}
+        </div>
+        
+        {% comment %} <div id="component-attachments" class="form-group">
+            {{ form.attachments.label_tag }}
+            {{ form.attachments }}
+            {% if form.attachments.errors %}
+                <div class="field-errors" role="alert" aria-live="polite">
+                    {{ form.attachments.errors }}
+                </div>
+            {% endif %}
+        </div> {% endcomment %}
+    </div>
+</article>

@@ -1,0 +1,34 @@
+{% load payflow_tags %}
+
+{% comment %}
+Ticket Status - Muestra el estado actual y la acción esperada
+{% endcomment %}
+
+<div class="ticket-status-indicator" 
+     id="ticket-status-{{ ticket.id }}" 
+     role="status" 
+     aria-live="polite"
+     aria-label="Estado del ticket">
+    {% with status_info=ticket|get_status_flow %}
+        <div class="status-container status-priority-{{ status_info.priority }}">
+            <div class="status-badge" 
+                 aria-label="Estado actual: {{ ticket.get_status_display }}">
+                <i class="status-icon status-{{ ticket.status }}" 
+                   aria-hidden="true"></i>
+                <span class="status-label">{{ ticket.get_status_display }}</span>
+            </div>
+            
+            <div class="status-action" aria-label="Información de acciones">
+                {% if status_info.current_action %}
+                    <span class="current-action" 
+                          aria-label="Acción actual">{{ status_info.current_action }}</span>
+                {% endif %}
+                
+                {% if status_info.next_action and status_info.is_waiting %}
+                    <span class="next-action" 
+                          aria-label="Próxima acción">→ {{ status_info.next_action }}</span>
+                {% endif %}
+            </div>
+        </div>
+    {% endwith %}
+</div> 

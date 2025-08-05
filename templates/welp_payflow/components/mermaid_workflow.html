@@ -1,0 +1,30 @@
+<article class="ticket-mermaid-container">
+    <div class="mermaid">
+        %%{init: {'theme': 'base', 'themeVariables': { 'arrowheadColor': '#d1d5db'}, 'flowchart': { 'arrowMarkerAbsolute': true }}}%%
+        graph LR
+            A["ABIERTO{% if node_users.A %}<br/><big><b>{{ node_users.A }}</b></big>{% endif %}"] --> B["AUTORIZADO{% if node_users.B %}<br/><big><b>{{ node_users.B }}</b></big>{% endif %}"]
+            B --> C["PRESUPUESTADO{% if node_users.C %}<br/><big><b>{{ node_users.C }}</b></big>{% endif %}"]
+            C --> I["MANAGER{% if node_users.I %}<br/><big><b>{{ node_users.I }}</b></big>{% endif %}"]
+            C --> J["DIRECTOR{% if node_users.J %}<br/><big><b>{{ node_users.J }}</b></big>{% endif %}"]
+            C --> E["RECHAZADO{% if node_users.E %}<br/><big><b>{{ node_users.E }}</b></big>{% endif %}"]
+            I --> D["PAGO AUTORIZADO{% if node_users.D %}<br/><big><b>{{ node_users.D }}</b></big>{% endif %}"]
+            J --> D["PAGO AUTORIZADO{% if node_users.D %}<br/><big><b>{{ node_users.D }}</b></big>{% endif %}"]
+            E --> C
+            D --> G["PROCESANDO PAGO{% if node_users.G %}<br/><big><b>{{ node_users.G }}</b></big>{% endif %}"]
+            G --> H["EN ENVÍO/ENTREGA{% if node_users.H %}<br/><big><b>{{ node_users.H }}</b></big>{% endif %}"]
+            H --> F["CERRADO{% if node_users.F %}<br/><big><b>{{ node_users.F }}</b></big>{% endif %}"]
+
+            linkStyle 0,1,2,3,4,5,6,7,8,9,10 stroke:#E0E0E0,stroke-width:2px;
+
+            {% for node, style in styles.items %}
+            style {{ node }} {{ style }}
+            {% endfor %}
+            
+
+    </div>
+    <script>
+        if (window.mermaid) {
+            window.mermaid.run();
+        }
+    </script>
+</article>

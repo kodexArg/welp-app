@@ -1,0 +1,86 @@
+{% if form_fields|length == 0 %}
+    <form method="post" enctype="multipart/form-data" action="{{ form_action }}" id="ticket-message-input-form">
+        {% csrf_token %}
+        {% if hidden_fields %}
+            {% for field_name, field_value in hidden_fields.items %}
+                <input type="hidden" name="{{ field_name }}" value="{{ field_value }}">
+            {% endfor %}
+        {% endif %}
+        <div class="flex justify-end gap-3 pt-4 mr-ticket-btn-solo">
+            {% if cancel_url %}
+            <a href="{{ cancel_url }}" class="ticket-action-button text-base-b2">
+                <i class="fa fa-times response-action-icon-cancel mr-2" aria-hidden="true"></i>
+                <span class="font-normal">{{ cancel_text }}</span>
+            </a>
+            {% endif %}
+            <button type="submit" class="ticket-action-button text-base-b2">
+                <i class="{{ icon_class }} response-action-icon-submit mr-2"></i>
+                <span class="font-normal capitalize">{{ button_text }}</span>
+            </button>
+        </div>
+    </form>
+{% else %}
+<article class="ticket-input-message">
+    <div class="ticket-response-form">
+        <form method="post" enctype="multipart/form-data" action="{{ form_action }}" id="ticket-message-input-form">
+            {% csrf_token %}
+            {% if hidden_fields %}
+                {% for field_name, field_value in hidden_fields.items %}
+                    <input type="hidden" name="{{ field_name }}" value="{{ field_value }}">
+                {% endfor %}
+            {% endif %}
+
+            {% for field in form_fields %}
+                {% if field.field_type == 'textarea' %}
+                <div class="form-group">
+                    <label for="{{ field.id }}" class="form-label">{{ field.label }}:</label>
+                    <textarea id="{{ field.id }}" name="{{ field.name }}" class="form-input" rows="4" placeholder="{{ field.placeholder }}" {% if field.required %}required{% endif %}></textarea>
+                </div>
+                {% elif field.field_type == 'file' %}
+                <details class="attachment-details">
+                    <summary class="attachment-summary">
+                        <i class="fa-solid fa-paperclip text-xs mr-2"></i>
+                        <span class="text-sm text-forest-600">Agregar adjuntos...</span>
+                    </summary>
+                    
+                    <div class="attachment-content">
+                        <div id="attachments-container">
+                            <div class="attachment-input-row">
+                                <input type="file" name="attachments" class="form-input attachment-input" accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg,.gif">
+                                
+                            </div>
+                        </div>
+                    </div>
+                </details>
+                {% elif field.field_type == 'number' %}
+                <div class="form-group">
+                    <label for="{{ field.id }}" class="form-label">{{ field.label }}:</label>
+                    <input type="number" 
+                           id="{{ field.id }}" 
+                           name="{{ field.name }}" 
+                           class="form-input" 
+                           placeholder="{{ field.placeholder }}" 
+                           step="0.01" 
+                           min="0"
+                           value="{{ field.value }}"
+                           {% if field.required %}required{% endif %}>
+                </div>
+                {% endif %}
+            {% endfor %}
+            
+            <div class="ticket-response-actions flex justify-end gap-3 pt-4">
+                {% if cancel_url %}
+                <a href="{{ cancel_url }}" class="ticket-action-button">
+                    <i class="fa fa-times response-action-icon-cancel mr-2" aria-hidden="true"></i>
+                    <span class="font-normal">{{ cancel_text }}</span>
+                </a>
+                {% endif %}
+                <button type="submit" class="ticket-action-button">
+                    <i class="{{ icon_class }} response-action-icon-submit mr-2"></i>
+                    <span class="font-normal capitalize">{{ button_text }}</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</article>
+{% endif %}

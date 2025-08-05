@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+@import "./css/variables.css";
+@import "./css/base.css";
+@import "./css/themes.css";
+@import "./css/utilities.css";
+@import "./css/ticket.css";
+@import "./css/components.css";
+@import "./css/navbar.css";
+@import "./css/animations.css";
+@import "./fonts/fa/all.min.css";
+
+/*
+ * Utilidades @utility disponibles para @apply:
+ * - transition-theme, transition-form, transition-interactive
+ * - animate-delay-100, animate-delay-200, animate-delay-300, animate-delay-500, animate-delay-1000
+ * - button-effects, button-effects-minimal
+ * - card-hover-lift, app-hover-scale
+ * - dev-content-slide
+ * - loading-content, error-content
+ */
+
+/* Forzar reconstrucción de caché */
+

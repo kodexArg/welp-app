@@ -1,0 +1,38 @@
+<button class="nav-link group user-toggle-container" type="button" aria-haspopup="true" data-toggle="user-dropdown">
+    <div class="nav-link-content{% if active %} active{% endif %}">
+        <i class="nav-link-icon fa fa-user-circle"></i>
+        <span class="nav-link-label">{{ user_name }}</span>
+        <i class="fa fa-chevron-down ml-1 text-sm user-toggle-chevron"></i>
+    </div>
+    
+    <div class="user-toggle-dropdown" style="display: none;">
+        <div class="user-toggle-header">
+            <div class="user-profile-info">
+                <i class="fa fa-user-circle text-2xl"></i>
+                <div class="user-details">
+                    <div class="user-name">
+                        {% if user.first_name and user.last_name %}
+                            {{ user.first_name }} {{ user.last_name }}
+                        {% elif user.first_name %}
+                            {{ user.first_name }}
+                        {% else %}
+                            {{ user.username }}
+                        {% endif %}
+                    </div>
+                    <div class="user-role">{{ user_role }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="user-toggle-actions">
+            <a href="#" onclick="event.preventDefault();document.getElementById('logout-form').submit();" class="user-toggle-action">
+                <i class="user-toggle-action-icon fa fa-sign-out-alt"></i>
+                <span>Salir</span>
+            </a>
+        </div>
+    </div>
+</button>
+
+<form id="logout-form" action="{% url 'core:logout' %}" method="post" class="hidden">
+    {% csrf_token %}
+</form>

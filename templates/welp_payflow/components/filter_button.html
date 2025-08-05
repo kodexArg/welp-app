@@ -1,0 +1,24 @@
+{% if visible %}
+<div id="filter-button-{{ filter_id }}" hx-swap-oob="true">
+    <button 
+        class="filter-button 
+               {% if is_active %}
+                   {{ theme.active_border }} {{ theme.active_background }} {{ theme.active_text }} 
+                   {{ theme.active_hover_bg }} {{ theme.active_hover_border }}
+               {% else %}
+                   {{ theme.border }} {{ theme.background }} {{ theme.text }} 
+                   {{ theme.hover_bg }} {{ theme.hover_border }}
+               {% endif %}
+               {{ theme.focus_ring }}"
+        hx-get="{% url 'welp_payflow:htmx_list_content' %}?{{ url_param }}={{ toggle_value }}"
+        hx-target="#tickets-container"
+        hx-swap="innerHTML"
+        title="{{ description }}"
+        aria-pressed="{% if is_active %}true{% else %}false{% endif %}">
+        {% if icon %}
+            <i class="{{ icon }} mr-2"></i>
+        {% endif %}
+        {{ label }}
+    </button>
+</div>
+{% endif %} 

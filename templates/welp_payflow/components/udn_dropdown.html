@@ -1,0 +1,90 @@
+<div class="relative inline-block text-left" id="udn-dropdown">
+    <!-- Botón principal -->
+    <button 
+        id="udn-dropdown-button"
+        class="filter-button 
+               border-sky-300 bg-white text-sky-400 
+               hover:bg-sky-50 hover:border-sky-400 
+               focus:ring-sky-500"
+        type="button"
+        aria-expanded="false"
+        aria-haspopup="true">
+        <i class="fa-solid fa-caret-left mr-2"></i>
+        UDNs
+    </button>
+
+    <!-- Menú desplegable -->
+    <div 
+        id="udn-dropdown-menu"
+        class="absolute left-0 z-10 mt-2 w-56 origin-top-left rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none hidden"
+        role="menu"
+        aria-orientation="vertical"
+        tabindex="-1">
+        <div class="py-1" role="none">
+            {% for udn in udns %}
+            <label class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-sky-50 cursor-pointer" role="menuitem">
+                <input 
+                    type="checkbox" 
+                    value="{{ udn.id }}"
+                    data-udn-name="{{ udn.name }}"
+                    class="udn-checkbox mr-3 h-4 w-4 text-sky-600 focus:ring-sky-500 border-gray-300 rounded">
+                <span>{{ udn.name }}</span>
+            </label>
+            {% empty %}
+            <div class="px-4 py-2 text-sm text-gray-500">No hay UDNs disponibles</div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<script>
+(function() {
+    const dropdown = document.getElementById('udn-dropdown');
+    const button = document.getElementById('udn-dropdown-button');
+    const menu = document.getElementById('udn-dropdown-menu');
+    const checkboxes = document.querySelectorAll('.udn-checkbox');
+    
+    let selectedUdns = [];
+    
+    // Toggle dropdown
+    button.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const isOpen = !menu.classList.contains('hidden');
+        
+        if (isOpen) {
+            menu.classList.add('hidden');
+            button.setAttribute('aria-expanded', 'false');
+        } else {
+            menu.classList.remove('hidden');
+            button.setAttribute('aria-expanded', 'true');
+        }
+    });
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!dropdown.contains(e.target)) {
+            menu.classList.add('hidden');
+            button.setAttribute('aria-expanded', 'false');
+        }
+    });
+    
+    // Handle checkbox changes
+    checkboxes.forEach(function(checkbox) {
+        checkbox.addEventListener('change', function() {
+            const udnId = this.value;
+            const udnName = this.getAttribute('data-udn-name');
+            
+            if (this.checked) {
+                if (!selectedUdns.find(udn => udn.id === udnId)) {
+                    selectedUdns.push({ id: udnId, name: udnName });
+                }
+            } else {
+                selectedUdns = selectedUdns.filter(udn => udn.id !== udnId);
+            }
+            
+            // Log selected UDNs to console
+            console.log('UDNs seleccionadas:', selectedUdns);
+        });
+    });
+})();
+</script>

@@ -1,0 +1,57 @@
+{% extends "core/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Developer Tools" %} - Welp App{% endblock %}
+
+{% block content %}
+<section class="my-12">
+    <div class="text-center mb-12">
+        <h1 class="text-3xl text-text">{% trans "Developer Tools" %}</h1>
+        <p class="text-lg text-primary font-[var(--font-p)] mt-2">{% trans "System documentation, component testing, and technical resources." %}</p>
+    </div>
+
+    <div class="app-wide-actions">
+        <!-- Link 1: Categories & Hierarchy -->
+        <a href="{% url 'core:dev_categories' %}" class="app-wide-button secondary">
+            <div class="app-wide-button-content">
+                <div class="app-wide-button-icon">
+                    <i class="fa fa-sitemap"></i>
+                </div>
+                <p class="app-wide-button-text">{% trans "Categories & Hierarchy" %}</p>
+            </div>
+        </a>
+
+        <!-- Link 2: Purchase Workflow -->
+        <a href="{% url 'core:dev_purchase_workflow' %}" class="app-wide-button secondary">
+            <div class="app-wide-button-content">
+                <div class="app-wide-button-icon">
+                    <i class="fa fa-shopping-cart"></i>
+                </div>
+                <p class="app-wide-button-text">{% trans "Purchase Workflow" %}</p>
+            </div>
+        </a>
+
+        <!-- Link 3: Playground -->
+        <a href="{% url 'core:dev_playground' %}" class="app-wide-button secondary">
+            <div class="app-wide-button-content">
+                <div class="app-wide-button-icon">
+                    <i class="fa fa-flask"></i>
+                </div>
+                <p class="app-wide-button-text">{% trans "Playground" %}</p>
+            </div>
+        </a>
+
+        {% if user.is_superuser %}
+        <!-- Link 4: Test Users (Solo para superusuarios) -->
+        <a href="{% url 'core:dev_test_users' %}" class="app-wide-button secondary">
+            <div class="app-wide-button-content">
+                <div class="app-wide-button-icon">
+                    <i class="fa fa-users"></i>
+                </div>
+                <p class="app-wide-button-text">{% trans "Usuarios para Pruebas" %}</p>
+            </div>
+        </a>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,14 @@
+<div class="text-center p-8">
+    {% if needs_attention %}
+        <h4>No hay tickets que requieran tu atención</h4>
+    {% else %}
+        <h4>No hay tickets en el sistema</h4>
+        <p class="text-gray-600 mb-4">Parece que aún no se han creado solicitudes.</p>
+        <div class="flex justify-center">
+            <a href="{% url 'welp_payflow:create' %}" class="button">
+                <i class="fa-solid fa-plus mr-2"></i>
+                Crear Primera Solicitud
+            </a>
+        </div>
+    {% endif %}
+</div>

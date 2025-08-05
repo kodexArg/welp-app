@@ -1,0 +1,33 @@
+@theme {
+  /* ========================================================================
+     Asignación de colores semánticos
+     ======================================================================== */
+  --color-primary: var(--color-forest-700);
+  --color-secondary: var(--color-forest-600);
+  --color-accent: var(--color-earth-400);
+  --color-bg: var(--color-forest-50);
+  --color-surface: var(--color-forest-100);
+  --color-border: var(--color-forest-200);
+  --color-text: var(--color-forest-400);
+  --color-light: #ffffff;
+  
+  /* ========================================================================
+     Tipografía semántica
+     ======================================================================== */
+  --font-brand: 'Grandstander local';
+  --font-body: 'Lato local';
+  --font-title: 'Nunito local';
+  --font-ui: 'Inter local';
+  --font-mono: 'Roboto Mono local';
+
+  /* ========================================================================
+     Variables de la barra de navegación (Navbar)
+     ======================================================================== */
+  --navbar-bg: var(--color-forest-600);
+  --navbar-text: var(--color-forest-50);
+  --navbar-active: var(--color-forest-50);
+  --navbar-hover: var(--color-forest-50);
+  --navbar-link-text: var(--color-forest-50);
+  --navbar-link-hover: var(--color-forest-100);
+  --navbar-link-active: var(--color-light);
+}

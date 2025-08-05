@@ -1,0 +1,158 @@
+{% extends "core/base.html" %}
+{% load format_tags %}
+{% load django_vite %}
+
+{% block title %}{{ attachment.file.name|basename }} - Welp Payflow{% endblock %}
+
+{% block content %}
+<section class="attachment-viewer">
+    <div class="attachment-header relative z-10 pointer-events-auto">
+        <h1 class="attachment-title">{{ attachment.file.name|basename }}</h1>
+        
+            <button type="button" onclick="window.history.back()" class="detail-back-button">
+                <i class="fa-solid fa-arrow-left mr-2"></i>
+                Volver
+            </button>
+            <a href="{% url 'welp_payflow:list' %}" class="detail-back-button">
+                <i class="fa-solid fa-list mr-2"></i>
+                Lista de Solicitudes
+            </a>
+            <a href="{{ attachment.file.url }}" target="_blank" class="button-primary attachment-open-btn">
+                <i class="fa-solid fa-external-link-alt mr-2"></i>
+                Abrir en Pestaña
+            </a>
+    </div>
+
+    <div class="attachment-content z-0">
+        {% if file_type == 'image' %}
+            <div class="attachment-image-container flex justify-center items-center">
+                <img src="{{ attachment.file.url }}"
+                     alt="{{ attachment.file.name|basename }}"
+                     class="attachment-image max-w-full max-h-[70vh] rounded shadow border mx-auto">
+            </div>
+        {% elif file_type == 'pdf' %}
+            <div id="pdf-container" class="attachment-pdf-container flex flex-col items-center"></div>
+            <div id="pdf-controls" class="mt-2 flex justify-center gap-4"></div>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+            <script>
+                const url = "{{ attachment.file.url }}";
+                const container = document.getElementById('pdf-container');
+                const controls = document.getElementById('pdf-controls');
+                const canvas = document.createElement('canvas');
+                canvas.className = 'w-full border rounded';
+                container.appendChild(canvas);
+                const ctx = canvas.getContext('2d');
+
+                const pdfjsLib = window['pdfjs-dist/build/pdf'];
+                pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
+
+                let pdfDoc = null,
+                    pageNum = 1,
+                    pageRendering = false;
+
+                function renderPage(num) {
+                    pageRendering = true;
+                    pdfDoc.getPage(num).then(page => {
+                        const viewport = page.getViewport({ scale: 1 });
+                        const width = container.clientWidth;
+                        const scale = width / viewport.width;
+                        const scaledViewport = page.getViewport({ scale });
+                        canvas.height = scaledViewport.height;
+                        canvas.width = scaledViewport.width;
+                        const renderCtx = { canvasContext: ctx, viewport: scaledViewport };
+                        page.render(renderCtx).promise.then(() => {
+                            pageRendering = false;
+                            pageInfo.textContent = `${num} / ${pdfDoc.numPages}`;
+                        });
+                    });
+                }
+
+                function queueRenderPage(num) {
+                    if (pageRendering) {
+                        setTimeout(() => queueRenderPage(num), 100);
+                    } else {
+                        renderPage(num);
+                    }
+                }
+
+                function onPrevPage() {
+                    if (pageNum <= 1) return;
+                    pageNum--;
+                    queueRenderPage(pageNum);
+                }
+
+                function onNextPage() {
+                    if (pageNum >= pdfDoc.numPages) return;
+                    pageNum++;
+                    queueRenderPage(pageNum);
+                }
+
+                const prevBtn = document.createElement('button');
+                prevBtn.type = 'button';
+                prevBtn.className = 'button-minimal';
+                prevBtn.textContent = '« Página anterior';
+                prevBtn.addEventListener('click', onPrevPage);
+
+                const nextBtn = document.createElement('button');
+                nextBtn.type = 'button';
+                nextBtn.className = 'button-minimal';
+                nextBtn.textContent = 'Página siguiente »';
+                nextBtn.addEventListener('click', onNextPage);
+
+                const pageInfo = document.createElement('span');
+                pageInfo.className = 'text-sm self-center';
+
+                controls.appendChild(prevBtn);
+                controls.appendChild(pageInfo);
+                controls.appendChild(nextBtn);
+
+                pdfjsLib.getDocument(url).promise.then(pdf => {
+                    pdfDoc = pdf;
+                    renderPage(pageNum);
+                }).catch(() => {
+                    container.innerHTML = `<p class='text-center mt-4'>No se pudo cargar el PDF. <a href='${url}' target='_blank'>Descargar</a></p>`;
+                    controls.remove();
+                });
+                window.addEventListener('resize', () => renderPage(pageNum));
+            </script>
+        {% else %}
+            <div class="attachment-file-preview">
+                <div class="attachment-file-icon">
+                    {% if file_type == 'document' %}
+                        ▢
+                    {% elif file_type == 'spreadsheet' %}
+                        ▦
+                    {% else %}
+                        ⚬
+                    {% endif %}
+                </div>
+                <h3>{{ attachment.file.name|basename }}</h3>
+                <p class="attachment-file-type">
+                    Archivo {{ file_extension|upper }}
+                    {% if file_type == 'document' %}
+                        (Documento)
+                    {% elif file_type == 'spreadsheet' %}
+                        (Hoja de cálculo)
+                    {% else %}
+                        (Archivo genérico)
+                    {% endif %}
+                </p>
+                <p class="attachment-preview-note">
+                    Este tipo de archivo no se puede previsualizar en el navegador.<br>
+                    Usa los botones de arriba para descargarlo o abrirlo en una nueva pestaña.
+                </p>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="mt-6">
+            <div class="attachment-meta">
+            <span class="attachment-info">Ticket: {{ ticket.title }}</span>
+            <span class="attachment-info">Tipo: {{ attachment.get_attachment_type_display }}</span>
+            <span class="attachment-info">Tamaño: <span id="file-size">Calculando...</span></span>
+        </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %} 

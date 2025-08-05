@@ -1,0 +1,148 @@
+@layer components {
+
+    .brand-logo-link {
+        @apply font-bold;
+        font-variation-settings: 'wght' 700;
+        font-feature-settings: 'liga' 1;
+    }
+
+    .font-brand {
+        @apply font-bold min-h-[1.2em] leading-[1.2] antialiased;
+        font-family: var(--font-brand);
+        font-synthesis: none;
+    }
+
+    @keyframes brief-glow {
+        0%, 4%, 100% {
+            filter: brightness(1) drop-shadow(0 0 0 white);
+        }
+        1% {
+            filter: brightness(1.7) drop-shadow(0 0 18px white);
+        }
+    }
+
+    .icon-glow {
+        @apply animate-none;
+        animation: brief-glow 30s ease-in-out infinite;
+    }
+
+    .icon-glow.hover-effect {
+        @apply brightness-110 drop-shadow-lg;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .icon-glow {
+            @apply animate-none;
+        }
+    }
+
+    .group > .flex.items-center {
+        @apply transition-colors duration-200;
+    }
+
+    /* Scrollbar personalizado para el contexto de la barra de navegación */
+    nav::-webkit-scrollbar {
+        @apply w-5 bg-[var(--navbar-bg)];
+        -webkit-appearance: none;
+    }
+    nav::-webkit-scrollbar-track {
+        @apply bg-[var(--navbar-bg)];
+        margin-top: var(--header-height);
+    }
+    nav::-webkit-scrollbar-thumb {
+        @apply rounded-full border-4 border-[var(--navbar-bg)] bg-[var(--color-primary)];
+    }
+    nav::-webkit-scrollbar-thumb:hover {
+        @apply bg-[var(--color-accent)];
+    }
+
+    .nav-link {
+        @apply relative inline-flex items-center justify-center px-1.5 py-1 no-underline transition-colors duration-200;
+    }
+
+    .nav-link-content {
+        @apply flex items-center text-[var(--navbar-link-text)] transition-colors duration-200 group-hover:text-[var(--navbar-link-hover)];
+    }
+
+    .nav-link-content.active {
+        @apply !text-[var(--navbar-link-active)] translate-x-[-0.05rem] translate-y-[0.05rem];
+    }
+
+    .nav-link-icon {
+        @apply align-middle text-xl sm:text-2xl md:text-xl;
+    }
+
+    .nav-link-label {
+        font-family: var(--font-ui);
+        @apply ml-1.5 text-xl font-semibold tracking-wider uppercase;
+    }
+    
+    .nav-link-brand {
+        font-family: var(--font-brand);
+        @apply ml-1.5 text-3xl tracking-wide uppercase;
+    }
+
+    .nav-link-label-special {
+        @apply hidden md:inline font-bold tracking-[0.025em] normal-case antialiased transform translate-y-[0.1em];
+        @apply text-2xl;
+        font-family: var(--font-brand) !important;
+        font-feature-settings: 'liga' 1 !important;
+    }
+
+    .nav-separator {
+        @apply mx-2 font-light text-base text-white opacity-90 sm:mx-2;
+    }
+
+    .user-toggle-container {
+        @apply relative;
+    }
+
+    .user-toggle-dropdown {
+        @apply absolute right-0 top-full mt-1 w-60 z-50;
+        @apply rounded-lg border border-gray-200 bg-white shadow-lg;
+        min-width: 15rem;
+    }
+
+    .user-toggle-header {
+        @apply border-b border-gray-100 px-4 py-3;
+    }
+
+    .user-profile-info {
+        @apply flex items-center space-x-3;
+    }
+
+    .user-details {
+        @apply min-w-0 flex-1;
+    }
+
+    .user-name {
+        @apply text-sm font-semibold text-gray-900 truncate;
+    }
+
+    .user-role {
+        @apply text-xs text-gray-500;
+    }
+
+    .user-toggle-actions {
+        @apply py-1;
+    }
+
+    .user-toggle-action {
+        @apply flex items-center space-x-3 px-4 py-2;
+        @apply text-sm text-gray-700;
+        @apply hover:bg-gray-50 hover:text-gray-900;
+    }
+
+    .user-toggle-action-icon {
+        @apply text-gray-400 w-4 text-center;
+    }
+
+    .user-toggle-chevron {
+        @apply transition-transform;
+    }
+
+    .user-toggle-chevron-rotated {
+        @apply rotate-180;
+    }
+
+}

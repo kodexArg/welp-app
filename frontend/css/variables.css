@@ -1,0 +1,191 @@
+/* =====================
+   VARIABLE FONTS
+   ===================== */
+@font-face {
+    font-family: 'Grandstander local';
+    src: url('../fonts/Grandstander/Grandstander-VariableFont_wght.ttf') format('truetype-variations');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Roboto Condensed local';
+    src: url('../fonts/Roboto_Condensed/RobotoCondensed-VariableFont_wght.ttf') format('truetype-variations');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Roboto Mono local';
+    src: url('../fonts/Roboto_Mono/RobotoMono-VariableFont_wght.ttf') format('truetype-variations');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Roboto Slab local';
+    src: url('../fonts/Roboto_Slab/RobotoSlab-VariableFont_wght.ttf') format('truetype-variations');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Nunito local';
+    src: url('../fonts/Nunito/Nunito-VariableFont_wght.ttf') format('truetype-variations');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Inter local';
+    src: url('../fonts/Inter/Inter-VariableFont_opsz,wght.ttf') format('truetype-variations');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Noto Sans local';
+    src: url('../fonts/Noto_Sans/NotoSans-VariableFont_wdth,wght.ttf') format('truetype-variations');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* =====================
+   STATIC FONTS
+   ===================== */
+@font-face {
+    font-family: 'Grandstander local';
+    src: url('../fonts/Grandstander/static/Grandstander-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+    font-display: block;
+}
+
+@font-face {
+    font-family: 'Roboto Condensed local';
+    src: url('../fonts/Roboto_Condensed/RobotoCondensed-VariableFont_wght.ttf') format('truetype-variations');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Roboto Mono local';
+    src: url('../fonts/Roboto_Mono/static/RobotoMono-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Roboto Mono local';
+    src: url('../fonts/Roboto_Mono/static/RobotoMono-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Lato local';
+    src: url('../fonts/Lato/Lato-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Lato local';
+    src: url('../fonts/Lato/Lato-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Lato local';
+    src: url('../fonts/Lato/Lato-Italic.ttf') format('truetype');
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Lato local';
+    src: url('../fonts/Lato/Lato-BoldItalic.ttf') format('truetype');
+    font-weight: 700;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Roboto Slab local';
+    src: url('../fonts/Roboto_Slab/RobotoSlab-VariableFont_wght.ttf') format('truetype-variations');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@theme {
+    /* Paleta de colores Forest */
+    --color-forest-50: #e8ede8;
+    --color-forest-100: #d1dbd1;
+    --color-forest-200: #a3b8a3;
+    --color-forest-300: #759575;
+    --color-forest-400: #4a724a;
+    --color-forest-500: #3d5f3d;
+    --color-forest-600: #304c30;
+    --color-forest-700: #243824;
+    --color-forest-800: #1a291a;
+    --color-forest-900: #121e12;
+    --color-forest-950: #0a120a;
+
+    /* Paleta de colores Earth */
+    --color-earth-50: #fae8d6;
+    --color-earth-100: #f5d0ad;
+    --color-earth-200: #f0b17d;
+    --color-earth-300: #eb9651;
+    --color-earth-400: #e27b2c;
+    --color-earth-500: #c45e1d;
+    --color-earth-600: #954616;
+    --color-earth-700: #68310f;
+    --color-earth-800: #3b1c08;
+    --color-earth-900: #1a0c03;
+    --color-earth-950: #120802;
+
+    /* Paleta de colores Sky */
+    --color-sky-50: #f4fafd;
+    --color-sky-100: #e6f1f9;
+    --color-sky-200: #cce3f3;
+    --color-sky-300: #a9d1ea;
+    --color-sky-400: #83bddf;
+    --color-sky-500: #5ca8d6;
+    --color-sky-600: #3d88be;
+    --color-sky-700: #2e6996;
+    --color-sky-800: #1f4764;
+    --color-sky-900: #0f2332;
+    --color-sky-950: #071219;
+}
+
+:root {
+  /* Layout y espaciados */
+  --header-height: 7.2vh;
+  --aside-width: 16rem;
+  --spacing: 0.25rem;
+
+  /* Breakpoints */
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+
+  /* Radios de borde */
+  --radius-xs: 0.125rem;
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+
+  /* Sombreados */
+  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+} 

@@ -1,0 +1,124 @@
+{% extends "core/base.html" %}
+
+{% block title %}Tickets - Welp Desk{% endblock %}
+
+{% block content %}
+<section>
+    <div class="flex justify-between items-center mb-6">
+        <div>
+            <h1>Tickets del Sistema</h1>
+        </div>
+        <a href="{% url 'welp_desk:index' %}" class="button-secondary">
+            <i class="fa fa-arrow-left mr-2"></i>
+            Volver
+        </a>
+    </div>
+
+    {% if tickets %}
+        {% for ticket in tickets %}
+            <div class="card mb-6">
+                <div class="card-header">
+                    <div class="flex justify-between items-center">
+                        <h3><i class="fa fa-ticket-alt mr-2"></i>Ticket #{{ ticket.id }}</h3>
+                        {% if ticket.status %}
+                            <span class="status status-{{ ticket.status }}">{{ ticket.status|title }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="bg-green-50 border border-green-200 rounded-lg p-4 mb-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                            <div>
+                                <p><strong>UDN:</strong> {{ ticket.udn.name }}</p>
+                                <p><strong>Sector:</strong> {{ ticket.sector.name }}</p>
+                                <p><strong>Categoría:</strong> {{ ticket.issue_category.name }}</p>
+                                <p><strong>Incidencia:</strong> {{ ticket.issue.name }}</p>
+                            </div>
+                            <div>
+                                {% if ticket.created_by %}
+                                    <p><strong>Creado por:</strong> {{ ticket.created_by.get_full_name|default:ticket.created_by.username }}</p>
+                                {% endif %}
+                                <p><strong>Mensajes:</strong> {{ ticket.messages.count }}</p>
+                                <p><strong>Estado:</strong> 
+                                    {% if ticket.is_final %}
+                                        <span class="text-gray-600">🔒 Finalizado</span>
+                                    {% elif ticket.is_active %}
+                                        <span class="text-green-600">🔄 Activo</span>
+                                    {% else %}
+                                        <span class="text-yellow-600">⚠️ Pendiente</span>
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <h4 class="font-semibold text-gray-800 mb-3">
+                            <i class="fa fa-comments mr-2"></i>Mensajes ({{ ticket.messages.count }})
+                        </h4>
+                        {% if ticket.messages.all %}
+                            <div class="space-y-3">
+                                {% for message in ticket.messages.all %}
+                                    <div class="bg-gray-50 border border-gray-200 rounded-lg p-3">
+                                        <div class="flex justify-between items-start mb-2">
+                                            <div class="text-sm text-gray-600">
+                                                <p><strong>{{ message.user.get_full_name|default:message.user.username|default:"Usuario eliminado" }}</strong></p>
+                                                <p>{{ message.created_on|date:"d/m/Y H:i" }}</p>
+                                            </div>
+                                            <span class="status status-{{ message.status }}">{{ message.status|title }}</span>
+                                        </div>
+                                        
+                                        {% if message.body %}
+                                            <div class="bg-white p-2 rounded border mb-2">
+                                                <p class="text-sm">{{ message.body }}</p>
+                                            </div>
+                                        {% endif %}
+
+                                        {% if message.attachments.all %}
+                                            <div class="mt-2">
+                                                <p class="text-sm font-medium text-gray-700 mb-1">
+                                                    <i class="fa fa-paperclip mr-1"></i>Adjuntos ({{ message.attachments.count }}):
+                                                </p>
+                                                <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                                    {% for attachment in message.attachments.all %}
+                                                        <div class="bg-indigo-50 border border-indigo-200 rounded p-2">
+                                                            <p class="text-xs"><a href="{{ attachment.file.url }}" target="_blank" class="text-blue-600 hover:underline">{{ attachment.file.name }}</a></p>
+                                                            
+                                                            {% if attachment.file.name|lower|slice:"-4:" == ".png" or attachment.file.name|lower|slice:"-4:" == ".jpg" or attachment.file.name|lower|slice:"-5:" == ".jpeg" %}
+                                                                <div class="mt-1">
+                                                                    <img src="{{ attachment.file.url }}" 
+                                                                         alt="Imagen" 
+                                                                         class="attachment-image max-w-full h-auto max-h-24 rounded border cursor-pointer"
+                                                                         data-url="{{ attachment.file.url }}">
+                                                                </div>
+                                                            {% endif %}
+                                                        </div>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <p class="text-gray-500 text-sm">Sin mensajes</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="card">
+            <div class="card-body text-center">
+                <i class="fa fa-inbox text-4xl text-gray-400 mb-4"></i>
+                <h3 class="text-lg font-medium text-gray-600 mb-2">No hay tickets</h3>
+                <p class="text-gray-500">Crea tu primer ticket</p>
+                <a href="{% url 'welp_desk:ticket-create-dev' %}" class="button-primary mt-4">
+                    <i class="fa fa-plus mr-2"></i>
+                    Crear Ticket
+                </a>
+            </div>
+        </div>
+    {% endif %}
+</section>
+{% endblock %} 

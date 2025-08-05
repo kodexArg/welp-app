@@ -1,0 +1,55 @@
+{% load payflow_tags %}
+{% load ticket_message_tags %}
+{% load core_tags %}
+
+{% for ticket in tickets %}
+    {% ticket_container ticket expanded=False %}
+{% empty %}
+    {% ticket_empty %}
+{% endfor %}
+
+{% if page_obj.has_other_pages %}
+<div id="pagination" class="flex flex-row justify-center items-center w-full gap-x-2">
+    {% if page_obj.has_previous %}
+        <button type="button" 
+                class="button button-secondary px-2 py-1 text-xs"
+                hx-get="{% url 'welp_payflow:htmx_list_content' %}?page=1&needs_attention={{ needs_attention }}"
+                hx-target="#tickets-container"
+                hx-swap="innerHTML">
+            <i class="fa fa-angle-double-left mr-1"></i>
+            Primera
+        </button>
+        <button type="button" 
+                class="button button-secondary px-2 py-1 text-xs"
+                hx-get="{% url 'welp_payflow:htmx_list_content' %}?page={{ page_obj.previous_page_number }}&needs_attention={{ needs_attention }}"
+                hx-target="#tickets-container"
+                hx-swap="innerHTML">
+            <i class="fa fa-angle-left mr-1"></i>
+            Anterior
+        </button>
+    {% endif %}
+
+    <span class="text-earth-600 text-xs font-ui tracking-wide uppercase">
+        <span>Página</span> <span>{{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+    </span>
+
+    {% if page_obj.has_next %}
+        <button type="button" 
+                class="button button-secondary px-2 py-1 text-xs"
+                hx-get="{% url 'welp_payflow:htmx_list_content' %}?page={{ page_obj.next_page_number }}&needs_attention={{ needs_attention }}"
+                hx-target="#tickets-container"
+                hx-swap="innerHTML">
+            <i class="fa fa-angle-right mr-1"></i>
+            Siguiente
+        </button>
+        <button type="button" 
+                class="button button-secondary px-2 py-1 text-xs"
+                hx-get="{% url 'welp_payflow:htmx_list_content' %}?page={{ page_obj.paginator.num_pages }}&needs_attention={{ needs_attention }}"
+                hx-target="#tickets-container"
+                hx-swap="innerHTML">
+            <i class="fa fa-angle-double-right mr-1"></i>
+            Última
+        </button>
+    {% endif %}
+</div>
+{% endif %}

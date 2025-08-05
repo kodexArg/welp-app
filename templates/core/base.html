@@ -1,0 +1,55 @@
+{% load static %}
+{% load django_vite %}
+{% load django_htmx %}
+{% load core_tags %}
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Welp App{% endblock %}</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+
+    <style>
+        .no-fouc { visibility: hidden; opacity: 0; }
+    </style>
+    <script>
+        document.documentElement.classList.add('no-fouc');
+        document.addEventListener('DOMContentLoaded', () => {
+            document.documentElement.classList.remove('no-fouc');
+        });
+    </script>
+    
+    <link rel="stylesheet" href="{% vite_asset_url 'frontend/main.css' %}">
+    {% vite_hmr_client %}
+    
+    <meta name="htmx-config" content='{"headers": {"X-CSRFToken": "{{ csrf_token }}"}}'>
+    {% htmx_script %}
+    
+    {% block styles %}{% endblock %}
+</head>
+
+<body>
+    <header>
+        {% block header %}
+            {% include "core/navbar.html" %}
+        {% endblock %}
+    </header>
+    
+    <main>
+        <div id="app">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <footer>
+        {% block footer %}{% endblock %}
+    </footer>
+    
+    {% vite_asset 'frontend/main.js' defer=True %}
+    {% vite_asset 'frontend/js/user-toggle.js' defer=True %}
+    {% block scripts %}{% endblock %}
+</body>
+</html> 
