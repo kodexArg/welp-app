@@ -101,7 +101,7 @@ class AttachmentInline(admin.TabularInline):
 class MessageInline(admin.StackedInline):
     model = Message
     extra = 0
-    readonly_fields = ('created_on', 'reported_on')
+    readonly_fields = ('created_on',)
     inlines = [AttachmentInline]
 
 
@@ -110,7 +110,7 @@ class TicketAdmin(admin.ModelAdmin):
     list_display = ('id', 'title', 'udn', 'sector', 'accounting_category', 'status_badge', 'estimated_amount', 'created_by', 'created_on')
     list_filter = ('udn', 'sector', 'accounting_category', 'created_on')
     search_fields = ('title',)
-    readonly_fields = ('created_on', 'created_by', 'status', 'is_active', 'is_final')
+    readonly_fields = ('created_by', 'status', 'is_active', 'is_final')
     inlines = [MessageInline]
     date_hierarchy = 'created_on'
     ordering = ('-created_on',)
@@ -122,8 +122,11 @@ class TicketAdmin(admin.ModelAdmin):
         ('Clasificación', {
             'fields': ('udn', 'sector', 'accounting_category')
         }),
+        ('Fechas', {
+            'fields': ('created_on',)
+        }),
         ('Estado del Sistema', {
-            'fields': ('created_on', 'created_by', 'status', 'is_active', 'is_final'),
+            'fields': ('created_by', 'status', 'is_active', 'is_final'),
             'classes': ('collapse',)
         }),
     )
@@ -144,10 +147,19 @@ class MessageAdmin(admin.ModelAdmin):
     list_display = ('id', 'ticket', 'user', 'status_badge', 'created_on', 'has_attachments')
     list_filter = ('status', 'created_on')
     search_fields = ('ticket__title', 'user__username', 'body')
-    readonly_fields = ('created_on', 'reported_on')
+    readonly_fields = ('created_on',)
     inlines = [AttachmentInline]
     date_hierarchy = 'created_on'
     ordering = ('-created_on',)
+    
+    fieldsets = (
+        ('Información del Mensaje', {
+            'fields': ('ticket', 'user', 'body', 'status')
+        }),
+        ('Fechas', {
+            'fields': ('created_on', 'reported_on')
+        }),
+    )
     
     def status_badge(self, obj):
         color = PAYFLOW_STATUSES.get(obj.status, {}).get('color', '#6b7280')
@@ -197,4 +209,4 @@ class AttachmentAdmin(admin.ModelAdmin):
 
 admin.site.site_header = 'Welp PayFlow - Administración'
 admin.site.site_title = 'Welp PayFlow Admin'
-admin.site.index_title = 'Panel de Administración' 
+admin.site.index_title = 'Panel de Administración'

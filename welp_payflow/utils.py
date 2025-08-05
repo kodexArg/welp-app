@@ -112,7 +112,11 @@ def can_user_close_ticket(user, ticket):
     if has_user_role(user, 'supervisor') and 'end_user' in owner_roles:
         return True
 
-    if has_user_role(user, 'manager') and owner_roles & {'end_user', 'technician', 'supervisor'}:
+    # Manager y Director pueden cerrar cualquier ticket que no sea propio
+    if has_user_role(user, 'manager'):
+        return True
+        
+    if has_user_role(user, 'director'):
         return True
 
     return False
@@ -252,7 +256,8 @@ def get_ticket_actions_context(user, ticket):
     all_allowed_actions = get_user_ticket_transitions(user, ticket)
     
     close_action = None
-    if can_user_close_ticket(user, ticket):
+    # Managers y Directores siempre pueden ver el botón cerrar
+    if can_user_close_ticket(user, ticket) or has_user_role(user, 'manager') or has_user_role(user, 'director'):
         close_action = get_ticket_action_data('close', ticket.id)
 
     comment_action = None

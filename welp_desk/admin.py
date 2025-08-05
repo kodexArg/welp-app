@@ -4,7 +4,7 @@ from .models import UDN, Sector, IssueCategory, Issue, Roles, Ticket, Message, A
 from .constants import DESK_STATUSES
 
 
-@admin.register(Roles)
+# @admin.register(Roles)
 class RolesAdmin(admin.ModelAdmin):
     list_display = ('user', 'udn', 'sector', 'issue_category', 'permissions_summary', 'role_type')
     list_filter = ('udn', 'sector', 'issue_category', 'can_read', 'can_authorize', 'can_solve')
@@ -45,7 +45,7 @@ class RolesAdmin(admin.ModelAdmin):
     role_type.short_description = "Tipo de Rol"
 
 
-@admin.register(UDN)
+# @admin.register(UDN)
 class UDNAdmin(admin.ModelAdmin):
     list_display = ('name', 'sector_count')
     search_fields = ('name',)
@@ -56,7 +56,7 @@ class UDNAdmin(admin.ModelAdmin):
     sector_count.short_description = "Sectores"
 
 
-@admin.register(Sector)
+# @admin.register(Sector)
 class SectorAdmin(admin.ModelAdmin):
     list_display = ('name', 'udn_list', 'category_count')
     list_filter = ('udn',)
@@ -73,7 +73,7 @@ class SectorAdmin(admin.ModelAdmin):
     category_count.short_description = "Categorías"
 
 
-@admin.register(IssueCategory)
+# @admin.register(IssueCategory)
 class IssueCategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'sector_list', 'issue_count')
     list_filter = ('sector',)
@@ -90,7 +90,7 @@ class IssueCategoryAdmin(admin.ModelAdmin):
     issue_count.short_description = "Incidencias"
 
 
-@admin.register(Issue)
+# @admin.register(Issue)
 class IssueAdmin(admin.ModelAdmin):
     list_display = ('name', 'display_name', 'issue_category', 'ticket_count')
     list_filter = ('issue_category', 'issue_category__sector')
@@ -124,7 +124,7 @@ class MessageInline(admin.StackedInline):
     inlines = [AttachmentInline]
 
 
-@admin.register(Ticket)
+# @admin.register(Ticket)
 class TicketAdmin(admin.ModelAdmin):
     list_display = ('id', 'issue', 'udn', 'sector', 'issue_category', 'status_badge', 'created_by', 'created_on')
     list_filter = ('udn', 'sector', 'issue_category', 'messages__created_on')
@@ -163,7 +163,7 @@ class TicketAdmin(admin.ModelAdmin):
     created_on.short_description = "Fecha de Creación"
 
 
-@admin.register(Message)
+# @admin.register(Message)
 class MessageAdmin(admin.ModelAdmin):
     list_display = ('id', 'ticket', 'user', 'status_badge', 'created_on', 'has_attachments')
     list_filter = ('status', 'created_on')
@@ -190,7 +190,7 @@ class MessageAdmin(admin.ModelAdmin):
     has_attachments.short_description = "Adjuntos"
 
 
-@admin.register(Attachment)
+# @admin.register(Attachment)
 class AttachmentAdmin(admin.ModelAdmin):
     list_display = ('id', 'message', 'file_name', 'file_size')
     list_filter = ('message__created_on',)
@@ -221,4 +221,4 @@ class AttachmentAdmin(admin.ModelAdmin):
 
 admin.site.site_header = 'Welp Desk - Administración'
 admin.site.site_title = 'Welp Desk Admin'
-admin.site.index_title = 'Panel de Administración' 
+admin.site.index_title = 'Panel de Administración'

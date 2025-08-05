@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.utils.html import format_html
 from welp_desk.constants import DESK_STATUSES
 from welp_payflow.constants import PAYFLOW_STATUSES, FA_ICONS, PAYFLOW_FILTERS, FILTER_THEMES
-from welp_payflow.utils import get_ticket_actions_context
+from welp_payflow.utils import get_ticket_actions_context, get_user_udns
 
 register = template.Library()
 
@@ -156,4 +156,18 @@ def payflow_action_button(ticket, action_type, user_can_transition=True, is_owne
         'comment_label': action_info.get('comment_label', 'Comentario'),
         'comment_placeholder': action_info.get('comment_placeholder', 'Escriba su comentario aquí...'),
         'comment_required': action_info.get('comment_required', False),
+    }
+
+@register.inclusion_tag('welp_payflow/components/udn_dropdown.html', takes_context=True)
+def udn_dropdown(context):
+    """Componente dropdown para filtrar por UDNs."""
+    request = context['request']
+    user = request.user
+    
+    # Obtener todas las UDNs disponibles para el usuario
+    udns = get_user_udns(user)
+    
+    return {
+        'udns': udns,
+        'request': request,
     }

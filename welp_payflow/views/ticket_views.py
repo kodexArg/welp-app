@@ -177,12 +177,14 @@ class ConfirmCloseTicketView(LoginRequiredMixin, DetailView):
 
     def get(self, request, *args, **kwargs):
         ticket = self.get_object()
-        if ticket.status == 'closed':
+        from ..utils import can_user_close_ticket, has_user_role
+        
+        # Managers y Directores pueden acceder incluso a tickets cerrados
+        if ticket.status == 'closed' and not (has_user_role(request.user, 'manager') or has_user_role(request.user, 'director')):
             messages.warning(request, 'Este ticket ya está cerrado.')
             return redirect('welp_payflow:detail', ticket_id=ticket.id)
         
-        is_owner = ticket.created_by == request.user
-        if not (is_owner or request.user.is_superuser):
+        if not (can_user_close_ticket(request.user, ticket) or has_user_role(request.user, 'manager') or has_user_role(request.user, 'director')):
             messages.error(request, 'No tiene permisos para cerrar este ticket.')
             return redirect('welp_payflow:detail', ticket_id=ticket.id)
 
@@ -195,7 +197,7 @@ class ConfirmCloseTicketView(LoginRequiredMixin, DetailView):
         
         context.update({
             'is_owner': is_owner,
-            'requires_comment': not (is_owner or self.request.user.is_superuser),
+            'requires_comment': not is_owner,  # No propietarios siempre requieren comentario
             'process_close_url': reverse('welp_payflow:process_close', kwargs={'ticket_id': ticket.id}),
             'cancel_url': reverse('welp_payflow:detail', kwargs={'ticket_id': ticket.id}),
             'response_type': 'close',
@@ -206,15 +208,23 @@ class ConfirmCloseTicketView(LoginRequiredMixin, DetailView):
 class ProcessCloseTicketView(LoginRequiredMixin, View):
     def post(self, request, ticket_id):
         ticket = get_object_or_404(Ticket, id=ticket_id)
-        if ticket.status == 'closed':
+        from ..utils import can_user_close_ticket, has_user_role
+        
+        # Managers y Directores pueden procesar incluso tickets ya cerrados
+        if ticket.status == 'closed' and not (has_user_role(request.user, 'manager') or has_user_role(request.user, 'director')):
             messages.warning(request, 'Este ticket ya está cerrado.')
+            return redirect('welp_payflow:detail', ticket_id=ticket.id)
+
+        if not (can_user_close_ticket(request.user, ticket) or has_user_role(request.user, 'manager') or has_user_role(request.user, 'director')):
+            messages.error(request, 'No tiene permisos para cerrar este ticket.')
             return redirect('welp_payflow:detail', ticket_id=ticket.id)
 
         comment = request.POST.get('close_comment', '').strip()
         is_owner = ticket.created_by == request.user
 
-        if not (is_owner or request.user.is_superuser) and not comment:
-            messages.error(request, 'Debe proporcionar un motivo para cerrar este ticket.')
+        # Para no propietarios (Manager/Director), el comentario es obligatorio
+        if not is_owner and not comment:
+            messages.error(request, 'Debe proporcionar un motivo para cerrar este ticket que no es propio.')
             return redirect('welp_payflow:detail', ticket_id=ticket.id)
 
         Message.objects.create(
