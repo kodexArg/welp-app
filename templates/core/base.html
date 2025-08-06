@@ -23,7 +23,6 @@
     </script>
     
     <link rel="stylesheet" href="{% vite_asset_url 'frontend/main.css' %}">
-    <link rel="stylesheet" href="{% static 'dist/assets/fontawesome.css' %}">
     {% vite_hmr_client %}
     
     <meta name="htmx-config" content='{"headers": {"X-CSRFToken": "{{ csrf_token }}"}}'>

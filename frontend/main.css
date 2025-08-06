@@ -8,7 +8,7 @@
 @import "./css/components.css";
 @import "./css/navbar.css";
 @import "./css/animations.css";
-@import "./css/fontawesome-fonts.css";
+@import "./fonts/fa/all.min.css";
 
 /*
  * Utilidades @utility disponibles para @apply:
