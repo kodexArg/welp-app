@@ -196,7 +196,7 @@ def should_hide_ticket_from_attention(user, ticket):
     return False
 
 
-def get_ticket_action_data(action, ticket_id=None):
+def get_ticket_action_data(action, ticket_id=None, user=None):
     if action == 'feedback':
         status_key = 'comment'
     elif action == 'close':
@@ -209,6 +209,11 @@ def get_ticket_action_data(action, ticket_id=None):
     status_info = PAYFLOW_STATUSES.get(status_key, {})
 
     label = status_info.get('action_label', status_info.get('button_text', action.replace('_', ' ').title()))
+    
+    # Si el usuario es superusuario y la acción es de autorización, mostrar texto vacío
+    if user and user.is_superuser and action in ['authorized_by_manager', 'authorized_by_director']:
+        label = ''
+    
     fa_icon = FA_ICONS.get(action, 'fa-solid fa-circle')
     
     primary_color = 'text-forest-700'
@@ -258,13 +263,13 @@ def get_ticket_actions_context(user, ticket):
     close_action = None
     # Managers y Directores siempre pueden ver el botón cerrar
     if can_user_close_ticket(user, ticket) or has_user_role(user, 'manager') or has_user_role(user, 'director'):
-        close_action = get_ticket_action_data('close', ticket.id)
+        close_action = get_ticket_action_data('close', ticket.id, user)
 
     comment_action = None
     other_actions = []
 
     for action in all_allowed_actions:
-        action_data = get_ticket_action_data(action, ticket.id)
+        action_data = get_ticket_action_data(action, ticket.id, user)
         if action_data:
             if action == 'close':
                 if not close_action:
@@ -276,7 +281,7 @@ def get_ticket_actions_context(user, ticket):
 
     if ticket.status != 'closed':
         if not comment_action and 'feedback' in PAYFLOW_STATUSES:
-            comment_action = get_ticket_action_data('feedback', ticket.id)
+            comment_action = get_ticket_action_data('feedback', ticket.id, user)
 
     final_actions = []
     if close_action:
@@ -288,7 +293,7 @@ def get_ticket_actions_context(user, ticket):
         final_actions.append(comment_action)
     
     # Agregar acción 'ver' al final
-    view_action = get_ticket_action_data('view', ticket.id)
+    view_action = get_ticket_action_data('view', ticket.id, user)
     if view_action:
         final_actions.append(view_action)
     
