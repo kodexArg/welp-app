@@ -7,7 +7,7 @@
 <section class="my-12">
     <div class="text-center mb-12">
         <h1 class="text-3xl text-text">{% trans "Usuarios para Pruebas" %}</h1>
-        <p class="text-lg text-primary font-[var(--font-p)] mt-2">{% trans "Lista de usuarios del sistema con sus credenciales y permisos" %}</p>
+        <p class="text-lg text-primary font-[var(--font-p)] mt-2">{% trans "Jerarquía organizacional de usuarios del sistema" %}</p>
     </div>
 
     <div class="max-w-7xl mx-auto px-4">
@@ -24,70 +24,359 @@
                     <div class="text-sm text-muted">{% trans "Total Roles" %}</div>
                 </div>
                 <div class="text-center">
-                    <div class="text-2xl font-bold text-primary">{{ unique_role_types|length }}</div>
-                    <div class="text-sm text-muted">{% trans "Tipos de Rol" %}</div>
+                    <div class="text-2xl font-bold text-primary">{{ unique_udns }}</div>
+                    <div class="text-sm text-muted">{% trans "UDNs Únicas" %}</div>
                 </div>
             </div>
         </div>
 
-        <!-- Lista de Usuarios por Rol -->
-        {% for role_type, users in users_by_role.items %}
-        <div class="bg-surface border border-border rounded-lg p-6 mb-6">
-            <h2 class="text-xl font-semibold text-text mb-4 capitalize">
-                {% trans "Rol:" %} {{ role_type|title }}
-                <span class="text-sm text-muted font-normal">({{ users|length }} {% trans "usuarios" %})</span>
-            </h2>
+        <!-- Jerarquía de Usuarios -->
+        <div class="bg-surface border border-border rounded-lg p-6">
+            <h2 class="text-xl font-semibold text-text mb-6">{% trans "Jerarquía Organizacional" %}</h2>
             
-            <div class="overflow-x-auto">
-                <table class="w-full border-collapse">
-                    <thead>
-                        <tr class="border-b border-border">
-                            <th class="text-left py-3 px-4 font-medium text-text">{% trans "Usuario" %}</th>
-                            <th class="text-left py-3 px-4 font-medium text-text">{% trans "Nombre Completo" %}</th>
-                            <th class="text-left py-3 px-4 font-medium text-text">{% trans "Contraseña" %}</th>
-                            <th class="text-left py-3 px-4 font-medium text-text">{% trans "UDNs" %}</th>
-                            <th class="text-left py-3 px-4 font-medium text-text">{% trans "Sectores" %}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for user in users %}
-                        <tr class="border-b border-border hover:bg-muted/20">
-                            <td class="py-3 px-4">
-                                <code class="bg-muted/30 px-2 py-1 rounded text-sm">{{ user.username }}</code>
-                            </td>
-                            <td class="py-3 px-4 text-text">{{ user.first_name }} {{ user.last_name }}</td>
-                            <td class="py-3 px-4">
-                                <code class="bg-accent/20 px-2 py-1 rounded text-sm text-accent">{{ user.username }}</code>
-                                <span class="text-xs text-muted ml-2">(inicial)</span>
-                            </td>
-                            <td class="py-3 px-4">
-                                {% for udn in user.user_udns %}
-                                    <span class="inline-block bg-primary/20 text-primary px-2 py-1 rounded text-xs mr-1 mb-1">{{ udn }}</span>
+            <!-- Índice Jerárquico -->
+            <div class="space-y-4">
+                {% for udn_name, sectors in hierarchy.items %}
+                <div class="border border-border rounded-lg">
+                    <!-- UDN Level -->
+                    <div class="bg-primary/10 p-4 border-b border-border">
+                        <h3 class="text-lg font-semibold text-primary flex items-center">
+                            <i class="fa fa-building mr-2"></i>
+                            {{ udn_name }}
+                        </h3>
+                    </div>
+                    
+                    <!-- Sectors Level -->
+                    <div class="p-4 space-y-3">
+                        {% for sector_name, roles in sectors.items %}
+                        <div class="border-l-4 border-secondary pl-4">
+                            <h4 class="text-md font-medium text-secondary flex items-center mb-2">
+                                <i class="fa fa-sitemap mr-2"></i>
+                                {{ sector_name }}
+                            </h4>
+                            
+                            <!-- Roles Level -->
+                            <div class="ml-4 space-y-2">
+                                {% for role_name, users in roles.items %}
+                                <div class="border-l-2 border-accent pl-3">
+                                    <h5 class="text-sm font-medium text-accent flex items-center mb-1">
+                                        <i class="fa fa-user-tag mr-2"></i>
+                                        {{ role_name }}
+                                    </h5>
+                                    
+                                    <!-- Users Level -->
+                                    <div class="ml-4 space-y-1">
+                                        {% for user_data in users %}
+                                        <div class="flex items-center">
+                                            <button 
+                                                class="text-sm text-text hover:text-primary transition-colors cursor-pointer bg-transparent border-none p-0 underline"
+                                                onclick="toggleUserDetails('user-{{ user_data.user.id }}-{{ forloop.parentloop.parentloop.parentloop.counter }}-{{ forloop.parentloop.parentloop.counter }}-{{ forloop.parentloop.counter }}')"
+                                            >
+                                                <i class="fa fa-user mr-1"></i>
+                                                <span 
+                                                    class="truncate-name" 
+                                                    title="{{ user_data.full_name }}"
+                                                >
+                                                    {{ user_data.full_name }}, {{ user_data.role_display }}
+                                                </span>
+                                            </button>
+                                        </div>
+                                        
+                                        <!-- User Details (Hidden by default) -->
+                                        <div 
+                                            id="user-{{ user_data.user.id }}-{{ forloop.parentloop.parentloop.parentloop.counter }}-{{ forloop.parentloop.parentloop.counter }}-{{ forloop.parentloop.counter }}" 
+                                            class="user-details hidden ml-6 mt-2 p-3 bg-muted/20 rounded border border-border"
+                                        >
+                                            <div class="space-y-2 text-sm">
+                                                <div class="flex items-center">
+                                                    <span class="font-medium text-text w-24">{% trans "Usuario:" %}</span>
+                                                    <code class="bg-muted/30 px-2 py-1 rounded text-xs">{{ user_data.username }}</code>
+                                                </div>
+                                                <div class="flex items-center">
+                                                    <span class="font-medium text-text w-24">{% trans "Nombre:" %}</span>
+                                                    <span class="text-text">{{ user_data.full_name }}</span>
+                                                </div>
+                                                <div class="flex items-center">
+                                                    <span class="font-medium text-text w-24">{% trans "Contraseña:" %}</span>
+                                                    <div class="flex items-center space-x-2">
+                                                        <code 
+                                                            id="password-{{ user_data.user.id }}-{{ forloop.parentloop.parentloop.parentloop.counter }}-{{ forloop.parentloop.parentloop.counter }}-{{ forloop.parentloop.counter }}" 
+                                                            class="bg-accent/20 px-2 py-1 rounded text-xs text-accent"
+                                                        >
+                                                            ••••••••
+                                                        </code>
+                                                        <button 
+                                                            id="copy-btn-{{ user_data.user.id }}-{{ forloop.parentloop.parentloop.parentloop.counter }}-{{ forloop.parentloop.parentloop.counter }}-{{ forloop.parentloop.counter }}"
+                                                            class="text-xs bg-blue-500/20 hover:bg-blue-500/30 text-blue-600 px-2 py-1 rounded transition-colors hidden"
+                                                            onclick="copyPassword('{{ user_data.user.id }}', '{{ forloop.parentloop.parentloop.parentloop.counter }}-{{ forloop.parentloop.parentloop.counter }}-{{ forloop.parentloop.counter }}')"
+                                                            title="Copiar contraseña"
+                                                        >
+                                                            <i class="fa fa-copy"></i>
+                                                        </button>
+                                                        <button 
+                                                            id="show-btn-{{ user_data.user.id }}-{{ forloop.parentloop.parentloop.parentloop.counter }}-{{ forloop.parentloop.parentloop.counter }}-{{ forloop.parentloop.counter }}"
+                                                            class="text-xs bg-accent/20 hover:bg-accent/30 text-accent px-2 py-1 rounded transition-colors"
+                                                            onclick="togglePassword('password-{{ user_data.user.id }}-{{ forloop.parentloop.parentloop.parentloop.counter }}-{{ forloop.parentloop.parentloop.counter }}-{{ forloop.parentloop.counter }}', 'No disponible por seguridad', 'show-btn-{{ user_data.user.id }}-{{ forloop.parentloop.parentloop.parentloop.counter }}-{{ forloop.parentloop.parentloop.counter }}-{{ forloop.parentloop.counter }}')"
+                                                        >
+                                                            <i class="fa fa-eye"></i> {% trans "Mostrar" %}
+                                                        </button>
+                                                        <button 
+                                                            id="dice-btn-{{ user_data.user.id }}-{{ forloop.parentloop.parentloop.parentloop.counter }}-{{ forloop.parentloop.parentloop.counter }}-{{ forloop.parentloop.counter }}"
+                                                            class="text-xs bg-primary/20 hover:bg-primary/30 text-primary px-2 py-1 rounded transition-colors"
+                                                            onclick="generateNewPassword('{{ user_data.user.id }}', '{{ forloop.parentloop.parentloop.parentloop.counter }}-{{ forloop.parentloop.parentloop.counter }}-{{ forloop.parentloop.counter }}')"
+                                                            title="Generar nueva contraseña"
+                                                        >
+                                                            <i class="fa fa-dice"></i>
+                                                        </button>
+                                                        <div id="action-buttons-{{ user_data.user.id }}-{{ forloop.parentloop.parentloop.parentloop.counter }}-{{ forloop.parentloop.parentloop.counter }}-{{ forloop.parentloop.counter }}" class="hidden space-x-2">
+                                                            <button 
+                                                                class="text-xs bg-green-500/20 hover:bg-green-500/30 text-green-600 px-2 py-1 rounded transition-colors"
+                                                                onclick="confirmPasswordChange('{{ user_data.user.id }}', '{{ forloop.parentloop.parentloop.parentloop.counter }}-{{ forloop.parentloop.parentloop.counter }}-{{ forloop.parentloop.counter }}')"
+                                                                title="Confirmar cambio de contraseña"
+                                                            >
+                                                                <i class="fa fa-check"></i>
+                                                            </button>
+                                                            <button 
+                                                                class="text-xs bg-red-500/20 hover:bg-red-500/30 text-red-600 px-2 py-1 rounded transition-colors"
+                                                                onclick="cancelPasswordChange('{{ user_data.user.id }}', '{{ forloop.parentloop.parentloop.parentloop.counter }}-{{ forloop.parentloop.parentloop.counter }}-{{ forloop.parentloop.counter }}')"
+                                                                title="Cancelar cambio de contraseña"
+                                                            >
+                                                                <i class="fa fa-times"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
                                 {% endfor %}
-                            </td>
-                            <td class="py-3 px-4">
-                                {% for sector in user.user_sectors %}
-                                    <span class="inline-block bg-secondary/20 text-secondary px-2 py-1 rounded text-xs mr-1 mb-1">{{ sector }}</span>
-                                {% endfor %}
-                            </td>
-                        </tr>
+                            </div>
+                        </div>
                         {% endfor %}
-                    </tbody>
-                </table>
+                    </div>
+                </div>
+                {% endfor %}
             </div>
         </div>
-        {% endfor %}
 
         <!-- Información Adicional -->
-        <div class="bg-surface border border-border rounded-lg p-6">
+        <div class="bg-surface border border-border rounded-lg p-6 mt-6">
             <h2 class="text-xl font-semibold text-text mb-4">{% trans "Información Importante" %}</h2>
             <div class="space-y-2 text-sm text-muted">
-                <p><strong>{% trans "Contraseñas:" %}</strong> {% trans "Todas las contraseñas iniciales son iguales al nombre de usuario" %}</p>
+                <p><strong>{% trans "Contraseñas:" %}</strong> {% trans "Todas las contraseñas son aleatorias generadas por seguridad" %}</p>
                 <p><strong>{% trans "Acceso:" %}</strong> {% trans "Los usuarios pueden acceder con username/password en la página de login" %}</p>
-                <p><strong>{% trans "Roles:" %}</strong> {% trans "Cada usuario puede tener múltiples roles en diferentes UDNs y sectores" %}</p>
+                <p><strong>{% trans "Jerarquía:" %}</strong> {% trans "Organización: UDN > Sector > Rol > Usuario" %}</p>
                 <p><strong>{% trans "Actualización:" %}</strong> {% trans "Para regenerar usuarios, ejecute: python scripts/init_users.py" %}</p>
             </div>
         </div>
     </div>
 </section>
+
+<!-- Formulario oculto para cambio de contraseña -->
+<form id="password-change-form" method="post" style="display: none;">
+    {% csrf_token %}
+    {{ change_password_form.user_id }}
+    {{ change_password_form.new_password }}
+</form>
+
+<style>
+.truncate-name {
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+}
+
+.user-details {
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        max-height: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        max-height: 200px;
+        transform: translateY(0);
+    }
+}
+</style>
+
+<script>
+function toggleUserDetails(elementId) {
+    const element = document.getElementById(elementId);
+    if (element.classList.contains('hidden')) {
+        element.classList.remove('hidden');
+    } else {
+        element.classList.add('hidden');
+    }
+}
+
+function togglePassword(elementId, password, buttonId) {
+    const element = document.getElementById(elementId);
+    const button = document.getElementById(buttonId);
+    
+    // Extraer el ID del usuario y sufijo del elementId
+    const parts = elementId.split('-');
+    const userId = parts[1];
+    const suffix = parts.slice(2).join('-');
+    const copyBtn = document.getElementById(`copy-btn-${userId}-${suffix}`);
+    
+    // Verificar si hay una contraseña temporal generada
+    let tempPassword = tempPasswords[userId];
+    
+    if (element.textContent === '••••••••') {
+        if (!tempPassword) {
+            // Generar contraseña temporal automáticamente si no existe
+            const safeLetters = 'abcdefghjkmnpqrstuvwxyz';
+            const safeDigits = '23456789';
+            const allowedChars = safeLetters + safeDigits;
+            let newPassword = '';
+            
+            for (let i = 0; i < 10; i++) {
+                newPassword += allowedChars.charAt(Math.floor(Math.random() * allowedChars.length));
+            }
+            
+            // Almacenar la contraseña temporalmente
+            tempPasswords[userId] = newPassword;
+            tempPassword = newPassword;
+        }
+        
+        // Mostrar la contraseña temporal
+        element.textContent = tempPassword;
+        button.innerHTML = '<i class="fa fa-eye-slash"></i> {% trans "Ocultar" %}';
+        // Mostrar botón de copiar
+        if (copyBtn) {
+            copyBtn.classList.remove('hidden');
+        }
+    } else {
+        // Ocultar la contraseña
+        element.textContent = '••••••••';
+        button.innerHTML = '<i class="fa fa-eye"></i> {% trans "Mostrar" %}';
+        // Ocultar botón de copiar
+        if (copyBtn) {
+            copyBtn.classList.add('hidden');
+        }
+    }
+}
+
+// Variable global para almacenar la contraseña generada temporalmente
+let tempPasswords = {};
+
+function copyPassword(userId, suffix) {
+    const passwordElement = document.getElementById(`password-${userId}-${suffix}`);
+    const copyBtn = document.getElementById(`copy-btn-${userId}-${suffix}`);
+    
+    if (passwordElement && passwordElement.textContent !== '••••••••') {
+        // Copiar al portapapeles
+        navigator.clipboard.writeText(passwordElement.textContent).then(() => {
+            // Feedback visual - cambiar icono temporalmente
+            const originalIcon = copyBtn.innerHTML;
+            copyBtn.innerHTML = '<i class="fa fa-check"></i>';
+            copyBtn.classList.remove('bg-blue-500/20', 'hover:bg-blue-500/30', 'text-blue-600');
+            copyBtn.classList.add('bg-green-500/20', 'hover:bg-green-500/30', 'text-green-600');
+            
+            // Restaurar después de 1.5 segundos
+            setTimeout(() => {
+                copyBtn.innerHTML = originalIcon;
+                copyBtn.classList.remove('bg-green-500/20', 'hover:bg-green-500/30', 'text-green-600');
+                copyBtn.classList.add('bg-blue-500/20', 'hover:bg-blue-500/30', 'text-blue-600');
+            }, 1500);
+        }).catch(err => {
+            console.error('Error al copiar al portapapeles:', err);
+            alert('Error al copiar la contraseña');
+        });
+    }
+}
+
+function generateNewPassword(userId, suffix) {
+    // Generar contraseña aleatoria usando la misma lógica que passgen.py
+    const safeLetters = 'abcdefghjkmnpqrstuvwxyz';
+    const safeDigits = '23456789';
+    const allowedChars = safeLetters + safeDigits;
+    let password = '';
+    
+    for (let i = 0; i < 10; i++) {
+        password += allowedChars.charAt(Math.floor(Math.random() * allowedChars.length));
+    }
+    
+    // Almacenar la contraseña temporalmente
+    tempPasswords[userId] = password;
+    
+    // Mostrar la nueva contraseña
+    const passwordElement = document.getElementById(`password-${userId}-${suffix}`);
+    passwordElement.textContent = password;
+    
+    // Mostrar el botón de copiar ya que la contraseña está visible
+    const copyBtn = document.getElementById(`copy-btn-${userId}-${suffix}`);
+    if (copyBtn) {
+        copyBtn.classList.remove('hidden');
+    }
+    
+    // Actualizar el botón de mostrar/ocultar
+    const showBtn = document.getElementById(`show-btn-${userId}-${suffix}`);
+    showBtn.innerHTML = '<i class="fa fa-eye-slash"></i> {% trans "Ocultar" %}';
+    
+    // Ocultar el botón de dado y mostrar los botones de acción
+    const diceBtn = document.getElementById(`dice-btn-${userId}-${suffix}`);
+    const actionButtons = document.getElementById(`action-buttons-${userId}-${suffix}`);
+    
+    diceBtn.classList.add('hidden');
+    actionButtons.classList.remove('hidden');
+    actionButtons.classList.add('flex');
+}
+
+function confirmPasswordChange(userId, suffix) {
+    const newPassword = tempPasswords[userId];
+    
+    if (!newPassword) {
+        alert('Error: No se encontró la contraseña generada');
+        return;
+    }
+    
+    // Llenar el formulario oculto
+    const form = document.getElementById('password-change-form');
+    const userIdInput = form.querySelector('input[name="user_id"]');
+    const passwordInput = form.querySelector('input[name="new_password"]');
+    
+    userIdInput.value = userId;
+    passwordInput.value = newPassword;
+    
+    // Enviar el formulario
+    form.submit();
+}
+
+function cancelPasswordChange(userId, suffix) {
+    // Limpiar la contraseña temporal
+    delete tempPasswords[userId];
+    
+    // Restaurar la vista original
+    const passwordElement = document.getElementById(`password-${userId}-${suffix}`);
+    passwordElement.textContent = '••••••••';
+    
+    // Restaurar el botón de mostrar
+    const showBtn = document.getElementById(`show-btn-${userId}-${suffix}`);
+    showBtn.innerHTML = '<i class="fa fa-eye"></i> {% trans "Mostrar" %}';
+    
+    // Ocultar el botón de copiar
+    const copyBtn = document.getElementById(`copy-btn-${userId}-${suffix}`);
+    if (copyBtn) {
+        copyBtn.classList.add('hidden');
+    }
+    
+    // Mostrar el botón de dado y ocultar los botones de acción
+    const diceBtn = document.getElementById(`dice-btn-${userId}-${suffix}`);
+    const actionButtons = document.getElementById(`action-buttons-${userId}-${suffix}`);
+    
+    diceBtn.classList.remove('hidden');
+    actionButtons.classList.add('hidden');
+    actionButtons.classList.remove('flex');
+}
+</script>
 {% endblock %}

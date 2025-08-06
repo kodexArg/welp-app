@@ -12,7 +12,15 @@ import sys
 import yaml
 import django
 import logging
+import random
 from django.db import transaction
+
+def generate_password(length=10):
+    """Generate a random password using safe letters and digits."""
+    safe_letters = 'abcdefghjkmnpqrstuvwxyz'
+    safe_digits = '23456789'
+    allowed_chars = safe_letters + safe_digits
+    return ''.join(random.choices(allowed_chars, k=length))
 
 logging.basicConfig(
     level=logging.INFO,
@@ -145,9 +153,10 @@ def create_user_and_assign_roles(user_data, udn_map, sector_map):
     )
     
     if user_created:
-        user.set_password(username)  # Contraseña inicial = username
+        random_password = generate_password()
+        user.set_password(random_password)
         user.save()
-        logger.info(f"  ✓ Usuario creado: {username}")
+        logger.info(f"  ✓ Usuario creado: {username} (contraseña aleatoria generada)")
     else:
         logger.info(f"  → Usuario actualizado: {username}")
 
@@ -253,7 +262,7 @@ def main():
     create_users_and_roles(data)
     
     logger.info("\n✓ Inicialización de usuarios y roles completada exitosamente.")
-    logger.info("💡 Todos los usuarios tienen contraseña inicial = username")
+    logger.info("💡 Todos los usuarios tienen contraseña aleatoria generada")
     logger.info("💡 Para crear la estructura de UDNs/Sectores/Categorías, ejecute: uv run scripts/init_app.py")
 
 if __name__ == "__main__":

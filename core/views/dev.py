@@ -4,13 +4,17 @@ Vistas del módulo de desarrollo y documentación técnica.
 Este módulo contiene todas las vistas relacionadas con herramientas de desarrollo,
 documentación técnica del sistema y configuración organizacional del proyecto.
 """
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import user_passes_test
 from django.db.models import Count
+from django.contrib import messages
+from django.views.decorators.http import require_http_methods
 from collections import defaultdict
 from welp_desk.models import UDN as DeskUDN, Sector as DeskSector, IssueCategory as DeskIssueCategory
 from welp_payflow.models import UDN as PayflowUDN, Sector as PayflowSector, AccountingCategory, Roles
 from core.models import User
+from core.forms import ChangePasswordForm
+from core.views.utils import generate_password
 
 def dev_view(request):
     """
@@ -61,56 +65,97 @@ def dev_playground_view(request):
     return render(request, 'core/dev/under_development.html')
 
 @user_passes_test(lambda u: u.is_superuser)
+@require_http_methods(["GET", "POST"])
 def dev_test_users_view(request):
     """
     Vista para mostrar usuarios de prueba con sus credenciales y permisos.
     
     Solo accesible para superusuarios.
-    Muestra todos los usuarios del sistema organizados por rol,
-    incluyendo sus UDNs, sectores y contraseñas iniciales.
+    Organiza usuarios en jerarquía: UDN > Sector > Rol > Usuario
+    
+    Maneja POST requests para cambiar contraseñas de usuarios.
     """
-    # Obtener todos los usuarios con sus roles
-    users = User.objects.all().order_by('username')
     
-    # Crear diccionario de usuarios con sus datos organizados
-    users_data = []
-    for user in users:
-        user_roles = Roles.objects.filter(user=user).select_related('udn', 'sector')
+    # Manejar POST request para cambio de contraseña
+    if request.method == 'POST':
+        form = ChangePasswordForm(request.POST)
+        if form.is_valid():
+            try:
+                user = form.save()
+                messages.success(
+                    request, 
+                    f'Contraseña actualizada exitosamente para {user.username}'
+                )
+            except Exception as e:
+                messages.error(
+                    request, 
+                    f'Error al actualizar contraseña: {str(e)}'
+                )
+        else:
+            messages.error(request, 'Error en el formulario de cambio de contraseña')
         
-        # Obtener UDNs y sectores únicos del usuario
-        user_udns = set()
-        user_sectors = set()
-        user_role_types = set()
-        
-        for role in user_roles:
-            user_udns.add(role.udn.name)
-            user_sectors.add(role.sector.name)
-            user_role_types.add(role.role)
-        
-        users_data.append({
-            'user': user,
-            'user_udns': sorted(list(user_udns)),
-            'user_sectors': sorted(list(user_sectors)),
-            'role_types': sorted(list(user_role_types))
-        })
+        return redirect('core:dev_test_users')
+    # Definir orden de importancia de roles
+    role_priority = {
+        'director': 1,
+        'manager': 2,
+        'supervisor': 3,
+        'purchase_manager': 4,
+        'technician': 5,
+        'end_user': 6
+    }
     
-    # Organizar usuarios por tipo de rol principal
-    users_by_role = defaultdict(list)
-    for user_data in users_data:
-        # Usar el primer rol como principal para organización
-        primary_role = user_data['role_types'][0] if user_data['role_types'] else 'sin_rol'
-        users_by_role[primary_role].append(user_data)
+    # Obtener todos los roles con sus relaciones
+    roles = Roles.objects.select_related('user', 'udn', 'sector').all()
+    
+    # Organizar en jerarquía: UDN > Sector > Rol > Usuario
+    hierarchy = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))
+    
+    for role in roles:
+        udn_name = role.udn.name if role.udn else 'Sin UDN'
+        sector_name = role.sector.name if role.sector else 'Sin Sector'
+        role_name = role.get_role_display()
+        
+        user_data = {
+            'user': role.user,
+            'username': role.user.username,
+            'full_name': f"{role.user.first_name} {role.user.last_name}".strip() or role.user.username,
+            'role_type': role.role,
+            'role_display': role_name,
+            'role_priority': role_priority.get(role.role, 999)
+        }
+        
+        hierarchy[udn_name][sector_name][role_name].append(user_data)
+    
+    # Ordenar usuarios dentro de cada rol por prioridad y nombre
+    for udn in hierarchy:
+        for sector in hierarchy[udn]:
+            for role in hierarchy[udn][sector]:
+                hierarchy[udn][sector][role].sort(
+                    key=lambda x: (x['role_priority'], x['full_name'])
+                )
+    
+    # Convertir a dict regular para el template
+    hierarchy_dict = {}
+    for udn, sectors in hierarchy.items():
+        hierarchy_dict[udn] = {}
+        for sector, roles in sectors.items():
+            hierarchy_dict[udn][sector] = dict(roles)
     
     # Estadísticas generales
-    total_users = users.count()
+    total_users = User.objects.count()
     total_roles = Roles.objects.count()
-    unique_role_types = Roles.objects.values('role').distinct()
+    unique_udns = len(hierarchy_dict)
+    
+    # Crear formulario para cambio de contraseña
+    change_password_form = ChangePasswordForm()
     
     context = {
-        'users_by_role': dict(users_by_role),
+        'hierarchy': hierarchy_dict,
         'total_users': total_users,
         'total_roles': total_roles,
-        'unique_role_types': unique_role_types,
+        'unique_udns': unique_udns,
+        'change_password_form': change_password_form,
     }
     
     return render(request, 'core/dev/test_users.html', context)

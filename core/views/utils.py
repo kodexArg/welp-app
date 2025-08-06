@@ -4,6 +4,7 @@ Utilidades auxiliares para las vistas.
 Este módulo contiene funciones de apoyo utilizadas por múltiples vistas
 del sistema, como formateo de fechas, procesamiento de datos, etc.
 """
+import random
 from datetime import datetime, timezone, timedelta
 from django.utils import timezone as django_timezone
 
@@ -74,4 +75,22 @@ def format_relative_date(date_obj):
         '', 'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
         'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
     ]
-    return f"{date_obj.day} de {months[date_obj.month]} de {date_obj.year}" 
+    return f"{date_obj.day} de {months[date_obj.month]} de {date_obj.year}"
+
+def generate_password(length=10):
+    """
+    Genera una contraseña aleatoria segura.
+    
+    Args:
+        length: Longitud de la contraseña (por defecto 10)
+        
+    Returns:
+        str: Contraseña generada aleatoriamente
+        
+    Utiliza caracteres seguros excluyendo letras y números que pueden
+    confundirse visualmente (como 'l', 'I', '1', 'O', '0').
+    """
+    safe_letters = 'abcdefghjkmnpqrstuvwxyz'
+    safe_digits = '23456789'
+    allowed_chars = safe_letters + safe_digits
+    return ''.join(random.choices(allowed_chars, k=length))
