@@ -6,8 +6,8 @@ from .constants import PAYFLOW_STATUSES
 
 @admin.register(Roles)
 class RolesAdmin(admin.ModelAdmin):
-    list_display = ('user', 'udn', 'sector', 'permissions_summary', 'role_type')
-    list_filter = ('udn', 'sector', 'can_open', 'can_authorize', 'can_process_payment')
+    list_display = ('user', 'udn', 'sector', 'role', 'permissions_summary')
+    list_filter = ('role', 'udn', 'sector')
     search_fields = ('user__username', 'user__first_name', 'user__last_name')
     autocomplete_fields = ['user']
     ordering = ('user__username',)
@@ -16,11 +16,18 @@ class RolesAdmin(admin.ModelAdmin):
         ('Usuario y Contexto', {
             'fields': ('user', 'udn', 'sector')
         }),
-        ('Permisos', {
+        ('Tipo de Usuario', {
+            'fields': ('role',),
+            'description': 'Seleccione el tipo de usuario. Los permisos se asignan automáticamente según el rol.'
+        }),
+        ('Permisos (Solo Lectura)', {
             'fields': ('can_open', 'can_comment', 'can_solve', 'can_authorize', 'can_process_payment', 'can_close'),
-            'classes': ('wide',)
+            'classes': ('collapse',),
+            'description': 'Estos permisos se asignan automáticamente según el tipo de usuario seleccionado arriba.'
         }),
     )
+    
+    readonly_fields = ('can_open', 'can_comment', 'can_solve', 'can_authorize', 'can_process_payment', 'can_close')
     
     def permissions_summary(self, obj):
         permissions = []
@@ -33,18 +40,7 @@ class RolesAdmin(admin.ModelAdmin):
         return " | ".join(permissions) if permissions else "Sin permisos"
     permissions_summary.short_description = "Permisos"
     
-    def role_type(self, obj):
-        if obj.can_process_payment and not obj.can_authorize:
-            return "🛒 Gestor de Compras"
-        elif obj.can_authorize and obj.can_close:
-            return "👔 Supervisor/Gerente"
-        elif obj.can_solve and obj.can_comment:
-            return "🔧 Técnico"
-        elif obj.can_open and not obj.can_comment:
-            return "👤 Usuario Final"
-        else:
-            return "🔧 Personalizado"
-    role_type.short_description = "Tipo de Rol"
+
 
 
 @admin.register(UDN)
