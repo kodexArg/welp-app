@@ -35,7 +35,7 @@ def login_view(request):
                 clear_failed_attempts(request, client_ip)
                 login(request, user)
                 messages.success(request, f'¡Bienvenido, {user.get_full_name() or user.username}!')
-                next_url = request.GET.get('next', 'core:index')
+                next_url = request.GET.get('next', '/')
                 return redirect(next_url)
             else:
                 # Login fallido - incrementar contador
