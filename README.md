@@ -77,11 +77,12 @@ El sistema define roles claros con responsabilidades específicas para garantiza
 
 ### Proceso de Build en AWS App Runner
 
-El despliegue está automatizado a través de `apprunner.yaml`:
+El despliegue está optimizado para máxima velocidad a través de `apprunner.yaml`:
 
-1.  **`pre-build` (Frontend)**: Instala Node.js, descarga las dependencias de `npm` y ejecuta `npm run build` para compilar y optimizar los assets del frontend.
-2.  **`build` (Backend)**: Instala `uv` y las dependencias de Python definidas en `requirements.txt`.
-3.  **`runtime` (Ejecución)**: Ejecuta las migraciones de la base de datos, recolecta los archivos estáticos (`collectstatic`) y finalmente inicia el servidor Gunicorn para servir la aplicación.
+1.  **`build` (Backend)**: Instala `uv` y las dependencias de Python únicamente.
+2.  **`runtime` (Ejecución)**: Ejecuta las migraciones de la base de datos, recolecta los archivos estáticos (`collectstatic`) y finalmente inicia el servidor Gunicorn para servir la aplicación.
+
+> 🚀 **Optimización**: Los assets del frontend se construyen localmente antes del despliegue usando `./scripts/build-for-production.sh`, eliminando la necesidad de Node.js en el contenedor y reduciendo el tiempo de build en ~70%.
 
 ## 📚 Documentación del Proyecto
 

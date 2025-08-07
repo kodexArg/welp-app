@@ -50,7 +50,7 @@ db.sqlite3
 
 # Node.js
 **/node_modules/
-/static/dist/
+# /static/dist/ - COMENTADO: Ahora incluimos los assets compilados en el repo
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
