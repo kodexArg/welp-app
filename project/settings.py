@@ -20,7 +20,7 @@ LOGURU_CONFIG = {
 
 if not os.environ.get('IS_LOCAL') == 'True':
     LOGURU_CONFIG["handlers"].append({
-        "sink": f"s3://{os.environ['AWS_STORAGE_BUCKET_NAME']}/prod/logs/app_{datetime.now().strftime('%Y-%m-%d')}.log",
+        "sink": f"s3://{os.environ['AWS_STORAGE_BUCKET_NAME']}/liontech/logs/app_{datetime.now().strftime('%Y-%m-%d')}.log",
         "format": "{time:YYYY-MM-DD HH:mm:ss} | {level: <8} | {name}:{function}:{line} - {message}",
         "level": "DEBUG",
         "rotation": "1 day",
@@ -189,7 +189,7 @@ else:
             "BACKEND": "storages.backends.s3.S3Storage",
             "OPTIONS": {
                 "bucket_name": AWS_STORAGE_BUCKET_NAME,
-                "location": "prod/media",
+                "location": "liontech/media",
                 "region_name": AWS_S3_REGION_NAME,
                 "custom_domain": AWS_S3_CUSTOM_DOMAIN,
                 "object_parameters": AWS_S3_OBJECT_PARAMETERS,
@@ -199,13 +199,13 @@ else:
             "BACKEND": "storages.backends.s3.S3Storage",
             "OPTIONS": {
                 "bucket_name": AWS_STORAGE_BUCKET_NAME,
-                "location": "prod/static",
+                "location": "liontech/static",
                 "custom_domain": AWS_S3_CUSTOM_DOMAIN,
                 "object_parameters": AWS_S3_OBJECT_PARAMETERS,
             },
         },
     }
-    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/prod/static/'
-    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/prod/media/'
+    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/liontech/static/'
+    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/liontech/media/'
 
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
