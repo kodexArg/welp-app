@@ -106,8 +106,8 @@
                                                             ••••••••
                                                         </code>
                                                         <button 
-                                                            id="copy-btn-{{ user_data.user.id }}-{{ forloop.parentloop.parentloop.parentloop.counter }}-{{ forloop.parentloop.parentloop.counter }}-{{ forloop.parentloop.counter }}"
-                                                            class="text-xs bg-blue-500/20 hover:bg-blue-500/30 text-blue-600 px-2 py-1 rounded transition-colors hidden"
+                                                id="copy-btn-{{ user_data.user.id }}-{{ forloop.parentloop.parentloop.parentloop.counter }}-{{ forloop.parentloop.parentloop.counter }}-{{ forloop.parentloop.counter }}"
+                                                            class="text-xs bg-info/20 hover:bg-info/30 text-info px-2 py-1 rounded transition-colors hidden"
                                                             onclick="copyPassword('{{ user_data.user.id }}', '{{ forloop.parentloop.parentloop.parentloop.counter }}-{{ forloop.parentloop.parentloop.counter }}-{{ forloop.parentloop.counter }}')"
                                                             title="Copiar contraseña"
                                                         >
@@ -130,14 +130,14 @@
                                                         </button>
                                                         <div id="action-buttons-{{ user_data.user.id }}-{{ forloop.parentloop.parentloop.parentloop.counter }}-{{ forloop.parentloop.parentloop.counter }}-{{ forloop.parentloop.counter }}" class="hidden space-x-2">
                                                             <button 
-                                                                class="text-xs bg-green-500/20 hover:bg-green-500/30 text-green-600 px-2 py-1 rounded transition-colors"
+                                                                class="text-xs bg-success/20 hover:bg-success/30 text-success px-2 py-1 rounded transition-colors"
                                                                 onclick="confirmPasswordChange('{{ user_data.user.id }}', '{{ forloop.parentloop.parentloop.parentloop.counter }}-{{ forloop.parentloop.parentloop.counter }}-{{ forloop.parentloop.counter }}')"
                                                                 title="Confirmar cambio de contraseña"
                                                             >
                                                                 <i class="fa fa-check"></i>
                                                             </button>
                                                             <button 
-                                                                class="text-xs bg-red-500/20 hover:bg-red-500/30 text-red-600 px-2 py-1 rounded transition-colors"
+                                                                class="text-xs bg-danger/20 hover:bg-danger/30 text-danger px-2 py-1 rounded transition-colors"
                                                                 onclick="cancelPasswordChange('{{ user_data.user.id }}', '{{ forloop.parentloop.parentloop.parentloop.counter }}-{{ forloop.parentloop.parentloop.counter }}-{{ forloop.parentloop.counter }}')"
                                                                 title="Cancelar cambio de contraseña"
                                                             >
@@ -279,14 +279,14 @@ function copyPassword(userId, suffix) {
             // Feedback visual - cambiar icono temporalmente
             const originalIcon = copyBtn.innerHTML;
             copyBtn.innerHTML = '<i class="fa fa-check"></i>';
-            copyBtn.classList.remove('bg-blue-500/20', 'hover:bg-blue-500/30', 'text-blue-600');
-            copyBtn.classList.add('bg-green-500/20', 'hover:bg-green-500/30', 'text-green-600');
+            copyBtn.classList.remove('bg-info/20', 'hover:bg-info/30', 'text-info');
+            copyBtn.classList.add('bg-success/20', 'hover:bg-success/30', 'text-success');
             
             // Restaurar después de 1.5 segundos
             setTimeout(() => {
                 copyBtn.innerHTML = originalIcon;
-                copyBtn.classList.remove('bg-green-500/20', 'hover:bg-green-500/30', 'text-green-600');
-                copyBtn.classList.add('bg-blue-500/20', 'hover:bg-blue-500/30', 'text-blue-600');
+                copyBtn.classList.remove('bg-success/20', 'hover:bg-success/30', 'text-success');
+                copyBtn.classList.add('bg-info/20', 'hover:bg-info/30', 'text-info');
             }, 1500);
         }).catch(err => {
             console.error('Error al copiar al portapapeles:', err);

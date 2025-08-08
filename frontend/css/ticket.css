@@ -125,8 +125,8 @@
     }
 
     .ticket-amount-label {
-        @apply font-bold text-earth-600 font-mono;
-        @apply text-xxs uppercase border-b-2 border-earth-600;
+        @apply font-bold text-warning font-mono;
+        @apply text-xxs uppercase border-b-2 border-warning;
     }
 
     .ticket-amount-value {
@@ -142,40 +142,40 @@
         @apply leading-[1.2] align-middle;
     }
     .ticket-status--open {
-        @apply bg-red-50 border border-red-200;
-        @apply text-red-400;
+        @apply bg-danger/10 border border-danger/20;
+        @apply text-danger;
     }
     .ticket-status--authorized {
-        @apply bg-purple-100 border border-purple-200;
-        @apply text-purple-500;
+        @apply bg-accent/10 border border-accent/20;
+        @apply text-accent;
     }
     .ticket-status--budgeted {
-        @apply bg-emerald-50 border border-emerald-200;
-        @apply text-emerald-500;
+        @apply bg-success/10 border border-success/20;
+        @apply text-success;
     }
     .ticket-status--rejected {
-        @apply bg-amber-100 border border-amber-200;
-        @apply text-amber-600;
+        @apply bg-warning/10 border border-warning/20;
+        @apply text-warning;
     }
     .ticket-status--payment_authorized {
-        @apply bg-purple-100 border border-purple-200;
-        @apply text-purple-500;
+        @apply bg-accent/10 border border-accent/20;
+        @apply text-accent;
     }
     .ticket-status--processing_payment {
-        @apply bg-cyan-100 border border-cyan-200;
-        @apply text-cyan-600;
+        @apply bg-info/10 border border-info/20;
+        @apply text-info;
     }
     .ticket-status--shipping {
-        @apply bg-fuchsia-100 border border-fuchsia-200;
-        @apply text-fuchsia-500;
+        @apply bg-info/10 border border-info/20;
+        @apply text-info;
     }
     .ticket-status--closed {
-        @apply bg-slate-100 border border-slate-200;
-        @apply text-slate-400;
+        @apply bg-neutral/10 border border-neutral/20;
+        @apply text-neutral;
     }
     .ticket-status--unknown {
-        @apply bg-gray-100 border border-gray-200;
-        @apply text-gray-400;
+        @apply bg-muted/10 border border-neutral/20;
+        @apply text-muted;
     }
 
     /* Ticket Messages */
@@ -267,44 +267,44 @@
         @apply border border-transparent bg-white rounded-lg p-2 mt-2;
     }
     details[open].attachment-details, details[open] .attachment-details {
-        @apply bg-earth-50 border-earth-100;
+        @apply bg-accent/10 border-accent/20;
     }
     .attachment-summary {
-        @apply flex items-center cursor-pointer text-earth-400 hover:text-earth-600 font-ui text-sm gap-2 min-h-[1.5rem];
+        @apply flex items-center cursor-pointer text-primary hover:text-secondary font-ui text-sm gap-2 min-h-[1.5rem];
     }
     .attachment-summary > i {
-        @apply text-base text-earth-300 mr-2;
+        @apply text-base text-muted mr-2;
     }
     .attachment-content {
-        @apply p-2 bg-white border border-earth-100 rounded-lg mt-2 min-h-0;
+        @apply p-2 bg-white border border-border rounded-lg mt-2 min-h-0;
     }
     .form-help {
-        @apply text-xs text-earth-400 mt-1;
+        @apply text-xs text-muted mt-1;
     }
     .attachment-input-row {
         @apply flex items-center gap-2 mt-2 text-xs min-h-0;
     }
     .attachment-action-link {
-        @apply inline-flex items-center gap-1 px-0 py-0 text-earth-600 text-sm font-ui bg-transparent border-0 shadow-none cursor-pointer transition-all duration-150;
+        @apply inline-flex items-center gap-1 px-0 py-0 text-primary text-sm font-ui bg-transparent border-0 shadow-none cursor-pointer transition-all duration-150;
         @apply no-underline;
     }
     .attachment-action-link .fa {
         @apply text-xs mr-0.5;
     }
     .attachment-action-link:hover {
-        @apply text-earth-800 underline;
+        @apply text-secondary underline;
     }
     .attachment-input-row input[type="file"] {
         @apply absolute w-0 h-0 opacity-0 overflow-hidden;
     }
     .attachment-file-label {
-        @apply inline-block cursor-pointer text-xs font-ui text-earth-400 ml-2 transition-colors duration-150;
+        @apply inline-block cursor-pointer text-xs font-ui text-primary ml-2 transition-colors duration-150;
     }
     .attachment-file-label.text-earth-700 {
-        @apply text-earth-700;
+        @apply text-primary;
     }
     .attachment-file-label:hover {
-        @apply text-earth-800 underline;
+        @apply text-secondary underline;
     }
 
     /* Response Actions */

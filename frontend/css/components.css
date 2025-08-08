@@ -68,7 +68,7 @@
     }
     
     .button-cancel {
-        @apply text-earth-700;
+        @apply text-warning;
     }
 
     .button-minimal {
@@ -124,8 +124,8 @@
     .select-fields-body input,
     .select-fields-body textarea {
         @apply w-full px-3 py-2 border rounded-md;
-        @apply bg-white text-text border-forest-300;
-        @apply focus:outline-none focus:ring-2 focus:border-forest-400;
+        @apply bg-white text-text border-border;
+        @apply focus:outline-none focus:ring-2 focus:border-primary;
         @apply transition-all duration-200;
         --tw-ring-color: rgb(226 232 240);
     }

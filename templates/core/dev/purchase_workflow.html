@@ -7,16 +7,16 @@
 {% block content %}
 <section class="my-6 max-w-4xl mx-auto">
     <h1 class="text-2xl text-text">Análisis del Workflow de Compras</h1>
-    <div class="w-fit mx-auto px-18 py-1 bg-forest-600 rounded-t-2xl shadow-lg text-white text-2xl font-bold text-center">Flujo de Estados</div>
-    <article class="mb-12 bg-forest-500 border-none shadow-none">
+    <div class="w-fit mx-auto px-18 py-1 bg-primary rounded-t-2xl shadow-lg text-white text-2xl font-bold text-center">Flujo de Estados</div>
+    <article class="mb-12 bg-primary border-none shadow-none">
         <p class="text-center text-white mb-4">Diagrama de etapas y transiciones del flujo de compras.</p>
-        <div class="w-full max-w-full overflow-x-auto my-8 bg-forest-300 rounded-lg p-12">
+        <div class="w-full max-w-full overflow-x-auto my-8 bg-primary/20 rounded-lg p-12">
             <div class="w-full">{% include "core/dev/partials/workflow_graph.html" %}</div>
         </div>
     </article>
 
-    <div class="w-fit mx-auto px-18 py-1 bg-forest-500 rounded-t-2xl shadow-lg text-white text-2xl font-bold text-center">Roles y Permisos</div>
-    <article class="mb-12 bg-forest-400">
+    <div class="w-fit mx-auto px-18 py-1 bg-primary rounded-t-2xl shadow-lg text-white text-2xl font-bold text-center">Roles y Permisos</div>
+    <article class="mb-12 bg-primary/30">
                     <div class="space-y-4">
                 <div class="p-4 bg-white border border-border rounded-lg">
                     <h3 class="font-semibold text-text font-ui">1. Usuario Final</h3>
@@ -38,15 +38,15 @@
                     <h3 class="font-semibold text-text font-ui">5. Manager</h3>
                     <p class="text-sm text-primary/90 font-body mt-1">Realiza la <strong>primera firma</strong> para autorización de pagos. Permisos: <strong>can_open, can_comment, can_authorize, can_process_payment, can_close</strong>.</p>
                 </div>
-                <div class="p-4 bg-slate-900 border border-slate-700 rounded-lg">
-                    <h3 class="font-semibold text-slate-100 font-ui">6. Director ⭐ NUEVO</h3>
-                    <p class="text-sm text-slate-200 font-body mt-1">Realiza la <strong>segunda firma obligatoria</strong> para autorización de pagos. Control ejecutivo completo. Permisos: <strong>can_open, can_comment, can_authorize, can_process_payment, can_close</strong>.</p>
+                <div class="p-4 bg-neutral border border-neutral/80 rounded-lg">
+                    <h3 class="font-semibold text-light font-ui">6. Director ⭐ NUEVO</h3>
+                    <p class="text-sm text-light font-body mt-1">Realiza la <strong>segunda firma obligatoria</strong> para autorización de pagos. Control ejecutivo completo. Permisos: <strong>can_open, can_comment, can_authorize, can_process_payment, can_close</strong>.</p>
                 </div>
             </div>
     </article>
 
-    <div class="w-fit mx-auto px-18 py-1 bg-forest-400 rounded-t-2xl shadow-lg text-white text-2xl font-bold text-center">Ciclo de Vida de una Solicitud</div>
-    <article class="mb-12 bg-forest-300">
+    <div class="w-fit mx-auto px-18 py-1 bg-primary rounded-t-2xl shadow-lg text-white text-2xl font-bold text-center">Ciclo de Vida de una Solicitud</div>
+    <article class="mb-12 bg-primary/20">
         <div class="space-y-6">
                 <!-- Open -->
                 <div class="p-4 bg-white border border-border rounded-lg shadow-sm"><div class="font-semibold text-text mb-2 font-ui">🔴 Abierto</div><p class="text-sm text-primary/90">La solicitud espera aprobación inicial.</p><div class="flex flex-wrap items-center gap-2 mt-3"><span class="text-xs font-medium py-1 px-3 rounded-full border bg-surface text-text border-border">Acción Requerida:</span> <span class="text-xs font-medium py-1 px-3 rounded-full border bg-surface text-text border-border">Autorizar / Rechazar</span><span class="text-xs font-medium py-1 px-3 rounded-full border bg-surface text-text border-border">Responsable:</span> <span class="text-xs font-medium py-1 px-3 rounded-full border bg-primary/10 text-primary border-primary/20">Supervisor, Manager, Director</span></div></div>

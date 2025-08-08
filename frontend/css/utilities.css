@@ -2,10 +2,10 @@
     @apply overflow-hidden;
 }
 @utility loading-content {
-    @apply flex items-center justify-center p-8 text-[#243824];
+    @apply flex items-center justify-center p-8 text-primary;
 }
 @utility error-content {
-    @apply flex items-center justify-center p-8 text-[#ef4444] font-medium;
+    @apply flex items-center justify-center p-8 text-danger font-medium;
 }
 @utility text-xxs {
   font-size: 0.575rem;

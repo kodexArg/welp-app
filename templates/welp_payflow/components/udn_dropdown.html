@@ -3,9 +3,9 @@
     <button 
         id="udn-dropdown-button"
         class="filter-button 
-               border-sky-300 bg-white text-sky-400 
-               hover:bg-sky-50 hover:border-sky-400 
-               focus:ring-sky-500"
+               border-info/30 bg-white text-info 
+               hover:bg-info/10 hover:border-info/40 
+               focus:ring-info"
         type="button"
         aria-expanded="false"
         aria-haspopup="true">
@@ -22,12 +22,12 @@
         tabindex="-1">
         <div class="py-1" role="none">
             {% for udn in udns %}
-            <label class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-sky-50 cursor-pointer" role="menuitem">
+            <label class="flex items-center px-4 py-2 text-sm text-text hover:bg-info/10 cursor-pointer" role="menuitem">
                 <input 
                     type="checkbox" 
                     value="{{ udn.id }}"
                     data-udn-name="{{ udn.name }}"
-                    class="udn-checkbox mr-3 h-4 w-4 text-sky-600 focus:ring-sky-500 border-gray-300 rounded">
+                class="udn-checkbox mr-3 h-4 w-4 text-info focus:ring-info border-gray-300 rounded">
                 <span>{{ udn.name }}</span>
             </label>
             {% empty %}

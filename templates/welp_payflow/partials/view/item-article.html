@@ -27,11 +27,11 @@
         </summary>
         
         {% with last_message=ticket.messages.last %}
-        <div class="ticket-details rounded-2xl p-3 -mb-1 -mx-1 mt-3 shadow-inner border border-sky-200
+        <div class="ticket-details rounded-2xl p-3 -mb-1 -mx-1 mt-3 shadow-inner border border-info/20
             {% if last_message.status == 'closed' %}
                 bg-striped
             {% else %}
-                bg-sky-50
+                bg-info/10
             {% endif %}
             select-none overflow-hidden">
         {% endwith %}
@@ -51,13 +51,13 @@
                     </span>
                     <div>
                         {% if message.body %}
-                            <div class="ml-8 mb-2 bg-white border border-earth-200 text-sm p-1.5 rounded-xl text-earth-700">
+                            <div class="ml-8 mb-2 bg-white border border-border text-sm p-1.5 rounded-xl text-text">
                                 {{ message.body }}
                             </div>
                         {% elif message.status == 'closed' %}
                             <!-- No mostrar nada para mensajes de cierre sin cuerpo -->
                         {% else %}
-                            <div class="ml-8 mb-2 bg-white border border-earth-200 text-sm p-1.5 rounded-xl text-earth-700">
+                            <div class="ml-8 mb-2 bg-white border border-border text-sm p-1.5 rounded-xl text-text">
                                 <em>{{ ticket.issue.display_name }}</em>
                             </div>
                         {% endif %}
@@ -65,8 +65,8 @@
                     {% if message.attachments.all %}
                         {% for attachment in message.attachments.all %}
                             <div class="pb-2 pt-0 py-3 min-w-full">
-                                <a href="{{ attachment.file.url }}" target="_blank" class="flex justify-end text-xs text-earth-700 hover:bg-sky-50 hover:border-sky-300">
-                                    <i class="fa fa-paperclip mr-1 text-sky-500"></i>
+                                <a href="{{ attachment.file.url }}" target="_blank" class="flex justify-end text-xs text-text hover:bg-surface hover:border-border">
+                                    <i class="fa fa-paperclip mr-1 text-info"></i>
                                     <span>{{ attachment.filename }}</span>
                                 </a>
                             </div>
@@ -80,22 +80,22 @@
         {% with last_message=ticket.messages.last %}
             {% if last_message.status != 'closed' %}
                 <div class="flex justify-end gap-3 mt-4">
-                    <a href="{% url 'ticket-view' ticket.id %}" class="text-xs bg-[var(--color-sky-700)] border border-[var(--color-sky-500)] text-white rounded-full py-1 px-3 inline-flex items-center no-underline font-medium hover:brightness-110">
+                    <a href="{% url 'ticket-view' ticket.id %}" class="text-xs bg-info border border-info/80 text-white rounded-full py-1 px-3 inline-flex items-center no-underline font-medium hover:brightness-110">
                         <i class="fa fa-paper-plane mr-1"></i>
                         <span>RESPONDER</span>
                     </a>
-                    <a href="{% url 'welp_payflow:detail' ticket_id=ticket.id %}?response_type=view" class="text-xs bg-gray-100 border border-gray-300 text-gray-600 rounded-full py-1 px-3 inline-flex items-center no-underline font-medium hover:bg-gray-200 hover:border-gray-400">
+                    <a href="{% url 'welp_payflow:detail' ticket_id=ticket.id %}?response_type=view" class="text-xs bg-surface border border-border text-text rounded-full py-1 px-3 inline-flex items-center no-underline font-medium hover:brightness-105">
                         <i class="fa fa-eye mr-1"></i>
                         <span>VER</span>
                     </a>
                 </div>
             {% else %}
                 <div class="flex justify-end gap-3 mt-4">
-                    <span class="text-xs bg-gray-100 border border-gray-300 text-gray-500 rounded-full py-1 px-3 inline-flex items-center opacity-50 font-medium">
+                    <span class="text-xs bg-surface border border-border text-muted rounded-full py-1 px-3 inline-flex items-center opacity-50 font-medium">
                         <i class="fa fa-check-circle mr-1"></i>
                         <span>TICKET CERRADO</span>
                     </span>
-                    <a href="{% url 'welp_payflow:detail' ticket_id=ticket.id %}?response_type=view" class="text-xs bg-gray-100 border border-gray-300 text-gray-600 rounded-full py-1 px-3 inline-flex items-center no-underline font-medium hover:bg-gray-200 hover:border-gray-400">
+                    <a href="{% url 'welp_payflow:detail' ticket_id=ticket.id %}?response_type=view" class="text-xs bg-surface border border-border text-text rounded-full py-1 px-3 inline-flex items-center no-underline font-medium hover:brightness-105">
                         <i class="fa fa-eye mr-1"></i>
                         <span>VER</span>
                     </a>
@@ -119,10 +119,10 @@
     .bg-striped {
         background-image: repeating-linear-gradient(
             45deg,
-            var(--color-sky-50),
-            var(--color-sky-50) 0.2rem,
-            var(--color-white) 0.2rem,
-            var(--color-white) 0.4rem
+            var(--color-surface),
+            var(--color-surface) 0.2rem,
+            var(--color-light) 0.2rem,
+            var(--color-light) 0.4rem
         );
         background-size: 100% 100%;
     }

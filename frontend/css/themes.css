@@ -30,4 +30,15 @@
   --navbar-link-text: var(--color-forest-50);
   --navbar-link-hover: var(--color-forest-100);
   --navbar-link-active: var(--color-light);
+
+  /* ========================================================================
+     Tokens semánticos adicionales (neutros para plantillas)
+     ======================================================================== */
+  /* Estados y mensajes */
+  --color-info: var(--color-sky-600);
+  --color-success: var(--color-forest-500);
+  --color-warning: var(--color-earth-500);
+  --color-danger: #dc2626; /* red-600 */
+  --color-neutral: #64748b; /* slate-500 */
+  --color-muted: #6b7280; /* gray-500 */
 }
