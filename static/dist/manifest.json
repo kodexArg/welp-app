@@ -304,15 +304,37 @@
     "isEntry": true
   },
   "frontend/main.css": {
-    "file": "assets/styles-uygG9Sdd.css",
+    "file": "assets/styles-C3AufMB0.css",
     "src": "frontend/main.css",
     "isEntry": true
   },
   "frontend/main.js": {
-    "file": "assets/main-DfCEIgde.js",
+    "file": "assets/main-Bmm5TUH5.js",
     "name": "main",
     "src": "frontend/main.js",
-    "isEntry": true
+    "isEntry": true,
+    "css": [
+      "assets/styles-C3AufMB0.css"
+    ],
+    "assets": [
+      "assets/Grandstander-VariableFont_wght-DhpziJym.ttf",
+      "assets/RobotoCondensed-VariableFont_wght-CK5HQVec.ttf",
+      "assets/RobotoMono-VariableFont_wght-BmjObt7I.ttf",
+      "assets/RobotoSlab-VariableFont_wght-COAoaFSE.ttf",
+      "assets/Nunito-VariableFont_wght-DjOotFkD.ttf",
+      "assets/Inter-VariableFont_opsz_wght-c8O0ljhh.ttf",
+      "assets/NotoSans-VariableFont_wdth_wght-CYoOFcCZ.ttf",
+      "assets/Grandstander-Bold-BlhpRC0d.ttf",
+      "assets/RobotoMono-Regular-CBo0Sm2n.ttf",
+      "assets/RobotoMono-Bold-CheSjNdw.ttf",
+      "assets/Lato-Regular-BwLIet1C.ttf",
+      "assets/Lato-Bold-B5iD31kO.ttf",
+      "assets/Lato-Italic-DOTKc3_v.ttf",
+      "assets/Lato-BoldItalic-CT6m3OwA.ttf",
+      "assets/fa-brands-400-xIUy2dUv.woff2",
+      "assets/fa-regular-400-D2J4JcCD.woff2",
+      "assets/fa-solid-900-DQw_EAxt.woff2"
+    ]
   },
   "node_modules/katex/dist/katex.mjs": {
     "file": "assets/katex-ChWnQ-fc.js",
