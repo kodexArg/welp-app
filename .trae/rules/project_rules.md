@@ -16,7 +16,6 @@ alwaysApply: true
 - **Dependencias**: `uv` para Python, `npm` para Node.js
 - **Scripts importantes**:
   - `scripts/dev.sh`: Script principal de desarrollo (inicia npm + Django)
-  - `scripts/dev.ps1`: Script de desarrollo para Windows PowerShell
   - `scripts/init_app.py`: Inicializa datos de PayFlow desde `init_payflow.yaml`
   - `scripts/seed_payflow.py`: Puebla tickets de ejemplo desde YAML
 
