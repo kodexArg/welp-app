@@ -22,7 +22,7 @@
         });
     </script>
     
-    {% vite_asset 'styles' %}
+    {% vite_asset 'frontend/main.css' %}
     {% vite_hmr_client %}
     
     <meta name="htmx-config" content='{"headers": {"X-CSRFToken": "{{ csrf_token }}"}}'>
