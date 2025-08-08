@@ -1,3 +1,4 @@
+import './main.css';
 import htmx from 'htmx.org'
 
 htmx.config.defaultSwapStyle = 'outerHTML'
