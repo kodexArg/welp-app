@@ -1,0 +1,1 @@
+document.addEventListener("DOMContentLoaded",()=>{const t=document.getElementById("countdown");if(!t)return;let e=parseInt(t.dataset.seconds||"10");const n=t.dataset.url||"/";t.textContent=e;const o=setInterval(()=>{e--,t.textContent=e,e<=0&&(clearInterval(o),window.location.href=n)},1e3)});

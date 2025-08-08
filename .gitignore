@@ -36,6 +36,8 @@ db.sqlite3
 .env
 *.ini
 *.json
+# Mantener el manifest de Vite en el repo para producción (AppRunner no construye Node)
+!static/dist/manifest.json
 *.yml
 
 # Archivos de IDE y sistema
@@ -50,7 +52,10 @@ db.sqlite3
 
 # Node.js
 **/node_modules/
-# /static/dist/ - COMENTADO: Ahora incluimos los assets compilados en el repo
+# Incluir todos los assets compilados de Vite en el repo (AppRunner no construye Node)
+!static/
+!static/dist/
+!static/dist/**
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
