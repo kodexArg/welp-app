@@ -3,7 +3,9 @@ import { viteStaticCopy } from 'vite-plugin-static-copy';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
-  base: '/static/',
+  // Usar rutas relativas para que los imports dinámicos (chunks) se resuelvan
+  // respecto del propio archivo principal (S3/CDN) y no al dominio de la app.
+  base: './',
   server: {
     host: 'localhost',
     port: 5173,
